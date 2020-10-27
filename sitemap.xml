@@ -38,12 +38,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>miguelraz.github.io/blog/pubs/index.html</loc>
-    <lastmod>2020-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>miguelraz.github.io/pubs/index.html</loc>
     <lastmod>2020-10-27</lastmod>
     <changefreq>monthly</changefreq>
