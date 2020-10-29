@@ -1,1 +1,27 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <div class=franklin-toc ><ol><li><a href="#27102020">27/10/2020</a></ol></div> <h3 id=27102020 ><a href="#27102020">27/10/2020</a></h3> <p>Today I got my website setup&#33;</p> <div class=page-foot > <div class=copyright > &copy; Miguel Raz. Last modified: October 28, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <div class=franklin-toc ><ol><li><a href="#29102020">29/10/2020</a><li><a href="#27102020">27/10/2020</a></ol></div> <h3 id=29102020 ><a href="#29102020">29/10/2020</a></h3> <ol> <li><p>Closures&#33; Defining a function within a function is a type of closure. They take variables from one scope above them. <code>@masonprotter</code> and <code>@fredrikekre</code> helped me figure out why having this is desirable:</p> </ol> <pre><code class="julia-repl hljs">function f(x, y, z)
+    data = compute(x, y, z)
+
+    g() = data^2 # closure over data    
+    g() # call g here maybe?    
+    # ...    
+    g() # maybe again here?
+end</code></pre> <p>Mason says:&quot;Almost all usages of closures can be replaced with &#39;top level&#39; functions that take extra arguments &#40;one for each captured field&#41;, but it&#39;s syntactically less pleasing and can end up causing you to have a bunch of function names in your namespace you don&#39;t want.&quot; Of course <a href="https://discourse.julialang.org/t/closures-section-in-documentation-is-not-clear-enough/18717/13">there&#39;s a Discourse post on it</a>.</p> <ol start=2 > <li><p>Wow&#33; <a href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping">Function composition and piping</a> lets you do some amazing stuff with <code>\circ&lt;TAB&gt;</code> and friends&#33;</p> </ol> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ +)(<span class=hljs-number >3</span>, <span class=hljs-number >6</span>)
+</span>3.0
+<span class=hljs-meta >julia&gt;</span><span class=julia > map(first ∘ reverse ∘ uppercase, split(<span class=hljs-string >&quot;you can compose functions like this&quot;</span>)
+</span>6-element Array{Char,1}:
+ &#x27;U&#x27;: ASCII/Unicode U+0055 (category Lu: Letter, uppercase)
+ &#x27;N&#x27;: ASCII/Unicode U+004E (category Lu: Letter, uppercase)
+ &#x27;E&#x27;: ASCII/Unicode U+0045 (category Lu: Letter, uppercase)
+...
+<span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-number >1</span>:<span class=hljs-number >10</span> |&gt; sum |&gt; sqrt
+</span>7.416...
+<span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ sum)(<span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
+</span>7.41...
+<span class=hljs-meta >julia&gt;</span><span class=julia > [ <span class=hljs-string >&quot;a&quot;</span>, <span class=hljs-string >&quot;list&quot;</span>, <span class=hljs-string >&quot;of&quot;</span>, <span class=hljs-string >&quot;strings&quot;</span>] .|&gt; [uppercase, reverse, titlecase, length]
+</span>4-element Array{Any,1}:
+  &quot;A&quot;
+  &quot;tsil&quot;
+  &quot;Of&quot;
+ 7
+<span class=hljs-meta >julia&gt;</span><span class=julia > (^<span class=hljs-number >2</span>, sqrt, inv).([<span class=hljs-number >2</span>,<span class=hljs-number >4</span>,<span class=hljs-number >4</span>])
+</span>[4,2, .25]</code></pre> <ol start=3 > <li> </ol> <h3 id=27102020 ><a href="#27102020">27/10/2020</a></h3> <p>Today I got my website setup&#33;</p> <div class=page-foot > <div class=copyright > &copy; Miguel Raz. Last modified: October 29, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div>
