@@ -50,7 +50,54 @@ julia> (^2, sqrt, inv).([2,4,4])
 [4,2, .25]
 ```
 
-3.
+3. Rust allows for defining anonymous functions!
+
+```rust
+fn raindrops(n: u32) -> String {
+	let is_factor = |f| x % f == 0;
+	...
+}
+```
+
+4. Rust match is very powerful... try and setup the anonymous functions in a tuple after the `match` and then filter by `(each, available, case) => action`.
+```rust
+pub fn raindrops(num: i64) -> String {
+    let mut raindrop = String::new();
+
+    match (num % 3, num % 5, num % 7) {
+        (0, 0, 0) => raindrop.push_str("PlingPlangPlong"),
+        (0, 0, _) => raindrop.push_str("PlingPlang"),
+        (0, _, 0) => raindrop.push_str("PlingPlong"),
+        (_, 0, 0) => raindrop.push_str("PlangPlong"),
+        (0, _, _) => raindrop.push_str("Pling"),
+        (_, 0, _) => raindrop.push_str("Plang"),
+        (_, _, 0) => raindrop.push_str("Plong"),
+        (_, _, _) => raindrop = num.to_string()
+    }
+
+    return raindrop
+}
+```
+
+5. This was a good use of match
+
+```rust
+pub fn square(s: u32) -> u64 {
+    match s {
+        1...64 => 1u64.wrapping_shl(s-1),
+// This also works
+//      1u64 << (s - 1)
+        _ => panic!("Square must be between 1 and 64"),
+    }
+}
+
+pub fn total() -> u64 {
+    (1..65).map(square).sum()
+// Lol thanks philip98
+// u64::max_value
+}
+```
+Credit to Wow-BOB-Wow.
 
 
 ### 27/10/2020
