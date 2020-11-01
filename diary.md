@@ -7,6 +7,23 @@
 
 \toc
 
+### 31/10/2020
+
+6. Today I finally got around to rewriting `GraphsIO.jl`. It suffered from a few ailments:
+ - Very, very wonky pythonic dispatch
+ - Small performance hits when writing (ie, not using `io = IOBuffer()`, `write(io, s1, s2)` instead of the allocating `write(io, "$s1$s2")`, etc.
+ - Very awkward test scaffolding. Figuring out which functions are being called is just not fun.
+ - Bulky directory structure. I'll just monorepo it for now and see what sticks.
+ - Poor documentation.
+
+I adopted the `Blue Style` guidelines because they came in with PkgTemplates.jl and screw it, why not try and follow them.
+Here's what I got done today:
+ - Testing scaffolding mostly setup. (Files, how to run the tests, etc.)
+ - Writing graphs in DOT, and I think 3 other formats.
+ - Minor performance improvements.
+
+Tomorrow I should start something fun with the Parsers.jl library for maximum speedups. Wish me luck!
+
 ### 29/10/2020
 
 1. Closures! Defining a function within a function is a type of closure. They take variables from one scope above them. `@masonprotter` and `@fredrikekre` helped me figure out why having this is desirable:
