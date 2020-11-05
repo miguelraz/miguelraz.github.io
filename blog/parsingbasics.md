@@ -1,3 +1,8 @@
+@def title = "Parsing Basics with Parsers.jl"
+@def tags = ["parsing", "parsers"]
+
+\tableofcontents
+
 ### Parsing basics - how to use Parsers.jl to parse formats for high performance
 
 ~ 20 minutes.
@@ -28,7 +33,21 @@ We'll do some Memory mapping and using bitmasks. Don't worry, this all comes "ou
 
 Briefly:
 - *memory mapping* : Convert a file to a vector of bytes. This will ideally greatly improved the processing speed of your file.
+
+You can do this in Julia with a simple
+
+```julia-repl
+julia> using Mmap
+julia> mm = Mmap.mmap("file.txt")
+```
+
 - *bit masks* : Instead of using several variables for many binary conditions, we stick them all in a single memory chunk and use bit operations to get out the useful information.
+
+Which usually looks like
+
+```julia-repl
+julia> 0b01 & 1 # notice the 0b01 is a binary literal
+```
 
 ### The format to be parse
 

@@ -1,8 +1,8 @@
 @def title = "Blog 1"
 @def tags = ["Blog"]
 
-# Blog1
+# Hola! :wave:
 
 \tableofcontents <!-- you can use \toc as well -->
 
-blog1
+All my blog posts should go here!
