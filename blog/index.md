@@ -1,6 +1,6 @@
-@def title = "Welcome to the blog!"
-@def tags = ["introduction"]
+@def title = "Path to Performance"
 
 # BLOG
+
 
 {{recentblogposts}}

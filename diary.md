@@ -7,6 +7,38 @@
 
 \toc
 
+
+### 04/11/2020
+
+7. Trump is likely gonna lose the election - crazy times. Been working a bit on scaffolding for LightGraphsIO.jl. Solid integration with Parsers.jl will mean a lot of speed coming up for the LightGraphs.jl ecosystem.
+
+8. In order to not get punked by the output of 
+
+```julia-repl
+julia> print.(sq(i) for i in 1:10)
+14916253649648110010-element Vector{Nothing}:
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+```
+
+`@pabloferz` suggested the `foreach`, which returns a `nothing`, and thus doesn't print.
+
+```julia-repl
+julia> foreach(x -> println(x^2), 1:3:7)
+1
+9
+49
+```
+
+
 ### 31/10/2020
 
 6. Today I finally got around to rewriting `GraphsIO.jl`. It suffered from a few ailments:

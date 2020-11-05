@@ -1,9 +1,8 @@
 @def title = "Parsing Basics with Parsers.jl"
 @def tags = ["parsing", "parsers"]
 
-\tableofcontents
-
 ### Parsing basics - how to use Parsers.jl to parse formats for high performance
+\tableofcontents
 
 ~ 20 minutes.
 * This post talks about parsing, aka how to read file. It is focused on formats of interest for scientific / data processing, but is meant more as an introduction than a complete overview.
@@ -27,12 +26,12 @@ That approach hits a roof of about ( ) according to these calculations by Daniel
 His team's approach let's them parse some formats at a whopping ( ) by using SIMD vectorization (aka, oodles of parallelism, very close to assembly level).
 We may cover that approach in a later post, but for now we'll be happy with Parsers.jl that does some clever byte-at-a-time optimizations to still get respectable for our needs.
 
-### Oooh - what are these tricks?
+### Oooh - parsing tricks!
 
 We'll do some Memory mapping and using bitmasks. Don't worry, this all comes "out of the box" in Julia.
 
 Briefly:
-- *memory mapping* : Convert a file to a vector of bytes. This will ideally greatly improved the processing speed of your file.
+- *memory mapping* : Convert a file to a vector of bytes. This will ideally greatly improved the processing speed of your file because we are using byte operations instead of string operations.
 
 You can do this in Julia with a simple
 
@@ -46,10 +45,13 @@ julia> mm = Mmap.mmap("file.txt")
 Which usually looks like
 
 ```julia-repl
-julia> 0b01 & 1 # notice the 0b01 is a binary literal
+julia> 0b0001 & 1 # notice the 0b01 is a binary literal
+1
 ```
 
-### The format to be parse
+If you're smart about it, you can use those resulting 1s for control branchless control flow, which also helps performance.
+
+### The format to be parsed
 
 We'll get start with a `EdgeList` (called `"simple.edgelist"`) file, they look like this:
 
