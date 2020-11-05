@@ -4,7 +4,7 @@
   <description><![CDATA[Website for Miguel Raz Guzman Macedo
 ]]></description>
   <link>miguelraz.github.io/</link>
-  <atom:link href="miguelraz.github.io/feed.xml" rel="self" type="application/rss+xml" />
+  <atom:link href="miguelraz.github.io/tag/videos/feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>PublicationsMiguelRaz</title>
     <link>miguelraz.github.io/pubs/</link>
