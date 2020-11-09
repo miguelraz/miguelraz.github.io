@@ -25,6 +25,7 @@ You look at one character, and depending on what you've seen, decide what to do,
 That approach hits a roof of about ( ) according to these calculations by Daniel Lemire, an absolute pro at this sort of stuff.
 His team's approach let's them parse some formats at a whopping ( ) by using SIMD vectorization (aka, oodles of parallelism, very close to assembly level).
 We may cover that approach in a later post, but for now we'll be happy with Parsers.jl that does some clever byte-at-a-time optimizations to still get respectable for our needs.
+This post however will cover some of Julia's **multithreading** capabilities. This will help us leverage the fact that modern computers aren't getting much faster, but there are more processors we can use.
 
 ### Oooh - parsing tricks!
 
@@ -120,10 +121,27 @@ So that's our basic building block for how to get started with Parsers.jl.
 Now let's try and write the rest of the code to read a whole file that contains a single graph:
 
 ```julia-repl
-function load_graph(file_name, ::Type{EdgeListFormat}) # The funky second argument is so that we filter for EdgeListFormat behavior, not important here.
+julia> function load_graph(file_name, ::Type{EdgeListFormat}) # The funky second argument is so that we filter for EdgeListFormat behavior, not important here.
     # yay code
 end
+
+julia> g = load_graph("simple.edgelist", EdgeListFormat)
+{6, 7} undirected Int64 simple graph
 ```
+##### Success! :fire:
+
+Now, let's make it multithreaded with a test file of 100k rows, to see that we have something worthwhile.
+
+We write our file like this:
+
+```julia-repl
+julia> open("large.txt", "w+") do f
+	for i in 100_000
+		println(rand(1:100_000), ' ', rand(1:100_00))
+	end
+	end
+```
+
 
 
 
