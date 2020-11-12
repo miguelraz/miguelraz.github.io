@@ -43,11 +43,11 @@ julia> create_sysimage([:Revise, :OhMyREPL, :BenchmarkTools], replace_default = 
 ```
 Super charge that combo with the `~/.julia/config/startup.jl`:
 ```julia-repl
-try
-	using Revise
-catch e
-	@warn(e)	
-end
+julia> try
+           using Revise
+       catch e
+	   @warn(e)	
+       end
 ```
 
 
@@ -104,13 +104,13 @@ Tomorrow I should start something fun with the Parsers.jl library for maximum sp
 1. Closures! Defining a function within a function is a type of closure. They take variables from one scope above them. `@masonprotter` and `@fredrikekre` helped me figure out why having this is desirable:
 
 ```julia-repl
-function f(x, y, z)
-    data = compute(x, y, z)
+julia> function f(x, y, z)
+           data = compute(x, y, z)
 
-    g() = data^2 # closure over data    
-    g() # call g here maybe?    
-    # ...    
-    g() # maybe again here?
+           g() = data^2 # closure over data    
+           g() # call g here maybe?    
+           # ...    
+           g() # maybe again here?
 end
 ```
 
