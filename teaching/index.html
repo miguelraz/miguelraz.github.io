@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>Menu 3</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=working_with_tags ><a href="#working_with_tags">Working with tags</a></h1> <p><strong>Example</strong>:</p> <ul> <li><p>page with tag <a href="/tag/syntax/"><code>syntax</code></a></p> <li><p>page with tag <a href="/tag/image/"><code>image</code></a></p> <li><p>page with tag <a href="/tag/code/"><code>code</code></a></p> </ul> <div class=franklin-toc ><ol><li><a href="#indicating_tags">Indicating tags</a><li><a href="#customising_tag_pages">Customising tag pages</a><li><a href="#customising_tag_lists">Customising tag lists</a></ol></div> <h2 id=indicating_tags ><a href="#indicating_tags">Indicating tags</a></h2> <p>To mark a page with tags, add:</p> <pre><code class="markdown hljs">@def tags = [&quot;tag1&quot;, &quot;tag2&quot;]</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>Menu 3</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=working_with_tags ><a href="#working_with_tags">Working with tags</a></h1> <p><strong>Example</strong>:</p> <ul> <li><p>page with tag <a href="/tag/syntax/"><code>syntax</code></a></p> <li><p>page with tag <a href="/tag/image/"><code>image</code></a></p> <li><p>page with tag <a href="/tag/code/"><code>code</code></a></p> </ul> <div class=franklin-toc ><ol><li><a href="#indicating_tags">Indicating tags</a><li><a href="#customising_tag_pages">Customising tag pages</a><li><a href="#customising_tag_lists">Customising tag lists</a></ol></div> <h2 id=indicating_tags ><a href="#indicating_tags">Indicating tags</a></h2> <p>To mark a page with tags, add:</p> <pre><code class="markdown hljs">@def tags = [&quot;tag1&quot;, &quot;tag2&quot;]</code></pre>
 <p>then that page, along with all others that have the tag <code>tag1</code> will be listed at <code>/tag/tag1/</code>.</p>
 <h2 id=customising_tag_pages ><a href="#customising_tag_pages">Customising tag pages</a></h2>
 <p>You can change how a <code>/tag/...</code> page looks like by modifying the <code>_layout/tag.html</code>. An important note is that you can <strong>only</strong> use <strong>global</strong> page variables &#40;defined in <code>config.md</code>&#41;.</p>
@@ -74,3 +74,69 @@
   </div>
 </div>
 </div>
+    
+    
+        
+
+
+	
+
+<script>
+(function(){
+
+	// Get the elements.
+	// - the 'pre' element.
+	// - the 'div' with the 'paste-content' id.
+
+	var pre = document.getElementsByTagName('pre');
+
+	// Add a copy button in the 'pre' element.
+	// which only has the className of 'language-'.
+
+	for (var i = 0; i < pre.length; i++) {
+		var isLanguage = pre[i].children[0].className.indexOf('language-');
+
+		if ( isLanguage === 0 ) {
+			var button           = document.createElement('button');
+					button.className = 'copy-button';
+					button.textContent = 'Copy';
+
+					pre[i].appendChild(button);
+		}
+	};
+
+	// Run Clipboard
+
+	var copyCode = new Clipboard('.copy-button', {
+		target: function(trigger) {
+			return trigger.previousElementSibling;
+    }
+	});
+
+	// On success:
+	// - Change the "Copy" text to "Copied".
+	// - Swap it to "Copy" in 2s.
+	// - Lead user to the "contenteditable" area with Velocity scroll.
+
+	copyCode.on('success', function(event) {
+		event.clearSelection();
+		event.trigger.textContent = 'Copied';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 2000);
+
+	});
+
+	// On error (Safari):
+	// - Change the  "Press Ctrl+C to copy"
+	// - Swap it to "Copy" in 2s.
+
+	copyCode.on('error', function(event) {
+		event.trigger.textContent = 'Press "Ctrl + C" to copy';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 5000);
+	});
+
+})();
+</script>
