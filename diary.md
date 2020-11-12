@@ -5,7 +5,50 @@
 
 # Virtual diary for progress on all fronts
 
-\toc
+### 12/11/2020
+
+17. Invaluable git trick: if you committed some changes locally, but someone else pushed to master, use the [auto-rebase autostash trick](https://cscheng.info/2017/01/26/git-tip-autostash-with-git-pull-rebase.html):
+
+```
+git config --global pull.rebase true
+git config --global rebase.atuoStash true
+```
+so that you don't need to do `git pull --rebase --autostash` and can just `git pull`.
+
+
+### 08/11/2020
+
+10. Try and order starter kit / computer parts from newegg.com
+
+11. Before you spend a day trying to scrape / download files, make sure the author did not already kindly include a zipped version of the files :clown_face:
+
+12. I think I found a possible thesis project - SymbolicUtils.jl as a backend for SymbolicTensors.jl. I should message the author and set something up.
+
+13. Ran into rulebasedintegration.org. Downloaded the Mathematica notebooks, found a way to parse and dump them into text with PDFIO.jl.
+
+14. Remembered how to setup an `artifact` with ArtifactUtils.jl. That thing is useful.
+
+15. Found a killer command from SOverflow on how to recursively copy all files in a tree of folders that match an extension into a target directory:
+
+ - whelp I think I lost it. Will fish it back but it was an easy google.
+
+ 16. Polytomous recommended ["Taguette"](www.taguette.org) for highlighting documents and its open source. Super cool! Should send to Ponzi.
+
+### 06/11/2020
+
+9. If you want to make your startup super fast, use `PackageCompiler.jl`:
+```julia-repl
+julia> using PackageCompiler
+julia> create_sysimage([:Revise, :OhMyREPL, :BenchmarkTools], replace_default = true)
+```
+Super charge that combo with the `~/.julia/config/startup.jl`:
+```julia-repl
+try
+	using Revise
+catch e
+	@warn(e)	
+end
+```
 
 
 ### 04/11/2020
