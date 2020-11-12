@@ -28,18 +28,18 @@ $K$ will be specified as a subtype of `AbstractKernel`.
 * If the $\mathcal{K}_n$ integral is *not* known analytically, we may have to compute it numerically.  This will be done at *compile time* by staged functions, with the numeric integration results used to compute the coefficients of a Chebyshev polynomial fit, which can then be compiled into an efficient polynomial approximation of $\mathcal{K}_n$.   However, to compute a Chebyshev approximation for a function defined on $(0,\infty)$, we will have to perform a coordinate transform from $X \to (0,1)$, and the type of coordinate transformation will depend on how fast $\mathcal{K}_n$ decays asymptotically as $X\to\infty$.  This decay rate can be *specified via the type* of `K`.
 
 The $\mathcal{K}_n$ function will be parameterized by a `FirstIntegral{K,n}` type parameterized by an `AbstractKernel` type `K` and an integer `n`.
-```julia-repl
+```julia
 abstract type AbstractKernel end
 ```
 Any kernel ~ X^P for X ≪ S and ~ X^Q for X ≫ S
-```julia-repl
+```julia
 abstract type PowerLawScaling{P,Q,S} <: AbstractKernel end
 ```
-```julia-repl
+```julia
 immutable FirstIntegral{K<:AbstractKernel,N} end
 ```
 # Analytically known integrals:
-```julia-repl
+```julia
 immutable PowerLaw{p} <: PowerLawScaling{p,p,p} end # rᵖ power law}
 
 function (::FirstIntegral{PowerLaw{p},n})(X::Number) where {p,n}
@@ -49,7 +49,7 @@ end
 F = FirstIntegral{PowerLaw{-1}, 3}()
 F(3.7)
 ```
-```julia-repl
+```julia
 @code_llvm F(3.7)
 ```
 # Numerically computed integrals
@@ -78,17 +78,17 @@ We compute these coefficients $c_n$ by first evaluating $f(x)$ at the Chebyshev 
 
 We also provide a function `evalcheb` to evaluate $C(x)$ for any $x\in(-1,1)$ by a Clenshaw recurrence, and a macro version `@evalcheb` (analogous to `Base.@horner`) that generates a completely inlined version of this recurrence for the case where $c$ is fixed.
 
-```julia-repl
+```julia
 #Pkg.add("FFTW");
 using FFTW
 ```
 $N$ chebyshev points (order N) on the interval $(-1,1)$
-```julia-repl
+```julia
 chebx(N) = [cos(π*(n+0.5)/N) for n in 0:N-1]
 ```
 
 $N$ chebyshev coefficients for vector of $f(x)$ values on $chebx$ points $x$
-```julia-repl
+```julia
 function chebcoef(f::AbstractVector)
     a = FFTW.r2r(f, FFTW.REDFT10) / length(f)
     a[1] /= 2
@@ -98,7 +98,7 @@ end
 
 Given a function $f$ and a tolerance, return enough Chebyshev coefficients to reconstruct $f$ to that tolerance on $(-1,1)$
 
-```julia-repl
+```julia
 function chebcoef(f, tol=1e-13)
     N = 10
     local c
@@ -133,7 +133,7 @@ end
 ```
 
 Given $cheb$ coefficients $a$, evaluate them for $x$ in $(-1,1)$ by Clenshaw recurrence
-```julia-repl
+```julia
 function evalcheb(x, a)
     isempty(a) && throw(BoundsError())
     -1 ≤ x ≤ 1 || throw(DomainError())
@@ -145,9 +145,7 @@ function evalcheb(x, a)
     end
     return a[1] + x*bₖ₊₁ - bₖ₊₂
 end
-```
 
-```julia-repl
 # inlined version of evalcheb given coefficents a, and x in (-1,1)
 macro evalcheb(x, a...)
     isempty(a) && throw(BoundsError())
@@ -176,7 +174,7 @@ end
 ```
 
 Let's try a simple test case: performing Chebyshev interpolation of $\exp(x)$:
-```julia-repl
+```julia
 c = chebcoef(exp)
 x = linspace(-1,1,100)
 maximum(abs.(Float64[evalcheb(y,c) for y in x] - exp.(x))) # the maximum error on [-1,1]
@@ -187,13 +185,13 @@ evalcheb(0.1234, c[1:4]) - @evalcheb(0.1234, c[1],c[2],c[3],c[4])
 
 # First-integral generation
 
-```julia-repl
+```julia
 # extract parameters from PowerLawScaling type
 pqsPowerLawScaling{p,q,s}(::PowerLawScaling{p,q,s}) = (p,q,s)
 ```
 
 Extract parameters from PowerLawScaling type
-```julia-repl
+```julia
 pqsPowerLawScaling{p,q,s}(::PowerLawScaling{p,q,s}) = (p,q,s)
 
 @generated function (::FirstIntegral{P,n}, X::Real) where {P<:PowerLawScaling,n}
@@ -218,7 +216,7 @@ end
 ```
 
 A simple example where the result is known analytically:
-```julia-repl
+```julia
 immutable DumbPowerLaw{p,s} <: PowerLawScaling{p,p,s}; end # rᵖ power law
 (::FirstIntegral{DumbPowerLaw{p,s}})(r)  where {p,s} = r^p
 F = FirstIntegral{DumbPowerLaw{-1,1.0},3}()
@@ -226,7 +224,7 @@ F(3.7)
 @code_llvm F(3.7)
 ```
 
-```julia-repl
+```julia
 #Pkg.add("PyPlot")
 using PyPlot
 x = [0.01:.0125:1.0;]; 
