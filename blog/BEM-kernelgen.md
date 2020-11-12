@@ -3,7 +3,7 @@
 
 
 **NB** - This notebook was originally made, some years ago, by Steven G. Johnson. I took the pre 1.0 Julia code and updated it so as to teach myself and others some useful concepts about generated functions in Julia.
-This transcription is shared with the author's permission.
+It is based on the idea of generated functions and staged programming of chapter 3.5.2 of Jeff Bezanson's PhD thesis [on the Julia Language](https://github.com/JeffBezanson/phdthesis/blob/master/main.pdf).This transcription is shared with the author's permission.
 
 -- Miguel Raz, 2020
 
@@ -130,6 +130,7 @@ function chebcoef(f, tol=1e-13)
     v₀ = maximum(abs,c) * tol
     return c[1:findlast(v -> abs(v) > tol, c)] # shrink to minimum length
 end
+```
 
 Given $cheb$ coefficients $a$, evaluate them for $x$ in $(-1,1)$ by Clenshaw recurrence
 ```julia-repl
