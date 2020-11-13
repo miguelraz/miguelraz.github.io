@@ -3,7 +3,8 @@
 
 
 **NB** - This notebook was originally made, some years ago, by Steven G. Johnson. I took the pre 1.0 Julia code and updated it so as to teach myself and others some useful concepts about generated functions in Julia.
-It is based on the idea of generated functions and staged programming of chapter 3.5.2 of Jeff Bezanson's PhD thesis [on the Julia Language](https://github.com/JeffBezanson/phdthesis/blob/master/main.pdf).This transcription is shared with the author's permission.
+It is based on the idea of generated functions and staged programming of chapter 5.7 of Jeff Bezanson's PhD thesis [on the Julia Language](https://github.com/JeffBezanson/phdthesis/blob/master/main.pdf).This transcription is shared with the author's permission.
+The original code is in Appendix B of the same thesis.
 
 -- Miguel Raz, 2020
 
@@ -229,3 +230,26 @@ julia> using PyPlot
 julia> x = [0.01:.0125:1.0;]; 
 julia> plot(x, map(FirstIntegral{DumbPowerLaw{-1,1.}, 3}(),x))
 ```
+
+---
+
+As an added bonus, I should probably include the other integrals included in section 5.7. Here they are:
+
+> Notice that a Helmholtz kernel is also a power law kernel:
+```julia
+import GSL
+exprel(n, x) = GSL. sf_exprel_n(n, x)
+type Helmholtz{k} <: PowerLaw{-1, -1} end # exp(ikr) / 4 pi r
+function(::FirstIntegral{Helmholtz{k}, n})(x) where {k,n}
+	ikx = im * k * x
+	return exp(ikx) * exprel(n, -ikx)/(4*pi*x)
+end
+
+# magnetic field integral equation
+abstract type MFIE{k} <: PowerLaw{-3, -3} end # (ikr - 1) * exp(ikr) / 4pi r^3
+function (::FirstIntegral{MFIE{k}, n})(x) where {k,n}
+    ikx = im * k * x
+    return exp(ikx) * (im * k * exprel(n - 1, -ikx)/((n - 1)*x) - exprel(n - 2, -ikx)/((n-2)*(x^2)) / (4*pi*x)
+end
+```
+
