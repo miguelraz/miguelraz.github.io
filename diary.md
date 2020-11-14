@@ -5,6 +5,79 @@
 
 # Virtual diary for progress on all fronts
 
+### 13/11/2020
+
+18. Counting neighbours / minesweeping? Ran into this problem on the [Exercsim](https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac) earlier today:
+
+```julia
+sum(arr[i][j] .== "*") #where j = 1:3
+```
+is a no-no. First, we have to remember to compare `Char`s to `Char`s, since
+```julia
+"*" == '*' # false
+'*' == '*' # true
+```
+A correct approach looks like:
+```julia
+sum(arr[i][j] == '*' for j in idxs)
+```
+by use of some spiffy generator syntax.
+
+19. Maybe time for someone to write a fast `neighbours(arr, i, j)` function in a package and PR it to LinAlg? Credit to Sascha Mann. Use views to make it fast.
+Kick it up a notch: make it N-Dimensional, and performant!
+
+20. You can't do `a = "abc"; a[2] = '3';`, or `'3' != Char(3)`, because STRINGS ARE IMMUTABLE!
+
+21. [`Vyu`](https://exercism.io/tracks/julia/exercises/minesweeper/solutions/2c776b090173426eb160cea17a85e536#solution-comment-170293) has an amazing solution for summing up neighbours in a Matrix:
+```julia
+function sumAdjacent(array, xy::CartesianIndex{2})
+    x, y = xy.I
+    lenX, lenY = size(array)
+    v = view(
+        array,
+        max(1, x - 1):min(lenX, x + 1),
+        max(1 ,y - 1):min(lenY, y + 1)
+    )
+    sum(v)
+end
+```
+22. [bovine3dom]() has a solution for a hypercube minefield:
+```julia
+# This function works for hypercube minefields too, which is pretty cool.
+# If you decide to construct your own hypercube minefield, bear in mind that
+# the curse of dimensionality means that mines become useless as the number of
+# dimensions increases to even moderate numbers.
+#
+# (A more useful metric for 'danger from mines' is the percentage of neighbouring
+# cells which contain mines).
+function flag_mines(matrix::Array)
+    flagged = zeros(Int,size(matrix))
+    @inbounds for inds in Tuple.(CartesianIndices(matrix))
+        flagged[inds...] = matrix[inds...] == 1 ? -1 : sum(window(matrix,inds,ones(Int,length(size(matrix)))))
+    end
+    flagged
+end
+```
+23. The cleanest minefield answer might be `OTDE`...
+```julia
+annotate(minefield) = [
+    replace(    
+        join(
+            w[c] == '*' ? '*' :
+            count(get(get(minefield, y, ""), x, "") == '*'
+            for x in (c - 1):(c + 1)
+                for y in (r - 1):(r + 1)
+                    if x != c || y != r)
+        for c in 1:length(w)),
+    '0' => ' ')
+    for (r, w) in enumerate(minefield)
+]
+```
+Lessons:
+- a nested generator can be quite powerful
+- don't be afraind to use dictionary combos with `for (r, w) in enumerate(xs)`
+- This looks intimidating as hell. I don't think I could recode this in a few months.
+
 ### 12/11/2020
 
 17. Invaluable git trick: if you committed some changes locally, but someone else pushed to master, use the [auto-rebase autostash trick](https://cscheng.info/2017/01/26/git-tip-autostash-with-git-pull-rebase.html):
