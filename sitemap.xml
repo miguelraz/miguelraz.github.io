@@ -32,6 +32,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>miguelraz.github.io/blog/numericalrelativity/index.html</loc>
+    <lastmod>2020-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>miguelraz.github.io/pubs/index.html</loc>
     <lastmod>2020-11-14</lastmod>
     <changefreq>monthly</changefreq>
