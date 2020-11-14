@@ -5,6 +5,13 @@
 
 # Virtual diary for progress on all fronts
 
+### 14/11/2020
+
+25. Found an absolutely amazing post about learning Z3 as if it were [Lisp syntactically](https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html).
+Should definitely look into this further. I think some Z3 and TLA+ are more than enough formal methods for a while...
+There's even an online [editor that seems useful for prototyping](https://rise4fun.com/Z3/7VZh)
+
+
 ### 13/11/2020
 
 18. Counting neighbours / minesweeping? Ran into this problem on the [Exercsim](https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac) earlier today:
@@ -77,6 +84,18 @@ Lessons:
 - a nested generator can be quite powerful
 - don't be afraind to use dictionary combos with `for (r, w) in enumerate(xs)`
 - This looks intimidating as hell. I don't think I could recode this in a few months.
+
+24. DID NOT KNOW you could iterate a dictionary if you didn't care about order:
+```julia
+samples = Dict(
+	"I" => 1,
+	"II" => 2,
+	"V" => 5,
+	)
+for sample in samples
+	@test to_roman(sample[1]) == sample[2]
+end
+```
 
 ### 12/11/2020
 
