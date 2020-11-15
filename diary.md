@@ -5,6 +5,18 @@
 
 # Virtual diary for progress on all fronts
 
+### 15/11/2020
+
+26. Al final empecé el manual en español. Parece que `Laura Ventosa` va a ser buena mancuerna para este proyecto. Qué chido. La [traduccion del manual esta en este link](https://github.com/miguelraz/julia-es-manual).
+```bash
+wc src/index.mc src/manual/getting-started.md src/manual/variables.md
+  109   986  7546 src/index.md
+  100   731  5084 src/manual/getting-started.md
+  138   932  6102 src/manual/variables.md
+  347  2649 18732 total
+```
+CONTEO: 2640
+
 ### 14/11/2020
 
 25. Found an absolutely amazing post about learning Z3 as if it were [Lisp syntactically](https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html).
