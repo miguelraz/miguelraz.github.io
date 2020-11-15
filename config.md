@@ -7,9 +7,18 @@ The website_* must be defined for the RSS to work
 @def website_descr = "Website for Miguel Raz Guzman Macedo"
 @def website_url   = "miguelraz.github.io"
 
-@def author = "Miguel Raz"
+@def author = "Miguel Raz Guzmán Macedo"
 
 @def mintoclevel = 2
+@def rss = ""
+@def rss_description = "A blog about Julia and numerical relativity."
+@def rss_title = "PathToPerformance"
+@def rss_author = "Miguel Raz Guzmán Macedo"
+@def rss_category = ""
+@def rss_comments = ""
+@def rss_enclosure = ""
+@def rss_pubdate = ""
+
 
 <!--
 Add here files or directories that should be ignored by Franklin, otherwise
