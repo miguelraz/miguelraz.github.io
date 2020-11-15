@@ -9,6 +9,7 @@ The website_* must be defined for the RSS to work
 
 @def author = "Miguel Raz Guzmán Macedo"
 
+<!--
 @def mintoclevel = 2
 @def rss = ""
 @def rss_description = "A blog about Julia and numerical relativity."
@@ -18,7 +19,7 @@ The website_* must be defined for the RSS to work
 @def rss_comments = ""
 @def rss_enclosure = ""
 @def rss_pubdate = ""
-
+-->
 
 <!--
 Add here files or directories that should be ignored by Franklin, otherwise
