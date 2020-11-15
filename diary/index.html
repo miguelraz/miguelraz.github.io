@@ -1,0 +1,337 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=14112020 ><a href="#14112020">14/11/2020</a></h3> <ol start=25 > <li><p>Found an absolutely amazing post about learning Z3 as if it were <a href="https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html">Lisp syntactically</a>.</p> </ol> <p>Should definitely look into this further. I think some Z3 and TLA&#43; are more than enough formal methods for a while... There&#39;s even an online <a href="https://rise4fun.com/Z3/7VZh">editor that seems useful for prototyping</a></p> <h3 id=13112020 ><a href="#13112020">13/11/2020</a></h3> <ol start=18 > <li><p>Counting neighbours / minesweeping? Ran into this problem on the <a href="https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac">Exercsim</a> earlier today:</p> </ol> <pre><code class="julia hljs">sum(arr[i][j] .== <span class=hljs-string >&quot;*&quot;</span>) <span class=hljs-comment >#where j = 1:3</span></code></pre>
+<p>is a no-no. First, we have to remember to compare <code>Char</code>s to <code>Char</code>s, since</p>
+<pre><code class="julia hljs"><span class=hljs-string >&quot;*&quot;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># false</span>
+<span class=hljs-string >&#x27;*&#x27;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># true</span></code></pre>
+<p>A correct approach looks like:</p>
+<pre><code class="julia hljs">sum(arr[i][j] == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-keyword >for</span> j <span class=hljs-keyword >in</span> idxs)</code></pre>
+<p>by use of some spiffy generator syntax.</p>
+<ol start=19 >
+<li><p>Maybe time for someone to write a fast <code>neighbours&#40;arr, i, j&#41;</code> function in a package and PR it to LinAlg? Credit to Sascha Mann. Use views to make it fast.</p>
+
+</ol>
+<p>Kick it up a notch: make it N-Dimensional, and performant&#33;</p>
+<ol start=20 >
+<li><p>You can&#39;t do <code>a &#61; &quot;abc&quot;; a&#91;2&#93; &#61; &#39;3&#39;;</code>, or <code>&#39;3&#39; &#33;&#61; Char&#40;3&#41;</code>, because STRINGS ARE IMMUTABLE&#33;</p>
+
+<li><p><a href="https://exercism.io/tracks/julia/exercises/minesweeper/solutions/2c776b090173426eb160cea17a85e536#solution-comment-170293"><code>Vyu</code></a> has an amazing solution for summing up neighbours in a Matrix:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> sumAdjacent(array, xy::<span class=hljs-built_in >CartesianIndex</span>{<span class=hljs-number >2</span>})
+    x, y = xy.<span class=hljs-literal >I</span>
+    lenX, lenY = size(array)
+    v = view(
+        array,
+        max(<span class=hljs-number >1</span>, x - <span class=hljs-number >1</span>):min(lenX, x + <span class=hljs-number >1</span>),
+        max(<span class=hljs-number >1</span> ,y - <span class=hljs-number >1</span>):min(lenY, y + <span class=hljs-number >1</span>)
+    )
+    sum(v)
+<span class=hljs-keyword >end</span></code></pre>
+<ol start=22 >
+<li><p><a href="">bovine3dom</a> has a solution for a hypercube minefield:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-comment ># This function works for hypercube minefields too, which is pretty cool.</span>
+<span class=hljs-comment ># If you decide to construct your own hypercube minefield, bear in mind that</span>
+<span class=hljs-comment ># the curse of dimensionality means that mines become useless as the number of</span>
+<span class=hljs-comment ># dimensions increases to even moderate numbers.</span>
+<span class=hljs-comment >#</span>
+<span class=hljs-comment ># (A more useful metric for &#x27;danger from mines&#x27; is the percentage of neighbouring</span>
+<span class=hljs-comment ># cells which contain mines).</span>
+<span class=hljs-keyword >function</span> flag_mines(matrix::<span class=hljs-built_in >Array</span>)
+    flagged = zeros(<span class=hljs-built_in >Int</span>,size(matrix))
+    <span class=hljs-meta >@inbounds</span> <span class=hljs-keyword >for</span> inds <span class=hljs-keyword >in</span> <span class=hljs-built_in >Tuple</span>.(CartesianIndices(matrix))
+        flagged[inds...] = matrix[inds...] == <span class=hljs-number >1</span> ? -<span class=hljs-number >1</span> : sum(window(matrix,inds,ones(<span class=hljs-built_in >Int</span>,length(size(matrix)))))
+    <span class=hljs-keyword >end</span>
+    flagged
+<span class=hljs-keyword >end</span></code></pre>
+<ol start=23 >
+<li><p>The cleanest minefield answer might be <code>OTDE</code>...</p>
+
+</ol>
+<pre><code class="julia hljs">annotate(minefield) = [
+    replace(    
+        join(
+            w[c] == <span class=hljs-string >&#x27;*&#x27;</span> ? <span class=hljs-string >&#x27;*&#x27;</span> :
+            count(get(get(minefield, y, <span class=hljs-string >&quot;&quot;</span>), x, <span class=hljs-string >&quot;&quot;</span>) == <span class=hljs-string >&#x27;*&#x27;</span>
+            <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> (c - <span class=hljs-number >1</span>):(c + <span class=hljs-number >1</span>)
+                <span class=hljs-keyword >for</span> y <span class=hljs-keyword >in</span> (r - <span class=hljs-number >1</span>):(r + <span class=hljs-number >1</span>)
+                    <span class=hljs-keyword >if</span> x != c || y != r)
+        <span class=hljs-keyword >for</span> c <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:length(w)),
+    <span class=hljs-string >&#x27;0&#x27;</span> =&gt; <span class=hljs-string >&#x27; &#x27;</span>)
+    <span class=hljs-keyword >for</span> (r, w) <span class=hljs-keyword >in</span> enumerate(minefield)
+]</code></pre>
+<p>Lessons:</p>
+<ul>
+<li><p>a nested generator can be quite powerful</p>
+
+<li><p>don&#39;t be afraind to use dictionary combos with <code>for &#40;r, w&#41; in enumerate&#40;xs&#41;</code></p>
+
+<li><p>This looks intimidating as hell. I don&#39;t think I could recode this in a few months.</p>
+
+</ul>
+<ol start=24 >
+<li><p>DID NOT KNOW you could iterate a dictionary if you didn&#39;t care about order:</p>
+
+</ol>
+<pre><code class="julia hljs">samples = <span class=hljs-built_in >Dict</span>(
+	<span class=hljs-string >&quot;I&quot;</span> =&gt; <span class=hljs-number >1</span>,
+	<span class=hljs-string >&quot;II&quot;</span> =&gt; <span class=hljs-number >2</span>,
+	<span class=hljs-string >&quot;V&quot;</span> =&gt; <span class=hljs-number >5</span>,
+	)
+<span class=hljs-keyword >for</span> sample <span class=hljs-keyword >in</span> samples
+	<span class=hljs-meta >@test</span> to_roman(sample[<span class=hljs-number >1</span>]) == sample[<span class=hljs-number >2</span>]
+<span class=hljs-keyword >end</span></code></pre>
+<h3 id=12112020 ><a href="#12112020">12/11/2020</a></h3>
+<ol start=17 >
+<li><p>Invaluable git trick: if you committed some changes locally, but someone else pushed to master, use the <a href="https://cscheng.info/2017/01/26/git-tip-autostash-with-git-pull-rebase.html">auto-rebase autostash trick</a>:</p>
+
+</ol>
+<pre><code class="julia hljs">git config --<span class=hljs-keyword >global</span> pull.rebase <span class=hljs-literal >true</span>
+git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span class=hljs-literal >true</span></code></pre>
+<p>so that you don&#39;t need to do <code>git pull --rebase --autostash</code> and can just <code>git pull</code>.</p>
+<h3 id=08112020 ><a href="#08112020">08/11/2020</a></h3>
+<ol start=10 >
+<li><p>Try and order starter kit / computer parts from newegg.com</p>
+
+<li><p>Before you spend a day trying to scrape / download files, make sure the author did not already kindly include a zipped version of the files :clown_face:</p>
+
+<li><p>I think I found a possible thesis project - SymbolicUtils.jl as a backend for SymbolicTensors.jl. I should message the author and set something up.</p>
+
+<li><p>Ran into rulebasedintegration.org. Downloaded the Mathematica notebooks, found a way to parse and dump them into text with PDFIO.jl.</p>
+
+<li><p>Remembered how to setup an <code>artifact</code> with ArtifactUtils.jl. That thing is useful.</p>
+
+<li><p>Found a killer command from SOverflow on how to recursively copy all files in a tree of folders that match an extension into a target directory:</p>
+
+</ol>
+<ul>
+<li><p>whelp I think I lost it. Will fish it back but it was an easy google.</p>
+
+</ul>
+<ol start=16 >
+<li><p>Polytomous recommended <a href=www.taguette.org >&quot;Taguette&quot;</a> for highlighting documents and its open source. Super cool&#33; Should send to Ponzi.</p>
+
+</ol>
+<h3 id=06112020 ><a href="#06112020">06/11/2020</a></h3>
+<ol start=9 >
+<li><p>If you want to make your startup super fast, use <code>PackageCompiler.jl</code>:</p>
+
+</ol>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> PackageCompiler
+</span><span class=hljs-meta >julia&gt;</span><span class=julia > create_sysimage([:Revise, :OhMyREPL, :BenchmarkTools], replace_default = <span class=hljs-literal >true</span>)</span></code></pre>
+<p>Super charge that combo with the <code>~/.julia/config/startup.jl</code>:</p>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >try</span>
+           <span class=hljs-keyword >using</span> Revise
+       <span class=hljs-keyword >catch</span> <span class=hljs-literal >e</span>
+</span>	   @warn(e)	
+       end</code></pre>
+<h3 id=04112020 ><a href="#04112020">04/11/2020</a></h3>
+<ol start=7 >
+<li><p>Trump is likely gonna lose the election - crazy times. Been working a bit on scaffolding for LightGraphsIO.jl. Solid integration with Parsers.jl will mean a lot of speed coming up for the LightGraphs.jl ecosystem.</p>
+
+<li><p>In order to not get punked by the output of </p>
+
+</ol>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > print.(sq(i) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
+</span>14916253649648110010-element Vector{Nothing}:
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing
+nothing</code></pre>
+<p><code>@pabloferz</code> suggested the <code>foreach</code>, which returns a <code>nothing</code>, and thus doesn&#39;t print.</p>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > foreach(x -&gt; println(x^<span class=hljs-number >2</span>), <span class=hljs-number >1</span>:<span class=hljs-number >3</span>:<span class=hljs-number >7</span>)
+</span>1
+9
+49</code></pre>
+<h3 id=31102020 ><a href="#31102020">31/10/2020</a></h3>
+<ol start=6 >
+<li><p>Today I finally got around to rewriting <code>GraphsIO.jl</code>. It suffered from a few ailments:</p>
+
+</ol>
+<ul>
+<li><p>Very, very wonky pythonic dispatch</p>
+
+<li><p>Small performance hits when writing &#40;ie, not using <code>io &#61; IOBuffer&#40;&#41;</code>, <code>write&#40;io, s1, s2&#41;</code> instead of the allocating <code>write&#40;io, &quot;&#36;s1&#36;s2&quot;&#41;</code>, etc.</p>
+
+<li><p>Very awkward test scaffolding. Figuring out which functions are being called is just not fun.</p>
+
+<li><p>Bulky directory structure. I&#39;ll just monorepo it for now and see what sticks.</p>
+
+<li><p>Poor documentation.</p>
+
+</ul>
+<p>I adopted the <code>Blue Style</code> guidelines because they came in with PkgTemplates.jl and screw it, why not try and follow them. Here&#39;s what I got done today:</p>
+<ul>
+<li><p>Testing scaffolding mostly setup. &#40;Files, how to run the tests, etc.&#41;</p>
+
+<li><p>Writing graphs in DOT, and I think 3 other formats.</p>
+
+<li><p>Minor performance improvements.</p>
+
+</ul>
+<p>Tomorrow I should start something fun with the Parsers.jl library for maximum speedups. Wish me luck&#33;</p>
+<h3 id=29102020 ><a href="#29102020">29/10/2020</a></h3>
+<ol>
+<li><p>Closures&#33; Defining a function within a function is a type of closure. They take variables from one scope above them. <code>@masonprotter</code> and <code>@fredrikekre</code> helped me figure out why having this is desirable:</p>
+
+</ol>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> f(x, y, z)
+           data = compute(x, y, z)
+</span>
+           g() = data^2 # closure over data    
+           g() # call g here maybe?    
+           # ...    
+           g() # maybe again here?
+end</code></pre>
+<p>Mason says:&quot;Almost all usages of closures can be replaced with &#39;top level&#39; functions that take extra arguments &#40;one for each captured field&#41;, but it&#39;s syntactically less pleasing and can end up causing you to have a bunch of function names in your namespace you don&#39;t want.&quot; Of course <a href="https://discourse.julialang.org/t/closures-section-in-documentation-is-not-clear-enough/18717/13">there&#39;s a Discourse post on it</a>.</p>
+<ol start=2 >
+<li><p>Wow&#33; <a href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping">Function composition and piping</a> lets you do some amazing stuff with <code>\circ&lt;TAB&gt;</code> and friends&#33;</p>
+
+</ol>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ +)(<span class=hljs-number >3</span>, <span class=hljs-number >6</span>)
+</span>3.0
+<span class=hljs-meta >julia&gt;</span><span class=julia > map(first ∘ reverse ∘ uppercase, split(<span class=hljs-string >&quot;you can compose functions like this&quot;</span>)
+</span>6-element Array{Char,1}:
+ &#x27;U&#x27;: ASCII/Unicode U+0055 (category Lu: Letter, uppercase)
+ &#x27;N&#x27;: ASCII/Unicode U+004E (category Lu: Letter, uppercase)
+ &#x27;E&#x27;: ASCII/Unicode U+0045 (category Lu: Letter, uppercase)
+...
+<span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-number >1</span>:<span class=hljs-number >10</span> |&gt; sum |&gt; sqrt
+</span>7.416...
+<span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ sum)(<span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
+</span>7.41...
+<span class=hljs-meta >julia&gt;</span><span class=julia > [ <span class=hljs-string >&quot;a&quot;</span>, <span class=hljs-string >&quot;list&quot;</span>, <span class=hljs-string >&quot;of&quot;</span>, <span class=hljs-string >&quot;strings&quot;</span>] .|&gt; [uppercase, reverse, titlecase, length]
+</span>4-element Array{Any,1}:
+  &quot;A&quot;
+  &quot;tsil&quot;
+  &quot;Of&quot;
+ 7
+<span class=hljs-meta >julia&gt;</span><span class=julia > (^<span class=hljs-number >2</span>, sqrt, inv).([<span class=hljs-number >2</span>,<span class=hljs-number >4</span>,<span class=hljs-number >4</span>])
+</span>[4,2, .25]</code></pre>
+<ol start=3 >
+<li><p>Rust allows for defining anonymous functions&#33;</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(n: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >String</span> {
+	<span class=hljs-keyword >let</span> is_factor = |f| x % f == <span class=hljs-number >0</span>;
+	...
+}</code></pre>
+<ol start=4 >
+<li><p>Rust match is very powerful... try and setup the anonymous functions in a tuple after the <code>match</code> and then filter by <code>&#40;each, available, case&#41; &#61;&gt; action</code>.</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(num: <span class=hljs-built_in >i64</span>) -&gt; <span class=hljs-built_in >String</span> {
+    <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut</span> raindrop = <span class=hljs-built_in >String</span>::new();
+
+    <span class=hljs-keyword >match</span> (num % <span class=hljs-number >3</span>, num % <span class=hljs-number >5</span>, num % <span class=hljs-number >7</span>) {
+        (<span class=hljs-number >0</span>, <span class=hljs-number >0</span>, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlangPlong&quot;</span>),
+        (<span class=hljs-number >0</span>, <span class=hljs-number >0</span>, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlang&quot;</span>),
+        (<span class=hljs-number >0</span>, _, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlong&quot;</span>),
+        (_, <span class=hljs-number >0</span>, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlangPlong&quot;</span>),
+        (<span class=hljs-number >0</span>, _, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Pling&quot;</span>),
+        (_, <span class=hljs-number >0</span>, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Plang&quot;</span>),
+        (_, _, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Plong&quot;</span>),
+        (_, _, _) =&gt; raindrop = num.to_string()
+    }
+
+    <span class=hljs-keyword >return</span> raindrop
+}</code></pre>
+<ol start=5 >
+<li><p>This was a good use of match</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >square</span></span>(s: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >u64</span> {
+    <span class=hljs-keyword >match</span> s {
+        <span class=hljs-number >1</span>...<span class=hljs-number >64</span> =&gt; <span class=hljs-number >1u64</span>.wrapping_shl(s-<span class=hljs-number >1</span>),
+<span class=hljs-comment >// This also works</span>
+<span class=hljs-comment >//      1u64 &lt;&lt; (s - 1)</span>
+        _ =&gt; <span class=hljs-built_in >panic!</span>(<span class=hljs-string >&quot;Square must be between 1 and 64&quot;</span>),
+    }
+}
+
+<span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >total</span></span>() -&gt; <span class=hljs-built_in >u64</span> {
+    (<span class=hljs-number >1</span>..<span class=hljs-number >65</span>).map(square).sum()
+<span class=hljs-comment >// Lol thanks philip98</span>
+<span class=hljs-comment >// u64::max_value</span>
+}</code></pre>
+<p>Credit to Wow-BOB-Wow.</p>
+<h3 id=27102020 ><a href="#27102020">27/10/2020</a></h3>
+<p>Today I got my website setup&#33;</p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Miguel Raz Guzmán Macedo. Last modified: November 15, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    
+    
+        
+
+
+	
+
+<script>
+(function(){
+
+	// Get the elements.
+	// - the 'pre' element.
+	// - the 'div' with the 'paste-content' id.
+
+	var pre = document.getElementsByTagName('pre');
+
+	// Add a copy button in the 'pre' element.
+	// which only has the className of 'language-'.
+
+	for (var i = 0; i < pre.length; i++) {
+		var isLanguage = pre[i].children[0].className.indexOf('language-');
+
+		if ( isLanguage === 0 ) {
+			var button           = document.createElement('button');
+					button.className = 'copy-button';
+					button.textContent = 'Copy';
+
+					pre[i].appendChild(button);
+		}
+	};
+
+	// Run Clipboard
+
+	var copyCode = new Clipboard('.copy-button', {
+		target: function(trigger) {
+			return trigger.previousElementSibling;
+    }
+	});
+
+	// On success:
+	// - Change the "Copy" text to "Copied".
+	// - Swap it to "Copy" in 2s.
+	// - Lead user to the "contenteditable" area with Velocity scroll.
+
+	copyCode.on('success', function(event) {
+		event.clearSelection();
+		event.trigger.textContent = 'Copied';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 2000);
+
+	});
+
+	// On error (Safari):
+	// - Change the  "Press Ctrl+C to copy"
+	// - Swap it to "Copy" in 2s.
+
+	copyCode.on('error', function(event) {
+		event.trigger.textContent = 'Press "Ctrl + C" to copy';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 5000);
+	});
+
+})();
+</script>
