@@ -23,6 +23,10 @@ CONTEO: 2640
 - [ ] Investigate why it was not 4x as fast with Float32s as with Float64s.
 - [ ] Check for other applications [in this cool presentaiton](https://sites.middlebury.edu/dunham/files/2017/07/MC2-004-Signal-Processing-in-a-Physics-Experiment-2017-July-11-FINAL.pdf)
 
+29. Started on Pochoir.jl. Godspeed.
+
+30. Oh god. SymbolicUtils.jl can revive IntegralTransforms.jl.
+
 ### 14/11/2020
 
 25. Found an absolutely amazing post about learning Z3 as if it were [Lisp syntactically](https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html).
