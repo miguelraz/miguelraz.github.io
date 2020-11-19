@@ -5,6 +5,7 @@
 **** TODO [#A] Pochoir [link](http://supertech.csail.mit.edu/papers/pochoir_spaa11.pdf)
 ***** TODO https://people.csail.mit.edu/yuantang/pochoir.html
 **** TODO DiffEq/SciML
+***** TODO Auto Optimization and Parallelism in DiffEq.jl https://live.juliacon.org/talk/B3VAGU
 **** TODO MPI.jl https://github.com/JuliaParallel/MPI.jl/issues
 ***** TODO Non-blocking collective comms https://github.com/JuliaParallel/MPI.jl/issues/424
 ***** Useful links
@@ -12,6 +13,7 @@
 ****** https://github.com/kdheepak/juliacon2019-why-writing-c-interfaces-in-julia-is-so-easy-asterisk
 **** TODO [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
 **** TODO OrthogonalPolynomials.jl
+**** TODO AnalyticDiffeq.jl + SymbolicUtils.jl combo!/
 **** TODO BlockBandedMatrics.jl
 ***** TODO BlockArrays
 **** TODO FatTrees.jl https://htor.inf.ethz.ch/publications/img/prisacari-ics13-optimal_alltoall_fat-tree.pdf
@@ -43,17 +45,41 @@
 **** TODO ChainRules.jl [link](https://juliahub.com/ui/Packages/ChainRules/AzGmQ/0.7.24)
 ***** TODO
 **** TODO Fourier Neural Operator https://github.com/zongyi-li/fourier_neural_operator
+***** https://zongyi-li.github.io/blog/2020/fourier-pde/
+**** TODO Oceananigans.jl github issue
 ** TODO NumericalRelativity.jl
 *** GWOSC
-****
+**** https://www.gw-openscience.org/tutorials/
+***** GWaves.jl
+***** CBC.jl https://github.com/gwastro/pycbc
+***** CoherentWaveBurst.jl
+***** LALSuite.jl
+***** BayesWave.jl
+***** ...
+***** https://github.com/losc-tutorial/quickview
 *** SymbolicTensors.jl
-***
+**** Book by Cornell http://ruina.tam.cornell.edu/Courses/ME6700/references/block_tensor_analysis.pdf
+**** Pavel Grinfeld courses
+*** Alcubierre papers
+**** https://www.on.kitp.ucsb.edu/online/numrel00/alcubierre/
+**** 3d grazing collisin of two black holes https://arxiv.org/abs/gr-qc/0012079
+**** Gravitational Collapse of Gravitational Waves in 3D numerical Relativity
+**** general relativistic axisymmetric rotating systems coord and equations - https://www.researchgate.net/publication/26477406_Regularizacion_de_codigos_en_simetria_esferica_y_axial_en_relatividad_numerica
+**** Einstein maxwell 3+1 for multiple charged black holes
+**** https://www.researchgate.net/publication/45860897_The_Einstein-Maxwell_system_in_31_form_and_initial_data_for_multiple_charged_black_holes
+**** APPLES TO APPLES https://arxiv.org/pdf/gr-qc/0305023.pdf
+**** Formulations of the 3+1 in curvilinear coords https://www.researchgate.net/publication/47451846_Formulations_of_the_31_evolution_equations_in_curvilinear_coordinates
+** TODO SurfinBH.jl + Surrogates.jl
+*** https://github.com/vijayvarma392/surfinBH
+*** GWSurrogate https://github.com/sxs-collaboration/gwsurrogate#current-models
 ** JuliaLang BASE
 *** Sparse Arrays tests
 ***
 ** ** Courses
 *** SciML [link](https://sciml.ai/documentation/)
 **** DiffEqOperators [link](https://github.com/SciML/DiffEqOperators.jl)
+*** Shen Long UCI courses
+*** Lorena Barba CFD Courses
 *** Vector Linear Algebra Stanford [link](https://github.com/vbartle/VMLS-Companions/tree/master/VMLS%20Julia%20Companion)
 **** [book](http://vmls-book.stanford.edu/)
 *** Trefethen and Bau - Approximation theory and practice
@@ -78,10 +104,16 @@
 *** Partial SGJ Course
 *** Olver Course mathematical physics
 ***
+*** Jack Dongarra Netlib / Linpack course http://www.netlib.org/utk/people/JackDongarra/WEB-PAGES/SPRING-2020/cs594-2020.html
+***
+*** Signals and Systems Alan V. Oppenheim https://ocw.mit.edu/resources/res-6-007-signals-and-systems-spring-2011/
+** SICM
+** SICP
+** DIff Geo
 ** Books ... ?
 *** FNC Toby Driscoll [link](https://github.com/fncbook/fnc)
 *** Neural Nets Michael Nielsen [link](http://neuralnetworksanddeeplearning.com/chap1.html)
-*** TLA+!
+**** TLA+!
 
 ** Translations / Diversity
 
@@ -126,3 +158,29 @@ Lean
 * Lean
 ** https://leanprover-community.github.io//img/lean-tactics.pdf
 ** https://www.youtube.com/watch?v=EnZvGCU_jpc&list=PLlF-CfQhukNlxexiNJErGJd2dte_J1t1N&index=14
+* TLA
+- Real world bug [link](https://probablydance.com/2020/10/31/using-tla-in-the-real-world-to-understand-a-glibc-bug/)
+- EECS 356 course [link](http://users.ece.northwestern.edu/~haizhou/356/)
+
+- CSE 128 http://cseweb.ucsd.edu/classes/sp05/cse128/
+- LICS web tutor https://www.cs.bham.ac.uk/research/projects/lics/tutor/
+- CS410 Andre Tolmach https://web.cecs.pdx.edu/~apt/cs510spec/
+- NZ course https://ecs.wgtn.ac.nz/Courses/SWEN421_2020T1/Assignments
+  + https://ecs.wgtn.ac.nz/Courses/SWEN421_2020T1/LectureSchedule
+**
+* Git resources
+** https://codewords.recurse.com/issues/two/git-from-the-inside-out
+* IFC
+** https://github.com/goropikari/DiracNotation.jl
+** https://arxiv.org/pdf/1212.5214.pdf
+** J S Bell On the Foundations of QM
+* MECHANICS
+** Goldstein Classical Mechanics
+** Symmetry Methods for differential equations
+** Jose and Saletan Classical
+* TENSORS
+** Pavel Grinfeld book [0/1]
+*** TODO Chapter 2
+** Invitation to Graphical Tensor notation https://arxiv.org/pdf/1911.00892.pdf
+*** file:///home/mrg/Downloads/An_Invitation_to_Graphical_Tensor_Methods.pdf
+** Marsden Tensors
