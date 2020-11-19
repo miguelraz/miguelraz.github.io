@@ -1,0 +1,128 @@
+#+TITLE: Projects
+* JuliaLang
+** My Projects
+*** Repos
+**** TODO [#A] Pochoir [link](http://supertech.csail.mit.edu/papers/pochoir_spaa11.pdf)
+***** TODO https://people.csail.mit.edu/yuantang/pochoir.html
+**** TODO DiffEq/SciML
+**** TODO MPI.jl https://github.com/JuliaParallel/MPI.jl/issues
+***** TODO Non-blocking collective comms https://github.com/JuliaParallel/MPI.jl/issues/424
+***** Useful links
+****** https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#C-Wrapper-Examples
+****** https://github.com/kdheepak/juliacon2019-why-writing-c-interfaces-in-julia-is-so-easy-asterisk
+**** TODO [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
+**** TODO OrthogonalPolynomials.jl
+**** TODO BlockBandedMatrics.jl
+***** TODO BlockArrays
+**** TODO FatTrees.jl https://htor.inf.ethz.ch/publications/img/prisacari-ics13-optimal_alltoall_fat-tree.pdf
+***** TODO http://courses.csail.mit.edu/6.896/spring04/handouts/papers/fat_trees.pdf
+**** TODO LinearMaps
+**** TODO ApproxFun
+**** TODO MapReduce.jl
+***** TODO TLA spec
+**** TODO Tullio
+**** TODO VectorizedLoops / elrod
+**** TODO ThreadsX / tkf
+**** TODO StagedFilters
+***** gpu
+***** derivative
+***** multithreaded
+**** TODO DiscreteGalerkin.jl [link](https://github.com/ABAtanasov/GalerkinSparseGrids.jl/issues)
+**** TODO DiffEq
+***** Abandoned solvers
+**** TODO LightGraphsIO
+***** Useful links
+****** Error code https://github.com/JuliaData/Parsers.jl/blob/589b9d0f80998ec284874b300da0932557d33513/src/Parsers.jl#L133
+****** CSV.jl parallel https://github.com/JuliaData/Parsers.jl/blob/589b9d0f80998ec284874b300da0932557d33513/src/Parsers.jl#L133
+****** https://github.com/JuliaData/CSV.jl/blob/68d715360fc8e534f132d28f15ca8c79841d4874/src/file.jl#L276
+**** TODO IntegralTransforms
+**** TODO Interval Arithmetic
+***** Charibde Benchmarking
+**** TODO TLA.jl + test case generation
+**** TODO DoctorDocStrings.jl
+**** TODO ChainRules.jl [link](https://juliahub.com/ui/Packages/ChainRules/AzGmQ/0.7.24)
+***** TODO
+**** TODO Fourier Neural Operator https://github.com/zongyi-li/fourier_neural_operator
+** TODO NumericalRelativity.jl
+*** GWOSC
+****
+*** SymbolicTensors.jl
+***
+** JuliaLang BASE
+*** Sparse Arrays tests
+***
+** ** Courses
+*** SciML [link](https://sciml.ai/documentation/)
+**** DiffEqOperators [link](https://github.com/SciML/DiffEqOperators.jl)
+*** Vector Linear Algebra Stanford [link](https://github.com/vbartle/VMLS-Companions/tree/master/VMLS%20Julia%20Companion)
+**** [book](http://vmls-book.stanford.edu/)
+*** Trefethen and Bau - Approximation theory and practice
+**** http://www.chebfun.org/ATAP/
+*** Strang
+**** Matrix Methods in Data analysis MIT Signal Processing and Machine Learning [link](https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/related-resources/)
+**** Computational Science and engineering [link](https://ocw.mit.edu/courses/mathematics/18-085-computational-science-and-engineering-i-fall-2008/index.htm)
+**** Linear Algebra [link](https://mitmath.github.io/1806/)
+*** Julia Courses
+*** MATRIX COMPUTATIONS GOLUB AND VAN LOAN [link](https://nhigham.com/2013/05/31/fourth-edition-of-matrix-computations/)
+*** DevilIEEEsh.jl / HPC + Leiserson course?
+**** HOLD Lemire Parsing JSON really quickly [link](https://www.infoq.com/presentations/simdjson-parser/?itm_source=infoq&itm_campaign=user_page&itm_medium=link)
+**** HOLD Parsing Int series
+***** HOLD https://github.com/WojciechMula/parsing-int-series http://0x80.pl/articles/simd-parsing-int-sequences.html
+***** HOLD https://kholdstare.github.io/technical/2020/05/26/faster-integer-parsing.html
+***** HOLD https://rust-malaysia.github.io/code/2020/07/11/faster-integer-parsing.html
+**** TODO Taming branches [link](https://www.infoq.com/articles/making-code-faster-taming-branches/)
+**** WAIT BOOK Performance Analysis and tuning on Modern cpus file:///home/mrg/Downloads/Denis%20Bakhvalov%20-%20Performance%20Analysis%20and%20Tuning%20on%20Modern%20CPUs.pdf
+**** Rust Graphs in Julia + Fortran? [link](https://github.com/parallel-rust-cpp/shortcut-comparison) http://ppc.cs.aalto.fi/ch2/
+**** Performance Engineering of Software Systems https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-172-performance-engineering-of-software-systems-fall-2018/index.htm
+***** Julian Shun - Algorithm engineering https://people.csail.mit.edu/jshun/6886-s20/
+*** Partial SGJ Course
+*** Olver Course mathematical physics
+***
+** Books ... ?
+*** FNC Toby Driscoll [link](https://github.com/fncbook/fnc)
+*** Neural Nets Michael Nielsen [link](http://neuralnetworksanddeeplearning.com/chap1.html)
+*** TLA+!
+
+** Translations / Diversity
+
+*** TODO Manual
+*** TODO Tutorials
+**** DataFrames
+**** LightGraphs
+**** SciML
+*** TODO StartHere.jl
+**** TODO Kaite Hyatt blog post [link](https://kshyatt.github.io/post/firstjuliapr/)
+
+** Other's
+*** Special Functions
+**** TODO exploit new expint(n,z) [link](https://github.com/JuliaMath/SpecialFunctions.jl/issues/244)
+**** TODO AMOS https://github.com/JuliaMath/openspecfun
+**** TODO FADEEVA
+**** TODO erf.jl [link](https://github.com/JuliaMath/SpecialFunctions.jl/pull/94)
+***** TODO  error functions in pure Julia [link](https://github.com/JuliaMath/SpecialFunctions.jl/pull/82)
+**** TODO
+* Leisure
+** Modern fortran
+
+Jesse Perla
+StagedFilters
+	gpu
+	multithreaded
+DiffEq abandoned solvers
+OP.jl
+DiscreteGalerkin.jl
+HPC MIT course
+Contracts.jl
+SIMD.jl
+
+BenfordsLaw.jl
+Fadeeva
+AMOS
+Intervals
+Exercism
+TLA+
+Lean
+** Rust iterators https://github.com/JuliaParallel/MPI.jl/issues
+* Lean
+** https://leanprover-community.github.io//img/lean-tactics.pdf
+** https://www.youtube.com/watch?v=EnZvGCU_jpc&list=PLlF-CfQhukNlxexiNJErGJd2dte_J1t1N&index=14

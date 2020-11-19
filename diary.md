@@ -3,7 +3,7 @@
 
 @def tags = ["diary", "code"]
 
-# Virtual diary for progress on all fronts
+# Virtual diary for progress on all fronts 
 
 ### 15/11/2020
 
