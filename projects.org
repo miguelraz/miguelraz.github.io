@@ -14,6 +14,7 @@
 **** TODO [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
 **** TODO OrthogonalPolynomials.jl
 **** TODO AnalyticDiffeq.jl + SymbolicUtils.jl combo!/
+**** TODO GarbageCollectors.jl
 **** TODO BlockBandedMatrics.jl
 ***** TODO BlockArrays
 **** TODO FatTrees.jl https://htor.inf.ethz.ch/publications/img/prisacari-ics13-optimal_alltoall_fat-tree.pdf
@@ -47,6 +48,8 @@
 **** TODO Fourier Neural Operator https://github.com/zongyi-li/fourier_neural_operator
 ***** https://zongyi-li.github.io/blog/2020/fourier-pde/
 **** TODO Oceananigans.jl github issue
+**** Shazama but for star maps navigation in 1D, 2D, 3D
+**** Coz.jl
 ** TODO NumericalRelativity.jl
 *** GWOSC
 **** https://www.gw-openscience.org/tutorials/
@@ -75,6 +78,7 @@
 ** JuliaLang BASE
 *** Sparse Arrays tests
 ***
+*** Multithreaded shenanigans + atomics with vjtnash?
 ** ** Courses
 *** SciML [link](https://sciml.ai/documentation/)
 **** DiffEqOperators [link](https://github.com/SciML/DiffEqOperators.jl)
@@ -107,6 +111,8 @@
 *** Jack Dongarra Netlib / Linpack course http://www.netlib.org/utk/people/JackDongarra/WEB-PAGES/SPRING-2020/cs594-2020.html
 ***
 *** Signals and Systems Alan V. Oppenheim https://ocw.mit.edu/resources/res-6-007-signals-and-systems-spring-2011/
+*** Lorena Barba CFD in Julia Intro https://github.com/miguelraz/CFDPython
+****
 ** SICM
 ** SICP
 ** DIff Geo
@@ -167,7 +173,7 @@ Lean
 - CS410 Andre Tolmach https://web.cecs.pdx.edu/~apt/cs510spec/
 - NZ course https://ecs.wgtn.ac.nz/Courses/SWEN421_2020T1/Assignments
   + https://ecs.wgtn.ac.nz/Courses/SWEN421_2020T1/LectureSchedule
-**
+** SEMVER in Julia + TLA?
 * Git resources
 ** https://codewords.recurse.com/issues/two/git-from-the-inside-out
 * IFC
@@ -176,10 +182,11 @@ Lean
 ** J S Bell On the Foundations of QM
 * MECHANICS
 ** Goldstein Classical Mechanics
+** Arnold Mathematical Methods of Classical Mechanics
 ** Symmetry Methods for differential equations
 ** Jose and Saletan Classical
 * TENSORS
-** Pavel Grinfeld book [0/1]
+** Pavel Grinfeld book [0/1] https://www.youtube.com/watch?v=TC98KfiGAOk&list=PLlXfTHzgMRULkodlIEqfgTS-H1AY_bNtq&index=15
 *** TODO Chapter 2
 ** Invitation to Graphical Tensor notation https://arxiv.org/pdf/1911.00892.pdf
 *** file:///home/mrg/Downloads/An_Invitation_to_Graphical_Tensor_Methods.pdf
