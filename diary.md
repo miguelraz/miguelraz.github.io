@@ -5,6 +5,19 @@
 
 # Virtual diary for progress on all fronts 
 
+### 19/11/2020
+
+31. Chris de Graaf suggested instead of using `const A = [1]`, try using a `Ref`:
+```julia
+# access a ref with []
+A = Ref(0)
+A[] = 1
+A[] == 1 # true
+```
+Takes a bit more nanoseconds to access than a 1 sized array but is sized `()`.
+
+32. Execution matters more than hoarding ideas. [Decent Talk by John Cormack](https://www.youtube.com/watch?v=dSCBCk4xVa0). Enjoy the insight high, then get down in the mud and try to bust your own idea.
+
 ### 15/11/2020
 
 26. Al final empecé el manual en español. Parece que `Laura Ventosa` va a ser buena mancuerna para este proyecto. Qué chido. La [traduccion del manual esta en este link](https://github.com/miguelraz/julia-es-manual).
