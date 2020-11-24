@@ -3,7 +3,25 @@
 
 @def tags = ["diary", "code"]
 
-# Virtual diary for progress on all fronts 
+# Virtual diary for progress on all fronts
+
+### 21/11/2020
+
+33. Credit to `@Suker`: REPL interactivity can be drastically helped (and enhanced with Revise.jl) if you have the following:
+- working on a script that may have some big g Global parameter everywhere,
+- put those in a function `main()` and put `!isinteractive() && main()` at the end of the file
+
+34. Reading the SciML dev docs:
+- To add a new package to the common interface, define the types
+ ```julia
+abstract type AnalyticAlgorithm <: DiffEqBase.AbstractAnalyticAlgorithm
+ ```
+ - specify type parameters for concrete algos
+ ```julia
+struct analytic{Simple} <: AnalyticAlgorithm{Simple} end
+analytic(; simple = true) = analytic{simple}()
+ ```
+ - overload `__solve` from `DiffEqBase.jl`
 
 ### 19/11/2020
 
@@ -32,7 +50,7 @@ CONTEO: 2640
 
 27. Copy pasting to the system clipboard in Vim is easier with `select the text -> "+y`. Also `t` will go to just before a character `F` will search a char backwards, and `}` will go to the end of a paragraph.
 
-28. It seems the `Savitzky-Golay` filter is very - VERY - interesting for a lot of computing people. Really need to get into parallelizing it and figuring out the GPU part. 
+28. It seems the `Savitzky-Golay` filter is very - VERY - interesting for a lot of computing people. Really need to get into parallelizing it and figuring out the GPU part.
 - [ ] Investigate why it was not 4x as fast with Float32s as with Float64s.
 - [ ] Check for other applications [in this cool presentaiton](https://sites.middlebury.edu/dunham/files/2017/07/MC2-004-Signal-Processing-in-a-Physics-Experiment-2017-July-11-FINAL.pdf)
 
@@ -103,7 +121,7 @@ end
 23. The cleanest minefield answer might be `OTDE`...
 ```julia
 annotate(minefield) = [
-    replace(    
+    replace(
         join(
             w[c] == '*' ? '*' :
             count(get(get(minefield, y, ""), x, "") == '*'
@@ -173,7 +191,7 @@ Super charge that combo with the `~/.julia/config/startup.jl`:
 julia> try
            using Revise
        catch e
-	   @warn(e)	
+	   @warn(e)
        end
 ```
 
@@ -182,7 +200,7 @@ julia> try
 
 7. Trump is likely gonna lose the election - crazy times. Been working a bit on scaffolding for LightGraphsIO.jl. Solid integration with Parsers.jl will mean a lot of speed coming up for the LightGraphs.jl ecosystem.
 
-8. In order to not get punked by the output of 
+8. In order to not get punked by the output of
 
 ```julia-repl
 julia> print.(sq(i) for i in 1:10)
@@ -234,16 +252,16 @@ Tomorrow I should start something fun with the Parsers.jl library for maximum sp
 julia> function f(x, y, z)
            data = compute(x, y, z)
 
-           g() = data^2 # closure over data    
-           g() # call g here maybe?    
-           # ...    
+           g() = data^2 # closure over data
+           g() # call g here maybe?
+           # ...
            g() # maybe again here?
 end
 ```
 
 Mason says:"Almost all usages of closures can be replaced with 'top level' functions that take extra arguments (one for each captured field), but it's syntactically less pleasing and can end up causing you to have a bunch of function names in your namespace you don't want."
 Of course [there's a Discourse post on it](https://discourse.julialang.org/t/closures-section-in-documentation-is-not-clear-enough/18717/13).
- 
+
 2. Wow! [Function composition and piping](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping) lets you do some amazing stuff with `\circ<TAB>` and friends!
 
 ```julia-repl

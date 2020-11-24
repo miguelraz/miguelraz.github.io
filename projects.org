@@ -1,55 +1,72 @@
 #+TITLE: Projects
+* Personal debt PRs
+** https://github.com/JuliaLang/julia/pull/21208
+** https://github.com/JuliaLang/julia/pull/24873
+** https://github.com/JuliaIntervals/IntervalArithmetic.jl/pull/227
+** https://github.com/JuliaCI/BenchmarkTools.jl/pull/150
+** https://github.com/SciML/OrdinaryDiffEq.jl/pull/710
+
+* MIT Courses
+** https://github.com/mitmath/julia-mit
 * JuliaLang
 ** My Projects
 *** Repos
-**** TODO [#A] Pochoir [link](http://supertech.csail.mit.edu/papers/pochoir_spaa11.pdf)
+**** TODO [#B] Pochoir [link](http://supertech.csail.mit.edu/papers/pochoir_spaa11.pdf) :masters:
 ***** TODO https://people.csail.mit.edu/yuantang/pochoir.html
-**** TODO DiffEq/SciML
-***** TODO Auto Optimization and Parallelism in DiffEq.jl https://live.juliacon.org/talk/B3VAGU
-**** TODO MPI.jl https://github.com/JuliaParallel/MPI.jl/issues
+**** TODO [#B] DiffEq/SciML [0/4] :masters:
+***** [ ] Auto Optimization and Parallelism in DiffEq.jl https://live.juliacon.org/talk/B3VAGU
+***** [ ] DiffEqFlux.jl
+***** [ ] NeuralPDE.jl
+***** [ ] 18.337 Parallel computing and scientific ml
+**** [ ] [#B] MPI.jl https://github.com/JuliaParallel/MPI.jl/issues
 ***** TODO Non-blocking collective comms https://github.com/JuliaParallel/MPI.jl/issues/424
 ***** Useful links
 ****** https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#C-Wrapper-Examples
 ****** https://github.com/kdheepak/juliacon2019-why-writing-c-interfaces-in-julia-is-so-easy-asterisk
-**** TODO [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
-**** TODO OrthogonalPolynomials.jl
-**** TODO AnalyticDiffeq.jl + SymbolicUtils.jl combo!/
-**** TODO GarbageCollectors.jl
-**** TODO BlockBandedMatrics.jl
+**** [ ] [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
+**** [ ] OrthogonalPolynomials.jl :publications:
+**** [ ] AnalyticDiffeq.jl + SymbolicUtils.jl combo!/
+**** [ ] GarbageCollectors.jl
+**** [ ] BlockBandedMatrics.jl
 ***** TODO BlockArrays
-**** TODO FatTrees.jl https://htor.inf.ethz.ch/publications/img/prisacari-ics13-optimal_alltoall_fat-tree.pdf
+**** [ ] FatTrees.jl https://htor.inf.ethz.ch/publications/img/prisacari-ics13-optimal_alltoall_fat-tree.pdf
 ***** TODO http://courses.csail.mit.edu/6.896/spring04/handouts/papers/fat_trees.pdf
-**** TODO LinearMaps
-**** TODO ApproxFun
-**** TODO MapReduce.jl
+**** [ ] LinearMaps
+**** [ ] ApproxFun
+**** [ ] MapReduce.jl
 ***** TODO TLA spec
-**** TODO Tullio
-**** TODO VectorizedLoops / elrod
-**** TODO ThreadsX / tkf
-**** TODO StagedFilters
+***** TODO https://blog.gchinis.com/posts/serverless-specification-with-tla/
+**** [ ] Tullio
+**** [ ] VectorizedLoops / elrod
+**** [ ] ThreadsX / tkf
+**** [ ] StagedFilters
 ***** gpu
 ***** derivative
 ***** multithreaded
-**** TODO DiscreteGalerkin.jl [link](https://github.com/ABAtanasov/GalerkinSparseGrids.jl/issues)
-**** TODO DiffEq
+**** [ ] DiscreteGalerkin.jl [link](https://github.com/ABAtanasov/GalerkinSparseGrids.jl/issues)
+**** [ ] DiffEq
 ***** Abandoned solvers
-**** TODO LightGraphsIO
+**** [ ] LightGraphsIO
 ***** Useful links
 ****** Error code https://github.com/JuliaData/Parsers.jl/blob/589b9d0f80998ec284874b300da0932557d33513/src/Parsers.jl#L133
 ****** CSV.jl parallel https://github.com/JuliaData/Parsers.jl/blob/589b9d0f80998ec284874b300da0932557d33513/src/Parsers.jl#L133
 ****** https://github.com/JuliaData/CSV.jl/blob/68d715360fc8e534f132d28f15ca8c79841d4874/src/file.jl#L276
-**** TODO IntegralTransforms
-**** TODO Interval Arithmetic
+**** [ ] IntegralTransforms
+**** [ ] Interval Arithmetic
 ***** Charibde Benchmarking
-**** TODO TLA.jl + test case generation
-**** TODO DoctorDocStrings.jl
-**** TODO ChainRules.jl [link](https://juliahub.com/ui/Packages/ChainRules/AzGmQ/0.7.24)
+**** [ ] TLA.jl + test case generation
+**** [ ] DoctorDocStrings.jl
+**** [ ] ChainRules.jl [link](https://juliahub.com/ui/Packages/ChainRules/AzGmQ/0.7.24)
 ***** TODO
-**** TODO Fourier Neural Operator https://github.com/zongyi-li/fourier_neural_operator
+**** [ ] Fourier Neural Operator https://github.com/zongyi-li/fourier_neural_operator
 ***** https://zongyi-li.github.io/blog/2020/fourier-pde/
-**** TODO Oceananigans.jl github issue
+**** [ ] Oceananigans.jl github issue
 **** Shazama but for star maps navigation in 1D, 2D, 3D
 **** Coz.jl
+**** SALTA.jl, the JuMP of SATs! https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html
+***** https://sahandsaba.com/understanding-sat-by-implementing-a-simple-sat-solver-in-python.html
+***** https://codingnest.com/modern-sat-solvers-fast-neat-underused-part-1-of-n/
+***** https://rise4fun.com/Z3/7VZh
 ** TODO NumericalRelativity.jl
 *** GWOSC
 **** https://www.gw-openscience.org/tutorials/
@@ -96,7 +113,8 @@
 *** MATRIX COMPUTATIONS GOLUB AND VAN LOAN [link](https://nhigham.com/2013/05/31/fourth-edition-of-matrix-computations/)
 *** DevilIEEEsh.jl / HPC + Leiserson course?
 **** HOLD Lemire Parsing JSON really quickly [link](https://www.infoq.com/presentations/simdjson-parser/?itm_source=infoq&itm_campaign=user_page&itm_medium=link)
-**** HOLD Parsing Int series
+**** HOLD Lomuto's comeback https://duckduckgo.com/?t=ffab&q=lomutos+comeback&atb=v226-1&ia=web
+**** HOLD Parsing Int series http://0x80.pl/
 ***** HOLD https://github.com/WojciechMula/parsing-int-series http://0x80.pl/articles/simd-parsing-int-sequences.html
 ***** HOLD https://kholdstare.github.io/technical/2020/05/26/faster-integer-parsing.html
 ***** HOLD https://rust-malaysia.github.io/code/2020/07/11/faster-integer-parsing.html
@@ -105,6 +123,7 @@
 **** Rust Graphs in Julia + Fortran? [link](https://github.com/parallel-rust-cpp/shortcut-comparison) http://ppc.cs.aalto.fi/ch2/
 **** Performance Engineering of Software Systems https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-172-performance-engineering-of-software-systems-fall-2018/index.htm
 ***** Julian Shun - Algorithm engineering https://people.csail.mit.edu/jshun/6886-s20/
+**** pospopcount lemire https://arxiv.org/pdf/1911.02696.pdf
 *** Partial SGJ Course
 *** Olver Course mathematical physics
 ***
@@ -113,6 +132,16 @@
 *** Signals and Systems Alan V. Oppenheim https://ocw.mit.edu/resources/res-6-007-signals-and-systems-spring-2011/
 *** Lorena Barba CFD in Julia Intro https://github.com/miguelraz/CFDPython
 ****
+*** Tim Davis Sparse matrix
+*** BLIS course
+*** NLAlgebra course
+*** LEVEEQUE Numerical Methods
+*** Hairer I
+*** Hairer II
+*** Hairer III
+*** Zhang special functions Zhan Shanjie
+*** Statistical Rethinkking https://github.com/rmcelreath/stat_rethinking_2020
+*** Programming the FEM Method toolkit https://github.com/PtFEM/PtFEM.jl
 ** SICM
 ** SICP
 ** DIff Geo
@@ -185,9 +214,110 @@ Lean
 ** Arnold Mathematical Methods of Classical Mechanics
 ** Symmetry Methods for differential equations
 ** Jose and Saletan Classical
+** Strogatz https://cosmolearning.org/courses/nonlinear-dynamics-chaos/
+** MIT Intro to PDEs https://ocw.mit.edu/courses/mathematics/18-152-introduction-to-partial-differential-equations-fall-2011/index.htm
 * TENSORS
 ** Pavel Grinfeld book [0/1] https://www.youtube.com/watch?v=TC98KfiGAOk&list=PLlXfTHzgMRULkodlIEqfgTS-H1AY_bNtq&index=15
 *** TODO Chapter 2
 ** Invitation to Graphical Tensor notation https://arxiv.org/pdf/1911.00892.pdf
 *** file:///home/mrg/Downloads/An_Invitation_to_Graphical_Tensor_Methods.pdf
 ** Marsden Tensors
+* Numerical methods challenge: 1 month - nicolas - IN PARALLEL!
+** https://nicoguaro.github.io/posts/numerical_summary/
+- Bisection
+- Regula falsi
+- Newton
+- Newton multivariate
+- Broyden
+- Gradient descent
+- Nelder-Mead
+- Newton for optimization
+- Lagrange interpolation
+- Lagrange interpolation with Lobatto sampling
+- Lagrange interpolation using Vandermonde matrix
+- Hermite interpolation
+- Spline interpolation
+- Trapezoid quadrature
+- Simpson quadrature
+- Clenshaw-Curtis quadrature
+- Euler integration
+- Runge-Kutta integration
+- Verlet integration
+- Shooting method
+- Finite differences with Jacobi method
+- Finite differences for eigenvalues
+- Ritz method
+- Finite element method in 1D
+- Finite element method in 2D
+- Boundary element method
+- Monte-Carlo integration
+- LU factorization
+- Cholesky factorization
+- Conjugate gradient
+- Finite element method with solver
+* Papers to read:
+- Off to infinity in finite time http://www.ams.org/notices/199505/saari-2.pdf
+- More is Different PW Anderson  https://www.tkm.kit.edu/downloads/TKM1_2011_more_is_different_PWA.pdf
+* Jaako Suomela Competitive programming https://cses.fi/book/book.pdf https://jukkasuomela.fi/
+* Distributed Algos Jaako suomela https://mycourses.aalto.fi/course/view.php?id=28195#section-jj0
+* SCIML / MIT Path
+** https://github.com/SciML/SciMLTutorials.jl
+** https://www.youtube.com/watch?v=QwVO0Xh2Hbg
+** 18.330 Intro to Numerical Analysis DPSanders https://github.com/mitmath/18330 https://www.dropbox.com/sh/ubkqwrqxnukgllc/AAA2cH9r7YQL7WmYVt-bblxta?dl=0
+** 18.S096 SCIML https://github.com/mitmath/18S096SciML
+** https://sciml.ai/documentation/
+** 18.337/6.338J  https://mitmath.github.io/18337/
+** https://github.com/mitmath/julia-mit
+** 18.06 https://github.com/mitmath/1806
+** 18.303 Linear Partial DiffEqs https://github.com/mitmath/18303
+** 18.335J Numerical Methods SGJ Masters https://github.com/mitmath/18335
+1. Final project is a paper
+2. Mathematical level is graduate / phd
+* TABS on phone
+** Jakob Nissen hardware performance
+
+** Sheehan olver mathematical physics course
+*** https://github.com/dlfivefifty/M3M6MethodsOfMathematicalPhysics
+*** https://github.com/dlfivefifty/M3M6AppliedComplexAnalysis
+** Kapitalismus als religion
+** VLBI reconstruction dataset
+** eht-imaging  https://github.com/achael/eht-imaging/
+** Eigenbros mathematics https://eigenbros.com/mathematics/
+** Bio Julia Course BISC195.jl
+** Advanced Julia course fredrik baggepinnen
+** BLOG: Opensources / Franklin.jl
+** WHAT IS : Nick Higham  [[https://github.com/higham/what-is][link]]
+** [[https://www.ashedryden.com/blog/the-ethics-of-unpaid-labor-and-the-oss-community][The ethics of unpaid open soruce labor]]
+** [[https://icerm.brown.edu/programs/sp-f20/w4/][Statistical methods for detection of relativistic objects]]
+** [[https://libdivide.com/][Libdivide - optimizing integer division]]
+*** https://ridiculousfish.com/blog/posts/labor-of-division-episode-i.html
+*** [[https://homepage.cs.uiowa.edu/~jones/bcd/divide.html][Reciprocal multiplication, a tutorial]]
+** SIMD Intrinsics Kristoffer Carlsson http://kristofferc.github.io/post/intrinsics/
+** CSES Problems Antti Laadsonen https://cses.fi/problemset/
+** Leo C stein
+*** kerr spherical photon orbits rederivation https://duetosymmetry.com/tool/kerr-circular-photon-orbits/
+*** Advanced Mechanics course  https://duetosymmetry.com/teaching/2018-fall-phys-709/
+** SGJ Special Functions jl https://sites.math.washington.edu/~morrow/335_17/history%20of%20stokes%20thm.pdf
+** History of stokes theorem https://duetosymmetry.com/teaching/2018-fall-phys-709/
+* Testing links [[Summary]] [[ifc][ywoywoywoywo]]
+* Snippets
+This variable can be defined before and used in the snippets
+#+begin_src julia
+println(3+3)
+
+#+end_src
+
+#+RESULTS:
+** `<sTAB` to enter a snippet
+* Getting organized:
+** TODO Become astronaut
+** DONE Bcome a programmer
+** [ ] Become younger  - get there with SPC m t
+** [ ] [#C] Strawberies
+* [ ] Morning routine  [2/4]
++ [-] do 50
++ [X] meditate
++ [X] pushups
++ [ ] ass
+  - [ ] derp
++
