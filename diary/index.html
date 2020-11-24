@@ -1,11 +1,69 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts </a></h1> <h3 id=19112020 ><a href="#19112020">19/11/2020</a></h3> <ol start=31 > <li><p>Chris de Graaf suggested instead of using <code>const A &#61; &#91;1&#93;</code>, try using a <code>Ref</code>:</p> </ol> <pre><code class="julia hljs"><span class=hljs-comment ># access a ref with []</span>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=21112020 ><a href="#21112020">21/11/2020</a></h3> <ol start=33 > <li><p>Credit to <code>@Suker</code>: REPL interactivity can be drastically helped &#40;and enhanced with Revise.jl&#41; if you have the following:</p> </ol> <ul> <li><p>working on a script that may have some big g Global parameter everywhere,</p> <li><p>put those in a function <code>main&#40;&#41;</code> and put <code>&#33;isinteractive&#40;&#41; &amp;&amp; main&#40;&#41;</code> at the end of the file</p> </ul> <ol start=34 > <li><p>Reading the SciML dev docs:</p> </ol> <ul> <li><p>To add a new package to the common interface, define the types</p> </ul> <pre><code class="julia hljs"><span class=hljs-keyword >abstract type</span> AnalyticAlgorithm &lt;: DiffEqBase.AbstractAnalyticAlgorithm</code></pre>
+<ul>
+<li><p>specify type parameters for concrete algos</p>
+
+</ul>
+<pre><code class="julia hljs"><span class=hljs-keyword >struct</span> analytic{Simple} &lt;: AnalyticAlgorithm{Simple} <span class=hljs-keyword >end</span>
+analytic(; simple = <span class=hljs-literal >true</span>) = analytic{simple}()</code></pre>
+<ul>
+<li><p>overload <code>__solve</code> from <code>DiffEqBase.jl</code></p>
+
+</ul>
+<h3 id=19112020 ><a href="#19112020">19/11/2020</a></h3>
+<ol start=31 >
+<li><p>Chris de Graaf suggested instead of using <code>const A &#61; &#91;1&#93;</code>, try using a <code>Ref</code>:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-comment ># access a ref with []</span>
 A = <span class=hljs-built_in >Ref</span>(<span class=hljs-number >0</span>)
 A[] = <span class=hljs-number >1</span>
-A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span></code></pre> <p>Takes a bit more nanoseconds to access than a 1 sized array but is sized <code>&#40;&#41;</code>.</p> <ol start=32 > <li><p>Execution matters more than hoarding ideas. <a href="https://www.youtube.com/watch?v&#61;dSCBCk4xVa0">Decent Talk by John Cormack</a>. Enjoy the insight high, then get down in the mud and try to bust your own idea.</p> </ol> <h3 id=15112020 ><a href="#15112020">15/11/2020</a></h3> <ol start=26 > <li><p>Al final empecé el manual en español. Parece que <code>Laura Ventosa</code> va a ser buena mancuerna para este proyecto. Qué chido. La <a href="https://github.com/miguelraz/julia-es-manual">traduccion del manual esta en este link</a>.</p> </ol> <pre><code class="bash hljs">wc src/index.mc src/manual/getting-started.md src/manual/variables.md
+A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span></code></pre>
+<p>Takes a bit more nanoseconds to access than a 1 sized array but is sized <code>&#40;&#41;</code>.</p>
+<ol start=32 >
+<li><p>Execution matters more than hoarding ideas. <a href="https://www.youtube.com/watch?v&#61;dSCBCk4xVa0">Decent Talk by John Cormack</a>. Enjoy the insight high, then get down in the mud and try to bust your own idea.</p>
+
+</ol>
+<h3 id=15112020 ><a href="#15112020">15/11/2020</a></h3>
+<ol start=26 >
+<li><p>Al final empecé el manual en español. Parece que <code>Laura Ventosa</code> va a ser buena mancuerna para este proyecto. Qué chido. La <a href="https://github.com/miguelraz/julia-es-manual">traduccion del manual esta en este link</a>.</p>
+
+</ol>
+<pre><code class="bash hljs">wc src/index.mc src/manual/getting-started.md src/manual/variables.md
   109   986  7546 src/index.md
   100   731  5084 src/manual/getting-started.md
   138   932  6102 src/manual/variables.md
-  347  2649 18732 total</code></pre> <p>CONTEO: 2640</p> <ol start=27 > <li><p>Copy pasting to the system clipboard in Vim is easier with <code>select the text -&gt; &quot;&#43;y</code>. Also <code>t</code> will go to just before a character <code>F</code> will search a char backwards, and <code>&#125;</code> will go to the end of a paragraph.</p> <li><p>It seems the <code>Savitzky-Golay</code> filter is very - VERY - interesting for a lot of computing people. Really need to get into parallelizing it and figuring out the GPU part. </p> </ol> <ul> <li><p>&#91; &#93; Investigate why it was not 4x as fast with Float32s as with Float64s.</p> <li><p>&#91; &#93; Check for other applications <a href="https://sites.middlebury.edu/dunham/files/2017/07/MC2-004-Signal-Processing-in-a-Physics-Experiment-2017-July-11-FINAL.pdf">in this cool presentaiton</a></p> </ul> <ol start=29 > <li><p>Started on Pochoir.jl. Godspeed.</p> <li><p>Oh god. SymbolicUtils.jl can revive IntegralTransforms.jl.</p> </ol> <h3 id=14112020 ><a href="#14112020">14/11/2020</a></h3> <ol start=25 > <li><p>Found an absolutely amazing post about learning Z3 as if it were <a href="https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html">Lisp syntactically</a>.</p> </ol> <p>Should definitely look into this further. I think some Z3 and TLA&#43; are more than enough formal methods for a while... There&#39;s even an online <a href="https://rise4fun.com/Z3/7VZh">editor that seems useful for prototyping</a></p> <h3 id=13112020 ><a href="#13112020">13/11/2020</a></h3> <ol start=18 > <li><p>Counting neighbours / minesweeping? Ran into this problem on the <a href="https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac">Exercsim</a> earlier today:</p> </ol> <pre><code class="julia hljs">sum(arr[i][j] .== <span class=hljs-string >&quot;*&quot;</span>) <span class=hljs-comment >#where j = 1:3</span></code></pre>
+  347  2649 18732 total</code></pre>
+<p>CONTEO: 2640</p>
+<ol start=27 >
+<li><p>Copy pasting to the system clipboard in Vim is easier with <code>select the text -&gt; &quot;&#43;y</code>. Also <code>t</code> will go to just before a character <code>F</code> will search a char backwards, and <code>&#125;</code> will go to the end of a paragraph.</p>
+
+<li><p>It seems the <code>Savitzky-Golay</code> filter is very - VERY - interesting for a lot of computing people. Really need to get into parallelizing it and figuring out the GPU part.</p>
+
+</ol>
+<ul>
+<li><p>&#91; &#93; Investigate why it was not 4x as fast with Float32s as with Float64s.</p>
+
+<li><p>&#91; &#93; Check for other applications <a href="https://sites.middlebury.edu/dunham/files/2017/07/MC2-004-Signal-Processing-in-a-Physics-Experiment-2017-July-11-FINAL.pdf">in this cool presentaiton</a></p>
+
+</ul>
+<ol start=29 >
+<li><p>Started on Pochoir.jl. Godspeed.</p>
+
+<li><p>Oh god. SymbolicUtils.jl can revive IntegralTransforms.jl.</p>
+
+</ol>
+<h3 id=14112020 ><a href="#14112020">14/11/2020</a></h3>
+<ol start=25 >
+<li><p>Found an absolutely amazing post about learning Z3 as if it were <a href="https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html">Lisp syntactically</a>.</p>
+
+</ol>
+<p>Should definitely look into this further. I think some Z3 and TLA&#43; are more than enough formal methods for a while... There&#39;s even an online <a href="https://rise4fun.com/Z3/7VZh">editor that seems useful for prototyping</a></p>
+<h3 id=13112020 ><a href="#13112020">13/11/2020</a></h3>
+<ol start=18 >
+<li><p>Counting neighbours / minesweeping? Ran into this problem on the <a href="https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac">Exercsim</a> earlier today:</p>
+
+</ol>
+<pre><code class="julia hljs">sum(arr[i][j] .== <span class=hljs-string >&quot;*&quot;</span>) <span class=hljs-comment >#where j = 1:3</span></code></pre>
 <p>is a no-no. First, we have to remember to compare <code>Char</code>s to <code>Char</code>s, since</p>
 <pre><code class="julia hljs"><span class=hljs-string >&quot;*&quot;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># false</span>
 <span class=hljs-string >&#x27;*&#x27;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># true</span></code></pre>
@@ -56,7 +114,7 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 
 </ol>
 <pre><code class="julia hljs">annotate(minefield) = [
-    replace(    
+    replace(
         join(
             w[c] == <span class=hljs-string >&#x27;*&#x27;</span> ? <span class=hljs-string >&#x27;*&#x27;</span> :
             count(get(get(minefield, y, <span class=hljs-string >&quot;&quot;</span>), x, <span class=hljs-string >&quot;&quot;</span>) == <span class=hljs-string >&#x27;*&#x27;</span>
@@ -130,13 +188,13 @@ git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span clas
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >try</span>
            <span class=hljs-keyword >using</span> Revise
        <span class=hljs-keyword >catch</span> e
-</span>	   @warn(e)	
+</span>	   @warn(e)
        end</code></pre>
 <h3 id=04112020 ><a href="#04112020">04/11/2020</a></h3>
 <ol start=7 >
 <li><p>Trump is likely gonna lose the election - crazy times. Been working a bit on scaffolding for LightGraphsIO.jl. Solid integration with Parsers.jl will mean a lot of speed coming up for the LightGraphs.jl ecosystem.</p>
 
-<li><p>In order to not get punked by the output of </p>
+<li><p>In order to not get punked by the output of</p>
 
 </ol>
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > print.(sq(i) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
@@ -191,9 +249,9 @@ nothing</code></pre>
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> f(x, y, z)
            data = compute(x, y, z)
 </span>
-           g() = data^2 # closure over data    
-           g() # call g here maybe?    
-           # ...    
+           g() = data^2 # closure over data
+           g() # call g here maybe?
+           # ...
            g() # maybe again here?
 end</code></pre>
 <p>Mason says:&quot;Almost all usages of closures can be replaced with &#39;top level&#39; functions that take extra arguments &#40;one for each captured field&#41;, but it&#39;s syntactically less pleasing and can end up causing you to have a bunch of function names in your namespace you don&#39;t want.&quot; Of course <a href="https://discourse.julialang.org/t/closures-section-in-documentation-is-not-clear-enough/18717/13">there&#39;s a Discourse post on it</a>.</p>
@@ -272,7 +330,7 @@ end</code></pre>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: November 20, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: November 24, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
