@@ -1,0 +1,3 @@
+#+title:  SymbolicTensors.jl
+Perhaps build a thesis
+related to[[file:20201124175646-relativity.org][relativity]]

@@ -4,6 +4,12 @@
 ** https://github.com/JuliaLang/julia/pull/24873
 ** https://github.com/JuliaIntervals/IntervalArithmetic.jl/pull/227
 ** https://github.com/JuliaCI/BenchmarkTools.jl/pull/150
+:PROPERTIES:
+:NOTER_DOCUMENT: ../../../Downloads/Pavel Grinfeld (auth.) - Introduction to Tensor Analysis and the Calculus of Moving Surfaces-Springer-Verlag New York (2013).pdf
+:NOTER_PAGE : 10
+:END:
+
+
 ** https://github.com/SciML/OrdinaryDiffEq.jl/pull/710
 
 * MIT Courses
@@ -124,6 +130,7 @@
 **** Performance Engineering of Software Systems https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-172-performance-engineering-of-software-systems-fall-2018/index.htm
 ***** Julian Shun - Algorithm engineering https://people.csail.mit.edu/jshun/6886-s20/
 **** pospopcount lemire https://arxiv.org/pdf/1911.02696.pdf
+**** IEEE754 Pluto.jl https://www.itu.dk/~sestoft/bachelor/IEEE754_article.pdf
 *** Partial SGJ Course
 *** Olver Course mathematical physics
 ***
@@ -149,8 +156,10 @@
 *** FNC Toby Driscoll [link](https://github.com/fncbook/fnc)
 *** Neural Nets Michael Nielsen [link](http://neuralnetworksanddeeplearning.com/chap1.html)
 **** TLA+!
+***** https://hillelwayne.com/post/augmenting-agile/
 
-** Translations / Diversity
+
+** translations / Diversity
 
 *** TODO Manual
 *** TODO Tutorials
@@ -321,5 +330,3 @@ println(3+3)
 + [ ] ass
   - [ ] derp
 +
-
-  * [[https://people.smp.uq.edu.au/DirkKroese/DSML/][Data Science and Machine Learning: Mathematical and Statistical methods]]

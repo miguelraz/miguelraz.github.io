@@ -1,0 +1,5 @@
+* (Dover Books on Physics and Chemistry) Cornelius Lanczos - The Variational Principles of Mechanics-Dover Publications (1949)
+:PROPERTIES:
+:NOTER_DOCUMENT: ../../../Downloads/(Dover Books on Physics and Chemistry) Cornelius Lanczos - The Variational Principles of Mechanics-Dover Publications (1949).pdf
+:NOTER_PAGE: 9
+:END:
