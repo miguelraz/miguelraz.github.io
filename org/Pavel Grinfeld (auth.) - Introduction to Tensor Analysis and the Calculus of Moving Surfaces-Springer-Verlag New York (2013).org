@@ -1,0 +1,1262 @@
+* Pavel Grinfeld (auth.) - Introduction to Tensor Analysis and the Calculus of Moving Surfaces-Springer-Verlag New York (2013)
+:PROPERTIES:
+:NOTER_PAGE: 40
+:NOTER_DOCUMENT: Pavel Grinfeld (auth.) - Introduction to Tensor Analysis and the Calculus of Moving Surfaces-Springer-Verlag New York (2013).org
+:END:
+:PROPERTIES:
+:NOTER_DOCUMENT: ../../../Downloads/Pavel Grinfeld (auth.) - Introduction to Tensor Analysis and the Calculus of Moving Surfaces-Springer-Verlag New York (2013).pdf
+:NOTER_PAGE : 40
+:END:
+
+** Skeleton
+
+*** Link on page 5: [[http://www.springer.com][www.springer.com]]
+:PROPERTIES:
+:NOTER_PAGE: (5 . 0.886886)
+:END:
+
+*** Preface
+:PROPERTIES:
+:NOTER_PAGE: 6
+:END:
+
+*** Contents
+:PROPERTIES:
+:NOTER_PAGE: (8 . 0.079787)
+:END:
+
+*** 1 Why Tensor Calculus?
+:PROPERTIES:
+:NOTER_PAGE: (15 . 0.079787)
+:END:
+
+*** Part I Tensors in Euclidean Spaces
+:PROPERTIES:
+:NOTER_PAGE: (22 . 0.079787)
+:END:
+
+**** 2 Rules of the Game
+:PROPERTIES:
+:NOTER_PAGE: (23 . 0.079787)
+:END:
+
+***** 2.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (23 . 0.330481)
+:END:
+
+***** 2.2 The Euclidean Space
+:PROPERTIES:
+:NOTER_PAGE: (23 . 0.617203)
+:END:
+
+***** 2.3 Length, Area, and Volume
+:PROPERTIES:
+:NOTER_PAGE: (25 . 0.282444)
+:END:
+
+***** 2.4 Scalars and Vectors
+:PROPERTIES:
+:NOTER_PAGE: (26 . 0.192374)
+:END:
+
+***** 2.5 The Dot Product
+:PROPERTIES:
+:NOTER_PAGE: (26 . 0.44457)
+:END:
+
+****** 2.5.1 Inner Products and Lengths in Linear Algebra
+:PROPERTIES:
+:NOTER_PAGE: (27 . 0.521129)
+:END:
+
+***** 2.6 The Directional Derivative
+:PROPERTIES:
+:NOTER_PAGE: (27 . 0.783832)
+:END:
+
+****** Text note on page 28
+:PROPERTIES:
+:NOTER_PAGE: (28 . 0.275622)
+:END:
+
+******* Contents
+Its definition requires two elements: straight lines and length. Both are present in
+Euclidean spaces, making definition (2.8) possible. Importantly, the definition of a
+
+******* Comment
+The directional derivative is entirely geometric concept (we needed straight lines and length).
+We can use this in all euclidean spaces, and with noo coord systems!
+
+****** Text note on page 28
+:PROPERTIES:
+:NOTER_PAGE: (28 . 0.656219)
+:END:
+
+******* Contents
+al derivatives
+can be evaluated without referring the Euclidean space to a coordinate system.
+Exercise 7. Evaluate dF=d l for F .P / D “Distance from point P to poi
+
+******* Comment
+We don't need coordinates for directional derivs!
+
+***** 2.7 The Gradient
+:PROPERTIES:
+:NOTER_PAGE: (29 . 0.246416)
+:END:
+
+****** Text note on page 29
+:PROPERTIES:
+:NOTER_PAGE: (29 . 0.536318)
+:END:
+
+******* Contents
+by the dot product:
+dF
+D rF  L;
+dl
+(2.11)
+
+******* Comment
+The gradient DOT the unit vector = directional derivative in the directions:
+
+***** 2.8 Differentiation of Vector Fields
+:PROPERTIES:
+:NOTER_PAGE: (30 . 0.079787)
+:END:
+
+***** 2.9 Summary
+:PROPERTIES:
+:NOTER_PAGE: (31 . 0.80635)
+:END:
+
+**** 3 Coordinate Systems and the Role of Tensor Calculus
+:PROPERTIES:
+:NOTER_PAGE: (33 . 0.079787)
+:END:
+
+***** 3.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (33 . 0.330481)
+:END:
+
+***** 3.2 Why Coordinate Systems?
+:PROPERTIES:
+:NOTER_PAGE: (33 . 0.581175)
+:END:
+
+***** 3.3 What Is a Coordinate System?
+:PROPERTIES:
+:NOTER_PAGE: (35 . 0.392029)
+:END:
+
+***** 3.4 Perils of Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (36 . 0.079787)
+:END:
+
+***** 3.5 The Role of Tensor Calculus
+:PROPERTIES:
+:NOTER_PAGE: (39 . 0.079787)
+:END:
+
+***** 3.6 A Catalog of Coordinate Systems
+:PROPERTIES:
+:NOTER_PAGE: (39 . 0.345493)
+:END:
+
+****** 3.6.1 Cartesian Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (40 . 0.633716)
+:END:
+
+****** 3.6.2 Affine Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (42 . 0.331982)
+:END:
+
+****** 3.6.3 Polar Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (42 . 0.782331)
+:END:
+
+****** 3.6.4 Cylindrical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (43 . 0.632215)
+:END:
+
+****** 3.6.5 Spherical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (44 . 0.41905)
+:END:
+
+****** 3.6.6 Relationships Among Common CoordinateSystems
+:PROPERTIES:
+:NOTER_PAGE: (44 . 0.744802)
+:END:
+
+***** 3.7 Summary
+:PROPERTIES:
+:NOTER_PAGE: (46 . 0.079787)
+:END:
+
+**** 4 Change of Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (47 . 0.079787)
+:END:
+
+***** 4.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (47 . 0.330481)
+:END:
+
+***** 4.2 An Example of a Coordinate Change
+:PROPERTIES:
+:NOTER_PAGE: (47 . 0.617203)
+:END:
+
+***** 4.3 A Jacobian Example
+:PROPERTIES:
+:NOTER_PAGE: (48 . 0.476094)
+:END:
+
+***** 4.4 The Inverse Relationship Between the Jacobians
+:PROPERTIES:
+:NOTER_PAGE: (49 . 0.452075)
+:END:
+
+***** 4.5 The Chain Rule in Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (50 . 0.297456)
+:END:
+
+***** 4.6 Inverse Functions
+:PROPERTIES:
+:NOTER_PAGE: (54 . 0.38002)
+:END:
+
+***** 4.7 Inverse Functions of Several Variables
+:PROPERTIES:
+:NOTER_PAGE: (55 . 0.414546)
+:END:
+
+***** 4.8 The Jacobian Property in Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (57 . 0.079787)
+:END:
+
+***** 4.9 Several Notes on the Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (60 . 0.079787)
+:END:
+
+****** 4.9.1 The Naming of Indices
+:PROPERTIES:
+:NOTER_PAGE: (60 . 0.217894)
+:END:
+
+****** 4.9.2 Commutativity of Contractions
+:PROPERTIES:
+:NOTER_PAGE: (61 . 0.479096)
+:END:
+
+****** 4.9.3 More on the Kronecker Symbol
+:PROPERTIES:
+:NOTER_PAGE: (62 . 0.154845)
+:END:
+
+***** 4.10 Orientation-Preserving Coordinate Changes
+:PROPERTIES:
+:NOTER_PAGE: (62 . 0.783832)
+:END:
+
+***** 4.11 Summary
+:PROPERTIES:
+:NOTER_PAGE: (63 . 0.408542)
+:END:
+
+**** 5 The Tensor Description of Euclidean Spaces
+:PROPERTIES:
+:NOTER_PAGE: (64 . 0.079787)
+:END:
+
+***** 5.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (64 . 0.330481)
+:END:
+
+***** 5.2 The Position Vector R
+:PROPERTIES:
+:NOTER_PAGE: (64 . 0.617203)
+:END:
+
+***** 5.3 The Position Vector as a Function of Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (65 . 0.17436)
+:END:
+
+***** 5.4 The Covariant Basis Zi
+:PROPERTIES:
+:NOTER_PAGE: (66 . 0.192374)
+:END:
+
+***** 5.5 The Covariant Metric Tensor Zij
+:PROPERTIES:
+:NOTER_PAGE: (67 . 0.641222)
+:END:
+
+***** 5.6 The Contravariant Metric Tensor Zij
+:PROPERTIES:
+:NOTER_PAGE: (68 . 0.429558)
+:END:
+
+***** 5.7 The Contravariant Basis Zi
+:PROPERTIES:
+:NOTER_PAGE: (69 . 0.079787)
+:END:
+
+***** 5.8 The Metric Tensor and Measuring Lengths
+:PROPERTIES:
+:NOTER_PAGE: (70 . 0.079787)
+:END:
+
+***** 5.9 Intrinsic Objects and Riemann Spaces
+:PROPERTIES:
+:NOTER_PAGE: (71 . 0.3545)
+:END:
+
+***** 5.10 Decomposition with Respect to a Basis by Dot Product
+:PROPERTIES:
+:NOTER_PAGE: (71 . 0.788336)
+:END:
+
+***** 5.11 The Fundamental Elements in Various Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (73 . 0.246416)
+:END:
+
+****** 5.11.1 Cartesian Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (73 . 0.551152)
+:END:
+
+****** 5.11.2 Affine Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (74 . 0.71628)
+:END:
+
+****** 5.11.3 Polar and Cylindrical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (76 . 0.363507)
+:END:
+
+****** 5.11.4 Spherical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (77 . 0.560159)
+:END:
+
+***** 5.12 The Christoffel Symbol ijk
+:PROPERTIES:
+:NOTER_PAGE: (78 . 0.357502)
+:END:
+
+***** 5.13 The Order of Indices
+:PROPERTIES:
+:NOTER_PAGE: (82 . 0.079787)
+:END:
+
+***** 5.14 The Christoffel Symbol in Various Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (83 . 0.079787)
+:END:
+
+****** 5.14.1 Cartesian and Affine Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (83 . 0.118817)
+:END:
+
+****** 5.14.2 Cylindrical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (83 . 0.334985)
+:END:
+
+****** 5.14.3 Spherical Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (83 . 0.524131)
+:END:
+
+***** 5.15 Summary
+:PROPERTIES:
+:NOTER_PAGE: (84 . 0.156346)
+:END:
+
+**** 6 The Tensor Property
+:PROPERTIES:
+:NOTER_PAGE: (85 . 0.079787)
+:END:
+
+***** 6.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (85 . 0.330481)
+:END:
+
+***** 6.2 Variants
+:PROPERTIES:
+:NOTER_PAGE: (85 . 0.50912)
+:END:
+
+***** 6.3 Definitions and Essential Ideas
+:PROPERTIES:
+:NOTER_PAGE: (86 . 0.079787)
+:END:
+
+****** 6.3.1 Tensors of Order One
+:PROPERTIES:
+:NOTER_PAGE: (86 . 0.115815)
+:END:
+
+****** 6.3.2 Tensors Are the Key to Invariance
+:PROPERTIES:
+:NOTER_PAGE: (86 . 0.636718)
+:END:
+
+****** 6.3.3 The Tensor Property of Zi
+:PROPERTIES:
+:NOTER_PAGE: (87 . 0.488103)
+:END:
+
+****** 6.3.4 The Reverse Tensor Relationship
+:PROPERTIES:
+:NOTER_PAGE: (88 . 0.482099)
+:END:
+
+****** 6.3.5 Tensor Property of Vector Components
+:PROPERTIES:
+:NOTER_PAGE: (89 . 0.318472)
+:END:
+
+****** 6.3.6 The Tensor Property of Zi
+:PROPERTIES:
+:NOTER_PAGE: (90 . 0.079787)
+:END:
+
+***** 6.4 Tensors of Higher Order
+:PROPERTIES:
+:NOTER_PAGE: (90 . 0.591684)
+:END:
+
+****** 6.4.1 The Tensor Property of Zij and Zij
+:PROPERTIES:
+:NOTER_PAGE: (91 . 0.252421)
+:END:
+
+****** 6.4.2 The Tensor Property of δji
+:PROPERTIES:
+:NOTER_PAGE: (91 . 0.746303)
+:END:
+
+***** 6.5 Exercises
+:PROPERTIES:
+:NOTER_PAGE: (92 . 0.276439)
+:END:
+
+***** 6.6 The Fundamental Properties of Tensors
+:PROPERTIES:
+:NOTER_PAGE: (93 . 0.228402)
+:END:
+
+****** 6.6.1 Sum of Tensors
+:PROPERTIES:
+:NOTER_PAGE: (93 . 0.273437)
+:END:
+
+****** 6.6.2 Product of Tensors
+:PROPERTIES:
+:NOTER_PAGE: (93 . 0.686257)
+:END:
+
+****** 6.6.3 The Contraction Theorem
+:PROPERTIES:
+:NOTER_PAGE: (94 . 0.243414)
+:END:
+
+****** 6.6.4 The Important Implications of the Contraction Theorem
+:PROPERTIES:
+:NOTER_PAGE: (95 . 0.079787)
+:END:
+
+***** 6.7 Exercises
+:PROPERTIES:
+:NOTER_PAGE: (95 . 0.825865)
+:END:
+
+***** 6.8 The Gradient Revisited and Fixed
+:PROPERTIES:
+:NOTER_PAGE: (96 . 0.362006)
+:END:
+
+***** 6.9 The Directional Derivative Identity
+:PROPERTIES:
+:NOTER_PAGE: (97 . 0.446071)
+:END:
+
+***** 6.10 Index Juggling
+:PROPERTIES:
+:NOTER_PAGE: (98 . 0.079787)
+:END:
+
+***** 6.11 The Equivalence of δji and Zij
+:PROPERTIES:
+:NOTER_PAGE: (100 . 0.585679)
+:END:
+
+***** 6.12 The Effect of Index Juggling on the Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (101 . 0.235908)
+:END:
+
+***** 6.13 Summary
+:PROPERTIES:
+:NOTER_PAGE: (101 . 0.815357)
+:END:
+
+**** 7 Elements of Linear Algebra in Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (103 . 0.079787)
+:END:
+
+***** 7.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (103 . 0.330481)
+:END:
+
+***** 7.2 The Correspondence Between Contraction and Matrix Multiplication
+:PROPERTIES:
+:NOTER_PAGE: (103 . 0.75531)
+:END:
+
+***** 7.3 The Fundamental Elements of Linear Algebrain Tensor Notation
+:PROPERTIES:
+:NOTER_PAGE: (106 . 0.545147)
+:END:
+
+***** 7.4 Self-Adjoint Transformations and Symmetry
+:PROPERTIES:
+:NOTER_PAGE: (109 . 0.69076)
+:END:
+
+***** 7.5 Quadratic Form Optimization
+:PROPERTIES:
+:NOTER_PAGE: (111 . 0.297456)
+:END:
+
+***** 7.6 The Eigenvalue Problem
+:PROPERTIES:
+:NOTER_PAGE: (113 . 0.378518)
+:END:
+
+***** 7.7 Summary
+:PROPERTIES:
+:NOTER_PAGE: (114 . 0.482099)
+:END:
+
+**** 8 Covariant Differentiation
+:PROPERTIES:
+:NOTER_PAGE: (115 . 0.079787)
+:END:
+
+***** 8.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (115 . 0.330481)
+:END:
+
+***** 8.2 A Motivating Example
+:PROPERTIES:
+:NOTER_PAGE: (116 . 0.645725)
+:END:
+
+***** 8.3 The Laplacian
+:PROPERTIES:
+:NOTER_PAGE: (119 . 0.079787)
+:END:
+
+***** 8.4 The Formula for iZj
+:PROPERTIES:
+:NOTER_PAGE: (122 . 0.527134)
+:END:
+
+***** 8.5 The Covariant Derivative for General Tensors
+:PROPERTIES:
+:NOTER_PAGE: (124 . 0.750807)
+:END:
+
+***** 8.6 Properties of the Covariant Derivative
+:PROPERTIES:
+:NOTER_PAGE: (125 . 0.645725)
+:END:
+
+****** 8.6.1 The Tensor Property
+:PROPERTIES:
+:NOTER_PAGE: (125 . 0.69076)
+:END:
+
+****** 8.6.2 The Covariant Derivative Applied to Invariants
+:PROPERTIES:
+:NOTER_PAGE: (127 . 0.500113)
+:END:
+
+****** 8.6.3 The Covariant Derivative in Affine Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (127 . 0.732793)
+:END:
+
+****** 8.6.4 Commutativity
+:PROPERTIES:
+:NOTER_PAGE: (128 . 0.192374)
+:END:
+
+****** 8.6.5 The Sum Rule
+:PROPERTIES:
+:NOTER_PAGE: (129 . 0.079787)
+:END:
+
+****** 8.6.6 The Product Rule
+:PROPERTIES:
+:NOTER_PAGE: (129 . 0.374015)
+:END:
+
+****** 8.6.7 The Metrinilic Property
+:PROPERTIES:
+:NOTER_PAGE: (130 . 0.228402)
+:END:
+
+****** 8.6.8 Commutativity with Contraction
+:PROPERTIES:
+:NOTER_PAGE: (133 . 0.420551)
+:END:
+
+***** 8.7 A Proof of the Tensor Property
+:PROPERTIES:
+:NOTER_PAGE: (134 . 0.608196)
+:END:
+
+****** 8.7.1 A Direct Proof of the Tensor Property for jTi
+:PROPERTIES:
+:NOTER_PAGE: (135 . 0.079787)
+:END:
+
+****** 8.7.2 A Direct Proof of the Tensor Property for jTi
+:PROPERTIES:
+:NOTER_PAGE: (135 . 0.816858)
+:END:
+
+****** 8.7.3 A Direct Proof of the Tensor Property for kTji
+:PROPERTIES:
+:NOTER_PAGE: (137 . 0.079787)
+:END:
+
+***** 8.8 The Riemann–Christoffel Tensor: A Preview
+:PROPERTIES:
+:NOTER_PAGE: (138 . 0.280943)
+:END:
+
+***** 8.9 A Particle Moving Along a Trajectory
+:PROPERTIES:
+:NOTER_PAGE: (139 . 0.630714)
+:END:
+
+***** 8.10 Summary
+:PROPERTIES:
+:NOTER_PAGE: (142 . 0.345493)
+:END:
+
+**** 9 Determinants and the Levi-Civita Symbol
+:PROPERTIES:
+:NOTER_PAGE: (143 . 0.079787)
+:END:
+
+***** 9.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (143 . 0.330481)
+:END:
+
+***** 9.2 The Permutation Symbols
+:PROPERTIES:
+:NOTER_PAGE: (144 . 0.079787)
+:END:
+
+***** 9.3 Determinants
+:PROPERTIES:
+:NOTER_PAGE: (145 . 0.313968)
+:END:
+
+***** 9.4 The Delta Systems
+:PROPERTIES:
+:NOTER_PAGE: (146 . 0.657735)
+:END:
+
+***** 9.5 A Proof of the Multiplication Property of Determinants
+:PROPERTIES:
+:NOTER_PAGE: (148 . 0.753809)
+:END:
+
+***** 9.6 Determinant Cofactors
+:PROPERTIES:
+:NOTER_PAGE: (149 . 0.734294)
+:END:
+
+***** 9.7 The Object Z and the Volume Element
+:PROPERTIES:
+:NOTER_PAGE: (152 . 0.17436)
+:END:
+
+***** 9.8 The Voss–Weyl Formula
+:PROPERTIES:
+:NOTER_PAGE: (154 . 0.282444)
+:END:
+
+***** 9.9 Relative Tensors
+:PROPERTIES:
+:NOTER_PAGE: (156 . 0.312467)
+:END:
+
+***** 9.10 The Levi-Civita Symbols
+:PROPERTIES:
+:NOTER_PAGE: (158 . 0.079787)
+:END:
+
+***** 9.11 The Metrinilic Property with Respectto the Levi–Civita Symbol
+:PROPERTIES:
+:NOTER_PAGE: (159 . 0.28995)
+:END:
+
+***** 9.12 The Cross Product
+:PROPERTIES:
+:NOTER_PAGE: (160 . 0.773324)
+:END:
+
+***** 9.13 The Curl
+:PROPERTIES:
+:NOTER_PAGE: (164 . 0.079787)
+:END:
+
+***** 9.14 Generalization to Other Dimensions
+:PROPERTIES:
+:NOTER_PAGE: (165 . 0.3545)
+:END:
+
+***** 9.15 Summary
+:PROPERTIES:
+:NOTER_PAGE: (167 . 0.581175)
+:END:
+
+*** Part II Tensors on Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (168 . 0.079787)
+:END:
+
+**** 10 The Tensor Description of Embedded Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (169 . 0.079787)
+:END:
+
+***** 10.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (169 . 0.330481)
+:END:
+
+***** 10.2 Parametric Description of Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (170 . 0.079787)
+:END:
+
+***** 10.3 The Fundamental Differential Objects on the Surface
+:PROPERTIES:
+:NOTER_PAGE: (171 . 0.079787)
+:END:
+
+***** 10.4 Surface Tensors
+:PROPERTIES:
+:NOTER_PAGE: (175 . 0.079787)
+:END:
+
+***** 10.5 The Normal N
+:PROPERTIES:
+:NOTER_PAGE: (176 . 0.298957)
+:END:
+
+***** 10.6 The Normal and Orthogonal Projections
+:PROPERTIES:
+:NOTER_PAGE: (177 . 0.079787)
+:END:
+
+***** 10.7 Working with the Object Ni
+:PROPERTIES:
+:NOTER_PAGE: (179 . 0.256924)
+:END:
+
+***** 10.8 The Christoffel Symbol βγα
+:PROPERTIES:
+:NOTER_PAGE: (182 . 0.294453)
+:END:
+
+***** 10.9 The Length of an Embedded Curve
+:PROPERTIES:
+:NOTER_PAGE: (183 . 0.782331)
+:END:
+
+***** 10.10 The Impossibility of Affine Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (185 . 0.489604)
+:END:
+
+***** 10.11 Examples of Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (186 . 0.079787)
+:END:
+
+****** 10.11.1 A Sphere of Radius R
+:PROPERTIES:
+:NOTER_PAGE: (186 . 0.19988)
+:END:
+
+****** 10.11.2 A Cylinder of Radius R
+:PROPERTIES:
+:NOTER_PAGE: (187 . 0.390528)
+:END:
+
+****** 10.11.3 A Torus with Radii R and r
+:PROPERTIES:
+:NOTER_PAGE: (188 . 0.429558)
+:END:
+
+****** 10.11.4 A Surface of Revolution
+:PROPERTIES:
+:NOTER_PAGE: (189 . 0.44457)
+:END:
+
+****** 10.11.5 A Planar Curve in Cartesian Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (190 . 0.536141)
+:END:
+
+***** 10.12 A Planar Curve in Polar Coordinates
+:PROPERTIES:
+:NOTER_PAGE: (191 . 0.713278)
+:END:
+
+***** 10.13 Summary
+:PROPERTIES:
+:NOTER_PAGE: (192 . 0.696765)
+:END:
+
+**** 11 The Covariant Surface Derivative
+:PROPERTIES:
+:NOTER_PAGE: (193 . 0.079787)
+:END:
+
+***** 11.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (193 . 0.330481)
+:END:
+
+***** 11.2 The Covariant Derivative for Objects with Surface Indices
+:PROPERTIES:
+:NOTER_PAGE: (193 . 0.75531)
+:END:
+
+***** 11.3 Properties of the Surface Covariant Derivative
+:PROPERTIES:
+:NOTER_PAGE: (194 . 0.71628)
+:END:
+
+***** 11.4 The Surface Divergence and Laplacian
+:PROPERTIES:
+:NOTER_PAGE: (195 . 0.429558)
+:END:
+
+***** 11.5 The Curvature Tensor
+:PROPERTIES:
+:NOTER_PAGE: (196 . 0.480597)
+:END:
+
+***** 11.6 Loss of Commutativity
+:PROPERTIES:
+:NOTER_PAGE: (197 . 0.606695)
+:END:
+
+***** 11.7 The Covariant Derivative for Objects with Ambient Indices
+:PROPERTIES:
+:NOTER_PAGE: (198 . 0.307964)
+:END:
+
+****** 11.7.1 Motivation
+:PROPERTIES:
+:NOTER_PAGE: (198 . 0.371013)
+:END:
+
+****** 11.7.2 The Covariant Surface Derivative in FullGenerality
+:PROPERTIES:
+:NOTER_PAGE: (199 . 0.337987)
+:END:
+
+***** 11.8 The Chain Rule
+:PROPERTIES:
+:NOTER_PAGE: (200 . 0.079787)
+:END:
+
+***** 11.9 The Formulas for αZβi and αNi
+:PROPERTIES:
+:NOTER_PAGE: (201 . 0.079787)
+:END:
+
+***** 11.10 The Normal Derivative
+:PROPERTIES:
+:NOTER_PAGE: (203 . 0.482099)
+:END:
+
+***** 11.11 Summary
+:PROPERTIES:
+:NOTER_PAGE: (205 . 0.079787)
+:END:
+
+**** 12 Curvature
+:PROPERTIES:
+:NOTER_PAGE: (206 . 0.079787)
+:END:
+
+***** 12.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (206 . 0.330481)
+:END:
+
+***** 12.2 The Riemann–Christoffel Tensor
+:PROPERTIES:
+:NOTER_PAGE: (206 . 0.743301)
+:END:
+
+***** 12.3 The Gaussian Curvature
+:PROPERTIES:
+:NOTER_PAGE: (210 . 0.446071)
+:END:
+
+***** 12.4 The Curvature Tensor
+:PROPERTIES:
+:NOTER_PAGE: (211 . 0.480597)
+:END:
+
+***** 12.5 The Calculation of the Curvature Tensor for a Sphere
+:PROPERTIES:
+:NOTER_PAGE: (213 . 0.291451)
+:END:
+
+***** 12.6 The Curvature Tensor for Other Common Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (214 . 0.276439)
+:END:
+
+***** 12.7 A Particle Moving Along a Trajectory Confined to a Surface
+:PROPERTIES:
+:NOTER_PAGE: (215 . 0.456579)
+:END:
+
+***** 12.8 The Gauss–Codazzi Equation
+:PROPERTIES:
+:NOTER_PAGE: (217 . 0.079787)
+:END:
+
+***** 12.9 Gauss's Theorema Egregium
+:PROPERTIES:
+:NOTER_PAGE: (217 . 0.636718)
+:END:
+
+***** 12.10 The Gauss–Bonnet Theorem
+:PROPERTIES:
+:NOTER_PAGE: (220 . 0.079787)
+:END:
+
+***** 12.11 Summary
+:PROPERTIES:
+:NOTER_PAGE: (220 . 0.56166)
+:END:
+
+**** 13 Embedded Curves
+:PROPERTIES:
+:NOTER_PAGE: (221 . 0.079787)
+:END:
+
+***** 13.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (221 . 0.330481)
+:END:
+
+***** 13.2 The Intrinsic Geometry of a Curve
+:PROPERTIES:
+:NOTER_PAGE: (221 . 0.704271)
+:END:
+
+***** 13.3 Different Parametrizations of a Curve
+:PROPERTIES:
+:NOTER_PAGE: (222 . 0.180365)
+:END:
+
+***** 13.4 The Fundamental Elements of Curves
+:PROPERTIES:
+:NOTER_PAGE: (223 . 0.079787)
+:END:
+
+***** 13.5 The Covariant Derivative
+:PROPERTIES:
+:NOTER_PAGE: (225 . 0.210388)
+:END:
+
+***** 13.6 The Curvature and the Principal Normal
+:PROPERTIES:
+:NOTER_PAGE: (226 . 0.506117)
+:END:
+
+***** 13.7 The Binormal and the Frenet Formulas
+:PROPERTIES:
+:NOTER_PAGE: (228 . 0.500113)
+:END:
+
+***** 13.8 The Frenet Formulas in Higher Dimensions
+:PROPERTIES:
+:NOTER_PAGE: (231 . 0.079787)
+:END:
+
+***** 13.9 Curves Embedded in Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (233 . 0.707273)
+:END:
+
+***** 13.10 Geodesics
+:PROPERTIES:
+:NOTER_PAGE: (239 . 0.435563)
+:END:
+
+***** 13.11 Summary
+:PROPERTIES:
+:NOTER_PAGE: (239 . 0.653231)
+:END:
+
+**** 14 Integration and Gauss's Theorem
+:PROPERTIES:
+:NOTER_PAGE: (240 . 0.079787)
+:END:
+
+***** 14.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (240 . 0.330481)
+:END:
+
+***** 14.2 Integrals in Applications
+:PROPERTIES:
+:NOTER_PAGE: (240 . 0.743301)
+:END:
+
+***** 14.3 The Arithmetic Space
+:PROPERTIES:
+:NOTER_PAGE: (242 . 0.079787)
+:END:
+
+***** 14.4 The Invariant Arithmetic Form
+:PROPERTIES:
+:NOTER_PAGE: (245 . 0.3545)
+:END:
+
+***** 14.5 Gauss's Theorem
+:PROPERTIES:
+:NOTER_PAGE: (246 . 0.503115)
+:END:
+
+***** 14.6 Several Applications of Gauss's Theorem
+:PROPERTIES:
+:NOTER_PAGE: (248 . 0.360504)
+:END:
+
+***** 14.7 Stokes' Theorem
+:PROPERTIES:
+:NOTER_PAGE: (249 . 0.621707)
+:END:
+
+***** 14.8 Summary
+:PROPERTIES:
+:NOTER_PAGE: (251 . 0.079787)
+:END:
+
+*** Part III The Calculus of Moving Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (252 . 0.079787)
+:END:
+
+**** 15 The Foundations of the Calculus of Moving Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (253 . 0.079787)
+:END:
+
+***** 15.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (253 . 0.330481)
+:END:
+
+***** 15.2 The Kinematics of a Moving Surface
+:PROPERTIES:
+:NOTER_PAGE: (254 . 0.351497)
+:END:
+
+***** 15.3 The Coordinate Velocity Vi
+:PROPERTIES:
+:NOTER_PAGE: (257 . 0.500113)
+:END:
+
+***** 15.4 The Velocity C of an Interface
+:PROPERTIES:
+:NOTER_PAGE: (259 . 0.572168)
+:END:
+
+***** 15.5 The Invariant Time Derivative
+:PROPERTIES:
+:NOTER_PAGE: (261 . 0.462584)
+:END:
+
+***** 15.6 The Chain Rule
+:PROPERTIES:
+:NOTER_PAGE: (264 . 0.678751)
+:END:
+
+***** 15.7 Time Evolution of Integrals
+:PROPERTIES:
+:NOTER_PAGE: (265 . 0.50912)
+:END:
+
+***** 15.8 A Need for Further Development
+:PROPERTIES:
+:NOTER_PAGE: (268 . 0.214892)
+:END:
+
+***** 15.9 Summary
+:PROPERTIES:
+:NOTER_PAGE: (269 . 0.383022)
+:END:
+
+**** 16 Extension to Arbitrary Tensors
+:PROPERTIES:
+:NOTER_PAGE: (270 . 0.079787)
+:END:
+
+***** 16.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (270 . 0.330481)
+:END:
+
+***** 16.2 The Extension to Ambient Indices
+:PROPERTIES:
+:NOTER_PAGE: (270 . 0.581175)
+:END:
+
+***** 16.3 The Extension to Surface Indices
+:PROPERTIES:
+:NOTER_PAGE: (272 . 0.546649)
+:END:
+
+***** 16.4 The General Invariant Derivative
+:PROPERTIES:
+:NOTER_PAGE: (274 . 0.27794)
+:END:
+
+***** 16.5 The Formula for Sα
+:PROPERTIES:
+:NOTER_PAGE: (275 . 0.274938)
+:END:
+
+***** 16.6 The Metrinilic Property of
+:PROPERTIES:
+:NOTER_PAGE: (276 . 0.079787)
+:END:
+
+***** 16.7 The Formula for N
+:PROPERTIES:
+:NOTER_PAGE: (278 . 0.762816)
+:END:
+
+***** 16.8 The Formula for Bβα
+:PROPERTIES:
+:NOTER_PAGE: (279 . 0.318472)
+:END:
+
+***** 16.9 Summary
+:PROPERTIES:
+:NOTER_PAGE: (280 . 0.079787)
+:END:
+
+**** 17 Applications of the Calculus of Moving Surfaces
+:PROPERTIES:
+:NOTER_PAGE: (281 . 0.079787)
+:END:
+
+***** 17.1 Preview
+:PROPERTIES:
+:NOTER_PAGE: (281 . 0.330481)
+:END:
+
+***** 17.2 Shape Optimization
+:PROPERTIES:
+:NOTER_PAGE: (282 . 0.43256)
+:END:
+
+****** 17.2.1 The Minimal Surface Equation
+:PROPERTIES:
+:NOTER_PAGE: (282 . 0.477595)
+:END:
+
+****** 17.2.2 The Isoperimetric Problem
+:PROPERTIES:
+:NOTER_PAGE: (283 . 0.327479)
+:END:
+
+****** 17.2.3 The Second Variation Analysisfor the Isoperimetric Problem
+:PROPERTIES:
+:NOTER_PAGE: (284 . 0.079787)
+:END:
+
+****** 17.2.4 The Geodesic Equation
+:PROPERTIES:
+:NOTER_PAGE: (285 . 0.486602)
+:END:
+
+***** 17.3 Evolution of Boundary Conditions in BoundaryValue Problems
+:PROPERTIES:
+:NOTER_PAGE: (287 . 0.34249)
+:END:
+
+***** 17.4 Eigenvalue Evolution and the Hadamard Formula
+:PROPERTIES:
+:NOTER_PAGE: (289 . 0.389026)
+:END:
+
+***** 17.5 A Proof of the Gauss–Bonnet Theorem
+:PROPERTIES:
+:NOTER_PAGE: (293 . 0.776327)
+:END:
+
+***** 17.6 The Dynamic Fluid Film Equations
+:PROPERTIES:
+:NOTER_PAGE: (295 . 0.746303)
+:END:
+
+***** 17.7 Summary
+:PROPERTIES:
+:NOTER_PAGE: (297 . 0.725287)
+:END:
+
+*** Bibliography
+:PROPERTIES:
+:NOTER_PAGE: (298 . 0.079787)
+:END:
+
+*** Index
+:PROPERTIES:
+:NOTER_PAGE: (300 . 0.079787)
+:END:

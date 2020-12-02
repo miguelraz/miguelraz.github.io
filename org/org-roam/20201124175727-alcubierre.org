@@ -1,0 +1,3 @@
+#+title: Alcubierre
+Apples to apples
+[[file:20201124175749-symbolictensors_jl.org][SymbolicTensors.jl]]

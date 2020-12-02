@@ -1,0 +1,8 @@
+#+title: learning
+
+I am tryin to learn how to use org-roam[[file:test.org][ Hello this is dog]]
+:learning note taking:
+
+* Use the three pass technique :learning:org:roam:
+* spaced repetition
+* Feynman technique

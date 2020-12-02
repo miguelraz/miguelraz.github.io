@@ -5,6 +5,32 @@
 
 # Virtual diary for progress on all fronts
 
+### 2/12/2020
+
+37. Beast of a solution with great help from Colin:
+```julia
+function solutions(str)
+    sol1, sol2 = 0, 0
+    for line in readlines(str)
+        lo, hi, (char,), pass = match(r"^(\d+)-(\d+) (\w): (.+)$", line).captures
+        lo, hi = parse.(Int, (lo, hi))
+        sol1 += lo <= count(==(char), pass) <= hi
+        sol2 += (pass[lo] == char) ⊻ (pass[hi] == char)
+    end
+    sol1, sol2
+end
+```
+The `match(r"...", line).captures` immediately splits and gets the appropriate strings, and `(char,)` is a tuple decomposition of a container with a single element, (similar to `(a,b) = [3 4]`).
+
+### 1/12/2020
+
+35. Advent of code day 01: cool tricks:
+
+36. Advent of code day 02: Cool tricks:
+- remember that `'a' != "a"`. If ASCII `"a"[1]` works, and in other cases, use `only()`.
+- Even better, as `@tommyxr` points out, just do `==(letter)`.
+
+
 ### 21/11/2020
 
 33. Credit to `@Suker`: REPL interactivity can be drastically helped (and enhanced with Revise.jl) if you have the following:
