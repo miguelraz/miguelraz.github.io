@@ -22,6 +22,37 @@ end
 ```
 The `match(r"...", line).captures` immediately splits and gets the appropriate strings, and `(char,)` is a tuple decomposition of a container with a single element, (similar to `(a,b) = [3 4]`).
 
+38. Regex has many smart functions
+```julia
+Regex("[regex]")
+r"[regex]"
+match(needle, haystack)
+~~matchall(needle, haystack)~~
+eachmatch(needle, haystack)
+ismatch(needle, haystack)
+```
+
+39. If I have `str = "Roll On The Floor"` and I want to match on each first character to get the acronym, I can use `getproperty(m, :match)` for that:
+```julia
+r = eachmatch(r"\b[a-zA-Z]", str)
+join(getproperty(r[i], :match) for i in 1:length(r))
+```
+
+40. Count is really nifty:
+```julia-repl
+julia> xs = "#..##."
+"#..##."
+
+julia> count("#", xs)
+3
+```
+These "curried" operators can be found with `rg Fix[12]`, or `help?> Fix1`
+
+!!! You can implement this for your own methods with `Base.Fix2{typeof(func)}`: `contains(needle) = Base.Fix2(contains, needle)`
+
+41. When dealing with parsing strings by hand, split can sometimes give useless empty strings that muck up the analysis later on. Use the `kw` `keepempty=false` to get rid of those spurious results! For an example, check the AdventOfCodeDay04 code.
+
+
 ### 1/12/2020
 
 35. Advent of code day 01: cool tricks:
