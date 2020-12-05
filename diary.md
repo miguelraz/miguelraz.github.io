@@ -5,6 +5,62 @@
 
 # Virtual diary for progress on all fronts
 
+### 4/12/2020
+
+42. Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here's the learnings.
+- Parsing to integers and then applying logic can be done within a regex itself.
+- Just check for the actual cases that need to be satisfied with the characters themselves, no need to lift them into ints.
+- A good strategy is to separate your cases with `|` and put a word boundary at the end `\b`.
+- It's zero allocations!
+
+```julia
+const input = split(String(read("input")), r"\n\n")
+
+const fields1 = (r"byr", r"iyr", r"eyr", r"hgt", r"hcl", r"ecl", r"pid")
+const fields2 = (
+    r"byr:(19[2-9][0-9]|200[0-2])\b",
+    r"iyr:20(1[0-9]|20)\b",
+    r"eyr:20(2[0-9]|30)\b",
+    r"hgt:(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)\b",
+    r"hcl:#[0-9a-f]{6}\b",
+    r"ecl:(amb|blu|brn|gry|grn|hzl|oth)\b",
+    r"pid:\d{9}\b"
+)
+
+# Part 1
+count(p -> all(t -> contains(p, t), fields1), input)
+
+# Part 2
+count(p -> all(t -> contains(p, t), fields2), input)
+```
+
+43. Instead of 
+```julia
+if !haskey(d, str)
+    d[str] = 1
+elseif
+    haskey(d, str)
+    d[str] += 1
+else 
+    ...
+end
+```
+You can try 
+```julia
+d[str] = get(d, s, 0) + 1
+```
+
+44. Revisiting Exercisms is a good way to hone skills. Instead of 
+```julia
+a, b, c = dict[c[1]], dict[c[2]] dict[c[3]]
+# vs
+a, b, c = (dict[c[i]] for i in 1:3)
+```
+
+45. Remember to check for type instabilities in the code with `@code_warntype`.
+
+
+
 ### 2/12/2020
 
 37. Beast of a solution with great help from Colin:
