@@ -59,6 +59,17 @@ a, b, c = (dict[c[i]] for i in 1:3)
 
 45. Remember to check for type instabilities in the code with `@code_warntype`.
 
+46. Stacking generators within generators is tricky, but `joshua-whittemore` has a trick (Exercism-ETL)
+```julia
+function transform(input::Dict)
+    Dict(
+         lowercase(letter) => value
+         for (value, letters) in input
+         for letter in letters
+    )
+end
+```
+
 
 
 ### 2/12/2020
