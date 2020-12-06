@@ -21,6 +21,16 @@ isisogram(s) = allunique(i for i in lowercase(s) if isletter(i))
 - You can write `import Base: real, imag, conj, +, -, * ...` at the top of the file and then do `+(x::Complex, y::Complex)` without `Base.:`.
 - Fooling around with rationals is no fun if you don't know the `copysign(x, y)` function: takes the magnitude of `x` with the sign of `y`. Removes
 a lot of hacky logic.
+- Note: `=> is for pairs, >= is boolean` o.0
+- NOTE: Make sure that the tests are RIGHT. Not checking for a 0 denominator blew up in my face.
+- If you want to print a custom type, overload `show` so that it `print`s what you want
+```
+  To customize human-readable text output for objects of type T, define
+  show(io::IO, ::MIME"text/plain", ::T) instead. Checking the :compact IOContext
+  property of io in such methods is recommended, since some containers show their
+  elements by calling this method with :compact => true.
+```
+- `show(io::IO, x::RationalNumber) = print(io, num(x),"//",den(x))`
 
 ### 4/12/2020
 
