@@ -16,6 +16,22 @@
 
 </ul>
 <p>a lot of hacky logic.</p>
+<ul>
+<li><p>Note: <code>&#61;&gt; is for pairs, &gt;&#61; is boolean</code> o.0</p>
+
+<li><p>NOTE: Make sure that the tests are RIGHT. Not checking for a 0 denominator blew up in my face.</p>
+
+<li><p>If you want to print a custom type, overload <code>show</code> so that it <code>print</code>s what you want</p>
+
+</ul>
+<pre><code class="julia hljs">To customize human-readable text output <span class=hljs-keyword >for</span> objects of type T, define
+  show(io::<span class=hljs-built_in >IO</span>, ::<span class=hljs-string >MIME&quot;text/plain&quot;</span>, ::T) instead. Checking the :compact <span class=hljs-built_in >IOContext</span>
+  property of io <span class=hljs-keyword >in</span> such methods is recommended, since some containers show their
+  elements by calling this method with :compact =&gt; <span class=hljs-literal >true</span>.</code></pre>
+<ul>
+<li><p><code>show&#40;io::IO, x::RationalNumber&#41; &#61; print&#40;io, num&#40;x&#41;,&quot;//&quot;,den&#40;x&#41;&#41;</code></p>
+
+</ul>
 <h3 id=4122020 ><a href="#4122020">4/12/2020</a></h3>
 <ol start=42 >
 <li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p>
