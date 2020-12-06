@@ -5,6 +5,23 @@
 
 # Virtual diary for progress on all fronts
 
+### 5/12/2020
+
+47. Advent of Code just keeps on rocking!
+
+48. Exericisms review: checking if something is an isogram (no repeated letters):
+```julia
+isisogram(s) = allunique(i for i in lowercase(s) if isletter(i))
+```
+
+49. When defining your new types, make sure to use `promote_rule` appropriately. `Exercism:Complex Numbers:`
+- `promote_rule(T1, T2) = foo(promote_type(T1,T2))`
+- Remember to import `Base.abs, Base.exponent, Base.:+ ...`
+- For funsies, try commenting out your `zero(x), one(x)` implementations and seeing if yoru algebra still works. (Should work regardless!)
+- You can write `import Base: real, imag, conj, +, -, * ...` at the top of the file and then do `+(x::Complex, y::Complex)` without `Base.:`.
+- Fooling around with rationals is no fun if you don't know the `copysign(x, y)` function: takes the magnitude of `x` with the sign of `y`. Removes
+a lot of hacky logic.
+
 ### 4/12/2020
 
 42. Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here's the learnings.
