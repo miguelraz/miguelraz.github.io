@@ -31,6 +31,28 @@ a lot of hacky logic.
   elements by calling this method with :compact => true.
 ```
 - `show(io::IO, x::RationalNumber) = print(io, num(x),"//",den(x))`
+Now onto CustomSet:
+
+- You can `merge(dict1, dict1)`.
+- You can get the `keytype(d)`
+- Great tip from Sascha Mann: To define `foo/foo!` combos, do `foo!(x) = ...` and then `foo(x) = foo!(copy(x))`
+- When test sets fail eagerly, consider moving them "up" so that another property is tested first.
+- Iteration is ~~hard~~ easier now than before, just figure out how to write the proper
+```julia
+iterate(s::CustomSet) = iterate(s.dict)
+iterate(s::CustomSet, el) = iterate(s.dict, el)
+```
+50. Iterators galore! We had massive help from Sascha and Fliksel:
+- LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE
+```julia-repl
+julia> function Base.iterate(iter::Fibo, state = (0, (1,1))) # The 0 here will represent the "counter" 
+       if state[1] > iter.n
+           return nothing
+       end
+       f1, f2 = state[2]
+       return f1+f2, (state[1]+1, (f1+f2, f1))
+       end
+```
 
 ### 4/12/2020
 
