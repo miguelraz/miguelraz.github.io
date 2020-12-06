@@ -32,6 +32,56 @@
 <li><p><code>show&#40;io::IO, x::RationalNumber&#41; &#61; print&#40;io, num&#40;x&#41;,&quot;//&quot;,den&#40;x&#41;&#41;</code></p>
 
 </ul>
+<p>Now onto CustomSet:</p>
+<ul>
+<li><p>You can <code>merge&#40;dict1, dict1&#41;</code>.</p>
+
+<li><p>You can get the <code>keytype&#40;d&#41;</code></p>
+
+<li><p>Great tip from Sascha Mann: To define <code>foo/foo&#33;</code> combos, do <code>foo&#33;&#40;x&#41; &#61; ...</code> and then <code>foo&#40;x&#41; &#61; foo&#33;&#40;copy&#40;x&#41;&#41;</code></p>
+
+<li><p>When test sets fail eagerly, consider moving them &quot;up&quot; so that another property is tested first.</p>
+
+<li><p>Iteration is ~~hard~~ easier now than before, just figure out how to write the proper</p>
+
+</ul>
+<pre><code class="julia hljs">iterate(s::CustomSet) = iterate(s.dict)
+iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
+<ol start=50 >
+<li><p>Iterators galore&#33; We had massive help from Sascha and Fliksel:</p>
+
+</ol>
+<ul>
+<li><p>LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE</p>
+
+</ul>
+<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = (<span class=hljs-number >0</span>, (<span class=hljs-number >1</span>,<span class=hljs-number >1</span>))) <span class=hljs-comment ># The 0 here will represent the &quot;counter&quot; </span>
+       <span class=hljs-keyword >if</span> state[<span class=hljs-number >1</span>] &gt; iter.n
+           <span class=hljs-keyword >return</span> <span class=hljs-literal >nothing</span>
+       <span class=hljs-keyword >end</span>
+       f1, f2 = state[<span class=hljs-number >2</span>]
+       <span class=hljs-keyword >return</span> f1+f2, (state[<span class=hljs-number >1</span>]+<span class=hljs-number >1</span>, (f1+f2, f1))
+       <span class=hljs-keyword >end</span></span></code></pre>
+<ol start=51 >
+<li><p>Note about iterators:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = ...)
+				        <span class=hljs-comment >#  ^ </span>
+					<span class=hljs-comment >#  |	</span>
+	counter = state[<span class=hljs-number >1</span>] <span class=hljs-comment ># &lt;- this has to match with newstate</span>
+	<span class=hljs-keyword >if</span> counter &gt; iter.n
+	    <span class=hljs-keyword >return</span> <span class=hljs-literal >nothing</span>
+	<span class=hljs-keyword >end</span>
+
+	<span class=hljs-comment ># Clever calculations here</span>
+	newitem = foo(...)
+	newstate = (bar(...), ...)     
+	<span class=hljs-comment ># NOTE: the tuples must match up!</span>
+	<span class=hljs-comment ># typeof(newstate) == typeof(state)</span>
+	<span class=hljs-keyword >return</span> newitem, newstate
+
+<span class=hljs-keyword >end</span></code></pre>
 <h3 id=4122020 ><a href="#4122020">4/12/2020</a></h3>
 <ol start=42 >
 <li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p>
