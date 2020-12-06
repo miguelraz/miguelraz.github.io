@@ -53,6 +53,27 @@ julia> function Base.iterate(iter::Fibo, state = (0, (1,1))) # The 0 here will r
        return f1+f2, (state[1]+1, (f1+f2, f1))
        end
 ```
+51. Note about iterators:
+```julia
+function Base.iterate(iter::Fibo, state = ...)
+				        #  ^ 
+					#  |	
+	counter = state[1] # <- this has to match with newstate
+	if counter > iter.n
+	    return nothing
+	end
+
+	# Clever calculations here
+	newitem = foo(...)
+	newstate = (bar(...), ...)     
+	# NOTE: the tuples must match up!
+	# typeof(newstate) == typeof(state)
+	return newitem, newstate
+
+end
+```
+
+
 
 ### 4/12/2020
 
