@@ -1,4 +1,37 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=4122020 ><a href="#4122020">4/12/2020</a></h3> <ol start=42 > <li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p> </ol> <ul> <li><p>Parsing to integers and then applying logic can be done within a regex itself.</p> <li><p>Just check for the actual cases that need to be satisfied with the characters themselves, no need to lift them into ints.</p> <li><p>A good strategy is to separate your cases with <code>|</code> and put a word boundary at the end <code>\b</code>.</p> <li><p>It&#39;s zero allocations&#33;</p> </ul> <pre><code class="julia hljs"><span class=hljs-keyword >const</span> input = split(<span class=hljs-built_in >String</span>(read(<span class=hljs-string >&quot;input&quot;</span>)), <span class=hljs-string >r&quot;\n\n&quot;</span>)
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=5122020 ><a href="#5122020">5/12/2020</a></h3> <ol start=47 > <li><p>Advent of Code just keeps on rocking&#33;</p> <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p> </ol> <pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
+<ol start=49 >
+<li><p>When defining your new types, make sure to use <code>promote_rule</code> appropriately. <code>Exercism:Complex Numbers:</code></p>
+
+</ol>
+<ul>
+<li><p><code>promote_rule&#40;T1, T2&#41; &#61; foo&#40;promote_type&#40;T1,T2&#41;&#41;</code></p>
+
+<li><p>Remember to import <code>Base.abs, Base.exponent, Base.:&#43; ...</code></p>
+
+<li><p>For funsies, try commenting out your <code>zero&#40;x&#41;, one&#40;x&#41;</code> implementations and seeing if yoru algebra still works. &#40;Should work regardless&#33;&#41;</p>
+
+<li><p>You can write <code>import Base: real, imag, conj, &#43;, -, * ...</code> at the top of the file and then do <code>&#43;&#40;x::Complex, y::Complex&#41;</code> without <code>Base.:</code>.</p>
+
+<li><p>Fooling around with rationals is no fun if you don&#39;t know the <code>copysign&#40;x, y&#41;</code> function: takes the magnitude of <code>x</code> with the sign of <code>y</code>. Removes</p>
+
+</ul>
+<p>a lot of hacky logic.</p>
+<h3 id=4122020 ><a href="#4122020">4/12/2020</a></h3>
+<ol start=42 >
+<li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p>
+
+</ol>
+<ul>
+<li><p>Parsing to integers and then applying logic can be done within a regex itself.</p>
+
+<li><p>Just check for the actual cases that need to be satisfied with the characters themselves, no need to lift them into ints.</p>
+
+<li><p>A good strategy is to separate your cases with <code>|</code> and put a word boundary at the end <code>\b</code>.</p>
+
+<li><p>It&#39;s zero allocations&#33;</p>
+
+</ul>
+<pre><code class="julia hljs"><span class=hljs-keyword >const</span> input = split(<span class=hljs-built_in >String</span>(read(<span class=hljs-string >&quot;input&quot;</span>)), <span class=hljs-string >r&quot;\n\n&quot;</span>)
 
 <span class=hljs-keyword >const</span> fields1 = (<span class=hljs-string >r&quot;byr&quot;</span>, <span class=hljs-string >r&quot;iyr&quot;</span>, <span class=hljs-string >r&quot;eyr&quot;</span>, <span class=hljs-string >r&quot;hgt&quot;</span>, <span class=hljs-string >r&quot;hcl&quot;</span>, <span class=hljs-string >r&quot;ecl&quot;</span>, <span class=hljs-string >r&quot;pid&quot;</span>)
 <span class=hljs-keyword >const</span> fields2 = (
@@ -15,14 +48,21 @@
 count(p -&gt; all(t -&gt; contains(p, t), fields1), input)
 
 <span class=hljs-comment ># Part 2</span>
-count(p -&gt; all(t -&gt; contains(p, t), fields2), input)</code></pre> <ol start=43 > <li><p>Instead of </p> </ol> <pre><code class="julia hljs"><span class=hljs-keyword >if</span> !haskey(d, str)
+count(p -&gt; all(t -&gt; contains(p, t), fields2), input)</code></pre>
+<ol start=43 >
+<li><p>Instead of </p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-keyword >if</span> !haskey(d, str)
     d[str] = <span class=hljs-number >1</span>
 <span class=hljs-keyword >elseif</span>
     haskey(d, str)
     d[str] += <span class=hljs-number >1</span>
 <span class=hljs-keyword >else</span> 
     ...
-<span class=hljs-keyword >end</span></code></pre> <p>You can try </p> <pre><code class="julia hljs">d[str] = get(d, s, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span></code></pre>
+<span class=hljs-keyword >end</span></code></pre>
+<p>You can try </p>
+<pre><code class="julia hljs">d[str] = get(d, s, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span></code></pre>
 <ol start=44 >
 <li><p>Revisiting Exercisms is a good way to hone skills. Instead of </p>
 
@@ -454,7 +494,7 @@ end</code></pre>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: December 05, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: December 06, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
