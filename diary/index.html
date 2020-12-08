@@ -1,4 +1,21 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=5122020 ><a href="#5122020">5/12/2020</a></h3> <ol start=47 > <li><p>Advent of Code just keeps on rocking&#33;</p> <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p> </ol> <pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=6122020 ><a href="#6122020">6/12/2020</a></h3> <ol start=51 > <li><p>Advent of Code 7 kicked my butt. HOWEVER&#33; We rocked the parsing with some cool regexes.</p> </ol> <ul> <li><p>I couldn&#39;t solve the first one because I am not familiar with the concept of queues. Or stacks.</p> </ul> <p>Again, Pablo Zubieta coming in with the fire code:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
+    <span class=hljs-comment ># if you only pop and append to the end of vectors, all is good</span>
+    queue = [k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, <span class=hljs-string >&quot;shiny gold&quot;</span>)]
+    found = <span class=hljs-built_in >Set</span>(queue)
+    <span class=hljs-keyword >while</span> !isempty(queue)
+        bag = pop!(queue)
+        new = (k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, bag))
+        union!(found, new) <span class=hljs-comment ># This is better than a push!</span>
+        append!(queue, new)
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> length(found)
+<span class=hljs-keyword >end</span></code></pre> <ul> <li><p>So, the idea is I have <code>pop&#33;</code>, <code>push&#33;</code> and a <code>queue</code>.</p> <li><p>If you have a vector of <code>Pair</code>, you can sum them with <code>sum&#40;last, pairs&#41;</code>.</p> <li><p>For performant regexes <a href="https://www.loggly.com/blog/five-invaluable-techniques-to-improve-regex-performance/">Specificity is king</a></p> <li><p>Teo ShaoWei is using some very concise regexes and a very handy function to return named tuples:</p> </ul> <pre><code class="julia hljs"><span class=hljs-comment ># &quot;nop +0&quot;</span>
+<span class=hljs-comment ># &quot;acc +3&quot;</span>
+<span class=hljs-comment ># &quot;jmp -99&quot; expected inputs</span>
+<span class=hljs-keyword >function</span> parse_input_line(line)
+    m = match(<span class=hljs-string >r&quot;^(\w{3}) ([-+]\d+)$&quot;</span>, line
+    <span class=hljs-keyword >return</span> (op = m[<span class=hljs-number >1</span>], val = parse(<span class=hljs-built_in >Int</span>, m[<span class=hljs-number >2</span>]))
+<span class=hljs-keyword >end</span></code></pre> <p>From this we consider the following:</p> <ol> <li><p>Consider having a function that parses a line at a time and passes a named tuple to the solver.</p> <li><p>Don&#39;t be silly - if you already have code that finds the solution to something in part1... use it in part2. -_-.</p> </ol> <h3 id=5122020 ><a href="#5122020">5/12/2020</a></h3> <ol start=47 > <li><p>Advent of Code just keeps on rocking&#33;</p> <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p> </ol> <pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
 <ol start=49 >
 <li><p>When defining your new types, make sure to use <code>promote_rule</code> appropriately. <code>Exercism:Complex Numbers:</code></p>
 
@@ -560,7 +577,7 @@ end</code></pre>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: December 06, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: December 08, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
