@@ -5,6 +5,45 @@
 
 # Virtual diary for progress on all fronts
 
+### 6/12/2020
+
+51. Advent of Code 7 kicked my butt. HOWEVER! We rocked the parsing with some cool regexes.
+- I couldn't solve the first one because I am not familiar with the concept of queues. Or stacks.
+
+Again, Pablo Zubieta coming in with the fire code:
+```julia
+function fish(d)
+    # if you only pop and append to the end of vectors, all is good
+    queue = [k for (k, v) in d if haskey(v, "shiny gold")]
+    found = Set(queue)
+    while !isempty(queue)
+        bag = pop!(queue)
+        new = (k for (k, v) in d if haskey(v, bag))
+        union!(found, new) # This is better than a push!
+        append!(queue, new)
+    end
+    return length(found)
+end
+```
+- So, the idea is I have `pop!`, `push!` and a `queue`.
+- If you have a vector of `Pair`, you can sum them with `sum(last, pairs)`.
+- For performant regexes [Specificity is king](https://www.loggly.com/blog/five-invaluable-techniques-to-improve-regex-performance/)
+- Teo ShaoWei is using some very concise regexes and a very handy function to return named tuples:
+```julia
+# "nop +0"
+# "acc +3"
+# "jmp -99" expected inputs
+function parse_input_line(line)
+    m = match(r"^(\w{3}) ([-+]\d+)$", line
+    return (op = m[1], val = parse(Int, m[2]))
+end
+```
+From this we consider the following:
+1. Consider having a function that parses a line at a time and passes a named tuple to the solver.
+2. Don't be silly - if you already have code that finds the solution to something in part1... use it in part2. -_-.
+
+
+
 ### 5/12/2020
 
 47. Advent of Code just keeps on rocking!
