@@ -5,6 +5,134 @@
 
 # Virtual diary for progress on all fronts
 
+### 14/12/2020
+
+62. Retaking Matt Bauman's [Parallel workshop from JuliaCon 2019](https://github.com/mbauman/ParallelWorkshop2019/blob/master/040%20Multithreading.jl)
+- Remember to accumulate into `Threads.Atomic{eltype(arr)}(zero(eltype(arr))` if updates are scarce.
+- `Threads.atomic_add!` and friends.
+- 
+
+63. Got pretty well punked by a [Python gotcha](https://twitter.com/DahlitzF/status/1338384990040682498)
+```julia-repl
+julia> IdDict(true => "yes", 1 => "no", 1.0 => "maybe")
+IdDict{Any,String} with 3 entries:
+  true => "yes"
+  1.0  => "maybe"
+  1    => "no"
+```
+Vs
+
+```julia-repl
+julia> Dict(true => "yes", 1 => "no", 1.0 => "maybe") 
+Dict{Real, String} with 1 entry:
+  1.0 => "maybe"
+```
+Fortunately, Stefan was able to convince some of use in  the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy.
+Here's the relevant [implementations](https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553) in the `decompose` function in Base.
+
+Quoting Stefan from the Slack:
+```
+in 0.3 we didn’t hash equal keys the same, we considered the type, but it was really bad
+worst problem was that the type of a dict changed the behavior
+if you had a Dict{Any,String} and you used 1 and 1.0 as keys, they would end up in different slots; if you had a Dict{Float64,String} and you used 1 and 1.0 as keys, they would both end up in the 1.0 slot
+the only ways to avoid that  badness were:
+1. don’t auto-convert keys, which would be really annoying and fussy
+2. figure out a good way to value-based key hashing efficiently
+two major challenges:
+1. make it fast for common types like ints and floats and reasonably fast for things like bigints and rationals
+2. make it extensible so that people implementing their own numeric types can do so correctly
+yes, package authors definitely extend 'Base.decompose' to have proper hashing.
+```
+NICE - [turned the confusion into a PR](https://github.com/JuliaLang/julia/pull/38881)
+
+### 11/12/2020
+
+60. Exercism: Circular Buffer. A few informal interfaces define the ability of Julia to give you a lot of methods for free!
+- `append!, empty!, pop!, pushfirst, setindex!, collect, eltype, first, getindex, isempty, iterate, last, length, size` are all "free" if you can properly subtype `<: AbstractVector`.
+- I didn't need to keep a bunch of tracking vectors - sometimes just 2 Ints to signal where the `Head` (first writeable element) and `tail` first removable element are is enough additional info.
+-
+
+61. Omicron666 from Discord helps out with the syntax for nested for loops/iterations:
+- `[10*i + j for i+1:M for j in i+1:N] # Do the first variable i, then the second without a comma`
+
+### 7/12/2020
+
+52. `parse(Int, "01010101", base=2)` to get a binary number directly is really nifty.
+
+53. Remember to use the `lo, hi = extrema(xs)` function! Credit for a really elegant solution to JLLing.
+
+54. Some really good learning about writing Iterators from [Eric Davies from Invenia](https://julialang.org/blog/2018/07/iterators-in-julia-0.7/)
+- `IterTools.jl` is your friend.
+- You need 2 `iterate` methods. YOu can be clever and use a kwarg, or if you aren't sure of the structure of the `state` arg, use `...`:
+```julia
+function iterate(it::TakeNth, state...)
+    xs_iter = nothing
+
+    for i = 1:it.interval
+        xs_iter = @ifsomething iterate(it.xs, state...)
+        state = Base.tail(xs_iter)
+    end
+
+    return xs_iter
+end
+```
+
+55. To dump a TLA  file into a dot file, use `tlc -dump dot file.dot file.tla`. Then read it with 
+- Hmmmmm Strong connected concurrent components in LightGraphs.jl ? [link here](https://github.com/tlaplus/tlaplus/blob/master/general/docs/contributions.md), [repo here](https://github.com/vbloemen/hong-ufscc)
+
+56. [CodeCosts.jl](https://github.com/kimikage/CodeCosts.jlA) looks REALLLLLY cool for a [JuliaTooling] video soon...
+```julia-repl
+julia> using CodeCosts
+
+julia> f(x::T) where T = convert(T, max(x * 10.0, x / 3))
+f (generic function with 1 method)
+
+julia> @code_costs f(1.0f0)
+CodeCostsInfo(
+     CodeInfo(
+   1 1 ─ %1  = Base.fpext(Base.Float64, x)::Float64
+   4 │   %2  = Base.mul_float(%1, 10.0)::Float64
+  20 │   %3  = Base.div_float(x, 3.0f0)::Float32
+   1 │   %4  = Base.fpext(Base.Float64, %3)::Float64
+   2 │   %5  = Base.lt_float(%2, %4)::Bool
+   1 │   %6  = Base.bitcast(Base.Int64, %4)::Int64
+   1 │   %7  = Base.slt_int(%6, 0)::Bool
+   1 │   %8  = Base.bitcast(Base.Int64, %2)::Int64
+   1 │   %9  = Base.slt_int(%8, 0)::Bool
+   0 │   %10 = Base.not_int(%7)::Bool
+   1 │   %11 = Base.and_int(%9, %10)::Bool
+   1 │   %12 = Base.or_int(%5, %11)::Bool
+   2 │   %13 = Base.ne_float(%2, %2)::Bool
+   1 │   %14 = Base.Math.ifelse(%13, %2, %4)::Float64
+   2 │   %15 = Base.ne_float(%4, %4)::Bool
+   1 │   %16 = Base.Math.ifelse(%15, %4, %2)::Float64
+   1 │   %17 = Base.Math.ifelse(%12, %14, %16)::Float64
+   1 │   %18 = Base.fptrunc(Base.Float32, %17)::Float32
+   0 └──       return %18
+     )
+, CodeCostsSummary(
+     zero:  2|
+    cheap: 12| 111111111111
+   middle: 10| 4===2=2=2=
+expensive: 20| 20==================
+    total: 42| 100 (default threshold)
+))
+```
+
+57. [DP by errichto:](https://www.youtube.com/watch?v=YBSt1jYwVfU)
+- There's identical subproblems (think of the leaves of fibonacci(5))
+- if it doesn't matter how you get to an intermediate state, then the dims of the dynamic program are `dp[N]`, with N states.
+- Then think of the transition.
+- When doing the minimum path sum through an array, take care to a) initialize the edges / boundaries, the first element
+- build a copy of the initial data, and only update after doing the logic for the max/min logic.
+- Brain hurts.
+
+58. [Dynamic prog 2 by errichto](https://www.youtube.com/watch?v=1mtvm2ubHCY):
+- Combination sum problem.
+
+59. TLA challenge for AoC2020!
+
+
 ### 6/12/2020
 
 51. Advent of Code 7 kicked my butt. HOWEVER! We rocked the parsing with some cool regexes.
