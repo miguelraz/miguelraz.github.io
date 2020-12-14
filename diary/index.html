@@ -1,4 +1,62 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=6122020 ><a href="#6122020">6/12/2020</a></h3> <ol start=51 > <li><p>Advent of Code 7 kicked my butt. HOWEVER&#33; We rocked the parsing with some cool regexes.</p> </ol> <ul> <li><p>I couldn&#39;t solve the first one because I am not familiar with the concept of queues. Or stacks.</p> </ul> <p>Again, Pablo Zubieta coming in with the fire code:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=14122020 ><a href="#14122020">14/12/2020</a></h3> <ol start=62 > <li><p>Retaking Matt Bauman&#39;s <a href="https://github.com/mbauman/ParallelWorkshop2019/blob/master/040&#37;20Multithreading.jl">Parallel workshop from JuliaCon 2019</a></p> </ol> <ul> <li><p>Remember to accumulate into <code>Threads.Atomic&#123;eltype&#40;arr&#41;&#125;&#40;zero&#40;eltype&#40;arr&#41;&#41;</code> if updates are scarce.</p> <li><p><code>Threads.atomic_add&#33;</code> and friends.</p> <li> </ul> <ol start=63 > <li><p>Got pretty well punked by a <a href="https://twitter.com/DahlitzF/status/1338384990040682498">Python gotcha</a></p> </ol> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >IdDict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>)
+</span>IdDict{Any,String} with 3 entries:
+  true =&gt; &quot;yes&quot;
+  1.0  =&gt; &quot;maybe&quot;
+  1    =&gt; &quot;no&quot;</code></pre> <p>Vs</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >Dict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>) 
+</span>Dict{Real, String} with 1 entry:
+  1.0 =&gt; &quot;maybe&quot;</code></pre> <p>Fortunately, Stefan was able to convince some of use in the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy. Here&#39;s the relevant <a href="https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553">implementations</a> in the <code>decompose</code> function in Base.</p> <p>Quoting Stefan from the Slack:</p> <pre><code class="julia hljs"><span class=hljs-keyword >in</span> <span class=hljs-number >0.3</span> we didn’t hash equal keys the same, we considered the type, but it was really bad
+worst problem was that the type of a dict changed the behavior
+<span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> different slots; <span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would both <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> the <span class=hljs-number >1.0</span> slot
+the only ways to avoid that  badness were:
+<span class=hljs-number >1.</span> don’t auto-convert keys, which would be really annoying and fussy
+<span class=hljs-number >2.</span> figure out a good way to value-based key hashing efficiently
+two major challenges:
+<span class=hljs-number >1.</span> make it fast <span class=hljs-keyword >for</span> common types like ints and floats and reasonably fast <span class=hljs-keyword >for</span> things like bigints and rationals
+<span class=hljs-number >2.</span> make it extensible so that people implementing their own numeric types can <span class=hljs-keyword >do</span> so correctly
+yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper hashing.</code></pre> <p>NICE - <a href="https://github.com/JuliaLang/julia/pull/38881">turned the confusion into a PR</a></p> <h3 id=11122020 ><a href="#11122020">11/12/2020</a></h3> <ol start=60 > <li><p>Exercism: Circular Buffer. A few informal interfaces define the ability of Julia to give you a lot of methods for free&#33;</p> </ol> <ul> <li><p><code>append&#33;, empty&#33;, pop&#33;, pushfirst, setindex&#33;, collect, eltype, first, getindex, isempty, iterate, last, length, size</code> are all &quot;free&quot; if you can properly subtype <code>&lt;: AbstractVector</code>.</p> <li><p>I didn&#39;t need to keep a bunch of tracking vectors - sometimes just 2 Ints to signal where the <code>Head</code> &#40;first writeable element&#41; and <code>tail</code> first removable element are is enough additional info.</p> <li> </ul> <ol start=61 > <li><p>Omicron666 from Discord helps out with the syntax for nested for loops/iterations:</p> </ol> <ul> <li><p><code>&#91;10*i &#43; j for i&#43;1:M for j in i&#43;1:N&#93; # Do the first variable i, then the second without a comma</code></p> </ul> <h3 id=7122020 ><a href="#7122020">7/12/2020</a></h3> <ol start=52 > <li><p><code>parse&#40;Int, &quot;01010101&quot;, base&#61;2&#41;</code> to get a binary number directly is really nifty.</p> <li><p>Remember to use the <code>lo, hi &#61; extrema&#40;xs&#41;</code> function&#33; Credit for a really elegant solution to JLLing.</p> <li><p>Some really good learning about writing Iterators from <a href="https://julialang.org/blog/2018/07/iterators-in-julia-0.7/">Eric Davies from Invenia</a></p> </ol> <ul> <li><p><code>IterTools.jl</code> is your friend.</p> <li><p>You need 2 <code>iterate</code> methods. YOu can be clever and use a kwarg, or if you aren&#39;t sure of the structure of the <code>state</code> arg, use <code>...</code>:</p> </ul> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> iterate(it::TakeNth, state...)
+    xs_iter = <span class=hljs-literal >nothing</span>
+
+    <span class=hljs-keyword >for</span> i = <span class=hljs-number >1</span>:it.interval
+        xs_iter = <span class=hljs-meta >@ifsomething</span> iterate(it.xs, state...)
+        state = Base.tail(xs_iter)
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-keyword >return</span> xs_iter
+<span class=hljs-keyword >end</span></code></pre> <ol start=55 > <li><p>To dump a TLA file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with </p> </ol> <ul> <li><p>Hmmmmm Strong connected concurrent components in LightGraphs.jl ? <a href="https://github.com/tlaplus/tlaplus/blob/master/general/docs/contributions.md">link here</a>, <a href="https://github.com/vbloemen/hong-ufscc">repo here</a></p> </ul> <ol start=56 > <li><p><a href="https://github.com/kimikage/CodeCosts.jlA">CodeCosts.jl</a> looks REALLLLLY cool for a &#91;JuliaTooling&#93; video soon...</p> </ol> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> CodeCosts
+</span>
+<span class=hljs-meta >julia&gt;</span><span class=julia > f(x::T) <span class=hljs-keyword >where</span> T = convert(T, max(x * <span class=hljs-number >10.0</span>, x / <span class=hljs-number >3</span>))
+</span>f (generic function with 1 method)
+
+<span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-meta >@code_costs</span> f(<span class=hljs-number >1.0f0</span>)
+</span>CodeCostsInfo(
+     CodeInfo(
+   1 1 ─ %1  = Base.fpext(Base.Float64, x)::Float64
+   4 │   %2  = Base.mul_float(%1, 10.0)::Float64
+  20 │   %3  = Base.div_float(x, 3.0f0)::Float32
+   1 │   %4  = Base.fpext(Base.Float64, %3)::Float64
+   2 │   %5  = Base.lt_float(%2, %4)::Bool
+   1 │   %6  = Base.bitcast(Base.Int64, %4)::Int64
+   1 │   %7  = Base.slt_int(%6, 0)::Bool
+   1 │   %8  = Base.bitcast(Base.Int64, %2)::Int64
+   1 │   %9  = Base.slt_int(%8, 0)::Bool
+   0 │   %10 = Base.not_int(%7)::Bool
+   1 │   %11 = Base.and_int(%9, %10)::Bool
+   1 │   %12 = Base.or_int(%5, %11)::Bool
+   2 │   %13 = Base.ne_float(%2, %2)::Bool
+   1 │   %14 = Base.Math.ifelse(%13, %2, %4)::Float64
+   2 │   %15 = Base.ne_float(%4, %4)::Bool
+   1 │   %16 = Base.Math.ifelse(%15, %4, %2)::Float64
+   1 │   %17 = Base.Math.ifelse(%12, %14, %16)::Float64
+   1 │   %18 = Base.fptrunc(Base.Float32, %17)::Float32
+   0 └──       return %18
+     )
+, CodeCostsSummary(
+     zero:  2|
+    cheap: 12| 111111111111
+   middle: 10| 4===2=2=2=
+expensive: 20| 20==================
+    total: 42| 100 (default threshold)
+))</code></pre> <ol start=57 > <li><p><a href="https://www.youtube.com/watch?v&#61;YBSt1jYwVfU">DP by errichto:</a></p> </ol> <ul> <li><p>There&#39;s identical subproblems &#40;think of the leaves of fibonacci&#40;5&#41;&#41;</p> <li><p>if it doesn&#39;t matter how you get to an intermediate state, then the dims of the dynamic program are <code>dp&#91;N&#93;</code>, with N states.</p> <li><p>Then think of the transition.</p> <li><p>When doing the minimum path sum through an array, take care to a&#41; initialize the edges / boundaries, the first element</p> <li><p>build a copy of the initial data, and only update after doing the logic for the max/min logic.</p> <li><p>Brain hurts.</p> </ul> <ol start=58 > <li><p><a href="https://www.youtube.com/watch?v&#61;1mtvm2ubHCY">Dynamic prog 2 by errichto</a>:</p> </ol> <ul> <li><p>Combination sum problem.</p> </ul> <ol start=59 > <li><p>TLA challenge for AoC2020&#33;</p> </ol> <h3 id=6122020 ><a href="#6122020">6/12/2020</a></h3> <ol start=51 > <li><p>Advent of Code 7 kicked my butt. HOWEVER&#33; We rocked the parsing with some cool regexes.</p> </ol> <ul> <li><p>I couldn&#39;t solve the first one because I am not familiar with the concept of queues. Or stacks.</p> </ul> <p>Again, Pablo Zubieta coming in with the fire code:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
     <span class=hljs-comment ># if you only pop and append to the end of vectors, all is good</span>
     queue = [k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, <span class=hljs-string >&quot;shiny gold&quot;</span>)]
     found = <span class=hljs-built_in >Set</span>(queue)
@@ -577,7 +635,7 @@ end</code></pre>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: December 08, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: December 14, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
