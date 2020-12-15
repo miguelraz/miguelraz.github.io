@@ -9,8 +9,43 @@
 
 62. Retaking Matt Bauman's [Parallel workshop from JuliaCon 2019](https://github.com/mbauman/ParallelWorkshop2019/blob/master/040%20Multithreading.jl)
 - Remember to accumulate into `Threads.Atomic{eltype(arr)}(zero(eltype(arr))` if updates are scarce.
-- `Threads.atomic_add!` and friends.
-- 
+- `Threads.atomic_add!` and friends aka `atomic_add!(r, A[i]) == r += A[i]`
+- `using .Threads`
+- Pattern: Initialize an accumulator, write an inner loop (independent for each loop), reduce the results at the end with another for loop
+- BUT! Atomics can't yet handle complex numbers, or structs.
+- Pattern: Make an array the size of the threads, `@threads for i in eachindex(A); R[threadid()] += A[i]`
+There's 3 interesting distinctions for `@sync` and `@async`:
+```julia
+@time for i in 1:10 # takes about 10s
+    sleep(1)
+end
+@time for i in 1:10 # about 0s
+    @async sleep(1)
+end
+@time @sync for i in 1:10 # about 1s
+    @async sleep(1)
+end
+```
+You can `wait` for a task to block until it finishes or `fetch` to initizlize it now.
+
+- `using Distributed`: You have 8 REPLs started on each computer. You gain finer control on which processor communicates with which.
+- `nprocs(), myid(), @everywhere`,
+- useful idiom: `for i in workers(); @spawnat i work(...); end`
+- instead of manually partitioning the space and juggling indexes, try using 
+```julia
+@distributed (+) for r in [(0:9999) .+ offset for offset in 0:10_000:r[end]-1]
+    partial_pi(r)
+end
+```
+- `@distributed` has special support for reductions - to save data movement. Good for reductions.
+- `@pmap` over a reduction like `0:999` and `0:10000:r[end]-1` and then change it to `0:9999` and `0:1000000:r[end]-1` because you reduce the communication. Especially good for expensive inner loops that return a value. Creates a task per item in iter space.
+- `SharedArray` will let all threads concurrently access same array! `using SharedArrays` should Just Work TM. Slower than threads, since you go to disk.
+- Heads up - `SharedArrays` must be bits types - because they need to be Mmapped. Threading like behavior replacement on a single machine.
+- You can initialize an `SharedArray` with an `init` function so that it starts up its own data in a sense.
+- `@sync @distributed` needs to happen to wait for the correct results.
+- `DistributedArray` Every worker has access to a different portion of the array. Let's the data do the work splitting.
+- `fetch(@spawnat 2 A.localpart)` shows the data the DArray `A` has on worker 2.
+- Pluses: Generic arrays, data itself splits the computation.
 
 63. Got pretty well punked by a [Python gotcha](https://twitter.com/DahlitzF/status/1338384990040682498)
 ```julia-repl
@@ -44,6 +79,16 @@ two major challenges:
 yes, package authors definitely extend 'Base.decompose' to have proper hashing.
 ```
 NICE - [turned the confusion into a PR](https://github.com/JuliaLang/julia/pull/38881)
+
+64. Very nice solution to the wordcount exercise: with a `matchall` regex and a `foreach`.
+```julia
+function wordcount(sentence::AbstractString)
+    words = matchall(r"[a-z]+'[a-z]+|[a-z0-9]+", lowercase(sentence))
+    counts = Dict{AbstractString, Int}()
+    foreach(w -> counts[w] = get(counts, w, 0) + 1, words)
+    counts
+end
+```
 
 ### 11/12/2020
 
