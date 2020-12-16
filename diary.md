@@ -5,6 +5,10 @@
 
 # Virtual diary for progress on all fronts
 
+### 15/12/2020
+
+65. Boy oh Boy. I started on DoctorDocstrings.jl. It's gonna be amazing.
+
 ### 14/12/2020
 
 62. Retaking Matt Bauman's [Parallel workshop from JuliaCon 2019](https://github.com/mbauman/ParallelWorkshop2019/blob/master/040%20Multithreading.jl)
