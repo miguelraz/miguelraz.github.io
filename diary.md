@@ -5,6 +5,12 @@
 
 # Virtual diary for progress on all fronts
 
+### 16/12/2020
+
+66. Alex Arslan coming in again with the hot tips: If you want to parse a string into an expression (I need it to call the last REPL history line with `@edit`)
+you can use `Meta.parse("3^2") == :(3 ^ 2)`.
+
+
 ### 15/12/2020
 
 65. Boy oh Boy. I started on DoctorDocstrings.jl. It's gonna be amazing.
@@ -218,7 +224,6 @@ end
 From this we consider the following:
 1. Consider having a function that parses a line at a time and passes a named tuple to the solver.
 2. Don't be silly - if you already have code that finds the solution to something in part1... use it in part2. -_-.
-
 
 
 ### 5/12/2020
