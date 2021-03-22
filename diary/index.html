@@ -1,4 +1,6 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts">Virtual diary for progress on all fronts</a></h1> <h3 id=16122020 ><a href="#16122020">16/12/2020</a></h3> <ol start=66 > <li><p>Alex Arslan coming in again with the hot tips: If you want to parse a string into an expression &#40;I need it to call the last REPL history line with <code>@edit</code>&#41;</p> </ol> <p>you can use <code>Meta.parse&#40;&quot;3^2&quot;&#41; &#61;&#61; :&#40;3 ^ 2&#41;</code>.</p> <h3 id=15122020 ><a href="#15122020">15/12/2020</a></h3> <ol start=65 > <li><p>Boy oh Boy. I started on DoctorDocstrings.jl. It&#39;s gonna be amazing.</p> </ol> <h3 id=14122020 ><a href="#14122020">14/12/2020</a></h3> <ol start=62 > <li><p>Retaking Matt Bauman&#39;s <a href="https://github.com/mbauman/ParallelWorkshop2019/blob/master/040&#37;20Multithreading.jl">Parallel workshop from JuliaCon 2019</a></p> </ol> <ul> <li><p>Remember to accumulate into <code>Threads.Atomic&#123;eltype&#40;arr&#41;&#125;&#40;zero&#40;eltype&#40;arr&#41;&#41;</code> if updates are scarce.</p> <li><p><code>Threads.atomic_add&#33;</code> and friends aka <code>atomic_add&#33;&#40;r, A&#91;i&#93;&#41; &#61;&#61; r &#43;&#61; A&#91;i&#93;</code></p> <li><p><code>using .Threads</code></p> <li><p>Pattern: Initialize an accumulator, write an inner loop &#40;independent for each loop&#41;, reduce the results at the end with another for loop</p> <li><p>BUT&#33; Atomics can&#39;t yet handle complex numbers, or structs.</p> <li><p>Pattern: Make an array the size of the threads, <code>@threads for i in eachindex&#40;A&#41;; R&#91;threadid&#40;&#41;&#93; &#43;&#61; A&#91;i&#93;</code></p> </ul> <p>There&#39;s 3 interesting distinctions for <code>@sync</code> and <code>@async</code>:</p> <pre><code class="julia hljs"><span class=hljs-meta >@time</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># takes about 10s</span>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h2 id=22032021 ><a href="#22032021" class=header-anchor >22/03/2021</a></h2> <ol start=70 > <li><p><code>ArtifactUtils.jl</code> rules&#33; just <code>add_artifact&#33;</code> and you&#39;re almost good to go. </p> <li><p>Need to work with a gajillion files in a folder and map the same transform to them lazily? Use FileTrees.jl for all your multithreaded directed needs&#33;</p> </ol> <h3 id=1732021 ><a href="#1732021" class=header-anchor >17/3/2021</a></h3> <p>So yeah, it&#39;s been a while. Back on the saddle again.</p> <ol start=68 > <li><p><code>Meta.show_sexpr</code> is super cool.</p> <li><p>This works&#33;</p> </ol> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-keyword >for</span> c <span class=hljs-keyword >in</span> <span class=hljs-built_in >IOBuffer</span>(mymultilinestring)
+	foo(c)
+<span class=hljs-keyword >end</span></code></pre> <ol start=70 > <li><p>Project Euler is coming along nicely. I should start on Rubi and put those freaking AdventOfCodeParsing skills to the test...</p> </ol> <h3 id=16122020 ><a href="#16122020" class=header-anchor >16/12/2020</a></h3> <ol start=66 > <li><p>Alex Arslan coming in again with the hot tips: If you want to parse a string into an expression &#40;I need it to call the last REPL history line with <code>@edit</code>&#41;</p> </ol> <p>you can use <code>Meta.parse&#40;&quot;3^2&quot;&#41; &#61;&#61; :&#40;3 ^ 2&#41;</code>.</p> <ol start=67 > <li><p>Whooops. Shipped <code>DoctorDocstrings.jl</code> today. Best way to figure out if you have a bug is to ship it to production. Problem is that the <code>jldoctest</code> expects the output to be <code>display</code>ed just after</p> </ol> <p>the REPL input, so I need to paste the code there. I think I can handle it... <code>display</code> is the function to print to the REPL, btw.</p> <h3 id=15122020 ><a href="#15122020" class=header-anchor >15/12/2020</a></h3> <ol start=65 > <li><p>Boy oh Boy. I started on DoctorDocstrings.jl. It&#39;s gonna be amazing.</p> </ol> <h3 id=14122020 ><a href="#14122020" class=header-anchor >14/12/2020</a></h3> <ol start=62 > <li><p>Retaking Matt Bauman&#39;s <a href="https://github.com/mbauman/ParallelWorkshop2019/blob/master/040&#37;20Multithreading.jl">Parallel workshop from JuliaCon 2019</a></p> </ol> <ul> <li><p>Remember to accumulate into <code>Threads.Atomic&#123;eltype&#40;arr&#41;&#125;&#40;zero&#40;eltype&#40;arr&#41;&#41;</code> if updates are scarce.</p> <li><p><code>Threads.atomic_add&#33;</code> and friends aka <code>atomic_add&#33;&#40;r, A&#91;i&#93;&#41; &#61;&#61; r &#43;&#61; A&#91;i&#93;</code></p> <li><p><code>using .Threads</code></p> <li><p>Pattern: Initialize an accumulator, write an inner loop &#40;independent for each loop&#41;, reduce the results at the end with another for loop</p> <li><p>BUT&#33; Atomics can&#39;t yet handle complex numbers, or structs.</p> <li><p>Pattern: Make an array the size of the threads, <code>@threads for i in eachindex&#40;A&#41;; R&#91;threadid&#40;&#41;&#93; &#43;&#61; A&#91;i&#93;</code></p> </ul> <p>There&#39;s 3 interesting distinctions for <code>@sync</code> and <code>@async</code>:</p> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-meta >@time</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># takes about 10s</span>
     sleep(<span class=hljs-number >1</span>)
 <span class=hljs-keyword >end</span>
 <span class=hljs-meta >@time</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># about 0s</span>
@@ -6,15 +8,15 @@
 <span class=hljs-keyword >end</span>
 <span class=hljs-meta >@time</span> <span class=hljs-meta >@sync</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># about 1s</span>
     <span class=hljs-meta >@async</span> sleep(<span class=hljs-number >1</span>)
-<span class=hljs-keyword >end</span></code></pre> <p>You can <code>wait</code> for a task to block until it finishes or <code>fetch</code> to initizlize it now.</p> <ul> <li><p><code>using Distributed</code>: You have 8 REPLs started on each computer. You gain finer control on which processor communicates with which.</p> <li><p><code>nprocs&#40;&#41;, myid&#40;&#41;, @everywhere</code>,</p> <li><p>useful idiom: <code>for i in workers&#40;&#41;; @spawnat i work&#40;...&#41;; end</code></p> <li><p>instead of manually partitioning the space and juggling indexes, try using </p> </ul> <pre><code class="julia hljs"><span class=hljs-meta >@distributed</span> (+) <span class=hljs-keyword >for</span> r <span class=hljs-keyword >in</span> [(<span class=hljs-number >0</span>:<span class=hljs-number >9999</span>) .+ offset <span class=hljs-keyword >for</span> offset <span class=hljs-keyword >in</span> <span class=hljs-number >0</span>:<span class=hljs-number >10_000</span>:r[<span class=hljs-keyword >end</span>]-<span class=hljs-number >1</span>]
+<span class=hljs-keyword >end</span></code></pre> <p>You can <code>wait</code> for a task to block until it finishes or <code>fetch</code> to initizlize it now.</p> <ul> <li><p><code>using Distributed</code>: You have 8 REPLs started on each computer. You gain finer control on which processor communicates with which.</p> <li><p><code>nprocs&#40;&#41;, myid&#40;&#41;, @everywhere</code>,</p> <li><p>useful idiom: <code>for i in workers&#40;&#41;; @spawnat i work&#40;...&#41;; end</code></p> <li><p>instead of manually partitioning the space and juggling indexes, try using </p> </ul> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-meta >@distributed</span> (+) <span class=hljs-keyword >for</span> r <span class=hljs-keyword >in</span> [(<span class=hljs-number >0</span>:<span class=hljs-number >9999</span>) .+ offset <span class=hljs-keyword >for</span> offset <span class=hljs-keyword >in</span> <span class=hljs-number >0</span>:<span class=hljs-number >10_000</span>:r[<span class=hljs-keyword >end</span>]-<span class=hljs-number >1</span>]
     partial_pi(r)
-<span class=hljs-keyword >end</span></code></pre> <ul> <li><p><code>@distributed</code> has special support for reductions - to save data movement. Good for reductions.</p> <li><p><code>@pmap</code> over a reduction like <code>0:999</code> and <code>0:10000:r&#91;end&#93;-1</code> and then change it to <code>0:9999</code> and <code>0:1000000:r&#91;end&#93;-1</code> because you reduce the communication. Especially good for expensive inner loops that return a value. Creates a task per item in iter space.</p> <li><p><code>SharedArray</code> will let all threads concurrently access same array&#33; <code>using SharedArrays</code> should Just Work TM. Slower than threads, since you go to disk.</p> <li><p>Heads up - <code>SharedArrays</code> must be bits types - because they need to be Mmapped. Threading like behavior replacement on a single machine.</p> <li><p>You can initialize an <code>SharedArray</code> with an <code>init</code> function so that it starts up its own data in a sense.</p> <li><p><code>@sync @distributed</code> needs to happen to wait for the correct results.</p> <li><p><code>DistributedArray</code> Every worker has access to a different portion of the array. Let&#39;s the data do the work splitting.</p> <li><p><code>fetch&#40;@spawnat 2 A.localpart&#41;</code> shows the data the DArray <code>A</code> has on worker 2.</p> <li><p>Pluses: Generic arrays, data itself splits the computation.</p> </ul> <ol start=63 > <li><p>Got pretty well punked by a <a href="https://twitter.com/DahlitzF/status/1338384990040682498">Python gotcha</a></p> </ol> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >IdDict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>)
+<span class=hljs-keyword >end</span></code></pre> <ul> <li><p><code>@distributed</code> has special support for reductions - to save data movement. Good for reductions.</p> <li><p><code>@pmap</code> over a reduction like <code>0:999</code> and <code>0:10000:r&#91;end&#93;-1</code> and then change it to <code>0:9999</code> and <code>0:1000000:r&#91;end&#93;-1</code> because you reduce the communication. Especially good for expensive inner loops that return a value. Creates a task per item in iter space.</p> <li><p><code>SharedArray</code> will let all threads concurrently access same array&#33; <code>using SharedArrays</code> should Just Work TM. Slower than threads, since you go to disk.</p> <li><p>Heads up - <code>SharedArrays</code> must be bits types - because they need to be Mmapped. Threading like behavior replacement on a single machine.</p> <li><p>You can initialize an <code>SharedArray</code> with an <code>init</code> function so that it starts up its own data in a sense.</p> <li><p><code>@sync @distributed</code> needs to happen to wait for the correct results.</p> <li><p><code>DistributedArray</code> Every worker has access to a different portion of the array. Let&#39;s the data do the work splitting.</p> <li><p><code>fetch&#40;@spawnat 2 A.localpart&#41;</code> shows the data the DArray <code>A</code> has on worker 2.</p> <li><p>Pluses: Generic arrays, data itself splits the computation.</p> </ul> <ol start=63 > <li><p>Got pretty well punked by a <a href="https://twitter.com/DahlitzF/status/1338384990040682498">Python gotcha</a></p> </ol> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >IdDict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>)
 </span>IdDict{Any,String} with 3 entries:
   true =&gt; &quot;yes&quot;
   1.0  =&gt; &quot;maybe&quot;
-  1    =&gt; &quot;no&quot;</code></pre> <p>Vs</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >Dict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>) 
+  1    =&gt; &quot;no&quot;</code></pre> <p>Vs</p> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >Dict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>) 
 </span>Dict{Real, String} with 1 entry:
-  1.0 =&gt; &quot;maybe&quot;</code></pre> <p>Fortunately, Stefan was able to convince some of use in the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy. Here&#39;s the relevant <a href="https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553">implementations</a> in the <code>decompose</code> function in Base.</p> <p>Quoting Stefan from the Slack:</p> <pre><code class="julia hljs"><span class=hljs-keyword >in</span> <span class=hljs-number >0.3</span> we didn’t hash equal keys the same, we considered the type, but it was really bad
+  1.0 =&gt; &quot;maybe&quot;</code></pre> <p>Fortunately, Stefan was able to convince some of use in the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy. Here&#39;s the relevant <a href="https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553">implementations</a> in the <code>decompose</code> function in Base.</p> <p>Quoting Stefan from the Slack:</p> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-keyword >in</span> <span class=hljs-number >0.3</span> we didn’t hash equal keys the same, we considered the type, but it was really bad
 worst problem was that the type of a dict changed the behavior
 <span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> different slots; <span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would both <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> the <span class=hljs-number >1.0</span> slot
 the only ways to avoid that  badness were:
@@ -23,12 +25,12 @@ the only ways to avoid that  badness were:
 two major challenges:
 <span class=hljs-number >1.</span> make it fast <span class=hljs-keyword >for</span> common types like ints and floats and reasonably fast <span class=hljs-keyword >for</span> things like bigints and rationals
 <span class=hljs-number >2.</span> make it extensible so that people implementing their own numeric types can <span class=hljs-keyword >do</span> so correctly
-yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper hashing.</code></pre> <p>NICE - <a href="https://github.com/JuliaLang/julia/pull/38881">turned the confusion into a PR</a></p> <ol start=64 > <li><p>Very nice solution to the wordcount exercise: with a <code>matchall</code> regex and a <code>foreach</code>.</p> </ol> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> wordcount(sentence::<span class=hljs-built_in >AbstractString</span>)
+yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper hashing.</code></pre> <p>NICE - <a href="https://github.com/JuliaLang/julia/pull/38881">turned the confusion into a PR</a></p> <ol start=64 > <li><p>Very nice solution to the wordcount exercise: with a <code>matchall</code> regex and a <code>foreach</code>.</p> </ol> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> wordcount(sentence::<span class=hljs-built_in >AbstractString</span>)
     words = matchall(<span class=hljs-string >r&quot;[a-z]+&#x27;[a-z]+|[a-z0-9]+&quot;</span>, lowercase(sentence))
     counts = <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >AbstractString</span>, <span class=hljs-built_in >Int</span>}()
     foreach(w -&gt; counts[w] = get(counts, w, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span>, words)
     counts
-<span class=hljs-keyword >end</span></code></pre> <h3 id=11122020 ><a href="#11122020">11/12/2020</a></h3> <ol start=60 > <li><p>Exercism: Circular Buffer. A few informal interfaces define the ability of Julia to give you a lot of methods for free&#33;</p> </ol> <ul> <li><p><code>append&#33;, empty&#33;, pop&#33;, pushfirst, setindex&#33;, collect, eltype, first, getindex, isempty, iterate, last, length, size</code> are all &quot;free&quot; if you can properly subtype <code>&lt;: AbstractVector</code>.</p> <li><p>I didn&#39;t need to keep a bunch of tracking vectors - sometimes just 2 Ints to signal where the <code>Head</code> &#40;first writeable element&#41; and <code>tail</code> first removable element are is enough additional info.</p> <li> </ul> <ol start=61 > <li><p>Omicron666 from Discord helps out with the syntax for nested for loops/iterations:</p> </ol> <ul> <li><p><code>&#91;10*i &#43; j for i&#43;1:M for j in i&#43;1:N&#93; # Do the first variable i, then the second without a comma</code></p> </ul> <h3 id=7122020 ><a href="#7122020">7/12/2020</a></h3> <ol start=52 > <li><p><code>parse&#40;Int, &quot;01010101&quot;, base&#61;2&#41;</code> to get a binary number directly is really nifty.</p> <li><p>Remember to use the <code>lo, hi &#61; extrema&#40;xs&#41;</code> function&#33; Credit for a really elegant solution to JLLing.</p> <li><p>Some really good learning about writing Iterators from <a href="https://julialang.org/blog/2018/07/iterators-in-julia-0.7/">Eric Davies from Invenia</a></p> </ol> <ul> <li><p><code>IterTools.jl</code> is your friend.</p> <li><p>You need 2 <code>iterate</code> methods. YOu can be clever and use a kwarg, or if you aren&#39;t sure of the structure of the <code>state</code> arg, use <code>...</code>:</p> </ul> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> iterate(it::TakeNth, state...)
+<span class=hljs-keyword >end</span></code></pre> <h3 id=11122020 ><a href="#11122020" class=header-anchor >11/12/2020</a></h3> <ol start=60 > <li><p>Exercism: Circular Buffer. A few informal interfaces define the ability of Julia to give you a lot of methods for free&#33;</p> </ol> <ul> <li><p><code>append&#33;, empty&#33;, pop&#33;, pushfirst, setindex&#33;, collect, eltype, first, getindex, isempty, iterate, last, length, size</code> are all &quot;free&quot; if you can properly subtype <code>&lt;: AbstractVector</code>.</p> <li><p>I didn&#39;t need to keep a bunch of tracking vectors - sometimes just 2 Ints to signal where the <code>Head</code> &#40;first writeable element&#41; and <code>tail</code> first removable element are is enough additional info.</p> <li> </ul> <ol start=61 > <li><p>Omicron666 from Discord helps out with the syntax for nested for loops/iterations:</p> </ol> <ul> <li><p><code>&#91;10*i &#43; j for i&#43;1:M for j in i&#43;1:N&#93; # Do the first variable i, then the second without a comma</code></p> </ul> <h3 id=7122020 ><a href="#7122020" class=header-anchor >7/12/2020</a></h3> <ol start=52 > <li><p><code>parse&#40;Int, &quot;01010101&quot;, base&#61;2&#41;</code> to get a binary number directly is really nifty.</p> <li><p>Remember to use the <code>lo, hi &#61; extrema&#40;xs&#41;</code> function&#33; Credit for a really elegant solution to JLLing.</p> <li><p>Some really good learning about writing Iterators from <a href="https://julialang.org/blog/2018/07/iterators-in-julia-0.7/">Eric Davies from Invenia</a></p> </ol> <ul> <li><p><code>IterTools.jl</code> is your friend.</p> <li><p>You need 2 <code>iterate</code> methods. YOu can be clever and use a kwarg, or if you aren&#39;t sure of the structure of the <code>state</code> arg, use <code>...</code>:</p> </ul> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> iterate(it::TakeNth, state...)
     xs_iter = <span class=hljs-literal >nothing</span>
 
     <span class=hljs-keyword >for</span> i = <span class=hljs-number >1</span>:it.interval
@@ -37,7 +39,7 @@ yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper
     <span class=hljs-keyword >end</span>
 
     <span class=hljs-keyword >return</span> xs_iter
-<span class=hljs-keyword >end</span></code></pre> <ol start=55 > <li><p>To dump a TLA file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with </p> </ol> <ul> <li><p>Hmmmmm Strong connected concurrent components in LightGraphs.jl ? <a href="https://github.com/tlaplus/tlaplus/blob/master/general/docs/contributions.md">link here</a>, <a href="https://github.com/vbloemen/hong-ufscc">repo here</a></p> </ul> <ol start=56 > <li><p><a href="https://github.com/kimikage/CodeCosts.jlA">CodeCosts.jl</a> looks REALLLLLY cool for a &#91;JuliaTooling&#93; video soon...</p> </ol> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> CodeCosts
+<span class=hljs-keyword >end</span></code></pre> <ol start=55 > <li><p>To dump a TLA file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with </p> </ol> <ul> <li><p>Hmmmmm Strong connected concurrent components in LightGraphs.jl ? <a href="https://github.com/tlaplus/tlaplus/blob/master/general/docs/contributions.md">link here</a>, <a href="https://github.com/vbloemen/hong-ufscc">repo here</a></p> </ul> <ol start=56 > <li><p><a href="https://github.com/kimikage/CodeCosts.jlA">CodeCosts.jl</a> looks REALLLLLY cool for a &#91;JuliaTooling&#93; video soon...</p> </ol> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> CodeCosts
 </span>
 <span class=hljs-meta >julia&gt;</span><span class=julia > f(x::T) <span class=hljs-keyword >where</span> T = convert(T, max(x * <span class=hljs-number >10.0</span>, x / <span class=hljs-number >3</span>))
 </span>f (generic function with 1 method)
@@ -71,7 +73,7 @@ yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper
    middle: 10| 4===2=2=2=
 expensive: 20| 20==================
     total: 42| 100 (default threshold)
-))</code></pre> <ol start=57 > <li><p><a href="https://www.youtube.com/watch?v&#61;YBSt1jYwVfU">DP by errichto:</a></p> </ol> <ul> <li><p>There&#39;s identical subproblems &#40;think of the leaves of fibonacci&#40;5&#41;&#41;</p> <li><p>if it doesn&#39;t matter how you get to an intermediate state, then the dims of the dynamic program are <code>dp&#91;N&#93;</code>, with N states.</p> <li><p>Then think of the transition.</p> <li><p>When doing the minimum path sum through an array, take care to a&#41; initialize the edges / boundaries, the first element</p> <li><p>build a copy of the initial data, and only update after doing the logic for the max/min logic.</p> <li><p>Brain hurts.</p> </ul> <ol start=58 > <li><p><a href="https://www.youtube.com/watch?v&#61;1mtvm2ubHCY">Dynamic prog 2 by errichto</a>:</p> </ol> <ul> <li><p>Combination sum problem.</p> </ul> <ol start=59 > <li><p>TLA challenge for AoC2020&#33;</p> </ol> <h3 id=6122020 ><a href="#6122020">6/12/2020</a></h3> <ol start=51 > <li><p>Advent of Code 7 kicked my butt. HOWEVER&#33; We rocked the parsing with some cool regexes.</p> </ol> <ul> <li><p>I couldn&#39;t solve the first one because I am not familiar with the concept of queues. Or stacks.</p> </ul> <p>Again, Pablo Zubieta coming in with the fire code:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
+))</code></pre> <ol start=57 > <li><p><a href="https://www.youtube.com/watch?v&#61;YBSt1jYwVfU">DP by errichto:</a></p> </ol> <ul> <li><p>There&#39;s identical subproblems &#40;think of the leaves of fibonacci&#40;5&#41;&#41;</p> <li><p>if it doesn&#39;t matter how you get to an intermediate state, then the dims of the dynamic program are <code>dp&#91;N&#93;</code>, with N states.</p> <li><p>Then think of the transition.</p> <li><p>When doing the minimum path sum through an array, take care to a&#41; initialize the edges / boundaries, the first element</p> <li><p>build a copy of the initial data, and only update after doing the logic for the max/min logic.</p> <li><p>Brain hurts.</p> </ul> <ol start=58 > <li><p><a href="https://www.youtube.com/watch?v&#61;1mtvm2ubHCY">Dynamic prog 2 by errichto</a>:</p> </ol> <ul> <li><p>Combination sum problem.</p> </ul> <ol start=59 > <li><p>TLA challenge for AoC2020&#33;</p> </ol> <h3 id=6122020 ><a href="#6122020" class=header-anchor >6/12/2020</a></h3> <ol start=51 > <li><p>Advent of Code 7 kicked my butt. HOWEVER&#33; We rocked the parsing with some cool regexes.</p> </ol> <ul> <li><p>I couldn&#39;t solve the first one because I am not familiar with the concept of queues. Or stacks.</p> </ul> <p>Again, Pablo Zubieta coming in with the fire code:</p> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
     <span class=hljs-comment ># if you only pop and append to the end of vectors, all is good</span>
     queue = [k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, <span class=hljs-string >&quot;shiny gold&quot;</span>)]
     found = <span class=hljs-built_in >Set</span>(queue)
@@ -82,13 +84,13 @@ expensive: 20| 20==================
         append!(queue, new)
     <span class=hljs-keyword >end</span>
     <span class=hljs-keyword >return</span> length(found)
-<span class=hljs-keyword >end</span></code></pre> <ul> <li><p>So, the idea is I have <code>pop&#33;</code>, <code>push&#33;</code> and a <code>queue</code>.</p> <li><p>If you have a vector of <code>Pair</code>, you can sum them with <code>sum&#40;last, pairs&#41;</code>.</p> <li><p>For performant regexes <a href="https://www.loggly.com/blog/five-invaluable-techniques-to-improve-regex-performance/">Specificity is king</a></p> <li><p>Teo ShaoWei is using some very concise regexes and a very handy function to return named tuples:</p> </ul> <pre><code class="julia hljs"><span class=hljs-comment ># &quot;nop +0&quot;</span>
+<span class=hljs-keyword >end</span></code></pre> <ul> <li><p>So, the idea is I have <code>pop&#33;</code>, <code>push&#33;</code> and a <code>queue</code>.</p> <li><p>If you have a vector of <code>Pair</code>, you can sum them with <code>sum&#40;last, pairs&#41;</code>.</p> <li><p>For performant regexes <a href="https://www.loggly.com/blog/five-invaluable-techniques-to-improve-regex-performance/">Specificity is king</a></p> <li><p>Teo ShaoWei is using some very concise regexes and a very handy function to return named tuples:</p> </ul> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs"><span class=hljs-comment ># &quot;nop +0&quot;</span>
 <span class=hljs-comment ># &quot;acc +3&quot;</span>
 <span class=hljs-comment ># &quot;jmp -99&quot; expected inputs</span>
 <span class=hljs-keyword >function</span> parse_input_line(line)
     m = match(<span class=hljs-string >r&quot;^(\w{3}) ([-+]\d+)$&quot;</span>, line
     <span class=hljs-keyword >return</span> (op = m[<span class=hljs-number >1</span>], val = parse(<span class=hljs-built_in >Int</span>, m[<span class=hljs-number >2</span>]))
-<span class=hljs-keyword >end</span></code></pre> <p>From this we consider the following:</p> <ol> <li><p>Consider having a function that parses a line at a time and passes a named tuple to the solver.</p> <li><p>Don&#39;t be silly - if you already have code that finds the solution to something in part1... use it in part2. -_-.</p> </ol> <h3 id=5122020 ><a href="#5122020">5/12/2020</a></h3> <ol start=47 > <li><p>Advent of Code just keeps on rocking&#33;</p> <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p> </ol> <pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
+<span class=hljs-keyword >end</span></code></pre> <p>From this we consider the following:</p> <ol> <li><p>Consider having a function that parses a line at a time and passes a named tuple to the solver.</p> <li><p>Don&#39;t be silly - if you already have code that finds the solution to something in part1... use it in part2. -_-.</p> </ol> <h3 id=5122020 ><a href="#5122020" class=header-anchor >5/12/2020</a></h3> <ol start=47 > <li><p>Advent of Code just keeps on rocking&#33;</p> <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p> </ol> Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated. Deprecated as of 10.7.0. Please use highlight(code, options) instead. https://github.com/highlightjs/highlight.js/issues/2277 <pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
 <ol start=49 >
 <li><p>When defining your new types, make sure to use <code>promote_rule</code> appropriately. <code>Exercism:Complex Numbers:</code></p>
 
@@ -114,6 +116,9 @@ expensive: 20| 20==================
 <li><p>If you want to print a custom type, overload <code>show</code> so that it <code>print</code>s what you want</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">To customize human-readable text output <span class=hljs-keyword >for</span> objects of type T, define
   show(io::<span class=hljs-built_in >IO</span>, ::<span class=hljs-string >MIME&quot;text/plain&quot;</span>, ::T) instead. Checking the :compact <span class=hljs-built_in >IOContext</span>
   property of io <span class=hljs-keyword >in</span> such methods is recommended, since some containers show their
@@ -135,6 +140,9 @@ expensive: 20| 20==================
 <li><p>Iteration is ~~hard~~ easier now than before, just figure out how to write the proper</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">iterate(s::CustomSet) = iterate(s.dict)
 iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <ol start=50 >
@@ -145,6 +153,9 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <li><p>LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = (<span class=hljs-number >0</span>, (<span class=hljs-number >1</span>,<span class=hljs-number >1</span>))) <span class=hljs-comment ># The 0 here will represent the &quot;counter&quot; </span>
        <span class=hljs-keyword >if</span> state[<span class=hljs-number >1</span>] &gt; iter.n
            <span class=hljs-keyword >return</span> <span class=hljs-literal >nothing</span>
@@ -156,6 +167,9 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <li><p>Note about iterators:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = ...)
 				        <span class=hljs-comment >#  ^ </span>
 					<span class=hljs-comment >#  |	</span>
@@ -172,7 +186,7 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 	<span class=hljs-keyword >return</span> newitem, newstate
 
 <span class=hljs-keyword >end</span></code></pre>
-<h3 id=4122020 ><a href="#4122020">4/12/2020</a></h3>
+<h3 id=4122020 ><a href="#4122020" class=header-anchor >4/12/2020</a></h3>
 <ol start=42 >
 <li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p>
 
@@ -187,6 +201,9 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <li><p>It&#39;s zero allocations&#33;</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >const</span> input = split(<span class=hljs-built_in >String</span>(read(<span class=hljs-string >&quot;input&quot;</span>)), <span class=hljs-string >r&quot;\n\n&quot;</span>)
 
 <span class=hljs-keyword >const</span> fields1 = (<span class=hljs-string >r&quot;byr&quot;</span>, <span class=hljs-string >r&quot;iyr&quot;</span>, <span class=hljs-string >r&quot;eyr&quot;</span>, <span class=hljs-string >r&quot;hgt&quot;</span>, <span class=hljs-string >r&quot;hcl&quot;</span>, <span class=hljs-string >r&quot;ecl&quot;</span>, <span class=hljs-string >r&quot;pid&quot;</span>)
@@ -209,6 +226,9 @@ count(p -&gt; all(t -&gt; contains(p, t), fields2), input)</code></pre>
 <li><p>Instead of </p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >if</span> !haskey(d, str)
     d[str] = <span class=hljs-number >1</span>
 <span class=hljs-keyword >elseif</span>
@@ -218,11 +238,17 @@ count(p -&gt; all(t -&gt; contains(p, t), fields2), input)</code></pre>
     ...
 <span class=hljs-keyword >end</span></code></pre>
 <p>You can try </p>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">d[str] = get(d, s, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span></code></pre>
 <ol start=44 >
 <li><p>Revisiting Exercisms is a good way to hone skills. Instead of </p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">a, b, c = dict[c[<span class=hljs-number >1</span>]], dict[c[<span class=hljs-number >2</span>]] dict[c[<span class=hljs-number >3</span>]]
 <span class=hljs-comment ># vs</span>
 a, b, c = (dict[c[i]] <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >3</span>)</code></pre>
@@ -232,6 +258,9 @@ a, b, c = (dict[c[i]] <span class=hljs-keyword >for</span> i <span class=hljs-ke
 <li><p>Stacking generators within generators is tricky, but <code>joshua-whittemore</code> has a trick &#40;Exercism-ETL&#41;</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> transform(input::<span class=hljs-built_in >Dict</span>)
     <span class=hljs-built_in >Dict</span>(
          lowercase(letter) =&gt; value
@@ -239,11 +268,14 @@ a, b, c = (dict[c[i]] <span class=hljs-keyword >for</span> i <span class=hljs-ke
          <span class=hljs-keyword >for</span> letter <span class=hljs-keyword >in</span> letters
     )
 <span class=hljs-keyword >end</span></code></pre>
-<h3 id=2122020 ><a href="#2122020">2/12/2020</a></h3>
+<h3 id=2122020 ><a href="#2122020" class=header-anchor >2/12/2020</a></h3>
 <ol start=37 >
 <li><p>Beast of a solution with great help from Colin:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> solutions(str)
     sol1, sol2 = <span class=hljs-number >0</span>, <span class=hljs-number >0</span>
     <span class=hljs-keyword >for</span> line <span class=hljs-keyword >in</span> readlines(str)
@@ -259,6 +291,9 @@ a, b, c = (dict[c[i]] <span class=hljs-keyword >for</span> i <span class=hljs-ke
 <li><p>Regex has many smart functions</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-built_in >Regex</span>(<span class=hljs-string >&quot;[regex]&quot;</span>)
 <span class=hljs-string >r&quot;[regex]&quot;</span>
 match(needle, haystack)
@@ -269,12 +304,18 @@ ismatch(needle, haystack)</code></pre>
 <li><p>If I have <code>str &#61; &quot;Roll On The Floor&quot;</code> and I want to match on each first character to get the acronym, I can use <code>getproperty&#40;m, :match&#41;</code> for that:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">r = eachmatch(<span class=hljs-string >r&quot;\b[a-zA-Z]&quot;</span>, str)
 join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:length(r))</code></pre>
 <ol start=40 >
 <li><p>Count is really nifty:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > xs = <span class=hljs-string >&quot;#..##.&quot;</span>
 </span>&quot;#..##.&quot;
 
@@ -286,7 +327,7 @@ join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span clas
 <li><p>When dealing with parsing strings by hand, split can sometimes give useless empty strings that muck up the analysis later on. Use the <code>kw</code> <code>keepempty&#61;false</code> to get rid of those spurious results&#33; For an example, check the AdventOfCodeDay04 code.</p>
 
 </ol>
-<h3 id=1122020 ><a href="#1122020">1/12/2020</a></h3>
+<h3 id=1122020 ><a href="#1122020" class=header-anchor >1/12/2020</a></h3>
 <ol start=35 >
 <li><p>Advent of code day 01: cool tricks:</p>
 
@@ -299,7 +340,7 @@ join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span clas
 <li><p>Even better, as <code>@tommyxr</code> points out, just do <code>&#61;&#61;&#40;letter&#41;</code>.</p>
 
 </ul>
-<h3 id=21112020 ><a href="#21112020">21/11/2020</a></h3>
+<h3 id=21112020 ><a href="#21112020" class=header-anchor >21/11/2020</a></h3>
 <ol start=33 >
 <li><p>Credit to <code>@Suker</code>: REPL interactivity can be drastically helped &#40;and enhanced with Revise.jl&#41; if you have the following:</p>
 
@@ -318,22 +359,31 @@ join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span clas
 <li><p>To add a new package to the common interface, define the types</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >abstract type</span> AnalyticAlgorithm &lt;: DiffEqBase.AbstractAnalyticAlgorithm</code></pre>
 <ul>
 <li><p>specify type parameters for concrete algos</p>
 
 </ul>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> analytic{Simple} &lt;: AnalyticAlgorithm{Simple} <span class=hljs-keyword >end</span>
 analytic(; simple = <span class=hljs-literal >true</span>) = analytic{simple}()</code></pre>
 <ul>
 <li><p>overload <code>__solve</code> from <code>DiffEqBase.jl</code></p>
 
 </ul>
-<h3 id=19112020 ><a href="#19112020">19/11/2020</a></h3>
+<h3 id=19112020 ><a href="#19112020" class=header-anchor >19/11/2020</a></h3>
 <ol start=31 >
 <li><p>Chris de Graaf suggested instead of using <code>const A &#61; &#91;1&#93;</code>, try using a <code>Ref</code>:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-comment ># access a ref with []</span>
 A = <span class=hljs-built_in >Ref</span>(<span class=hljs-number >0</span>)
 A[] = <span class=hljs-number >1</span>
@@ -343,11 +393,14 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>Execution matters more than hoarding ideas. <a href="https://www.youtube.com/watch?v&#61;dSCBCk4xVa0">Decent Talk by John Cormack</a>. Enjoy the insight high, then get down in the mud and try to bust your own idea.</p>
 
 </ol>
-<h3 id=15112020 ><a href="#15112020">15/11/2020</a></h3>
+<h3 id=15112020 ><a href="#15112020" class=header-anchor >15/11/2020</a></h3>
 <ol start=26 >
 <li><p>Al final empecé el manual en español. Parece que <code>Laura Ventosa</code> va a ser buena mancuerna para este proyecto. Qué chido. La <a href="https://github.com/miguelraz/julia-es-manual">traduccion del manual esta en este link</a>.</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="bash hljs">wc src/index.mc src/manual/getting-started.md src/manual/variables.md
   109   986  7546 src/index.md
   100   731  5084 src/manual/getting-started.md
@@ -372,22 +425,31 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>Oh god. SymbolicUtils.jl can revive IntegralTransforms.jl.</p>
 
 </ol>
-<h3 id=14112020 ><a href="#14112020">14/11/2020</a></h3>
+<h3 id=14112020 ><a href="#14112020" class=header-anchor >14/11/2020</a></h3>
 <ol start=25 >
 <li><p>Found an absolutely amazing post about learning Z3 as if it were <a href="https://www.craigstuntz.com/posts/2015-03-05-provable-optimization-with-microsoft-z3.html">Lisp syntactically</a>.</p>
 
 </ol>
 <p>Should definitely look into this further. I think some Z3 and TLA&#43; are more than enough formal methods for a while... There&#39;s even an online <a href="https://rise4fun.com/Z3/7VZh">editor that seems useful for prototyping</a></p>
-<h3 id=13112020 ><a href="#13112020">13/11/2020</a></h3>
+<h3 id=13112020 ><a href="#13112020" class=header-anchor >13/11/2020</a></h3>
 <ol start=18 >
 <li><p>Counting neighbours / minesweeping? Ran into this problem on the <a href="https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac">Exercsim</a> earlier today:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">sum(arr[i][j] .== <span class=hljs-string >&quot;*&quot;</span>) <span class=hljs-comment >#where j = 1:3</span></code></pre>
 <p>is a no-no. First, we have to remember to compare <code>Char</code>s to <code>Char</code>s, since</p>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-string >&quot;*&quot;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># false</span>
 <span class=hljs-string >&#x27;*&#x27;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># true</span></code></pre>
 <p>A correct approach looks like:</p>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">sum(arr[i][j] == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-keyword >for</span> j <span class=hljs-keyword >in</span> idxs)</code></pre>
 <p>by use of some spiffy generator syntax.</p>
 <ol start=19 >
@@ -401,6 +463,9 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p><a href="https://exercism.io/tracks/julia/exercises/minesweeper/solutions/2c776b090173426eb160cea17a85e536#solution-comment-170293"><code>Vyu</code></a> has an amazing solution for summing up neighbours in a Matrix:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> sumAdjacent(array, xy::<span class=hljs-built_in >CartesianIndex</span>{<span class=hljs-number >2</span>})
     x, y = xy.I
     lenX, lenY = size(array)
@@ -415,6 +480,9 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p><a href="">bovine3dom</a> has a solution for a hypercube minefield:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs"><span class=hljs-comment ># This function works for hypercube minefields too, which is pretty cool.</span>
 <span class=hljs-comment ># If you decide to construct your own hypercube minefield, bear in mind that</span>
 <span class=hljs-comment ># the curse of dimensionality means that mines become useless as the number of</span>
@@ -433,6 +501,9 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>The cleanest minefield answer might be <code>OTDE</code>...</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">annotate(minefield) = [
     replace(
         join(
@@ -458,6 +529,9 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>DID NOT KNOW you could iterate a dictionary if you didn&#39;t care about order:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">samples = <span class=hljs-built_in >Dict</span>(
 	<span class=hljs-string >&quot;I&quot;</span> =&gt; <span class=hljs-number >1</span>,
 	<span class=hljs-string >&quot;II&quot;</span> =&gt; <span class=hljs-number >2</span>,
@@ -466,15 +540,18 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <span class=hljs-keyword >for</span> sample <span class=hljs-keyword >in</span> samples
 	<span class=hljs-meta >@test</span> to_roman(sample[<span class=hljs-number >1</span>]) == sample[<span class=hljs-number >2</span>]
 <span class=hljs-keyword >end</span></code></pre>
-<h3 id=12112020 ><a href="#12112020">12/11/2020</a></h3>
+<h3 id=12112020 ><a href="#12112020" class=header-anchor >12/11/2020</a></h3>
 <ol start=17 >
 <li><p>Invaluable git trick: if you committed some changes locally, but someone else pushed to master, use the <a href="https://cscheng.info/2017/01/26/git-tip-autostash-with-git-pull-rebase.html">auto-rebase autostash trick</a>:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia hljs">git config --<span class=hljs-keyword >global</span> pull.rebase <span class=hljs-literal >true</span>
 git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span class=hljs-literal >true</span></code></pre>
 <p>so that you don&#39;t need to do <code>git pull --rebase --autostash</code> and can just <code>git pull</code>.</p>
-<h3 id=08112020 ><a href="#08112020">08/11/2020</a></h3>
+<h3 id=08112020 ><a href="#08112020" class=header-anchor >08/11/2020</a></h3>
 <ol start=10 >
 <li><p>Try and order starter kit / computer parts from newegg.com</p>
 
@@ -497,26 +574,35 @@ git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span clas
 <li><p>Polytomous recommended <a href=www.taguette.org >&quot;Taguette&quot;</a> for highlighting documents and its open source. Super cool&#33; Should send to Ponzi.</p>
 
 </ol>
-<h3 id=06112020 ><a href="#06112020">06/11/2020</a></h3>
+<h3 id=06112020 ><a href="#06112020" class=header-anchor >06/11/2020</a></h3>
 <ol start=9 >
 <li><p>If you want to make your startup super fast, use <code>PackageCompiler.jl</code>:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> PackageCompiler
 </span><span class=hljs-meta >julia&gt;</span><span class=julia > create_sysimage([:Revise, :OhMyREPL, :BenchmarkTools], replace_default = <span class=hljs-literal >true</span>)</span></code></pre>
 <p>Super charge that combo with the <code>~/.julia/config/startup.jl</code>:</p>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >try</span>
            <span class=hljs-keyword >using</span> Revise
        <span class=hljs-keyword >catch</span> e
 </span>	   @warn(e)
        end</code></pre>
-<h3 id=04112020 ><a href="#04112020">04/11/2020</a></h3>
+<h3 id=04112020 ><a href="#04112020" class=header-anchor >04/11/2020</a></h3>
 <ol start=7 >
 <li><p>Trump is likely gonna lose the election - crazy times. Been working a bit on scaffolding for LightGraphsIO.jl. Solid integration with Parsers.jl will mean a lot of speed coming up for the LightGraphs.jl ecosystem.</p>
 
 <li><p>In order to not get punked by the output of</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > print.(sq(i) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
 </span>14916253649648110010-element Vector{Nothing}:
 nothing
@@ -530,11 +616,14 @@ nothing
 nothing
 nothing</code></pre>
 <p><code>@pabloferz</code> suggested the <code>foreach</code>, which returns a <code>nothing</code>, and thus doesn&#39;t print.</p>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > foreach(x -&gt; println(x^<span class=hljs-number >2</span>), <span class=hljs-number >1</span>:<span class=hljs-number >3</span>:<span class=hljs-number >7</span>)
 </span>1
 9
 49</code></pre>
-<h3 id=31102020 ><a href="#31102020">31/10/2020</a></h3>
+<h3 id=31102020 ><a href="#31102020" class=header-anchor >31/10/2020</a></h3>
 <ol start=6 >
 <li><p>Today I finally got around to rewriting <code>GraphsIO.jl</code>. It suffered from a few ailments:</p>
 
@@ -561,11 +650,14 @@ nothing</code></pre>
 
 </ul>
 <p>Tomorrow I should start something fun with the Parsers.jl library for maximum speedups. Wish me luck&#33;</p>
-<h3 id=29102020 ><a href="#29102020">29/10/2020</a></h3>
+<h3 id=29102020 ><a href="#29102020" class=header-anchor >29/10/2020</a></h3>
 <ol>
 <li><p>Closures&#33; Defining a function within a function is a type of closure. They take variables from one scope above them. <code>@masonprotter</code> and <code>@fredrikekre</code> helped me figure out why having this is desirable:</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> f(x, y, z)
            data = compute(x, y, z)
 </span>
@@ -579,6 +671,9 @@ end</code></pre>
 <li><p>Wow&#33; <a href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping">Function composition and piping</a> lets you do some amazing stuff with <code>\circ&lt;TAB&gt;</code> and friends&#33;</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ +)(<span class=hljs-number >3</span>, <span class=hljs-number >6</span>)
 </span>3.0
 <span class=hljs-meta >julia&gt;</span><span class=julia > map(first ∘ reverse ∘ uppercase, split(<span class=hljs-string >&quot;you can compose functions like this&quot;</span>)
@@ -603,6 +698,9 @@ end</code></pre>
 <li><p>Rust allows for defining anonymous functions&#33;</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="rust hljs"><span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(n: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >String</span> {
 	<span class=hljs-keyword >let</span> is_factor = |f| x % f == <span class=hljs-number >0</span>;
 	...
@@ -611,6 +709,9 @@ end</code></pre>
 <li><p>Rust match is very powerful... try and setup the anonymous functions in a tuple after the <code>match</code> and then filter by <code>&#40;each, available, case&#41; &#61;&gt; action</code>.</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(num: <span class=hljs-built_in >i64</span>) -&gt; <span class=hljs-built_in >String</span> {
     <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut</span> raindrop = <span class=hljs-built_in >String</span>::new();
 
@@ -631,6 +732,9 @@ end</code></pre>
 <li><p>This was a good use of match</p>
 
 </ol>
+Deprecated as of 10.7.0. highlight(lang, code, ...args) has been deprecated.
+Deprecated as of 10.7.0. Please use highlight(code, options) instead.
+https://github.com/highlightjs/highlight.js/issues/2277
 <pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >square</span></span>(s: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >u64</span> {
     <span class=hljs-keyword >match</span> s {
         <span class=hljs-number >1</span>...<span class=hljs-number >64</span> =&gt; <span class=hljs-number >1u64</span>.wrapping_shl(s-<span class=hljs-number >1</span>),
@@ -646,11 +750,11 @@ end</code></pre>
 <span class=hljs-comment >// u64::max_value</span>
 }</code></pre>
 <p>Credit to Wow-BOB-Wow.</p>
-<h3 id=27102020 ><a href="#27102020">27/10/2020</a></h3>
+<h3 id=27102020 ><a href="#27102020" class=header-anchor >27/10/2020</a></h3>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: December 16, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: March 22, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
