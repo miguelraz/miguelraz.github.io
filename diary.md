@@ -5,11 +5,37 @@
 
 # Virtual diary for progress on all fronts
 
+## 22/03/2021
+
+70. `ArtifactUtils.jl` rules! just `add_artifact!` and you're almost good to go. 
+
+71. Need to work with a gajillion files in a folder and map the same transform to them lazily? Use FileTrees.jl for all your multithreaded directed needs!
+
+### 17/3/2021
+
+So yeah, it's been a while. Back on the saddle again.
+
+68. `Meta.show_sexpr` is super cool.
+
+69.  This works!
+
+```julia
+for c in IOBuffer(mymultilinestring)
+	foo(c)
+end
+```
+
+70. Project Euler is coming along nicely. I should start on Rubi and put those freaking AdventOfCodeParsing skills to the test...
+
+
 ### 16/12/2020
 
 66. Alex Arslan coming in again with the hot tips: If you want to parse a string into an expression (I need it to call the last REPL history line with `@edit`)
 you can use `Meta.parse("3^2") == :(3 ^ 2)`.
 
+67. Whooops. Shipped `DoctorDocstrings.jl` today. Best way to figure out if you have a bug is to ship it to production. Problem is that the `jldoctest` expects the output to be `display`ed just after
+the REPL input, so I need to paste the code there. I think I can handle it...
+`display` is the function to print to the REPL, btw.
 
 ### 15/12/2020
 
