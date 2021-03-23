@@ -5,11 +5,26 @@
 
 # Virtual diary for progress on all fronts
 
+### 23/03/2021 
+
+73. Derp - remember, it's `match(regex, string).captures[index]`
+
+74.	`FileTrees` needed a `path(file) |> string` instead of a `File`.
+
+75. This whole thing parses and writes to a JSON3 array within 10 seconds. That rules!
+
+76. To write files into the `MyPkg.jl` directory when activated Sukera suggests
+```julia
+joinpath(@__DIR__, "my_new_file.json")
+```
+
 ## 22/03/2021
 
 70. `ArtifactUtils.jl` rules! just `add_artifact!` and you're almost good to go. 
 
 71. Need to work with a gajillion files in a folder and map the same transform to them lazily? Use FileTrees.jl for all your multithreaded directed needs!
+
+72. Hmmm some of the Rubi rules are ... commented? Hope I don't end up writing a full Mathematica to Julia transpiler...
 
 ### 17/3/2021
 
