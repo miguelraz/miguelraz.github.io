@@ -5,6 +5,24 @@
 
 # Virtual diary for progress on all fronts
 
+# 25/03/2021
+
+78. Instead of `Base.OneTo(n)`, use `axes(A, i)` (Thanks Mason!), like so:
+```julia
+julia> A = [rand() for i in 1:1000, j in 1:1000];julia> function do_add4!(A)
+           n = sizeof(A)[1]
+           for j = Base.OneTo(n)
+               for i = Base.OneTo(n)
+                   @inbounds A[i,j] += 1.0
+               end
+           end
+       end
+```
+
+Chris Elrod mentions that unless the `Base.OneTo` isn't being fed to an inlined function, it doesn't work for much.
+
+79. Mason also recommends `oneunit` instead of `one` as it works with arbitrary number types.
+
 ### 23/03/2021 
 
 73. Derp - remember, it's `match(regex, string).captures[index]`
@@ -17,6 +35,9 @@
 ```julia
 joinpath(@__DIR__, "my_new_file.json")
 ```
+
+77. HELL YES RUBIN.JL LIVESSSS
+
 
 ## 22/03/2021
 
