@@ -5,6 +5,30 @@
 
 # Virtual diary for progress on all fronts
 
+# 31/03/2021
+
+85. Made public advances on Rubin.jl today. Turns out you can call (Within Mathematica)
+`FullForm[Hold[...]]` and that will give you the S-expression for the whole thing.
+
+Now to parse that into Julia full fledged.
+
+# 26/03/2021
+
+81. Apply a `SymbolicUtils.Rewriters.If(cond, rw)` to get the "facts" of our intrules.
+
+82. Somebody can export every single DiffEq method to Fortran with some cleverness and `FortranTarget()` shenanigans in Symbolics.jl hmmmmm
+
+83. `@less @which @edit @functionloc` all work the same!
+
+84. Finally got to forwarding a GitHub fork to a new changes! Here's how:
+```
+git fetch upstream
+git checkout master
+git rebase upstream/master
+git push -f origin master
+```
+Kindly [taken from here](https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa).
+
 # 25/03/2021
 
 78. Instead of `Base.OneTo(n)`, use `axes(A, i)` (Thanks Mason!), like so:
@@ -21,7 +45,17 @@ julia> A = [rand() for i in 1:1000, j in 1:1000];julia> function do_add4!(A)
 
 Chris Elrod mentions that unless the `Base.OneTo` isn't being fed to an inlined function, it doesn't work for much.
 
-79. Mason also recommends `oneunit` instead of `one` as it works with arbitrary number types.
+79. Mason also recommends `oneunit` instead of `one` as it works with arbitrary number types. BORKED though, disregard.
+
+80. This also works:
+
+```julia
+julia> using LoopVectorization
+julia> A = # 1000 x 1000 rand float32s
+julia> @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it
+```
+
+81. I should start contributing more to LoopVectorization.jl...
 
 ### 23/03/2021 
 
