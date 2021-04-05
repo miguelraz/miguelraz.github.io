@@ -5,6 +5,23 @@
 
 # Virtual diary for progress on all fronts
 
+# 05/04/2021 
+
+86. Chris Elrod with the amazing hint that `@code_native` has a `syntax=:intel` or `syntax=:att` flag!
+
+87. Nice idea during the vacation: need to get
+- list of all the conditions passed to the integrator and find a way to shove them into the type system.
+- just ignore the commented rules, they don't pass those cases anyways :/
+- find the first comment symbol "/;", (Only 8 are excluded), and slurp with regex the lhs := rhs /; assumptions
+- make sure to separate the assumptions so that the weird list syntax doesn't creep in.
+
+88. [up](https://github.com/akavel/up) Ultimate Plumber is absolutely amazing at ripgreppin' files and seeing results in real time. Someone rewrite it in Rust already!
+
+My workflow goes like this:
+
+- `cat` a file into up: `cat file.txt | up`
+- setup pipes for grepping and counting `rg "foo" | rg --invert-match "bar" | wc`
+
 # 31/03/2021
 
 85. Made public advances on Rubin.jl today. Turns out you can call (Within Mathematica)
