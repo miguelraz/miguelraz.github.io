@@ -17,6 +17,10 @@
 
 88. [up](https://github.com/akavel/up) Ultimate Plumber is absolutely amazing at ripgreppin' files and seeing results in real time. Someone rewrite it in Rust already!
 
+89. Hmmm - what about just simply checking if there is a `With[...]`, and doing straight string replacement?
+
+90. Don't forget about using `Traceur.jl`!, just drop a `@trace foo(3)` and keep going.
+
 My workflow goes like this:
 
 - `cat` a file into up: `cat file.txt | up`
