@@ -26,6 +26,9 @@ My workflow goes like this:
 - `cat` a file into up: `cat file.txt | up`
 - setup pipes for grepping and counting `rg "foo" | rg --invert-match "bar" | wc`
 
+91. I made a [cool tutorial](https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u=miguelraz) on making a BinaryBuilder.jl recipe for `primecount` a bleeding edge
+algorithm library for counting primes in in C/C++. 
+
 # 31/03/2021
 
 85. Made public advances on Rubin.jl today. Turns out you can call (Within Mathematica)
