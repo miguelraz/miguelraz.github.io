@@ -5,6 +5,12 @@
 
 # Virtual diary for progress on all fronts
 
+92. Woke up to the `primecount_jll` post getting tons of love, awesome! Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.
+
+93. Need to remember the `@doc` macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.
+
+94. Ah right, forgot the `make -j${proc}` flag for a parallel BBuilder recipe, thanks to Mosè for [catching that again](https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files)
+
 # 05/04/2021 
 
 86. Chris Elrod with the amazing hint that `@code_native` has a `syntax=:intel` or `syntax=:att` flag!
