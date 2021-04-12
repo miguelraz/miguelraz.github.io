@@ -1,16 +1,45 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <ol start=92 > <li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p> <li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p> <li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p> </ol> <h1 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021 </a></h1> <ol start=86 > <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p> <li><p>Nice idea during the vacation: need to get</p> </ol> <ul> <li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p> <li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p> <li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p> <li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p> </ul> <ol start=88 > <li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p> <li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p> <li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p> </ol> <p>My workflow goes like this:</p> <ul> <li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p> <li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p> </ul> <ol start=91 > <li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p> </ol> <p>algorithm library for counting primes in in C/C&#43;&#43;. </p> <h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1> <ol start=85 > <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p> </ol> <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p> <p>Now to parse that into Julia full fledged.</p> <h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1> <ol start=81 > <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p> <li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p> <li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p> <li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p> </ol> <pre><code class="julia hljs">git fetch upstream
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2> <ol start=98 > <li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p> </ol> <p>Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.</p> <ol start=99 > <li><p>FINALLY got Lean4 working on VSCode. Still don&#39;t know how to use <code>nix</code> but oh well. Halfway through the manual, and this example was neat to grok:</p> </ol> <pre><code class=language-lean >def add1Times3FilterEven &#40;xs : List Nat&#41; :&#61;
+	-- this 
+	--   List.filter &#40;. &#37; 2 &#61;&#61; 0&#41; &#40;List.map &#40;. * 3&#41; &#40;List.map &#40;. &#43; 1&#41; xs&#41;&#41;
+	-- becomes this
+	--   xs |&gt; List.map &#40;. &#43; 1&#41; |&gt; List.map &#40;. * 3&#41; |&gt; List.filter &#40;. &#37; 2 &#61;&#61; 0&#41;
+	-- becomes THIS&#33;
+	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre> <h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2> <ol start=97 > <li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p> </ol> <pre><code class=language-julia >julia&gt; using primecount_jll
+
+julia&gt; @time run&#40;&#96;&#36;&#40;primecount&#40;&#41;&#41; 1e14&#96;&#41;; # can be 2x allocations in other systems&#33;
+3204941750802
+  0.150116 seconds &#40;468 allocations: 33.891 KiB&#41;</code></pre> <ol start=92 > <li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p> <li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p> <li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p> <li><p>Mosè points out <a href="https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId&#61;9980&amp;view&#61;results">that it&#39;s not too hard to look at the warning logs</a> emmitted from the PR - that&#39;s </p> </ol> <p>how he was ble to spot that <code>CompilerSupportLibraries</code> was missing, and some other warnings needed to be addressed.</p> <ol start=96 > <li><p>How to easily create a function that updates its own internal state? Use a closure&#33; <a href="https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u&#61;miguelraz"> Like this</a></p> </ol> <pre><code class=language-julia >julia&gt; f&#40;state&#61;0&#41; &#61; &#40;&#41;-&gt;state&#43;&#61;1
+f &#40;generic function with 2 methods&#41;
+
+julia&gt; foo &#61; f&#40;&#41;
+#7 &#40;generic function with 1 method&#41;
+
+julia&gt; foo&#40;&#41;
+1
+
+julia&gt; foo&#40;&#41;
+2
+
+julia&gt; foo&#40;&#41;
+3
+
+julia&gt; foo.state
+Core.Box&#40;3&#41;
+
+julia&gt; foo.state.contents
+3</code></pre> <h1 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021 </a></h1> <ol start=86 > <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p> <li><p>Nice idea during the vacation: need to get</p> </ol> <ul> <li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p> <li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p> <li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p> <li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p> </ul> <ol start=88 > <li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p> <li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p> <li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p> </ol> <p>My workflow goes like this:</p> <ul> <li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p> <li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p> </ul> <ol start=91 > <li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p> </ol> <p>algorithm library for counting primes in in C/C&#43;&#43;. </p> <h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1> <ol start=85 > <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p> </ol> <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p> <p>Now to parse that into Julia full fledged.</p> <h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1> <ol start=81 > <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p> <li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p> <li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p> <li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p> </ol> <pre><code class=language-julia >git fetch upstream
 git checkout master
 git rebase upstream/master
-git push -f origin master</code></pre> <p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p> <h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1> <ol start=78 > <li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p> </ol> <pre><code class="julia hljs">julia&gt; A = [rand() <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >1000</span>, j <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >1000</span>];julia&gt; <span class=hljs-keyword >function</span> do_add4!(A)
-           n = sizeof(A)[<span class=hljs-number >1</span>]
-           <span class=hljs-keyword >for</span> j = Base.OneTo(n)
-               <span class=hljs-keyword >for</span> i = Base.OneTo(n)
-                   <span class=hljs-meta >@inbounds</span> A[i,j] += <span class=hljs-number >1.0</span>
-               <span class=hljs-keyword >end</span>
-           <span class=hljs-keyword >end</span>
-       <span class=hljs-keyword >end</span></code></pre> <p>Chris Elrod mentions that unless the <code>Base.OneTo</code> isn&#39;t being fed to an inlined function, it doesn&#39;t work for much.</p> <ol start=79 > <li><p>Mason also recommends <code>oneunit</code> instead of <code>one</code> as it works with arbitrary number types. BORKED though, disregard.</p> <li><p>This also works:</p> </ol> <pre><code class="julia hljs">julia&gt; <span class=hljs-keyword >using</span> LoopVectorization
-julia&gt; A = <span class=hljs-comment ># 1000 x 1000 rand float32s</span>
-julia&gt; <span class=hljs-meta >@avxt</span> A .* <span class=hljs-number >1f0</span> <span class=hljs-comment ># multithreaded and AVX512 on platforms that support it</span></code></pre> <ol start=81 > <li><p>I should start contributing more to LoopVectorization.jl...</p> </ol> <h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021 </a></h3> <ol start=73 > <li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p> </ol> <p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p> <ol start=75 > <li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p> <li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p> </ol> <pre><code class="julia hljs">joinpath(<span class=hljs-meta >@__DIR__</span>, <span class=hljs-string >&quot;my_new_file.json&quot;</span>)</code></pre>
+git push -f origin master</code></pre> <p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p> <h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1> <ol start=78 > <li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p> </ol> <pre><code class=language-julia >julia&gt; A &#61; &#91;rand&#40;&#41; for i in 1:1000, j in 1:1000&#93;;julia&gt; function do_add4&#33;&#40;A&#41;
+           n &#61; sizeof&#40;A&#41;&#91;1&#93;
+           for j &#61; Base.OneTo&#40;n&#41;
+               for i &#61; Base.OneTo&#40;n&#41;
+                   @inbounds A&#91;i,j&#93; &#43;&#61; 1.0
+               end
+           end
+       end</code></pre> <p>Chris Elrod mentions that unless the <code>Base.OneTo</code> isn&#39;t being fed to an inlined function, it doesn&#39;t work for much.</p> <ol start=79 > <li><p>Mason also recommends <code>oneunit</code> instead of <code>one</code> as it works with arbitrary number types. BORKED though, disregard.</p> <li><p>This also works:</p> </ol> <pre><code class=language-julia >julia&gt; using LoopVectorization
+julia&gt; A &#61; # 1000 x 1000 rand float32s
+julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it</code></pre> <ol start=81 > <li><p>I should start contributing more to LoopVectorization.jl...</p> </ol> <h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021 </a></h3> <ol start=73 > <li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p> </ol> <p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p> <ol start=75 > <li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p> <li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p> </ol> <pre><code class=language-julia >joinpath&#40;@__DIR__, &quot;my_new_file.json&quot;&#41;</code></pre>
 <ol start=77 >
 <li><p>HELL YES RUBIN.JL LIVESSSS</p>
 
@@ -32,9 +61,9 @@ julia&gt; <span class=hljs-meta >@avxt</span> A .* <span class=hljs-number >1f0<
 <li><p>This works&#33;</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >for</span> c <span class=hljs-keyword >in</span> <span class=hljs-built_in >IOBuffer</span>(mymultilinestring)
-	foo(c)
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >for c in IOBuffer&#40;mymultilinestring&#41;
+	foo&#40;c&#41;
+end</code></pre>
 <ol start=70 >
 <li><p>Project Euler is coming along nicely. I should start on Rubi and put those freaking AdventOfCodeParsing skills to the test...</p>
 
@@ -75,15 +104,15 @@ julia&gt; <span class=hljs-meta >@avxt</span> A .* <span class=hljs-number >1f0<
 
 </ul>
 <p>There&#39;s 3 interesting distinctions for <code>@sync</code> and <code>@async</code>:</p>
-<pre><code class="julia hljs"><span class=hljs-meta >@time</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># takes about 10s</span>
-    sleep(<span class=hljs-number >1</span>)
-<span class=hljs-keyword >end</span>
-<span class=hljs-meta >@time</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># about 0s</span>
-    <span class=hljs-meta >@async</span> sleep(<span class=hljs-number >1</span>)
-<span class=hljs-keyword >end</span>
-<span class=hljs-meta >@time</span> <span class=hljs-meta >@sync</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span> <span class=hljs-comment ># about 1s</span>
-    <span class=hljs-meta >@async</span> sleep(<span class=hljs-number >1</span>)
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >@time for i in 1:10 # takes about 10s
+    sleep&#40;1&#41;
+end
+@time for i in 1:10 # about 0s
+    @async sleep&#40;1&#41;
+end
+@time @sync for i in 1:10 # about 1s
+    @async sleep&#40;1&#41;
+end</code></pre>
 <p>You can <code>wait</code> for a task to block until it finishes or <code>fetch</code> to initizlize it now.</p>
 <ul>
 <li><p><code>using Distributed</code>: You have 8 REPLs started on each computer. You gain finer control on which processor communicates with which.</p>
@@ -95,9 +124,9 @@ julia&gt; <span class=hljs-meta >@avxt</span> A .* <span class=hljs-number >1f0<
 <li><p>instead of manually partitioning the space and juggling indexes, try using </p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-meta >@distributed</span> (+) <span class=hljs-keyword >for</span> r <span class=hljs-keyword >in</span> [(<span class=hljs-number >0</span>:<span class=hljs-number >9999</span>) .+ offset <span class=hljs-keyword >for</span> offset <span class=hljs-keyword >in</span> <span class=hljs-number >0</span>:<span class=hljs-number >10_000</span>:r[<span class=hljs-keyword >end</span>]-<span class=hljs-number >1</span>]
-    partial_pi(r)
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >@distributed &#40;&#43;&#41; for r in &#91;&#40;0:9999&#41; .&#43; offset for offset in 0:10_000:r&#91;end&#93;-1&#93;
+    partial_pi&#40;r&#41;
+end</code></pre>
 <ul>
 <li><p><code>@distributed</code> has special support for reductions - to save data movement. Good for reductions.</p>
 
@@ -122,38 +151,38 @@ julia&gt; <span class=hljs-meta >@avxt</span> A .* <span class=hljs-number >1f0<
 <li><p>Got pretty well punked by a <a href="https://twitter.com/DahlitzF/status/1338384990040682498">Python gotcha</a></p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >IdDict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>)
-</span>IdDict{Any,String} with 3 entries:
-  true =&gt; &quot;yes&quot;
-  1.0  =&gt; &quot;maybe&quot;
-  1    =&gt; &quot;no&quot;</code></pre>
+<pre><code class=language-julia-repl >julia&gt; IdDict&#40;true &#61;&gt; &quot;yes&quot;, 1 &#61;&gt; &quot;no&quot;, 1.0 &#61;&gt; &quot;maybe&quot;&#41;
+IdDict&#123;Any,String&#125; with 3 entries:
+  true &#61;&gt; &quot;yes&quot;
+  1.0  &#61;&gt; &quot;maybe&quot;
+  1    &#61;&gt; &quot;no&quot;</code></pre>
 <p>Vs</p>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-built_in >Dict</span>(<span class=hljs-literal >true</span> =&gt; <span class=hljs-string >&quot;yes&quot;</span>, <span class=hljs-number >1</span> =&gt; <span class=hljs-string >&quot;no&quot;</span>, <span class=hljs-number >1.0</span> =&gt; <span class=hljs-string >&quot;maybe&quot;</span>) 
-</span>Dict{Real, String} with 1 entry:
-  1.0 =&gt; &quot;maybe&quot;</code></pre>
+<pre><code class=language-julia-repl >julia&gt; Dict&#40;true &#61;&gt; &quot;yes&quot;, 1 &#61;&gt; &quot;no&quot;, 1.0 &#61;&gt; &quot;maybe&quot;&#41; 
+Dict&#123;Real, String&#125; with 1 entry:
+  1.0 &#61;&gt; &quot;maybe&quot;</code></pre>
 <p>Fortunately, Stefan was able to convince some of use in  the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy. Here&#39;s the relevant <a href="https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553">implementations</a> in the <code>decompose</code> function in Base.</p>
 <p>Quoting Stefan from the Slack:</p>
-<pre><code class="julia hljs"><span class=hljs-keyword >in</span> <span class=hljs-number >0.3</span> we didn’t hash equal keys the same, we considered the type, but it was really bad
+<pre><code class=language-julia >in 0.3 we didn’t hash equal keys the same, we considered the type, but it was really bad
 worst problem was that the type of a dict changed the behavior
-<span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> different slots; <span class=hljs-keyword >if</span> you had a <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-built_in >String</span>} and you used <span class=hljs-number >1</span> and <span class=hljs-number >1.0</span> as keys, they would both <span class=hljs-keyword >end</span> up <span class=hljs-keyword >in</span> the <span class=hljs-number >1.0</span> slot
+if you had a Dict&#123;Any,String&#125; and you used 1 and 1.0 as keys, they would end up in different slots; if you had a Dict&#123;Float64,String&#125; and you used 1 and 1.0 as keys, they would both end up in the 1.0 slot
 the only ways to avoid that  badness were:
-<span class=hljs-number >1.</span> don’t auto-convert keys, which would be really annoying and fussy
-<span class=hljs-number >2.</span> figure out a good way to value-based key hashing efficiently
+1. don’t auto-convert keys, which would be really annoying and fussy
+2. figure out a good way to value-based key hashing efficiently
 two major challenges:
-<span class=hljs-number >1.</span> make it fast <span class=hljs-keyword >for</span> common types like ints and floats and reasonably fast <span class=hljs-keyword >for</span> things like bigints and rationals
-<span class=hljs-number >2.</span> make it extensible so that people implementing their own numeric types can <span class=hljs-keyword >do</span> so correctly
-yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper hashing.</code></pre>
+1. make it fast for common types like ints and floats and reasonably fast for things like bigints and rationals
+2. make it extensible so that people implementing their own numeric types can do so correctly
+yes, package authors definitely extend &#39;Base.decompose&#39; to have proper hashing.</code></pre>
 <p>NICE - <a href="https://github.com/JuliaLang/julia/pull/38881">turned the confusion into a PR</a></p>
 <ol start=64 >
 <li><p>Very nice solution to the wordcount exercise: with a <code>matchall</code> regex and a <code>foreach</code>.</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> wordcount(sentence::<span class=hljs-built_in >AbstractString</span>)
-    words = matchall(<span class=hljs-string >r&quot;[a-z]+&#x27;[a-z]+|[a-z0-9]+&quot;</span>, lowercase(sentence))
-    counts = <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >AbstractString</span>, <span class=hljs-built_in >Int</span>}()
-    foreach(w -&gt; counts[w] = get(counts, w, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span>, words)
+<pre><code class=language-julia >function wordcount&#40;sentence::AbstractString&#41;
+    words &#61; matchall&#40;r&quot;&#91;a-z&#93;&#43;&#39;&#91;a-z&#93;&#43;|&#91;a-z0-9&#93;&#43;&quot;, lowercase&#40;sentence&#41;&#41;
+    counts &#61; Dict&#123;AbstractString, Int&#125;&#40;&#41;
+    foreach&#40;w -&gt; counts&#91;w&#93; &#61; get&#40;counts, w, 0&#41; &#43; 1, words&#41;
     counts
-<span class=hljs-keyword >end</span></code></pre>
+end</code></pre>
 <h3 id=11122020 ><a href="#11122020" class=header-anchor >11/12/2020</a></h3>
 <ol start=60 >
 <li><p>Exercism: Circular Buffer. A few informal interfaces define the ability of Julia to give you a lot of methods for free&#33;</p>
@@ -189,16 +218,16 @@ yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper
 <li><p>You need 2 <code>iterate</code> methods. YOu can be clever and use a kwarg, or if you aren&#39;t sure of the structure of the <code>state</code> arg, use <code>...</code>:</p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> iterate(it::TakeNth, state...)
-    xs_iter = <span class=hljs-literal >nothing</span>
+<pre><code class=language-julia >function iterate&#40;it::TakeNth, state...&#41;
+    xs_iter &#61; nothing
 
-    <span class=hljs-keyword >for</span> i = <span class=hljs-number >1</span>:it.interval
-        xs_iter = <span class=hljs-meta >@ifsomething</span> iterate(it.xs, state...)
-        state = Base.tail(xs_iter)
-    <span class=hljs-keyword >end</span>
+    for i &#61; 1:it.interval
+        xs_iter &#61; @ifsomething iterate&#40;it.xs, state...&#41;
+        state &#61; Base.tail&#40;xs_iter&#41;
+    end
 
-    <span class=hljs-keyword >return</span> xs_iter
-<span class=hljs-keyword >end</span></code></pre>
+    return xs_iter
+end</code></pre>
 <ol start=55 >
 <li><p>To dump a TLA  file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with </p>
 
@@ -211,41 +240,41 @@ yes, package authors definitely extend &#x27;Base.decompose&#x27; to have proper
 <li><p><a href="https://github.com/kimikage/CodeCosts.jlA">CodeCosts.jl</a> looks REALLLLLY cool for a &#91;JuliaTooling&#93; video soon...</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> CodeCosts
-</span>
-<span class=hljs-meta >julia&gt;</span><span class=julia > f(x::T) <span class=hljs-keyword >where</span> T = convert(T, max(x * <span class=hljs-number >10.0</span>, x / <span class=hljs-number >3</span>))
-</span>f (generic function with 1 method)
+<pre><code class=language-julia-repl >julia&gt; using CodeCosts
 
-<span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-meta >@code_costs</span> f(<span class=hljs-number >1.0f0</span>)
-</span>CodeCostsInfo(
-     CodeInfo(
-   1 1 ─ %1  = Base.fpext(Base.Float64, x)::Float64
-   4 │   %2  = Base.mul_float(%1, 10.0)::Float64
-  20 │   %3  = Base.div_float(x, 3.0f0)::Float32
-   1 │   %4  = Base.fpext(Base.Float64, %3)::Float64
-   2 │   %5  = Base.lt_float(%2, %4)::Bool
-   1 │   %6  = Base.bitcast(Base.Int64, %4)::Int64
-   1 │   %7  = Base.slt_int(%6, 0)::Bool
-   1 │   %8  = Base.bitcast(Base.Int64, %2)::Int64
-   1 │   %9  = Base.slt_int(%8, 0)::Bool
-   0 │   %10 = Base.not_int(%7)::Bool
-   1 │   %11 = Base.and_int(%9, %10)::Bool
-   1 │   %12 = Base.or_int(%5, %11)::Bool
-   2 │   %13 = Base.ne_float(%2, %2)::Bool
-   1 │   %14 = Base.Math.ifelse(%13, %2, %4)::Float64
-   2 │   %15 = Base.ne_float(%4, %4)::Bool
-   1 │   %16 = Base.Math.ifelse(%15, %4, %2)::Float64
-   1 │   %17 = Base.Math.ifelse(%12, %14, %16)::Float64
-   1 │   %18 = Base.fptrunc(Base.Float32, %17)::Float32
-   0 └──       return %18
-     )
-, CodeCostsSummary(
+julia&gt; f&#40;x::T&#41; where T &#61; convert&#40;T, max&#40;x * 10.0, x / 3&#41;&#41;
+f &#40;generic function with 1 method&#41;
+
+julia&gt; @code_costs f&#40;1.0f0&#41;
+CodeCostsInfo&#40;
+     CodeInfo&#40;
+   1 1 ─ &#37;1  &#61; Base.fpext&#40;Base.Float64, x&#41;::Float64
+   4 │   &#37;2  &#61; Base.mul_float&#40;&#37;1, 10.0&#41;::Float64
+  20 │   &#37;3  &#61; Base.div_float&#40;x, 3.0f0&#41;::Float32
+   1 │   &#37;4  &#61; Base.fpext&#40;Base.Float64, &#37;3&#41;::Float64
+   2 │   &#37;5  &#61; Base.lt_float&#40;&#37;2, &#37;4&#41;::Bool
+   1 │   &#37;6  &#61; Base.bitcast&#40;Base.Int64, &#37;4&#41;::Int64
+   1 │   &#37;7  &#61; Base.slt_int&#40;&#37;6, 0&#41;::Bool
+   1 │   &#37;8  &#61; Base.bitcast&#40;Base.Int64, &#37;2&#41;::Int64
+   1 │   &#37;9  &#61; Base.slt_int&#40;&#37;8, 0&#41;::Bool
+   0 │   &#37;10 &#61; Base.not_int&#40;&#37;7&#41;::Bool
+   1 │   &#37;11 &#61; Base.and_int&#40;&#37;9, &#37;10&#41;::Bool
+   1 │   &#37;12 &#61; Base.or_int&#40;&#37;5, &#37;11&#41;::Bool
+   2 │   &#37;13 &#61; Base.ne_float&#40;&#37;2, &#37;2&#41;::Bool
+   1 │   &#37;14 &#61; Base.Math.ifelse&#40;&#37;13, &#37;2, &#37;4&#41;::Float64
+   2 │   &#37;15 &#61; Base.ne_float&#40;&#37;4, &#37;4&#41;::Bool
+   1 │   &#37;16 &#61; Base.Math.ifelse&#40;&#37;15, &#37;4, &#37;2&#41;::Float64
+   1 │   &#37;17 &#61; Base.Math.ifelse&#40;&#37;12, &#37;14, &#37;16&#41;::Float64
+   1 │   &#37;18 &#61; Base.fptrunc&#40;Base.Float32, &#37;17&#41;::Float32
+   0 └──       return &#37;18
+     &#41;
+, CodeCostsSummary&#40;
      zero:  2|
     cheap: 12| 111111111111
-   middle: 10| 4===2=2=2=
-expensive: 20| 20==================
-    total: 42| 100 (default threshold)
-))</code></pre>
+   middle: 10| 4&#61;&#61;&#61;2&#61;2&#61;2&#61;
+expensive: 20| 20&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+    total: 42| 100 &#40;default threshold&#41;
+&#41;&#41;</code></pre>
 <ol start=57 >
 <li><p><a href="https://www.youtube.com/watch?v&#61;YBSt1jYwVfU">DP by errichto:</a></p>
 
@@ -286,18 +315,18 @@ expensive: 20| 20==================
 
 </ul>
 <p>Again, Pablo Zubieta coming in with the fire code:</p>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> fish(d)
-    <span class=hljs-comment ># if you only pop and append to the end of vectors, all is good</span>
-    queue = [k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, <span class=hljs-string >&quot;shiny gold&quot;</span>)]
-    found = <span class=hljs-built_in >Set</span>(queue)
-    <span class=hljs-keyword >while</span> !isempty(queue)
-        bag = pop!(queue)
-        new = (k <span class=hljs-keyword >for</span> (k, v) <span class=hljs-keyword >in</span> d <span class=hljs-keyword >if</span> haskey(v, bag))
-        union!(found, new) <span class=hljs-comment ># This is better than a push!</span>
-        append!(queue, new)
-    <span class=hljs-keyword >end</span>
-    <span class=hljs-keyword >return</span> length(found)
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >function fish&#40;d&#41;
+    # if you only pop and append to the end of vectors, all is good
+    queue &#61; &#91;k for &#40;k, v&#41; in d if haskey&#40;v, &quot;shiny gold&quot;&#41;&#93;
+    found &#61; Set&#40;queue&#41;
+    while &#33;isempty&#40;queue&#41;
+        bag &#61; pop&#33;&#40;queue&#41;
+        new &#61; &#40;k for &#40;k, v&#41; in d if haskey&#40;v, bag&#41;&#41;
+        union&#33;&#40;found, new&#41; # This is better than a push&#33;
+        append&#33;&#40;queue, new&#41;
+    end
+    return length&#40;found&#41;
+end</code></pre>
 <ul>
 <li><p>So, the idea is I have <code>pop&#33;</code>, <code>push&#33;</code> and a <code>queue</code>.</p>
 
@@ -308,13 +337,13 @@ expensive: 20| 20==================
 <li><p>Teo ShaoWei is using some very concise regexes and a very handy function to return named tuples:</p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-comment ># &quot;nop +0&quot;</span>
-<span class=hljs-comment ># &quot;acc +3&quot;</span>
-<span class=hljs-comment ># &quot;jmp -99&quot; expected inputs</span>
-<span class=hljs-keyword >function</span> parse_input_line(line)
-    m = match(<span class=hljs-string >r&quot;^(\w{3}) ([-+]\d+)$&quot;</span>, line
-    <span class=hljs-keyword >return</span> (op = m[<span class=hljs-number >1</span>], val = parse(<span class=hljs-built_in >Int</span>, m[<span class=hljs-number >2</span>]))
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia ># &quot;nop &#43;0&quot;
+# &quot;acc &#43;3&quot;
+# &quot;jmp -99&quot; expected inputs
+function parse_input_line&#40;line&#41;
+    m &#61; match&#40;r&quot;^&#40;\w&#123;3&#125;&#41; &#40;&#91;-&#43;&#93;\d&#43;&#41;&#36;&quot;, line
+    return &#40;op &#61; m&#91;1&#93;, val &#61; parse&#40;Int, m&#91;2&#93;&#41;&#41;
+end</code></pre>
 <p>From this we consider the following:</p>
 <ol>
 <li><p>Consider having a function that parses a line at a time and passes a named tuple to the solver.</p>
@@ -329,7 +358,7 @@ expensive: 20| 20==================
 <li><p>Exericisms review: checking if something is an isogram &#40;no repeated letters&#41;:</p>
 
 </ol>
-<pre><code class="julia hljs">isisogram(s) = allunique(i <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> lowercase(s) <span class=hljs-keyword >if</span> isletter(i))</code></pre>
+<pre><code class=language-julia >isisogram&#40;s&#41; &#61; allunique&#40;i for i in lowercase&#40;s&#41; if isletter&#40;i&#41;&#41;</code></pre>
 <ol start=49 >
 <li><p>When defining your new types, make sure to use <code>promote_rule</code> appropriately. <code>Exercism:Complex Numbers:</code></p>
 
@@ -355,10 +384,10 @@ expensive: 20| 20==================
 <li><p>If you want to print a custom type, overload <code>show</code> so that it <code>print</code>s what you want</p>
 
 </ul>
-<pre><code class="julia hljs">To customize human-readable text output <span class=hljs-keyword >for</span> objects of type T, define
-  show(io::<span class=hljs-built_in >IO</span>, ::<span class=hljs-string >MIME&quot;text/plain&quot;</span>, ::T) instead. Checking the :compact <span class=hljs-built_in >IOContext</span>
-  property of io <span class=hljs-keyword >in</span> such methods is recommended, since some containers show their
-  elements by calling this method with :compact =&gt; <span class=hljs-literal >true</span>.</code></pre>
+<pre><code class=language-julia >To customize human-readable text output for objects of type T, define
+  show&#40;io::IO, ::MIME&quot;text/plain&quot;, ::T&#41; instead. Checking the :compact IOContext
+  property of io in such methods is recommended, since some containers show their
+  elements by calling this method with :compact &#61;&gt; true.</code></pre>
 <ul>
 <li><p><code>show&#40;io::IO, x::RationalNumber&#41; &#61; print&#40;io, num&#40;x&#41;,&quot;//&quot;,den&#40;x&#41;&#41;</code></p>
 
@@ -376,8 +405,8 @@ expensive: 20| 20==================
 <li><p>Iteration is ~~hard~~ easier now than before, just figure out how to write the proper</p>
 
 </ul>
-<pre><code class="julia hljs">iterate(s::CustomSet) = iterate(s.dict)
-iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
+<pre><code class=language-julia >iterate&#40;s::CustomSet&#41; &#61; iterate&#40;s.dict&#41;
+iterate&#40;s::CustomSet, el&#41; &#61; iterate&#40;s.dict, el&#41;</code></pre>
 <ol start=50 >
 <li><p>Iterators galore&#33; We had massive help from Sascha and Fliksel:</p>
 
@@ -386,33 +415,33 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <li><p>LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE</p>
 
 </ul>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = (<span class=hljs-number >0</span>, (<span class=hljs-number >1</span>,<span class=hljs-number >1</span>))) <span class=hljs-comment ># The 0 here will represent the &quot;counter&quot; </span>
-       <span class=hljs-keyword >if</span> state[<span class=hljs-number >1</span>] &gt; iter.n
-           <span class=hljs-keyword >return</span> <span class=hljs-literal >nothing</span>
-       <span class=hljs-keyword >end</span>
-       f1, f2 = state[<span class=hljs-number >2</span>]
-       <span class=hljs-keyword >return</span> f1+f2, (state[<span class=hljs-number >1</span>]+<span class=hljs-number >1</span>, (f1+f2, f1))
-       <span class=hljs-keyword >end</span></span></code></pre>
+<pre><code class=language-julia-repl >julia&gt; function Base.iterate&#40;iter::Fibo, state &#61; &#40;0, &#40;1,1&#41;&#41;&#41; # The 0 here will represent the &quot;counter&quot; 
+       if state&#91;1&#93; &gt; iter.n
+           return nothing
+       end
+       f1, f2 &#61; state&#91;2&#93;
+       return f1&#43;f2, &#40;state&#91;1&#93;&#43;1, &#40;f1&#43;f2, f1&#41;&#41;
+       end</code></pre>
 <ol start=51 >
 <li><p>Note about iterators:</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> Base.iterate(iter::Fibo, state = ...)
-				        <span class=hljs-comment >#  ^ </span>
-					<span class=hljs-comment >#  |	</span>
-	counter = state[<span class=hljs-number >1</span>] <span class=hljs-comment ># &lt;- this has to match with newstate</span>
-	<span class=hljs-keyword >if</span> counter &gt; iter.n
-	    <span class=hljs-keyword >return</span> <span class=hljs-literal >nothing</span>
-	<span class=hljs-keyword >end</span>
+<pre><code class=language-julia >function Base.iterate&#40;iter::Fibo, state &#61; ...&#41;
+				        #  ^ 
+					#  |	
+	counter &#61; state&#91;1&#93; # &lt;- this has to match with newstate
+	if counter &gt; iter.n
+	    return nothing
+	end
 
-	<span class=hljs-comment ># Clever calculations here</span>
-	newitem = foo(...)
-	newstate = (bar(...), ...)     
-	<span class=hljs-comment ># NOTE: the tuples must match up!</span>
-	<span class=hljs-comment ># typeof(newstate) == typeof(state)</span>
-	<span class=hljs-keyword >return</span> newitem, newstate
+	# Clever calculations here
+	newitem &#61; foo&#40;...&#41;
+	newstate &#61; &#40;bar&#40;...&#41;, ...&#41;     
+	# NOTE: the tuples must match up&#33;
+	# typeof&#40;newstate&#41; &#61;&#61; typeof&#40;state&#41;
+	return newitem, newstate
 
-<span class=hljs-keyword >end</span></code></pre>
+end</code></pre>
 <h3 id=4122020 ><a href="#4122020" class=header-anchor >4/12/2020</a></h3>
 <ol start=42 >
 <li><p>Pablo Zubieta just absolutely shreked his Advent of Code Day04 problem: here&#39;s the learnings.</p>
@@ -428,99 +457,99 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)</code></pre>
 <li><p>It&#39;s zero allocations&#33;</p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-keyword >const</span> input = split(<span class=hljs-built_in >String</span>(read(<span class=hljs-string >&quot;input&quot;</span>)), <span class=hljs-string >r&quot;\n\n&quot;</span>)
+<pre><code class=language-julia >const input &#61; split&#40;String&#40;read&#40;&quot;input&quot;&#41;&#41;, r&quot;\n\n&quot;&#41;
 
-<span class=hljs-keyword >const</span> fields1 = (<span class=hljs-string >r&quot;byr&quot;</span>, <span class=hljs-string >r&quot;iyr&quot;</span>, <span class=hljs-string >r&quot;eyr&quot;</span>, <span class=hljs-string >r&quot;hgt&quot;</span>, <span class=hljs-string >r&quot;hcl&quot;</span>, <span class=hljs-string >r&quot;ecl&quot;</span>, <span class=hljs-string >r&quot;pid&quot;</span>)
-<span class=hljs-keyword >const</span> fields2 = (
-    <span class=hljs-string >r&quot;byr:(19[2-9][0-9]|200[0-2])\b&quot;</span>,
-    <span class=hljs-string >r&quot;iyr:20(1[0-9]|20)\b&quot;</span>,
-    <span class=hljs-string >r&quot;eyr:20(2[0-9]|30)\b&quot;</span>,
-    <span class=hljs-string >r&quot;hgt:(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)\b&quot;</span>,
-    <span class=hljs-string >r&quot;hcl:#[0-9a-f]{6}\b&quot;</span>,
-    <span class=hljs-string >r&quot;ecl:(amb|blu|brn|gry|grn|hzl|oth)\b&quot;</span>,
-    <span class=hljs-string >r&quot;pid:\d{9}\b&quot;</span>
-)
+const fields1 &#61; &#40;r&quot;byr&quot;, r&quot;iyr&quot;, r&quot;eyr&quot;, r&quot;hgt&quot;, r&quot;hcl&quot;, r&quot;ecl&quot;, r&quot;pid&quot;&#41;
+const fields2 &#61; &#40;
+    r&quot;byr:&#40;19&#91;2-9&#93;&#91;0-9&#93;|200&#91;0-2&#93;&#41;\b&quot;,
+    r&quot;iyr:20&#40;1&#91;0-9&#93;|20&#41;\b&quot;,
+    r&quot;eyr:20&#40;2&#91;0-9&#93;|30&#41;\b&quot;,
+    r&quot;hgt:&#40;1&#40;&#91;5-8&#93;&#91;0-9&#93;|9&#91;0-3&#93;&#41;cm|&#40;59|6&#91;0-9&#93;|7&#91;0-6&#93;&#41;in&#41;\b&quot;,
+    r&quot;hcl:#&#91;0-9a-f&#93;&#123;6&#125;\b&quot;,
+    r&quot;ecl:&#40;amb|blu|brn|gry|grn|hzl|oth&#41;\b&quot;,
+    r&quot;pid:\d&#123;9&#125;\b&quot;
+&#41;
 
-<span class=hljs-comment ># Part 1</span>
-count(p -&gt; all(t -&gt; contains(p, t), fields1), input)
+# Part 1
+count&#40;p -&gt; all&#40;t -&gt; contains&#40;p, t&#41;, fields1&#41;, input&#41;
 
-<span class=hljs-comment ># Part 2</span>
-count(p -&gt; all(t -&gt; contains(p, t), fields2), input)</code></pre>
+# Part 2
+count&#40;p -&gt; all&#40;t -&gt; contains&#40;p, t&#41;, fields2&#41;, input&#41;</code></pre>
 <ol start=43 >
 <li><p>Instead of </p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >if</span> !haskey(d, str)
-    d[str] = <span class=hljs-number >1</span>
-<span class=hljs-keyword >elseif</span>
-    haskey(d, str)
-    d[str] += <span class=hljs-number >1</span>
-<span class=hljs-keyword >else</span> 
+<pre><code class=language-julia >if &#33;haskey&#40;d, str&#41;
+    d&#91;str&#93; &#61; 1
+elseif
+    haskey&#40;d, str&#41;
+    d&#91;str&#93; &#43;&#61; 1
+else 
     ...
-<span class=hljs-keyword >end</span></code></pre>
+end</code></pre>
 <p>You can try </p>
-<pre><code class="julia hljs">d[str] = get(d, s, <span class=hljs-number >0</span>) + <span class=hljs-number >1</span></code></pre>
+<pre><code class=language-julia >d&#91;str&#93; &#61; get&#40;d, s, 0&#41; &#43; 1</code></pre>
 <ol start=44 >
 <li><p>Revisiting Exercisms is a good way to hone skills. Instead of </p>
 
 </ol>
-<pre><code class="julia hljs">a, b, c = dict[c[<span class=hljs-number >1</span>]], dict[c[<span class=hljs-number >2</span>]] dict[c[<span class=hljs-number >3</span>]]
-<span class=hljs-comment ># vs</span>
-a, b, c = (dict[c[i]] <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >3</span>)</code></pre>
+<pre><code class=language-julia >a, b, c &#61; dict&#91;c&#91;1&#93;&#93;, dict&#91;c&#91;2&#93;&#93; dict&#91;c&#91;3&#93;&#93;
+# vs
+a, b, c &#61; &#40;dict&#91;c&#91;i&#93;&#93; for i in 1:3&#41;</code></pre>
 <ol start=45 >
 <li><p>Remember to check for type instabilities in the code with <code>@code_warntype</code>.</p>
 
 <li><p>Stacking generators within generators is tricky, but <code>joshua-whittemore</code> has a trick &#40;Exercism-ETL&#41;</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> transform(input::<span class=hljs-built_in >Dict</span>)
-    <span class=hljs-built_in >Dict</span>(
-         lowercase(letter) =&gt; value
-         <span class=hljs-keyword >for</span> (value, letters) <span class=hljs-keyword >in</span> input
-         <span class=hljs-keyword >for</span> letter <span class=hljs-keyword >in</span> letters
-    )
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >function transform&#40;input::Dict&#41;
+    Dict&#40;
+         lowercase&#40;letter&#41; &#61;&gt; value
+         for &#40;value, letters&#41; in input
+         for letter in letters
+    &#41;
+end</code></pre>
 <h3 id=2122020 ><a href="#2122020" class=header-anchor >2/12/2020</a></h3>
 <ol start=37 >
 <li><p>Beast of a solution with great help from Colin:</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> solutions(str)
-    sol1, sol2 = <span class=hljs-number >0</span>, <span class=hljs-number >0</span>
-    <span class=hljs-keyword >for</span> line <span class=hljs-keyword >in</span> readlines(str)
-        lo, hi, (char,), pass = match(<span class=hljs-string >r&quot;^(\d+)-(\d+) (\w): (.+)$&quot;</span>, line).captures
-        lo, hi = parse.(<span class=hljs-built_in >Int</span>, (lo, hi))
-        sol1 += lo &lt;= count(==(char), pass) &lt;= hi
-        sol2 += (pass[lo] == char) ⊻ (pass[hi] == char)
-    <span class=hljs-keyword >end</span>
+<pre><code class=language-julia >function solutions&#40;str&#41;
+    sol1, sol2 &#61; 0, 0
+    for line in readlines&#40;str&#41;
+        lo, hi, &#40;char,&#41;, pass &#61; match&#40;r&quot;^&#40;\d&#43;&#41;-&#40;\d&#43;&#41; &#40;\w&#41;: &#40;.&#43;&#41;&#36;&quot;, line&#41;.captures
+        lo, hi &#61; parse.&#40;Int, &#40;lo, hi&#41;&#41;
+        sol1 &#43;&#61; lo &lt;&#61; count&#40;&#61;&#61;&#40;char&#41;, pass&#41; &lt;&#61; hi
+        sol2 &#43;&#61; &#40;pass&#91;lo&#93; &#61;&#61; char&#41; ⊻ &#40;pass&#91;hi&#93; &#61;&#61; char&#41;
+    end
     sol1, sol2
-<span class=hljs-keyword >end</span></code></pre>
+end</code></pre>
 <p>The <code>match&#40;r&quot;...&quot;, line&#41;.captures</code> immediately splits and gets the appropriate strings, and <code>&#40;char,&#41;</code> is a tuple decomposition of a container with a single element, &#40;similar to <code>&#40;a,b&#41; &#61; &#91;3 4&#93;</code>&#41;.</p>
 <ol start=38 >
 <li><p>Regex has many smart functions</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-built_in >Regex</span>(<span class=hljs-string >&quot;[regex]&quot;</span>)
-<span class=hljs-string >r&quot;[regex]&quot;</span>
-match(needle, haystack)
-~~matchall(needle, haystack)~~
-eachmatch(needle, haystack)
-ismatch(needle, haystack)</code></pre>
+<pre><code class=language-julia >Regex&#40;&quot;&#91;regex&#93;&quot;&#41;
+r&quot;&#91;regex&#93;&quot;
+match&#40;needle, haystack&#41;
+~~matchall&#40;needle, haystack&#41;~~
+eachmatch&#40;needle, haystack&#41;
+ismatch&#40;needle, haystack&#41;</code></pre>
 <ol start=39 >
 <li><p>If I have <code>str &#61; &quot;Roll On The Floor&quot;</code> and I want to match on each first character to get the acronym, I can use <code>getproperty&#40;m, :match&#41;</code> for that:</p>
 
 </ol>
-<pre><code class="julia hljs">r = eachmatch(<span class=hljs-string >r&quot;\b[a-zA-Z]&quot;</span>, str)
-join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:length(r))</code></pre>
+<pre><code class=language-julia >r &#61; eachmatch&#40;r&quot;\b&#91;a-zA-Z&#93;&quot;, str&#41;
+join&#40;getproperty&#40;r&#91;i&#93;, :match&#41; for i in 1:length&#40;r&#41;&#41;</code></pre>
 <ol start=40 >
 <li><p>Count is really nifty:</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > xs = <span class=hljs-string >&quot;#..##.&quot;</span>
-</span>&quot;#..##.&quot;
+<pre><code class=language-julia-repl >julia&gt; xs &#61; &quot;#..##.&quot;
+&quot;#..##.&quot;
 
-<span class=hljs-meta >julia&gt;</span><span class=julia > count(<span class=hljs-string >&quot;#&quot;</span>, xs)
-</span>3</code></pre>
+julia&gt; count&#40;&quot;#&quot;, xs&#41;
+3</code></pre>
 <p>These &quot;curried&quot; operators can be found with <code>rg Fix&#91;12&#93;</code>, or <code>help?&gt; Fix1</code></p>
 <p>&#33;&#33;&#33; You can implement this for your own methods with <code>Base.Fix2&#123;typeof&#40;func&#41;&#125;</code>: <code>contains&#40;needle&#41; &#61; Base.Fix2&#40;contains, needle&#41;</code></p>
 <ol start=41 >
@@ -559,13 +588,13 @@ join(getproperty(r[i], :match) <span class=hljs-keyword >for</span> i <span clas
 <li><p>To add a new package to the common interface, define the types</p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-keyword >abstract type</span> AnalyticAlgorithm &lt;: DiffEqBase.AbstractAnalyticAlgorithm</code></pre>
+<pre><code class=language-julia >abstract type AnalyticAlgorithm &lt;: DiffEqBase.AbstractAnalyticAlgorithm</code></pre>
 <ul>
 <li><p>specify type parameters for concrete algos</p>
 
 </ul>
-<pre><code class="julia hljs"><span class=hljs-keyword >struct</span> analytic{Simple} &lt;: AnalyticAlgorithm{Simple} <span class=hljs-keyword >end</span>
-analytic(; simple = <span class=hljs-literal >true</span>) = analytic{simple}()</code></pre>
+<pre><code class=language-julia >struct analytic&#123;Simple&#125; &lt;: AnalyticAlgorithm&#123;Simple&#125; end
+analytic&#40;; simple &#61; true&#41; &#61; analytic&#123;simple&#125;&#40;&#41;</code></pre>
 <ul>
 <li><p>overload <code>__solve</code> from <code>DiffEqBase.jl</code></p>
 
@@ -575,10 +604,10 @@ analytic(; simple = <span class=hljs-literal >true</span>) = analytic{simple}()<
 <li><p>Chris de Graaf suggested instead of using <code>const A &#61; &#91;1&#93;</code>, try using a <code>Ref</code>:</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-comment ># access a ref with []</span>
-A = <span class=hljs-built_in >Ref</span>(<span class=hljs-number >0</span>)
-A[] = <span class=hljs-number >1</span>
-A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span></code></pre>
+<pre><code class=language-julia ># access a ref with &#91;&#93;
+A &#61; Ref&#40;0&#41;
+A&#91;&#93; &#61; 1
+A&#91;&#93; &#61;&#61; 1 # true</code></pre>
 <p>Takes a bit more nanoseconds to access than a 1 sized array but is sized <code>&#40;&#41;</code>.</p>
 <ol start=32 >
 <li><p>Execution matters more than hoarding ideas. <a href="https://www.youtube.com/watch?v&#61;dSCBCk4xVa0">Decent Talk by John Cormack</a>. Enjoy the insight high, then get down in the mud and try to bust your own idea.</p>
@@ -589,7 +618,7 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>Al final empecé el manual en español. Parece que <code>Laura Ventosa</code> va a ser buena mancuerna para este proyecto. Qué chido. La <a href="https://github.com/miguelraz/julia-es-manual">traduccion del manual esta en este link</a>.</p>
 
 </ol>
-<pre><code class="bash hljs">wc src/index.mc src/manual/getting-started.md src/manual/variables.md
+<pre><code class=language-bash >wc src/index.mc src/manual/getting-started.md src/manual/variables.md
   109   986  7546 src/index.md
   100   731  5084 src/manual/getting-started.md
   138   932  6102 src/manual/variables.md
@@ -624,12 +653,12 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>Counting neighbours / minesweeping? Ran into this problem on the <a href="https://exercism.io/my/solutions/fae14489bd9b4de1bc5283815f0e66ac">Exercsim</a> earlier today:</p>
 
 </ol>
-<pre><code class="julia hljs">sum(arr[i][j] .== <span class=hljs-string >&quot;*&quot;</span>) <span class=hljs-comment >#where j = 1:3</span></code></pre>
+<pre><code class=language-julia >sum&#40;arr&#91;i&#93;&#91;j&#93; .&#61;&#61; &quot;*&quot;&#41; #where j &#61; 1:3</code></pre>
 <p>is a no-no. First, we have to remember to compare <code>Char</code>s to <code>Char</code>s, since</p>
-<pre><code class="julia hljs"><span class=hljs-string >&quot;*&quot;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># false</span>
-<span class=hljs-string >&#x27;*&#x27;</span> == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-comment ># true</span></code></pre>
+<pre><code class=language-julia >&quot;*&quot; &#61;&#61; &#39;*&#39; # false
+&#39;*&#39; &#61;&#61; &#39;*&#39; # true</code></pre>
 <p>A correct approach looks like:</p>
-<pre><code class="julia hljs">sum(arr[i][j] == <span class=hljs-string >&#x27;*&#x27;</span> <span class=hljs-keyword >for</span> j <span class=hljs-keyword >in</span> idxs)</code></pre>
+<pre><code class=language-julia >sum&#40;arr&#91;i&#93;&#91;j&#93; &#61;&#61; &#39;*&#39; for j in idxs&#41;</code></pre>
 <p>by use of some spiffy generator syntax.</p>
 <ol start=19 >
 <li><p>Maybe time for someone to write a fast <code>neighbours&#40;arr, i, j&#41;</code> function in a package and PR it to LinAlg? Credit to Sascha Mann. Use views to make it fast.</p>
@@ -642,50 +671,50 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p><a href="https://exercism.io/tracks/julia/exercises/minesweeper/solutions/2c776b090173426eb160cea17a85e536#solution-comment-170293"><code>Vyu</code></a> has an amazing solution for summing up neighbours in a Matrix:</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-keyword >function</span> sumAdjacent(array, xy::<span class=hljs-built_in >CartesianIndex</span>{<span class=hljs-number >2</span>})
-    x, y = xy.I
-    lenX, lenY = size(array)
-    v = view(
+<pre><code class=language-julia >function sumAdjacent&#40;array, xy::CartesianIndex&#123;2&#125;&#41;
+    x, y &#61; xy.I
+    lenX, lenY &#61; size&#40;array&#41;
+    v &#61; view&#40;
         array,
-        max(<span class=hljs-number >1</span>, x - <span class=hljs-number >1</span>):min(lenX, x + <span class=hljs-number >1</span>),
-        max(<span class=hljs-number >1</span> ,y - <span class=hljs-number >1</span>):min(lenY, y + <span class=hljs-number >1</span>)
-    )
-    sum(v)
-<span class=hljs-keyword >end</span></code></pre>
+        max&#40;1, x - 1&#41;:min&#40;lenX, x &#43; 1&#41;,
+        max&#40;1 ,y - 1&#41;:min&#40;lenY, y &#43; 1&#41;
+    &#41;
+    sum&#40;v&#41;
+end</code></pre>
 <ol start=22 >
 <li><p><a href="">bovine3dom</a> has a solution for a hypercube minefield:</p>
 
 </ol>
-<pre><code class="julia hljs"><span class=hljs-comment ># This function works for hypercube minefields too, which is pretty cool.</span>
-<span class=hljs-comment ># If you decide to construct your own hypercube minefield, bear in mind that</span>
-<span class=hljs-comment ># the curse of dimensionality means that mines become useless as the number of</span>
-<span class=hljs-comment ># dimensions increases to even moderate numbers.</span>
-<span class=hljs-comment >#</span>
-<span class=hljs-comment ># (A more useful metric for &#x27;danger from mines&#x27; is the percentage of neighbouring</span>
-<span class=hljs-comment ># cells which contain mines).</span>
-<span class=hljs-keyword >function</span> flag_mines(matrix::<span class=hljs-built_in >Array</span>)
-    flagged = zeros(<span class=hljs-built_in >Int</span>,size(matrix))
-    <span class=hljs-meta >@inbounds</span> <span class=hljs-keyword >for</span> inds <span class=hljs-keyword >in</span> <span class=hljs-built_in >Tuple</span>.(<span class=hljs-built_in >CartesianIndices</span>(matrix))
-        flagged[inds...] = matrix[inds...] == <span class=hljs-number >1</span> ? -<span class=hljs-number >1</span> : sum(window(matrix,inds,ones(<span class=hljs-built_in >Int</span>,length(size(matrix)))))
-    <span class=hljs-keyword >end</span>
+<pre><code class=language-julia ># This function works for hypercube minefields too, which is pretty cool.
+# If you decide to construct your own hypercube minefield, bear in mind that
+# the curse of dimensionality means that mines become useless as the number of
+# dimensions increases to even moderate numbers.
+#
+# &#40;A more useful metric for &#39;danger from mines&#39; is the percentage of neighbouring
+# cells which contain mines&#41;.
+function flag_mines&#40;matrix::Array&#41;
+    flagged &#61; zeros&#40;Int,size&#40;matrix&#41;&#41;
+    @inbounds for inds in Tuple.&#40;CartesianIndices&#40;matrix&#41;&#41;
+        flagged&#91;inds...&#93; &#61; matrix&#91;inds...&#93; &#61;&#61; 1 ? -1 : sum&#40;window&#40;matrix,inds,ones&#40;Int,length&#40;size&#40;matrix&#41;&#41;&#41;&#41;&#41;
+    end
     flagged
-<span class=hljs-keyword >end</span></code></pre>
+end</code></pre>
 <ol start=23 >
 <li><p>The cleanest minefield answer might be <code>OTDE</code>...</p>
 
 </ol>
-<pre><code class="julia hljs">annotate(minefield) = [
-    replace(
-        join(
-            w[c] == <span class=hljs-string >&#x27;*&#x27;</span> ? <span class=hljs-string >&#x27;*&#x27;</span> :
-            count(get(get(minefield, y, <span class=hljs-string >&quot;&quot;</span>), x, <span class=hljs-string >&quot;&quot;</span>) == <span class=hljs-string >&#x27;*&#x27;</span>
-            <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> (c - <span class=hljs-number >1</span>):(c + <span class=hljs-number >1</span>)
-                <span class=hljs-keyword >for</span> y <span class=hljs-keyword >in</span> (r - <span class=hljs-number >1</span>):(r + <span class=hljs-number >1</span>)
-                    <span class=hljs-keyword >if</span> x != c || y != r)
-        <span class=hljs-keyword >for</span> c <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:length(w)),
-    <span class=hljs-string >&#x27;0&#x27;</span> =&gt; <span class=hljs-string >&#x27; &#x27;</span>)
-    <span class=hljs-keyword >for</span> (r, w) <span class=hljs-keyword >in</span> enumerate(minefield)
-]</code></pre>
+<pre><code class=language-julia >annotate&#40;minefield&#41; &#61; &#91;
+    replace&#40;
+        join&#40;
+            w&#91;c&#93; &#61;&#61; &#39;*&#39; ? &#39;*&#39; :
+            count&#40;get&#40;get&#40;minefield, y, &quot;&quot;&#41;, x, &quot;&quot;&#41; &#61;&#61; &#39;*&#39;
+            for x in &#40;c - 1&#41;:&#40;c &#43; 1&#41;
+                for y in &#40;r - 1&#41;:&#40;r &#43; 1&#41;
+                    if x &#33;&#61; c || y &#33;&#61; r&#41;
+        for c in 1:length&#40;w&#41;&#41;,
+    &#39;0&#39; &#61;&gt; &#39; &#39;&#41;
+    for &#40;r, w&#41; in enumerate&#40;minefield&#41;
+&#93;</code></pre>
 <p>Lessons:</p>
 <ul>
 <li><p>a nested generator can be quite powerful</p>
@@ -699,21 +728,21 @@ A[] == <span class=hljs-number >1</span> <span class=hljs-comment ># true</span>
 <li><p>DID NOT KNOW you could iterate a dictionary if you didn&#39;t care about order:</p>
 
 </ol>
-<pre><code class="julia hljs">samples = <span class=hljs-built_in >Dict</span>(
-	<span class=hljs-string >&quot;I&quot;</span> =&gt; <span class=hljs-number >1</span>,
-	<span class=hljs-string >&quot;II&quot;</span> =&gt; <span class=hljs-number >2</span>,
-	<span class=hljs-string >&quot;V&quot;</span> =&gt; <span class=hljs-number >5</span>,
-	)
-<span class=hljs-keyword >for</span> sample <span class=hljs-keyword >in</span> samples
-	<span class=hljs-meta >@test</span> to_roman(sample[<span class=hljs-number >1</span>]) == sample[<span class=hljs-number >2</span>]
-<span class=hljs-keyword >end</span></code></pre>
+<pre><code class=language-julia >samples &#61; Dict&#40;
+	&quot;I&quot; &#61;&gt; 1,
+	&quot;II&quot; &#61;&gt; 2,
+	&quot;V&quot; &#61;&gt; 5,
+	&#41;
+for sample in samples
+	@test to_roman&#40;sample&#91;1&#93;&#41; &#61;&#61; sample&#91;2&#93;
+end</code></pre>
 <h3 id=12112020 ><a href="#12112020" class=header-anchor >12/11/2020</a></h3>
 <ol start=17 >
 <li><p>Invaluable git trick: if you committed some changes locally, but someone else pushed to master, use the <a href="https://cscheng.info/2017/01/26/git-tip-autostash-with-git-pull-rebase.html">auto-rebase autostash trick</a>:</p>
 
 </ol>
-<pre><code class="julia hljs">git config --<span class=hljs-keyword >global</span> pull.rebase <span class=hljs-literal >true</span>
-git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span class=hljs-literal >true</span></code></pre>
+<pre><code class=language-julia >git config --global pull.rebase true
+git config --global rebase.atuoStash true</code></pre>
 <p>so that you don&#39;t need to do <code>git pull --rebase --autostash</code> and can just <code>git pull</code>.</p>
 <h3 id=08112020 ><a href="#08112020" class=header-anchor >08/11/2020</a></h3>
 <ol start=10 >
@@ -743,13 +772,13 @@ git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span clas
 <li><p>If you want to make your startup super fast, use <code>PackageCompiler.jl</code>:</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >using</span> PackageCompiler
-</span><span class=hljs-meta >julia&gt;</span><span class=julia > create_sysimage([:Revise, :OhMyREPL, :BenchmarkTools], replace_default = <span class=hljs-literal >true</span>)</span></code></pre>
+<pre><code class=language-julia-repl >julia&gt; using PackageCompiler
+julia&gt; create_sysimage&#40;&#91;:Revise, :OhMyREPL, :BenchmarkTools&#93;, replace_default &#61; true&#41;</code></pre>
 <p>Super charge that combo with the <code>~/.julia/config/startup.jl</code>:</p>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >try</span>
-           <span class=hljs-keyword >using</span> Revise
-       <span class=hljs-keyword >catch</span> e
-</span>	   @warn(e)
+<pre><code class=language-julia-repl >julia&gt; try
+           using Revise
+       catch e
+	   @warn&#40;e&#41;
        end</code></pre>
 <h3 id=04112020 ><a href="#04112020" class=header-anchor >04/11/2020</a></h3>
 <ol start=7 >
@@ -758,8 +787,8 @@ git config --<span class=hljs-keyword >global</span> rebase.atuoStash <span clas
 <li><p>In order to not get punked by the output of</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > print.(sq(i) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
-</span>14916253649648110010-element Vector{Nothing}:
+<pre><code class=language-julia-repl >julia&gt; print.&#40;sq&#40;i&#41; for i in 1:10&#41;
+14916253649648110010-element Vector&#123;Nothing&#125;:
 nothing
 nothing
 nothing
@@ -771,8 +800,8 @@ nothing
 nothing
 nothing</code></pre>
 <p><code>@pabloferz</code> suggested the <code>foreach</code>, which returns a <code>nothing</code>, and thus doesn&#39;t print.</p>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > foreach(x -&gt; println(x^<span class=hljs-number >2</span>), <span class=hljs-number >1</span>:<span class=hljs-number >3</span>:<span class=hljs-number >7</span>)
-</span>1
+<pre><code class=language-julia-repl >julia&gt; foreach&#40;x -&gt; println&#40;x^2&#41;, 1:3:7&#41;
+1
 9
 49</code></pre>
 <h3 id=31102020 ><a href="#31102020" class=header-anchor >31/10/2020</a></h3>
@@ -807,98 +836,98 @@ nothing</code></pre>
 <li><p>Closures&#33; Defining a function within a function is a type of closure. They take variables from one scope above them. <code>@masonprotter</code> and <code>@fredrikekre</code> helped me figure out why having this is desirable:</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-keyword >function</span> f(x, y, z)
-           data = compute(x, y, z)
-</span>
-           g() = data^2 # closure over data
-           g() # call g here maybe?
+<pre><code class=language-julia-repl >julia&gt; function f&#40;x, y, z&#41;
+           data &#61; compute&#40;x, y, z&#41;
+
+           g&#40;&#41; &#61; data^2 # closure over data
+           g&#40;&#41; # call g here maybe?
            # ...
-           g() # maybe again here?
+           g&#40;&#41; # maybe again here?
 end</code></pre>
 <p>Mason says:&quot;Almost all usages of closures can be replaced with &#39;top level&#39; functions that take extra arguments &#40;one for each captured field&#41;, but it&#39;s syntactically less pleasing and can end up causing you to have a bunch of function names in your namespace you don&#39;t want.&quot; Of course <a href="https://discourse.julialang.org/t/closures-section-in-documentation-is-not-clear-enough/18717/13">there&#39;s a Discourse post on it</a>.</p>
 <ol start=2 >
 <li><p>Wow&#33; <a href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping">Function composition and piping</a> lets you do some amazing stuff with <code>\circ&lt;TAB&gt;</code> and friends&#33;</p>
 
 </ol>
-<pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ +)(<span class=hljs-number >3</span>, <span class=hljs-number >6</span>)
-</span>3.0
-<span class=hljs-meta >julia&gt;</span><span class=julia > map(first ∘ reverse ∘ uppercase, split(<span class=hljs-string >&quot;you can compose functions like this&quot;</span>)
-</span>6-element Array{Char,1}:
- &#x27;U&#x27;: ASCII/Unicode U+0055 (category Lu: Letter, uppercase)
- &#x27;N&#x27;: ASCII/Unicode U+004E (category Lu: Letter, uppercase)
- &#x27;E&#x27;: ASCII/Unicode U+0045 (category Lu: Letter, uppercase)
+<pre><code class=language-julia-repl >julia&gt; &#40;sqrt ∘ &#43;&#41;&#40;3, 6&#41;
+3.0
+julia&gt; map&#40;first ∘ reverse ∘ uppercase, split&#40;&quot;you can compose functions like this&quot;&#41;
+6-element Array&#123;Char,1&#125;:
+ &#39;U&#39;: ASCII/Unicode U&#43;0055 &#40;category Lu: Letter, uppercase&#41;
+ &#39;N&#39;: ASCII/Unicode U&#43;004E &#40;category Lu: Letter, uppercase&#41;
+ &#39;E&#39;: ASCII/Unicode U&#43;0045 &#40;category Lu: Letter, uppercase&#41;
 ...
-<span class=hljs-meta >julia&gt;</span><span class=julia > <span class=hljs-number >1</span>:<span class=hljs-number >10</span> |&gt; sum |&gt; sqrt
-</span>7.416...
-<span class=hljs-meta >julia&gt;</span><span class=julia > (sqrt ∘ sum)(<span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
-</span>7.41...
-<span class=hljs-meta >julia&gt;</span><span class=julia > [ <span class=hljs-string >&quot;a&quot;</span>, <span class=hljs-string >&quot;list&quot;</span>, <span class=hljs-string >&quot;of&quot;</span>, <span class=hljs-string >&quot;strings&quot;</span>] .|&gt; [uppercase, reverse, titlecase, length]
-</span>4-element Array{Any,1}:
+julia&gt; 1:10 |&gt; sum |&gt; sqrt
+7.416...
+julia&gt; &#40;sqrt ∘ sum&#41;&#40;1:10&#41;
+7.41...
+julia&gt; &#91; &quot;a&quot;, &quot;list&quot;, &quot;of&quot;, &quot;strings&quot;&#93; .|&gt; &#91;uppercase, reverse, titlecase, length&#93;
+4-element Array&#123;Any,1&#125;:
   &quot;A&quot;
   &quot;tsil&quot;
   &quot;Of&quot;
  7
-<span class=hljs-meta >julia&gt;</span><span class=julia > (^<span class=hljs-number >2</span>, sqrt, inv).([<span class=hljs-number >2</span>,<span class=hljs-number >4</span>,<span class=hljs-number >4</span>])
-</span>[4,2, .25]</code></pre>
+julia&gt; &#40;^2, sqrt, inv&#41;.&#40;&#91;2,4,4&#93;&#41;
+&#91;4,2, .25&#93;</code></pre>
 <ol start=3 >
 <li><p>Rust allows for defining anonymous functions&#33;</p>
 
 </ol>
-<pre><code class="rust hljs"><span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(n: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >String</span> {
-	<span class=hljs-keyword >let</span> is_factor = |f| x % f == <span class=hljs-number >0</span>;
+<pre><code class=language-rust >fn raindrops&#40;n: u32&#41; -&gt; String &#123;
+	let is_factor &#61; |f| x &#37; f &#61;&#61; 0;
 	...
-}</code></pre>
+&#125;</code></pre>
 <ol start=4 >
 <li><p>Rust match is very powerful... try and setup the anonymous functions in a tuple after the <code>match</code> and then filter by <code>&#40;each, available, case&#41; &#61;&gt; action</code>.</p>
 
 </ol>
-<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >raindrops</span></span>(num: <span class=hljs-built_in >i64</span>) -&gt; <span class=hljs-built_in >String</span> {
-    <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut</span> raindrop = <span class=hljs-built_in >String</span>::new();
+<pre><code class=language-rust >pub fn raindrops&#40;num: i64&#41; -&gt; String &#123;
+    let mut raindrop &#61; String::new&#40;&#41;;
 
-    <span class=hljs-keyword >match</span> (num % <span class=hljs-number >3</span>, num % <span class=hljs-number >5</span>, num % <span class=hljs-number >7</span>) {
-        (<span class=hljs-number >0</span>, <span class=hljs-number >0</span>, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlangPlong&quot;</span>),
-        (<span class=hljs-number >0</span>, <span class=hljs-number >0</span>, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlang&quot;</span>),
-        (<span class=hljs-number >0</span>, _, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlingPlong&quot;</span>),
-        (_, <span class=hljs-number >0</span>, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;PlangPlong&quot;</span>),
-        (<span class=hljs-number >0</span>, _, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Pling&quot;</span>),
-        (_, <span class=hljs-number >0</span>, _) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Plang&quot;</span>),
-        (_, _, <span class=hljs-number >0</span>) =&gt; raindrop.push_str(<span class=hljs-string >&quot;Plong&quot;</span>),
-        (_, _, _) =&gt; raindrop = num.to_string()
-    }
+    match &#40;num &#37; 3, num &#37; 5, num &#37; 7&#41; &#123;
+        &#40;0, 0, 0&#41; &#61;&gt; raindrop.push_str&#40;&quot;PlingPlangPlong&quot;&#41;,
+        &#40;0, 0, _&#41; &#61;&gt; raindrop.push_str&#40;&quot;PlingPlang&quot;&#41;,
+        &#40;0, _, 0&#41; &#61;&gt; raindrop.push_str&#40;&quot;PlingPlong&quot;&#41;,
+        &#40;_, 0, 0&#41; &#61;&gt; raindrop.push_str&#40;&quot;PlangPlong&quot;&#41;,
+        &#40;0, _, _&#41; &#61;&gt; raindrop.push_str&#40;&quot;Pling&quot;&#41;,
+        &#40;_, 0, _&#41; &#61;&gt; raindrop.push_str&#40;&quot;Plang&quot;&#41;,
+        &#40;_, _, 0&#41; &#61;&gt; raindrop.push_str&#40;&quot;Plong&quot;&#41;,
+        &#40;_, _, _&#41; &#61;&gt; raindrop &#61; num.to_string&#40;&#41;
+    &#125;
 
-    <span class=hljs-keyword >return</span> raindrop
-}</code></pre>
+    return raindrop
+&#125;</code></pre>
 <ol start=5 >
 <li><p>This was a good use of match</p>
 
 </ol>
-<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >square</span></span>(s: <span class=hljs-built_in >u32</span>) -&gt; <span class=hljs-built_in >u64</span> {
-    <span class=hljs-keyword >match</span> s {
-        <span class=hljs-number >1</span>...<span class=hljs-number >64</span> =&gt; <span class=hljs-number >1u64</span>.wrapping_shl(s-<span class=hljs-number >1</span>),
-<span class=hljs-comment >// This also works</span>
-<span class=hljs-comment >//      1u64 &lt;&lt; (s - 1)</span>
-        _ =&gt; <span class=hljs-built_in >panic!</span>(<span class=hljs-string >&quot;Square must be between 1 and 64&quot;</span>),
-    }
-}
+<pre><code class=language-rust >pub fn square&#40;s: u32&#41; -&gt; u64 &#123;
+    match s &#123;
+        1...64 &#61;&gt; 1u64.wrapping_shl&#40;s-1&#41;,
+// This also works
+//      1u64 &lt;&lt; &#40;s - 1&#41;
+        _ &#61;&gt; panic&#33;&#40;&quot;Square must be between 1 and 64&quot;&#41;,
+    &#125;
+&#125;
 
-<span class=hljs-keyword >pub</span> <span class=hljs-function ><span class=hljs-keyword >fn</span> <span class=hljs-title >total</span></span>() -&gt; <span class=hljs-built_in >u64</span> {
-    (<span class=hljs-number >1</span>..<span class=hljs-number >65</span>).map(square).sum()
-<span class=hljs-comment >// Lol thanks philip98</span>
-<span class=hljs-comment >// u64::max_value</span>
-}</code></pre>
+pub fn total&#40;&#41; -&gt; u64 &#123;
+    &#40;1..65&#41;.map&#40;square&#41;.sum&#40;&#41;
+// Lol thanks philip98
+// u64::max_value
+&#125;</code></pre>
 <p>Credit to Wow-BOB-Wow.</p>
 <h3 id=27102020 ><a href="#27102020" class=header-anchor >27/10/2020</a></h3>
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 07, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 12, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
     
     
-        
-
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
 
 	
 
