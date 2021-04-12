@@ -5,11 +5,65 @@
 
 # Virtual diary for progress on all fronts
 
+## 11/04/2021
+
+98. We got invited to give a conference talk at Alpine2021 because of a [tweet](https://twitter.com/miguelraz_/status/1381041713725153283) I sent to Alpine's main dev, Ariadne Conill.
+Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.
+
+99. FINALLY got Lean4 working on VSCode. Still don't know how to use `nix` but oh well. Halfway through the manual, and this example was neat to grok:
+```lean
+def add1Times3FilterEven (xs : List Nat) :=
+	-- this 
+	--   List.filter (. % 2 == 0) (List.map (. * 3) (List.map (. + 1) xs))
+	-- becomes this
+	--   xs |> List.map (. + 1) |> List.map (. * 3) |> List.filter (. % 2 == 0)
+	-- becomes THIS!
+	xs |>.map (. + 1) |>.map (. * 3) |>.filter (. % 2 == 0)
+```
+
+## 08/04/2021
+
+97. Spawning a `run(...)` can take 2x more allocations from one system to another!
+```julia
+julia> using primecount_jll
+
+julia> @time run(`$(primecount()) 1e14`); # can be 2x allocations in other systems!
+3204941750802
+  0.150116 seconds (468 allocations: 33.891 KiB)
+```
+
 92. Woke up to the `primecount_jll` post getting tons of love, awesome! Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.
 
 93. Need to remember the `@doc` macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.
 
 94. Ah right, forgot the `make -j${proc}` flag for a parallel BBuilder recipe, thanks to Mosè for [catching that again](https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files)
+
+95. Mosè points out [that it's not too hard to look at the warning logs](https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId=9980&view=results) emmitted from the PR - that's 
+how he was ble to spot that `CompilerSupportLibraries` was missing, and some other warnings needed to be addressed.
+
+96. How to easily create a function that updates its own internal state? Use a closure! [ Like this](https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u=miguelraz)
+```julia
+julia> f(state=0) = ()->state+=1
+f (generic function with 2 methods)
+
+julia> foo = f()
+#7 (generic function with 1 method)
+
+julia> foo()
+1
+
+julia> foo()
+2
+
+julia> foo()
+3
+
+julia> foo.state
+Core.Box(3)
+
+julia> foo.state.contents
+3
+```
 
 # 05/04/2021 
 
