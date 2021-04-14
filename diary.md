@@ -5,19 +5,21 @@
 
 # Virtual diary for progress on all fronts
 
+### 14/04/2021
+
+102. Almost clinching the BB recipe for `racket`. This will help build Herbie! In BinaryBuilder.jl, Mosè recommends, instead of 
+```bash
+cp racket/bin/* ${prefix}/
+# try doing
+cp -r racket/bin ${prefix}/.
+```
+
 ### 13/04/2021
 
 100. Submitted GSoC app. Godspeed. Go go Rubin.jl!
 
 101. In BinaryBuilder.jl, `cd ${prefix}/` is where all compilation targets are placed. 
 Also, RTFM! Specifically platform hijinks.
-
-102. In BinaryBuilder.jl, Mosè recommends, instead of 
-```bash
-cp racket/bin/* ${prefix}/
-# try doing
-cp -r racket/bin ${prefix}/.
-```
 
 ## 11/04/2021
 
