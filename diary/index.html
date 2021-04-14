@@ -1,14 +1,14 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2> <ol start=98 > <li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p> </ol> <p>Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.</p> <ol start=99 > <li><p>FINALLY got Lean4 working on VSCode. Still don&#39;t know how to use <code>nix</code> but oh well. Halfway through the manual, and this example was neat to grok:</p> </ol> <pre><code class=language-lean >def add1Times3FilterEven &#40;xs : List Nat&#41; :&#61;
-	-- this 
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.png"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Home</a> <li><a href="/diary/">Work Diary</a> <li><a href="/blog/">Blog</a> <li><a href="/pubs/">Publications/Talks/Videos</a> <li><a href="/teaching/">Teaching/Translations</a> <li><a href="/tags/">Tags</a> <li><a href="/about/">About</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=13042021 ><a href="#13042021" class=header-anchor >13/04/2021</a></h3> <ol start=100 > <li><p>Submitted GSoC app. Godspeed. Go go Rubin.jl&#33;</p> <li><p>In BinaryBuilder.jl, <code>cd &#36;&#123;prefix&#125;/</code> is where all compilation targets are placed. </p> </ol> <p>Also, RTFM&#33; Specifically platform hijinks.</p> <h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2> <ol start=98 > <li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p> </ol> <p>Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.</p> <ol start=99 > <li><p>FINALLY got Lean4 working on VSCode. Still don&#39;t know how to use <code>nix</code> but oh well. Halfway through the manual, and this example was neat to grok:</p> </ol> <pre><code class=language-lean >def add1Times3FilterEven &#40;xs : List Nat&#41; :&#61;
+	-- this
 	--   List.filter &#40;. &#37; 2 &#61;&#61; 0&#41; &#40;List.map &#40;. * 3&#41; &#40;List.map &#40;. &#43; 1&#41; xs&#41;&#41;
 	-- becomes this
 	--   xs |&gt; List.map &#40;. &#43; 1&#41; |&gt; List.map &#40;. * 3&#41; |&gt; List.filter &#40;. &#37; 2 &#61;&#61; 0&#41;
 	-- becomes THIS&#33;
-	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre> <h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2> <ol start=97 > <li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p> </ol> <pre><code class=language-julia >julia&gt; using primecount_jll
+	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre> <p>In the same note: <code>x |&gt; f</code> in Lean is the same as <code>f &lt;| a</code>, which in Haskell means <code>f &#36; a</code>. Damn, that&#39;s some crappy ascii in Haskell :/</p> <h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2> <ol start=97 > <li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p> </ol> <pre><code class=language-julia >julia&gt; using primecount_jll
 
 julia&gt; @time run&#40;&#96;&#36;&#40;primecount&#40;&#41;&#41; 1e14&#96;&#41;; # can be 2x allocations in other systems&#33;
 3204941750802
-  0.150116 seconds &#40;468 allocations: 33.891 KiB&#41;</code></pre> <ol start=92 > <li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p> <li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p> <li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p> <li><p>Mosè points out <a href="https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId&#61;9980&amp;view&#61;results">that it&#39;s not too hard to look at the warning logs</a> emmitted from the PR - that&#39;s </p> </ol> <p>how he was ble to spot that <code>CompilerSupportLibraries</code> was missing, and some other warnings needed to be addressed.</p> <ol start=96 > <li><p>How to easily create a function that updates its own internal state? Use a closure&#33; <a href="https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u&#61;miguelraz"> Like this</a></p> </ol> <pre><code class=language-julia >julia&gt; f&#40;state&#61;0&#41; &#61; &#40;&#41;-&gt;state&#43;&#61;1
+  0.150116 seconds &#40;468 allocations: 33.891 KiB&#41;</code></pre> <ol start=92 > <li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p> <li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p> <li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p> <li><p>Mosè points out <a href="https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId&#61;9980&amp;view&#61;results">that it&#39;s not too hard to look at the warning logs</a> emmitted from the PR - that&#39;s</p> </ol> <p>how he was ble to spot that <code>CompilerSupportLibraries</code> was missing, and some other warnings needed to be addressed.</p> <ol start=96 > <li><p>How to easily create a function that updates its own internal state? Use a closure&#33; <a href="https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u&#61;miguelraz"> Like this</a></p> </ol> <pre><code class=language-julia >julia&gt; f&#40;state&#61;0&#41; &#61; &#40;&#41;-&gt;state&#43;&#61;1
 f &#40;generic function with 2 methods&#41;
 
 julia&gt; foo &#61; f&#40;&#41;
@@ -27,7 +27,7 @@ julia&gt; foo.state
 Core.Box&#40;3&#41;
 
 julia&gt; foo.state.contents
-3</code></pre> <h1 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021 </a></h1> <ol start=86 > <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p> <li><p>Nice idea during the vacation: need to get</p> </ol> <ul> <li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p> <li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p> <li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p> <li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p> </ul> <ol start=88 > <li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p> <li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p> <li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p> </ol> <p>My workflow goes like this:</p> <ul> <li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p> <li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p> </ul> <ol start=91 > <li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p> </ol> <p>algorithm library for counting primes in in C/C&#43;&#43;. </p> <h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1> <ol start=85 > <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p> </ol> <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p> <p>Now to parse that into Julia full fledged.</p> <h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1> <ol start=81 > <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p> <li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p> <li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p> <li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p> </ol> <pre><code class=language-julia >git fetch upstream
+3</code></pre> <h1 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021</a></h1> <ol start=86 > <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p> <li><p>Nice idea during the vacation: need to get</p> </ol> <ul> <li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p> <li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p> <li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p> <li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p> </ul> <ol start=88 > <li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p> <li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p> <li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p> </ol> <p>My workflow goes like this:</p> <ul> <li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p> <li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p> </ul> <ol start=91 > <li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p> </ol> <p>algorithm library for counting primes in in C/C&#43;&#43;.</p> <h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1> <ol start=85 > <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p> </ol> <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p> <p>Now to parse that into Julia full fledged.</p> <h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1> <ol start=81 > <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p> <li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p> <li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p> <li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p> </ol> <pre><code class=language-julia >git fetch upstream
 git checkout master
 git rebase upstream/master
 git push -f origin master</code></pre> <p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p> <h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1> <ol start=78 > <li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p> </ol> <pre><code class=language-julia >julia&gt; A &#61; &#91;rand&#40;&#41; for i in 1:1000, j in 1:1000&#93;;julia&gt; function do_add4&#33;&#40;A&#41;
@@ -39,14 +39,14 @@ git push -f origin master</code></pre> <p>Kindly <a href="https://gist.github.co
            end
        end</code></pre> <p>Chris Elrod mentions that unless the <code>Base.OneTo</code> isn&#39;t being fed to an inlined function, it doesn&#39;t work for much.</p> <ol start=79 > <li><p>Mason also recommends <code>oneunit</code> instead of <code>one</code> as it works with arbitrary number types. BORKED though, disregard.</p> <li><p>This also works:</p> </ol> <pre><code class=language-julia >julia&gt; using LoopVectorization
 julia&gt; A &#61; # 1000 x 1000 rand float32s
-julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it</code></pre> <ol start=81 > <li><p>I should start contributing more to LoopVectorization.jl...</p> </ol> <h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021 </a></h3> <ol start=73 > <li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p> </ol> <p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p> <ol start=75 > <li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p> <li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p> </ol> <pre><code class=language-julia >joinpath&#40;@__DIR__, &quot;my_new_file.json&quot;&#41;</code></pre>
+julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it</code></pre> <ol start=81 > <li><p>I should start contributing more to LoopVectorization.jl...</p> </ol> <h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021</a></h3> <ol start=73 > <li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p> </ol> <p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p> <ol start=75 > <li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p> <li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p> </ol> <pre><code class=language-julia >joinpath&#40;@__DIR__, &quot;my_new_file.json&quot;&#41;</code></pre>
 <ol start=77 >
 <li><p>HELL YES RUBIN.JL LIVESSSS</p>
 
 </ol>
 <h2 id=22032021 ><a href="#22032021" class=header-anchor >22/03/2021</a></h2>
 <ol start=70 >
-<li><p><code>ArtifactUtils.jl</code> rules&#33; just <code>add_artifact&#33;</code> and you&#39;re almost good to go. </p>
+<li><p><code>ArtifactUtils.jl</code> rules&#33; just <code>add_artifact&#33;</code> and you&#39;re almost good to go.</p>
 
 <li><p>Need to work with a gajillion files in a folder and map the same transform to them lazily? Use FileTrees.jl for all your multithreaded directed needs&#33;</p>
 
@@ -121,7 +121,7 @@ end</code></pre>
 
 <li><p>useful idiom: <code>for i in workers&#40;&#41;; @spawnat i work&#40;...&#41;; end</code></p>
 
-<li><p>instead of manually partitioning the space and juggling indexes, try using </p>
+<li><p>instead of manually partitioning the space and juggling indexes, try using</p>
 
 </ul>
 <pre><code class=language-julia >@distributed &#40;&#43;&#41; for r in &#91;&#40;0:9999&#41; .&#43; offset for offset in 0:10_000:r&#91;end&#93;-1&#93;
@@ -157,7 +157,7 @@ IdDict&#123;Any,String&#125; with 3 entries:
   1.0  &#61;&gt; &quot;maybe&quot;
   1    &#61;&gt; &quot;no&quot;</code></pre>
 <p>Vs</p>
-<pre><code class=language-julia-repl >julia&gt; Dict&#40;true &#61;&gt; &quot;yes&quot;, 1 &#61;&gt; &quot;no&quot;, 1.0 &#61;&gt; &quot;maybe&quot;&#41; 
+<pre><code class=language-julia-repl >julia&gt; Dict&#40;true &#61;&gt; &quot;yes&quot;, 1 &#61;&gt; &quot;no&quot;, 1.0 &#61;&gt; &quot;maybe&quot;&#41;
 Dict&#123;Real, String&#125; with 1 entry:
   1.0 &#61;&gt; &quot;maybe&quot;</code></pre>
 <p>Fortunately, Stefan was able to convince some of use in  the Julia Slack that this is a desirable behavior - you should replace the keys of a dict when you do this, otherwise you will be very very unhappy. Here&#39;s the relevant <a href="https://github.com/JuliaLang/julia/blob/0bedcdabeb21d0d244babb4a88c91ff75a15577f/base/float.jl#L534-L553">implementations</a> in the <code>decompose</code> function in Base.</p>
@@ -229,7 +229,7 @@ end</code></pre>
     return xs_iter
 end</code></pre>
 <ol start=55 >
-<li><p>To dump a TLA  file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with </p>
+<li><p>To dump a TLA  file into a dot file, use <code>tlc -dump dot file.dot file.tla</code>. Then read it with</p>
 
 </ol>
 <ul>
@@ -415,7 +415,7 @@ iterate&#40;s::CustomSet, el&#41; &#61; iterate&#40;s.dict, el&#41;</code></pre>
 <li><p>LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE</p>
 
 </ul>
-<pre><code class=language-julia-repl >julia&gt; function Base.iterate&#40;iter::Fibo, state &#61; &#40;0, &#40;1,1&#41;&#41;&#41; # The 0 here will represent the &quot;counter&quot; 
+<pre><code class=language-julia-repl >julia&gt; function Base.iterate&#40;iter::Fibo, state &#61; &#40;0, &#40;1,1&#41;&#41;&#41; # The 0 here will represent the &quot;counter&quot;
        if state&#91;1&#93; &gt; iter.n
            return nothing
        end
@@ -427,8 +427,8 @@ iterate&#40;s::CustomSet, el&#41; &#61; iterate&#40;s.dict, el&#41;</code></pre>
 
 </ol>
 <pre><code class=language-julia >function Base.iterate&#40;iter::Fibo, state &#61; ...&#41;
-				        #  ^ 
-					#  |	
+				        #  ^
+					#  |
 	counter &#61; state&#91;1&#93; # &lt;- this has to match with newstate
 	if counter &gt; iter.n
 	    return nothing
@@ -436,7 +436,7 @@ iterate&#40;s::CustomSet, el&#41; &#61; iterate&#40;s.dict, el&#41;</code></pre>
 
 	# Clever calculations here
 	newitem &#61; foo&#40;...&#41;
-	newstate &#61; &#40;bar&#40;...&#41;, ...&#41;     
+	newstate &#61; &#40;bar&#40;...&#41;, ...&#41;
 	# NOTE: the tuples must match up&#33;
 	# typeof&#40;newstate&#41; &#61;&#61; typeof&#40;state&#41;
 	return newitem, newstate
@@ -476,7 +476,7 @@ count&#40;p -&gt; all&#40;t -&gt; contains&#40;p, t&#41;, fields1&#41;, input&#4
 # Part 2
 count&#40;p -&gt; all&#40;t -&gt; contains&#40;p, t&#41;, fields2&#41;, input&#41;</code></pre>
 <ol start=43 >
-<li><p>Instead of </p>
+<li><p>Instead of</p>
 
 </ol>
 <pre><code class=language-julia >if &#33;haskey&#40;d, str&#41;
@@ -484,13 +484,13 @@ count&#40;p -&gt; all&#40;t -&gt; contains&#40;p, t&#41;, fields2&#41;, input&#4
 elseif
     haskey&#40;d, str&#41;
     d&#91;str&#93; &#43;&#61; 1
-else 
+else
     ...
 end</code></pre>
-<p>You can try </p>
+<p>You can try</p>
 <pre><code class=language-julia >d&#91;str&#93; &#61; get&#40;d, s, 0&#41; &#43; 1</code></pre>
 <ol start=44 >
-<li><p>Revisiting Exercisms is a good way to hone skills. Instead of </p>
+<li><p>Revisiting Exercisms is a good way to hone skills. Instead of</p>
 
 </ol>
 <pre><code class=language-julia >a, b, c &#61; dict&#91;c&#91;1&#93;&#93;, dict&#91;c&#91;2&#93;&#93; dict&#91;c&#91;3&#93;&#93;
@@ -920,7 +920,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 12, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 14, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
