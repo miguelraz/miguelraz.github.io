@@ -5,6 +5,13 @@
 
 # Virtual diary for progress on all fronts
 
+### 13/04/2021
+
+100. Submitted GSoC app. Godspeed. Go go Rubin.jl!
+
+101. In BinaryBuilder.jl, `cd ${prefix}/` is where all compilation targets are placed. 
+Also, RTFM! Specifically platform hijinks.
+
 ## 11/04/2021
 
 98. We got invited to give a conference talk at Alpine2021 because of a [tweet](https://twitter.com/miguelraz_/status/1381041713725153283) I sent to Alpine's main dev, Ariadne Conill.
@@ -13,13 +20,15 @@ Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool J
 99. FINALLY got Lean4 working on VSCode. Still don't know how to use `nix` but oh well. Halfway through the manual, and this example was neat to grok:
 ```lean
 def add1Times3FilterEven (xs : List Nat) :=
-	-- this 
+	-- this
 	--   List.filter (. % 2 == 0) (List.map (. * 3) (List.map (. + 1) xs))
 	-- becomes this
 	--   xs |> List.map (. + 1) |> List.map (. * 3) |> List.filter (. % 2 == 0)
 	-- becomes THIS!
 	xs |>.map (. + 1) |>.map (. * 3) |>.filter (. % 2 == 0)
 ```
+
+In the same note: `x |> f` in Lean is the same as `f <| a`, which in Haskell means `f $ a`. Damn, that's some crappy ascii in Haskell :/
 
 ## 08/04/2021
 
@@ -38,7 +47,7 @@ julia> @time run(`$(primecount()) 1e14`); # can be 2x allocations in other syste
 
 94. Ah right, forgot the `make -j${proc}` flag for a parallel BBuilder recipe, thanks to Mosè for [catching that again](https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files)
 
-95. Mosè points out [that it's not too hard to look at the warning logs](https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId=9980&view=results) emmitted from the PR - that's 
+95. Mosè points out [that it's not too hard to look at the warning logs](https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId=9980&view=results) emmitted from the PR - that's
 how he was ble to spot that `CompilerSupportLibraries` was missing, and some other warnings needed to be addressed.
 
 96. How to easily create a function that updates its own internal state? Use a closure! [ Like this](https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u=miguelraz)
@@ -65,7 +74,7 @@ julia> foo.state.contents
 3
 ```
 
-# 05/04/2021 
+# 05/04/2021
 
 86. Chris Elrod with the amazing hint that `@code_native` has a `syntax=:intel` or `syntax=:att` flag!
 
@@ -87,7 +96,7 @@ My workflow goes like this:
 - setup pipes for grepping and counting `rg "foo" | rg --invert-match "bar" | wc`
 
 91. I made a [cool tutorial](https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u=miguelraz) on making a BinaryBuilder.jl recipe for `primecount` a bleeding edge
-algorithm library for counting primes in in C/C++. 
+algorithm library for counting primes in in C/C++.
 
 # 31/03/2021
 
@@ -141,7 +150,7 @@ julia> @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it
 
 81. I should start contributing more to LoopVectorization.jl...
 
-### 23/03/2021 
+### 23/03/2021
 
 73. Derp - remember, it's `match(regex, string).captures[index]`
 
@@ -159,7 +168,7 @@ joinpath(@__DIR__, "my_new_file.json")
 
 ## 22/03/2021
 
-70. `ArtifactUtils.jl` rules! just `add_artifact!` and you're almost good to go. 
+70. `ArtifactUtils.jl` rules! just `add_artifact!` and you're almost good to go.
 
 71. Need to work with a gajillion files in a folder and map the same transform to them lazily? Use FileTrees.jl for all your multithreaded directed needs!
 
@@ -221,7 +230,7 @@ You can `wait` for a task to block until it finishes or `fetch` to initizlize it
 - `using Distributed`: You have 8 REPLs started on each computer. You gain finer control on which processor communicates with which.
 - `nprocs(), myid(), @everywhere`,
 - useful idiom: `for i in workers(); @spawnat i work(...); end`
-- instead of manually partitioning the space and juggling indexes, try using 
+- instead of manually partitioning the space and juggling indexes, try using
 ```julia
 @distributed (+) for r in [(0:9999) .+ offset for offset in 0:10_000:r[end]-1]
     partial_pi(r)
@@ -248,7 +257,7 @@ IdDict{Any,String} with 3 entries:
 Vs
 
 ```julia-repl
-julia> Dict(true => "yes", 1 => "no", 1.0 => "maybe") 
+julia> Dict(true => "yes", 1 => "no", 1.0 => "maybe")
 Dict{Real, String} with 1 entry:
   1.0 => "maybe"
 ```
@@ -312,7 +321,7 @@ function iterate(it::TakeNth, state...)
 end
 ```
 
-55. To dump a TLA  file into a dot file, use `tlc -dump dot file.dot file.tla`. Then read it with 
+55. To dump a TLA  file into a dot file, use `tlc -dump dot file.dot file.tla`. Then read it with
 - Hmmmmm Strong connected concurrent components in LightGraphs.jl ? [link here](https://github.com/tlaplus/tlaplus/blob/master/general/docs/contributions.md), [repo here](https://github.com/vbloemen/hong-ufscc)
 
 56. [CodeCosts.jl](https://github.com/kimikage/CodeCosts.jlA) looks REALLLLLY cool for a [JuliaTooling] video soon...
@@ -446,7 +455,7 @@ iterate(s::CustomSet, el) = iterate(s.dict, el)
 50. Iterators galore! We had massive help from Sascha and Fliksel:
 - LESSON: RETURN WHAT YOU WANT THE NEXT STATE TO BE
 ```julia-repl
-julia> function Base.iterate(iter::Fibo, state = (0, (1,1))) # The 0 here will represent the "counter" 
+julia> function Base.iterate(iter::Fibo, state = (0, (1,1))) # The 0 here will represent the "counter"
        if state[1] > iter.n
            return nothing
        end
@@ -457,8 +466,8 @@ julia> function Base.iterate(iter::Fibo, state = (0, (1,1))) # The 0 here will r
 51. Note about iterators:
 ```julia
 function Base.iterate(iter::Fibo, state = ...)
-				        #  ^ 
-					#  |	
+				        #  ^
+					#  |
 	counter = state[1] # <- this has to match with newstate
 	if counter > iter.n
 	    return nothing
@@ -466,7 +475,7 @@ function Base.iterate(iter::Fibo, state = ...)
 
 	# Clever calculations here
 	newitem = foo(...)
-	newstate = (bar(...), ...)     
+	newstate = (bar(...), ...)
 	# NOTE: the tuples must match up!
 	# typeof(newstate) == typeof(state)
 	return newitem, newstate
@@ -505,23 +514,23 @@ count(p -> all(t -> contains(p, t), fields1), input)
 count(p -> all(t -> contains(p, t), fields2), input)
 ```
 
-43. Instead of 
+43. Instead of
 ```julia
 if !haskey(d, str)
     d[str] = 1
 elseif
     haskey(d, str)
     d[str] += 1
-else 
+else
     ...
 end
 ```
-You can try 
+You can try
 ```julia
 d[str] = get(d, s, 0) + 1
 ```
 
-44. Revisiting Exercisms is a good way to hone skills. Instead of 
+44. Revisiting Exercisms is a good way to hone skills. Instead of
 ```julia
 a, b, c = dict[c[1]], dict[c[2]] dict[c[3]]
 # vs
