@@ -12,6 +12,13 @@
 101. In BinaryBuilder.jl, `cd ${prefix}/` is where all compilation targets are placed. 
 Also, RTFM! Specifically platform hijinks.
 
+102. In BinaryBuilder.jl, Mosè recommends, instead of 
+```bash
+cp racket/bin/* ${prefix}/
+# try doing
+cp -r racket/bin ${prefix}/.
+```
+
 ## 11/04/2021
 
 98. We got invited to give a conference talk at Alpine2021 because of a [tweet](https://twitter.com/miguelraz_/status/1381041713725153283) I sent to Alpine's main dev, Ariadne Conill.
