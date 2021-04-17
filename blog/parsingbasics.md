@@ -1,5 +1,6 @@
 @def title = "🚧 WIP 🚧 Parsing Basics with Parsers.jl"
 @def tags = ["parsing", "parsers"]
+@def date_format = "2 April 2021"
 
 ### Parsing basics - how to use Parsers.jl to parse formats for high performance
 \tableofcontents

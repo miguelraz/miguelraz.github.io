@@ -1,5 +1,6 @@
 @def title = "🚧 WIP 🚧 Julia Optimization Cheatsheet"
 @def tags = ["performance", "cheatsheet"]
+@def date_format = "1 April 2021"
 
 Might as well write this down...
 

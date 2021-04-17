@@ -1,5 +1,6 @@
 @def title = "Smoothing data with Julia's `@generated` functions - remixed"
 @def tags = ["metaprogramming", "@generated"]
+@def date_format = "1 Jan 2000"
 
 **NB**: The following is a post that was originally written by [Dr. Jiahao Chen](https://medium.com/@acidflask/smoothing-data-with-julia-s-generated-functions-c80e240e05f3), 
 a Julia pioneer and coding rockstar. Matt Bauman also contributed to the code,
