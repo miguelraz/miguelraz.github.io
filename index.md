@@ -1,9 +1,7 @@
 @def title = "Welcome to the blog!"
 @def tags = ["introduction"]
 
-# Hola! :wave:
-
-\tableofcontents <!-- you can use \toc as well -->
+# ¡Hola! ¡Bienvenidos todos, todas y todes! :wave:
 
 My name is Miguel Raz Guzmán Macedo, and I am an undergraduate physics student at UNAM, México.
 

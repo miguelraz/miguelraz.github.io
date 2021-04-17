@@ -3,56 +3,38 @@
 @def rss = "Publication feed for Miguel Raz"
 @def rss_title = "PublicationsMiguelRaz"
 @def rss_pubdate = Date(2019, 5, 1)
-
 @def tags = ["talks", "videos", "publications"]
 
-# More goodies
+### Publications
 
-\toc
+Soon :tm:
 
-## More markdown support
+### Talks + Videos
 
-The Julia Markdown parser in Julia's stdlib is not exactly complete and Franklin strives to bring useful extensions that are either defined in standard specs such as Common Mark or that just seem like useful extensions.
+#### Español
+1. [Tutorial de Julia en español](https://www.youtube.com/watch?v=LbTbs-0pOuc)
 
-* indirect references for instance [like so]
+Ideal para personas que no han programado nunca antes.
 
-[like so]: http://existentialcomics.com/
+2. ["Considera Julia"]() - plática con XalapaCode.
 
-or also for images
+Un grupo de programadores de Xalapa, incluido @categulario, me invitaron a dar una plática sobre 
+por qué considerar Julia. Inspirada en la plática de "Considering Rust" de Jon Gjengset.
 
-![][some image]
+3. [Julia + Rust](https://www.youtube.com/watch?v=arKceDiQzic) - plática con GNULinuxLatino
 
-some people find that useful as it allows referring multiple times to the same link for instance.
+Por invitación de Yuli vía twitter, me uní a platicar sobre bondades de Julia
 
-[some image]: https://upload.wikimedia.org/wikipedia/commons/9/90/Krul.svg
+#### English
 
-* un-qualified code blocks and indented code blocks are allowed and are julia by default
+1. [Julia REPL tips and tricks](https://www.youtube.com/watch?v=EkgCENBFrAY)
 
-    a = 1
-    b = a+1
+There's tons of goodies in the Julia REPL that a lot of people don't know about.
+This was my effort to document some of them, learn about it, and throw a link at beginners
+when they didn't know how to get the dev flow going.
 
-or
+2. [Julia Beginner AMA - Dec. 2020](https://www.youtube.com/watch?v=A63Aih9XynY)
 
-```
-a = 1
-b = a+1
-```
+Hung out with Jacob Zelko and fielded questions from people all across the internet lands.
 
-you can specify the default language with `@def lang = "julia"`.
-If you actually want a "plain" code block, qualify it as `plaintext` like
-
-```plaintext
-so this is plain-text stuff.
-```
-
-## A bit more highlighting
-
-Extension of highlighting for `pkg` an `shell` mode in Julia:
-
-```julia-repl
-(v1.4) pkg> add Franklin
-shell> blah
-julia> 1+1
-(Sandbox) pkg> resolve
-```
 
