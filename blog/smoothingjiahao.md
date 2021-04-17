@@ -14,6 +14,8 @@ Additionally, if you want to have Stefan Karpinski himself give you a summary of
 </details>
 ---
 
+\toc
+
 # Smoothing data with Julia's @generated functions - by Jiahao Chen
 
 One of Julia’s great strengths for technical computing is its metaprogramming features, which allow users to write collections of related code with minimal repetition. One such feature is generated functions, a feature recently implemented in Julia 0.4 that allows users to write customized compute kernels at “compile time”.

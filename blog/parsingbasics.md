@@ -1,4 +1,4 @@
-@def title = "Parsing Basics with Parsers.jl"
+@def title = "🚧 WIP 🚧 Parsing Basics with Parsers.jl"
 @def tags = ["parsing", "parsers"]
 
 ### Parsing basics - how to use Parsers.jl to parse formats for high performance

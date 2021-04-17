@@ -1,4 +1,4 @@
-@def title = "Julia Optimization Cheatsheet/checklist"
+@def title = "🚧 WIP 🚧 Julia Optimization Cheatsheet"
 @def tags = ["performance", "cheatsheet"]
 
 Might as well write this down...

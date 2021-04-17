@@ -1,5 +1,5 @@
 @def title = "The Boundary Element Method as an application of Julia's @generated functions"
-@def tags = ["metaprogramming", "@generated", "compile time"]
+@def tags = ["metaprogramming", "@generated", "compile time", "Blog"]
 
 
 **NB** - This notebook was originally made, some years ago, by Steven G. Johnson. I took the pre 1.0 Julia code and updated it so as to teach myself and others some useful concepts about generated functions in Julia.
@@ -7,6 +7,9 @@ It is based on the idea of generated functions and staged programming of chapter
 The original code is in Appendix B of the same thesis.
 
 -- Miguel Raz, 2020
+
+---
+
 
 \toc
 
