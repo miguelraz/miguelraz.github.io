@@ -1033,7 +1033,11 @@ className:"class",beginKeywords:"struct protocol class extension enum",
 end:"\\{",excludeEnd:!0,keywords:D,contains:[e.inherit(e.TITLE_MODE,{
 begin:/[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/}),...B]},J,Q,{
 beginKeywords:"import",end:/$/,contains:[...v],relevance:0
-},...B,...k,...S,I,K,...z,...q,U,G]}}})());hljs.registerLanguage("julia-repl",function(a){return{c:[{cN:"meta",b:/^julia>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"julia"}},{cN:"metas",b:/^shell>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"bash"}},{cN:"metap",b:/^\(.*\)\spkg>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"julia"}}]}});hljs.registerLanguage("plaintext",(()=>{"use strict";return t=>({
+},...B,...k,...S,I,K,...z,...q,U,G]}}})());
+hljs.registerLanguage("julia-repl",function(a){return{c:[{cN:"meta",b:/^julia>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"julia"}},
+{cN:"metas",b:/^shell>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"bash"}},
+{cN:"metap",b:/^\(.*\)\spkg>/,r:10,starts:{e:/^(?![ ]{6})/,sL:"julia"}}]}});
+hljs.registerLanguage("plaintext",(()=>{"use strict";return t=>({
 name:"Plain text",aliases:["text","txt"],disableAutodetect:!0})})());hljs.registerLanguage("diff",(()=>{"use strict";return e=>({name:"Diff",
 aliases:["patch"],contains:[{className:"meta",relevance:10,variants:[{
 begin:/^@@ +-\d+,\d+ +\+\d+,\d+ +@@/},{begin:/^\*\*\* +\d+,\d+ +\*\*\*\*$/},{
