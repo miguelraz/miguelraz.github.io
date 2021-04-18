@@ -14,6 +14,9 @@ cp racket/bin/* ${prefix}/
 cp -r racket/bin ${prefix}/.
 ```
 
+103. Possible TODO? Stefan posted on [Discourse](https://discourse.julialang.org/t/julia-is-eight-times-slower-than-go-on-numerical-scheme/59383/29?u=miguelraz):
+> There’s an old issue to [allow type annotations on global variables](https://github.com/JuliaLang/julia/issues/964). **This would be a great intro compiler project** — not trivial by any means, but relatively straightforward. The right approach would need to be discussed with the compiler team, but I suspect the it would be to associate a type with each global binding and automatically insert a type check at each global assignment and teach the compiler that it can assume that the type of each global access has the associated type. An untyped global would then have type Any, so all globals would work the same way. Some subtleties for usability: you’ll want to at least allow redeclaring the same global with the same type so that code can be re-included interactively; you could also allow the type annotation to be made more restrictive since any code that’s already been generated with that assumption will still be correct; to be really fancy, one could add “back edges” from global binding types to methods that use those globals and increase the world age / invalidate those methods, which would allow arbitrary re-declaration of type globals at the cost of recompiling any methods that accessed the global.
+
 ### 13/04/2021
 
 100. Submitted GSoC app. Godspeed. Go go Rubin.jl!
