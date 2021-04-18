@@ -3,11 +3,12 @@ Add here global page variables to use throughout your
 website.
 The website_* must be defined for the RSS to work
 -->
-@def website_title = "PathToPerformance"
-@def website_descr = "Website for Miguel Raz Guzman Macedo"
-@def website_url   = "miguelraz.github.io"
-
+# RSS stuff
 @def author = "Miguel Raz Guzmán Macedo"
+@def generate_rss = true
+@def website_title = "PathToPerformance"
+@def website_descr = "A virtual diary for progress on all fronts by Miguel Raz Guzmán Macedo"
+@def website_url = "https://miguelraz.github.io"
 
 <!--
 @def mintoclevel = 2
