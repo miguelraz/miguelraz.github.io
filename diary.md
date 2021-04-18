@@ -45,7 +45,7 @@ In the same note: `x |> f` in Lean is the same as `f <| a`, which in Haskell mea
 ## 08/04/2021
 
 97. Spawning a `run(...)` can take 2x more allocations from one system to another!
-```julia
+```julia-repl
 julia> using primecount_jll
 
 julia> @time run(`$(primecount()) 1e14`); # can be 2x allocations in other systems!
@@ -63,7 +63,7 @@ julia> @time run(`$(primecount()) 1e14`); # can be 2x allocations in other syste
 how he was ble to spot that `CompilerSupportLibraries` was missing, and some other warnings needed to be addressed.
 
 96. How to easily create a function that updates its own internal state? Use a closure! [ Like this](https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u=miguelraz)
-```julia
+```julia-repl
 julia> f(state=0) = ()->state+=1
 f (generic function with 2 methods)
 
@@ -913,7 +913,7 @@ fn raindrops(n: u32) -> String {
 ```
 
 4. Rust match is very powerful... try and setup the anonymous functions in a tuple after the `match` and then filter by `(each, available, case) => action`.
-```rust
+```plaintext
 pub fn raindrops(num: i64) -> String {
     let mut raindrop = String::new();
 
@@ -934,7 +934,7 @@ pub fn raindrops(num: i64) -> String {
 
 5. This was a good use of match
 
-```rust
+```plaintext
 pub fn square(s: u32) -> u64 {
     match s {
         1...64 => 1u64.wrapping_shl(s-1),
