@@ -1,4 +1,4 @@
-Sitemap: miguelraz.github.io/sitemap.xml
+Sitemap: https://miguelraz.github.io/sitemap.xml
 
 User-agent: *
 Disallow:

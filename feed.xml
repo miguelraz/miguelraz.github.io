@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <rss version="2.0"
-  xmlns:content="http://purl.org/rss/1.0/modules/content/"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:media="http://search.yahoo.com/mrss/"
-  xmlns:atom="http://www.w3.org/2005/Atom"
-  xmlns:georss="http://www.georss.org/georss">
+      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:media="http://search.yahoo.com/mrss/"
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:georss="http://www.georss.org/georss">
 
-  <channel>
-    <title>
-      <![CDATA[  PathToPerformance  ]]>
-    </title>
-    <link> miguelraz.github.io </link>
-    <description>
-      <![CDATA[  Website for Miguel Raz Guzman Macedo  ]]>
-    </description>
-    <atom:link
-      href="miguelraz.github.io/feed.xml"
-      rel="self"
-      type="application/rss+xml" />
+      <channel>
+        <title><![CDATA[PathToPerformance]]></title>
+        <link>https://miguelraz.github.io</link>
+        <description><![CDATA[A virtual diary for progress on all fronts by Miguel Raz Guzmán Macedo]]></description>
+        <generator>Franklin.jl -- https://github.com/tlienart/Franklin.jl</generator>
+        <atom:link
+            href="https://miguelraz.github.io/feed.xml"
+            rel="self"
+            type="application/rss+xml" />
 
 
 <item>
-  <title>
-    <![CDATA[  PublicationsMiguelRaz  ]]>
-  </title>
-  <link> miguelraz.github.io/pubs/index.html </link>
-  <guid> miguelraz.github.io/pubs/index.html </guid>
-  <description>
-    <![CDATA[  Publication feed for Miguel Raz  ]]>
-  </description>  
-    
-  <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>  
-  
-  
-  <atom:author>
-    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
-  </atom:author>
+    <title><![CDATA[PublicationsMiguelRaz]]></title>
+    <link>https://miguelraz.github.io/pubs/index.html</link>
+    <guid></guid>
+    <description><![CDATA[Publication feed for Miguel Raz]]></description>    
         
+    <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
 </item>
 </channel></rss>
