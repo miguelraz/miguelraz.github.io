@@ -5,6 +5,16 @@
 
 # Virtual diary for progress on all fronts
 
+### 20/04/2021
+
+105. Ooops - turns out I didn't use a copy of `main` branch for the tutorials so someone has to update by hadn a bunch of stuff :((((
+
+106. `BinaryBuilder.supported_platforms(exlclude = Sys.islinux)` - where have you been all this time?
+
+### 18/04/2021
+
+104. Great day! Wrote the DataFrames.jl tutorials in Spanish, like 13 notebooks in a day. Vim skills paid off big time!
+
 ### 14/04/2021
 
 102. Almost clinching the BB recipe for `racket`. This will help build Herbie! In BinaryBuilder.jl, Mosè recommends, instead of 
