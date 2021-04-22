@@ -5,6 +5,29 @@
 
 # Virtual diary for progress on all fronts
 
+### 22/04/2021
+
+107. Finally reinstalled `CUDA.jl` stuff. Some good pointers:
+- install the `linuxXXX-headers` and `linuxXXX-nvidia` to get compat stuff, then `sudo pacman -Sy cuda` to get all the  goodies or `CUDA_full_jll`. Big thanks to Time Besard and the `#gpu` gang for the setup.
+- It's important to know the full memory model. Yupei Qi was very kind to recommend the [GTC On Demand videos](https://www.nvidia.com/en-us/gtc/on-demand/) and this [Architecture whitepaper](https://www.microway.com/download/whitepaper/NVIDIA_Maxwell_GM204_Architecture_Whitepaper.pdf)
+- This is a good script to figure out the ideal launch config via the occupancy api (🎩 to Valentin Churavy )
+```julia-repl
+julia> using CUDA
+julia> function mykernel()
+         nothing
+       end
+mykernel (generic function with 1 method)
+julia> myconfig(kernel) = (@show kernel; (threads=1, blocks=1))
+myconfig (generic function with 1 method)
+julia> @cuda config=myconfig mykernel()
+```
+- It is **critical** to use the `nsys` profiler to figure out the full occupancy and the SMs in your systems. Ignore the CUDA cores, those are more marketing.`nsys launch julia` is very useful for getting this setup.
+
+
+108. Put up StagedFilters.jl on Discord. With `LoopVectorization.jl`, we get up to 300x performance increase on some systems vs SciPy. I should make a release as I go forward
+- Roadmap: Add a GPU method, add calculating the derivatives in a single pass
+
+
 ### 20/04/2021
 
 105. Ooops - turns out I didn't use a copy of `main` branch for the tutorials so someone has to update by hadn a bunch of stuff :((((
