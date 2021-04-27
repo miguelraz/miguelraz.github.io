@@ -5,6 +5,12 @@
 
 # Virtual diary for progress on all fronts
 
+### 27/04/2021
+
+109. `launch=false` config for `CUDA.jl` helps set `peakflops`. Current NVIDIA 860M sets clocks in about 5.6e11.
+
+110. MichaelHatherly's `InteractiveErrors.jl` is amazing. I should add it to a growing list of REPL tools.
+
 ### 22/04/2021
 
 107. Finally reinstalled `CUDA.jl` stuff. Some good pointers:
