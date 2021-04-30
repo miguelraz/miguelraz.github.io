@@ -5,11 +5,33 @@
 
 # Virtual diary for progress on all fronts
 
+### 29/04/2021
+
+113. Added a new recipe for `simdjson`. remember to add `supported_platforms(; experimental = true)` to try and run thigns on the new Mac M1 and `julia_compat = 1.6` to get the `cpuid` feature detection.
+As always, Mosè helped tons. He rocks.
+
+### 28/04/2021
+
+112. Como deshacer tu [ultimo git commit](https://midu.dev/como-deshacer-el-ultimo-commit-git/)
+```bash
+git reset --soft HEAD~1
+git reset --hard HEAD~1
+git commit --ammend -m "este es el mensaje correcto"
+git add f.txt
+git commit --ammend -m "mensaje del commit"
+# Si esta pushed...
+git revert 74a...
+```
+
 ### 27/04/2021
 
 109. `launch=false` config for `CUDA.jl` helps set `peakflops`. Current NVIDIA 860M sets clocks in about 5.6e11.
 
 110. MichaelHatherly's `InteractiveErrors.jl` is amazing. I should add it to a growing list of REPL tools.
+
+111. `cd -` jumps you back to the last dir. Also found [command line libs in Rust](https://lib.rs/command-line-utilities):
+- exa, bat, git-tui, git-delta, hunter, and bandwhich
+- `grex`, `navi`, and `typeracer`: use more often!
 
 ### 22/04/2021
 
