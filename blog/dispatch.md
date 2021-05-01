@@ -126,3 +126,21 @@ Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super
 -------
 \dispatch{Hello this is me}
 
+----
+sep
+
+@@row
+@@container
+@@colbox-red
+@@right ![](/assets/astrofavicon/favicon.ico)
+@@
+
+**miguelito:**
+
+And this is me!
+@@
+@@
+@@
+~~~
+<div style="clear: both"></div>
+~~~
