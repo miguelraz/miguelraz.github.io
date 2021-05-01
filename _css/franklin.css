@@ -245,7 +245,7 @@ code {
 ================================================================== */
 
 .franklin-content .colbox-blue {
-    background-color: #EEF3F5;
+    background-color: #afeeee;
     padding-top: 5px;
     padding-right: 10px;
     padding-left: 10px;
@@ -257,7 +257,7 @@ code {
     border-left: 5px solid #4C9CF1; }
 
 .franklin-content .colbox-red {
-    background-color: #FF4500;
+    background-color: #FF9999;
     padding-top: 5px;
     padding-right: 10px;
     padding-left: 10px;
@@ -266,4 +266,4 @@ code {
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 0 10px 10px 0;
-    border-left: 5px solid #4C9CF1; }
+    border-left: 5px solid #FF4500; }

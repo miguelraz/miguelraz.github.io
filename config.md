@@ -37,3 +37,19 @@ For instance:
 -->
 \newcommand{\R}{\mathbb R}
 \newcommand{\scal}[1]{\langle #1 \rangle}
+\newcommand{\dispatch}[1]{
+@@row
+@@container
+@@colbox-blue
+@@left ![](/assets/favicon.ico)
+@@
+**Dispatch:**
+
+#1
+@@
+@@
+@@
+~~~
+<div style="clear: both"></div>
+~~~
+}
