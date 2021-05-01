@@ -2,77 +2,25 @@
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["dispatch"]
 
-Hello and Welcome to JuliaLand!
 
-@@colbox-red
-MORE REDDD
-> this is a quote
-> with many lines
-> very impressive quote
-now this should be the julai repl
-```julia-repl
-julia> f(x) = x^2 
-
-julia> f(3)
-9
-
-julia> @code_llvm f(3)
-#...
-```
-@@
-
-last text box
-------
-
-
-~~~
-<div class="row">
-  <div class="container">
-	<img class="left" src="/assets/favicon.ico">
-	<p>
-	This is my textbox yessir
-	</p>
-	<p>
-	Evolution is cool.
-	</p>
-	<div style="clear: both"></div>
-	</div>
- </div>
-~~~
-This is more sep
-
-------
-
-@@row
-@@container
 @@colbox-blue
-@@left ![](/assets/favicon.ico)
-@@
-**Dispatch:**
+# Hello, World! :wave: I'm Dispatch
 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
-Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
+My name's **Dispatch**,  and I'm here to talk to you all about Julia a very neat programming language and why I think it's so cool.
+@@center ![](/assets/pixlr-bg-result.png) @@
 @@
-@@
-@@
-~~~
-<div style="clear: both"></div>
-~~~
 
 
 
-This is more text after something
+Separation....
+
+
 
 
 @@row
 @@container
 @@colbox-blue
-@@left ![](/assets/favicon.ico)
+@@left ![image|<SCALE(180x180)>](/assets/favicon.ico)
 @@
 Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 
 Marine iguanas are splendid creatures! check this math $\exp(-i\pi)+1$ but super cool 

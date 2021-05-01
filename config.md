@@ -64,7 +64,6 @@ For instance:
 **miguelito:**
 
 #1
-
 @@
 @@
 @@
