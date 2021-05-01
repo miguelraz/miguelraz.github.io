@@ -4,41 +4,6 @@
 
 Hello and Welcome to JuliaLand!
 
-!!! note "Note: "
-	This is my note attempt. Pleas be blue and very cool and far
-	
-
-sep
-
-!!! warning "Warning!"
-	This is my warning note. Please go orange and really cool
-
-more sep
-
-!!! tip "Tip "
-	This should be my tip. It should be green
-
-sep sep
-
-@@colbox-blue
-THIS SHOULD BE BLUE PLZ
-@@
-
-@@colbox-red
-REDDDDDDD
-more red
-```julia
-f(x) = x^2
-```
-AND NOW MATH
-$$ \varphi(\E{X}) \le \E{\varphi(X)}. \label{equation blah} $$
-@@
-
-math outside?
-
-
-$$ \varphi(\E{X}) \le \E{\varphi(X)}. \label{equation blah} $$
-
 @@colbox-red
 MORE REDDD
 > this is a quote
@@ -144,3 +109,28 @@ And this is me!
 ~~~
 <div style="clear: both"></div>
 ~~~
+
+
+------
+testing new command
+-----
+\miguelito{wazzzzaaa}
+
+\dispatch{this is now a dialog!}
+
+\miguelito{Yes it is!
+
+How about some Julia code here?
+
+```julia
+f(x) = x^2
+```
+}
+
+\dispatch{How about some quotes?
+
+> This is somehting very important that someone must have said
+
+}
+
+Convo finished!

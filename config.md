@@ -53,3 +53,22 @@ For instance:
 <div style="clear: both"></div>
 ~~~
 }
+
+\newcommand{\miguelito}[1]{
+@@row
+@@container
+@@colbox-red
+@@right ![](/assets/astrofavicon/favicon.ico)
+@@
+
+**miguelito:**
+
+#1
+
+@@
+@@
+@@
+~~~
+<div style="clear: both"></div>
+~~~
+}
