@@ -21,6 +21,9 @@ Small lessons:
 10. set a breakpoint on `jl_throw` to see where `gdb` goes wrong. then `r -J ../usr/lib/julia/corecompiler.ji --output-ji x sysimg.jl`
 11. rr magic: `rr record ../usr/bin/julia-debug -J ../usr/lib/julia/corecompiler.ji --output-ji x sysimg.jl`, then `rr replay`. `b jl_exceptionf` and then `rc` to "reverse continue" so that you can step backwards from what happened.
 12. When an assertion fires, and you are in `gdb`, the location of the assertion in the source code is in frame 4, so, to jump to it you just start `gdb` and then `f 4`.(Usually just using `d bt` to look at the backtrace and figure out from there where to go.
+13. You can call lisp (to reindent your emacs!) within the `gc.c` file!
+14. Hah, I clicked the moment of [triump!](https://clips.twitch.tv/ExcitedSparklyTofuTheThing-I5DsaBoyOXcZ2KMw)
+15. `../julia runtests.jl strings` to run the string test suite.
 
 ### 05/04/2021
 
