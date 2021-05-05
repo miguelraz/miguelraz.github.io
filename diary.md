@@ -5,6 +5,23 @@
 
 # Virtual diary for progress on all fronts
 
+### 06/04/2021
+
+115. WE GOT JEFF TO STREAM SMALL STRING OPTIMIZATION!
+Small lessons:
+1. Big wieldy codebase? Work on one small, small change at a time. Cross bridges as you come to them.
+2. Majority of strings don't need more than 128 bytes, so a single byte of addressing
+3. Jeff uses `ack` for grepping the codebase
+4. Before trying to compile, review your changes with a `git diff`
+5. When getting a segmentation fault after making your changes and running `make`, run a debug build to figure out what went wrong with `make debug -j4`
+6. `gdb /usr/bin/julia-debug` starts gdb, then `cd base/; r --output-ji x compile.ji` or something like that.
+7. If you change header files you have to rebuild everything
+8. Bonus: There's a docker image to start Julia Int32.
+9. Multithread the `compiler.ji` step: multithread the code generator, break up into more code units...
+10. set a breakpoint on `jl_throw` to see where `gdb` goes wrong. then `r -J ../usr/lib/julia/corecompiler.ji --output-ji x sysimg.jl`
+11. rr magic: `rr record ../usr/bin/julia-debug -J ../usr/lib/julia/corecompiler.ji --output-ji x sysimg.jl`, then `rr replay`. `b jl_exceptionf` and then `rc` to "reverse continue" so that you can step backwards from what happened.
+12. When an assertion fires, and you are in `gdb`, the location of the assertion in the source code is in frame 4, so, to jump to it you just start `gdb` and then `f 4`.(Usually just using `d bt` to look at the backtrace and figure out from there where to go.
+
 ### 05/04/2021
 
 114. Don't forget to turn off `cpuscaling` when running your benchmarks! Hat tip to [Camille Fournier](https://twitter.com/skamille/status/1389731461893349380) for schooling a bunch of us on this one!
