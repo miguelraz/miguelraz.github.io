@@ -1,29 +1,151 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=29042021 ><a href="#29042021" class=header-anchor >29/04/2021</a></h3> <ol start=113 > <li><p>Added a new recipe for <code>simdjson</code>. remember to add <code>supported_platforms&#40;; experimental &#61; true&#41;</code> to try and run thigns on the new Mac M1 and <code>julia_compat &#61; 1.6</code> to get the <code>cpuid</code> feature detection.</p> </ol> <p>As always, Mosè helped tons. He rocks.</p> <h3 id=28042021 ><a href="#28042021" class=header-anchor >28/04/2021</a></h3> <ol start=112 > <li><p>Como deshacer tu <a href="https://midu.dev/como-deshacer-el-ultimo-commit-git/">ultimo git commit</a></p> </ol> <pre><code class=language-bash >git reset --soft HEAD~1
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021</a></h3> <ol start=114 > <li><p>Don&#39;t forget to turn off <code>cpuscaling</code> when running your benchmarks&#33; Hat tip to <a href="https://twitter.com/skamille/status/1389731461893349380">Camille Fournier</a> for schooling a bunch of us on this one&#33;</p> </ol> <p><a href="https://nixcp.com/disable-cpu-frecuency-scaling/">From this link:</a> we can do:</p> <pre><code class=language-bash >grep -E &#39;^model name|^cpu MHz&#39; /proc/cpuinfo</code></pre>
+<p>To figure out if the number on the left is lower than the number on the right. That&#39;s costing speed&#33; if you install <code>cpupowerutils&#40;Centos/Debian&#41;/ cpufrequtils &#40;ubuntu / Debian&#41;</code> you can do:</p>
+<pre><code class=language-bash >cpupower frequency-set -g performance</code></pre>
+<h3 id=29042021 ><a href="#29042021" class=header-anchor >29/04/2021</a></h3>
+<ol start=113 >
+<li><p>Added a new recipe for <code>simdjson</code>. remember to add <code>supported_platforms&#40;; experimental &#61; true&#41;</code> to try and run thigns on the new Mac M1 and <code>julia_compat &#61; 1.6</code> to get the <code>cpuid</code> feature detection.</p>
+
+</ol>
+<p>As always, Mosè helped tons. He rocks.</p>
+<h3 id=28042021 ><a href="#28042021" class=header-anchor >28/04/2021</a></h3>
+<ol start=112 >
+<li><p>Como deshacer tu <a href="https://midu.dev/como-deshacer-el-ultimo-commit-git/">ultimo git commit</a></p>
+
+</ol>
+<pre><code class=language-bash >git reset --soft HEAD~1
 git reset --hard HEAD~1
 git commit --ammend -m &quot;este es el mensaje correcto&quot;
 git add f.txt
 git commit --ammend -m &quot;mensaje del commit&quot;
 # Si esta pushed...
-git revert 74a...</code></pre> <h3 id=27042021 ><a href="#27042021" class=header-anchor >27/04/2021</a></h3> <ol start=109 > <li><p><code>launch&#61;false</code> config for <code>CUDA.jl</code> helps set <code>peakflops</code>. Current NVIDIA 860M sets clocks in about 5.6e11.</p> <li><p>MichaelHatherly&#39;s <code>InteractiveErrors.jl</code> is amazing. I should add it to a growing list of REPL tools.</p> <li><p><code>cd -</code> jumps you back to the last dir. Also found <a href="https://lib.rs/command-line-utilities">command line libs in Rust</a>:</p> </ol> <ul> <li><p>exa, bat, git-tui, git-delta, hunter, and bandwhich</p> <li><p><code>grex</code>, <code>navi</code>, and <code>typeracer</code>: use more often&#33;</p> </ul> <h3 id=22042021 ><a href="#22042021" class=header-anchor >22/04/2021</a></h3> <ol start=107 > <li><p>Finally reinstalled <code>CUDA.jl</code> stuff. Some good pointers:</p> </ol> <ul> <li><p>install the <code>linuxXXX-headers</code> and <code>linuxXXX-nvidia</code> to get compat stuff, then <code>sudo pacman -Sy cuda</code> to get all the goodies or <code>CUDA_full_jll</code>. Big thanks to Time Besard and the <code>#gpu</code> gang for the setup.</p> <li><p>It&#39;s important to know the full memory model. Yupei Qi was very kind to recommend the <a href="https://www.nvidia.com/en-us/gtc/on-demand/">GTC On Demand videos</a> and this <a href="https://www.microway.com/download/whitepaper/NVIDIA_Maxwell_GM204_Architecture_Whitepaper.pdf">Architecture whitepaper</a></p> <li><p>This is a good script to figure out the ideal launch config via the occupancy api &#40;🎩 to Valentin Churavy &#41;</p> </ul> <pre><code class=language-julia-repl >julia&gt; using CUDA
+git revert 74a...</code></pre>
+<h3 id=27042021 ><a href="#27042021" class=header-anchor >27/04/2021</a></h3>
+<ol start=109 >
+<li><p><code>launch&#61;false</code> config for <code>CUDA.jl</code> helps set <code>peakflops</code>. Current NVIDIA 860M sets clocks in about 5.6e11.</p>
+
+<li><p>MichaelHatherly&#39;s <code>InteractiveErrors.jl</code> is amazing. I should add it to a growing list of REPL tools.</p>
+
+<li><p><code>cd -</code> jumps you back to the last dir. Also found <a href="https://lib.rs/command-line-utilities">command line libs in Rust</a>:</p>
+
+</ol>
+<ul>
+<li><p>exa, bat, git-tui, git-delta, hunter, and bandwhich</p>
+
+<li><p><code>grex</code>, <code>navi</code>, and <code>typeracer</code>: use more often&#33;</p>
+
+</ul>
+<h3 id=22042021 ><a href="#22042021" class=header-anchor >22/04/2021</a></h3>
+<ol start=107 >
+<li><p>Finally reinstalled <code>CUDA.jl</code> stuff. Some good pointers:</p>
+
+</ol>
+<ul>
+<li><p>install the <code>linuxXXX-headers</code> and <code>linuxXXX-nvidia</code> to get compat stuff, then <code>sudo pacman -Sy cuda</code> to get all the  goodies or <code>CUDA_full_jll</code>. Big thanks to Time Besard and the <code>#gpu</code> gang for the setup.</p>
+
+<li><p>It&#39;s important to know the full memory model. Yupei Qi was very kind to recommend the <a href="https://www.nvidia.com/en-us/gtc/on-demand/">GTC On Demand videos</a> and this <a href="https://www.microway.com/download/whitepaper/NVIDIA_Maxwell_GM204_Architecture_Whitepaper.pdf">Architecture whitepaper</a></p>
+
+<li><p>This is a good script to figure out the ideal launch config via the occupancy api &#40;🎩 to Valentin Churavy &#41;</p>
+
+</ul>
+<pre><code class=language-julia-repl >julia&gt; using CUDA
 julia&gt; function mykernel&#40;&#41;
          nothing
        end
 mykernel &#40;generic function with 1 method&#41;
 julia&gt; myconfig&#40;kernel&#41; &#61; &#40;@show kernel; &#40;threads&#61;1, blocks&#61;1&#41;&#41;
 myconfig &#40;generic function with 1 method&#41;
-julia&gt; @cuda config&#61;myconfig mykernel&#40;&#41;</code></pre> <ul> <li><p>It is <strong>critical</strong> to use the <code>nsys</code> profiler to figure out the full occupancy and the SMs in your systems. Ignore the CUDA cores, those are more marketing.<code>nsys launch julia</code> is very useful for getting this setup.</p> </ul> <ol start=108 > <li><p>Put up StagedFilters.jl on Discord. With <code>LoopVectorization.jl</code>, we get up to 300x performance increase on some systems vs SciPy. I should make a release as I go forward</p> </ol> <ul> <li><p>Roadmap: Add a GPU method, add calculating the derivatives in a single pass</p> </ul> <h3 id=20042021 ><a href="#20042021" class=header-anchor >20/04/2021</a></h3> <ol start=105 > <li><p>Ooops - turns out I didn&#39;t use a copy of <code>main</code> branch for the tutorials so someone has to update by hadn a bunch of stuff :&#40;&#40;&#40;&#40;</p> <li><p><code>BinaryBuilder.supported_platforms&#40;exlclude &#61; Sys.islinux&#41;</code> - where have you been all this time?</p> </ol> <h3 id=18042021 ><a href="#18042021" class=header-anchor >18/04/2021</a></h3> <ol start=104 > <li><p>Great day&#33; Wrote the DataFrames.jl tutorials in Spanish, like 13 notebooks in a day. Vim skills paid off big time&#33;</p> </ol> <h3 id=14042021 ><a href="#14042021" class=header-anchor >14/04/2021</a></h3> <ol start=102 > <li><p>Almost clinching the BB recipe for <code>racket</code>. This will help build Herbie&#33; In BinaryBuilder.jl, Mosè recommends, instead of </p> </ol> <pre><code class=language-bash >cp racket/bin/* &#36;&#123;prefix&#125;/
+julia&gt; @cuda config&#61;myconfig mykernel&#40;&#41;</code></pre>
+<ul>
+<li><p>It is <strong>critical</strong> to use the <code>nsys</code> profiler to figure out the full occupancy and the SMs in your systems. Ignore the CUDA cores, those are more marketing.<code>nsys launch julia</code> is very useful for getting this setup.</p>
+
+</ul>
+<ol start=108 >
+<li><p>Put up StagedFilters.jl on Discord. With <code>LoopVectorization.jl</code>, we get up to 300x performance increase on some systems vs SciPy. I should make a release as I go forward</p>
+
+</ol>
+<ul>
+<li><p>Roadmap: Add a GPU method, add calculating the derivatives in a single pass</p>
+
+</ul>
+<h3 id=20042021 ><a href="#20042021" class=header-anchor >20/04/2021</a></h3>
+<ol start=105 >
+<li><p>Ooops - turns out I didn&#39;t use a copy of <code>main</code> branch for the tutorials so someone has to update by hadn a bunch of stuff :&#40;&#40;&#40;&#40;</p>
+
+<li><p><code>BinaryBuilder.supported_platforms&#40;exlclude &#61; Sys.islinux&#41;</code> - where have you been all this time?</p>
+
+</ol>
+<h3 id=18042021 ><a href="#18042021" class=header-anchor >18/04/2021</a></h3>
+<ol start=104 >
+<li><p>Great day&#33; Wrote the DataFrames.jl tutorials in Spanish, like 13 notebooks in a day. Vim skills paid off big time&#33;</p>
+
+</ol>
+<h3 id=14042021 ><a href="#14042021" class=header-anchor >14/04/2021</a></h3>
+<ol start=102 >
+<li><p>Almost clinching the BB recipe for <code>racket</code>. This will help build Herbie&#33; In BinaryBuilder.jl, Mosè recommends, instead of </p>
+
+</ol>
+<pre><code class=language-bash >cp racket/bin/* &#36;&#123;prefix&#125;/
 # try doing
-cp -r racket/bin &#36;&#123;prefix&#125;/.</code></pre> <ol start=103 > <li><p>Possible TODO? Stefan posted on <a href="https://discourse.julialang.org/t/julia-is-eight-times-slower-than-go-on-numerical-scheme/59383/29?u&#61;miguelraz">Discourse</a>:</p> </ol> <blockquote> <p>There’s an old issue to <a href="https://github.com/JuliaLang/julia/issues/964">allow type annotations on global variables</a>. <strong>This would be a great intro compiler project</strong> — not trivial by any means, but relatively straightforward. The right approach would need to be discussed with the compiler team, but I suspect the it would be to associate a type with each global binding and automatically insert a type check at each global assignment and teach the compiler that it can assume that the type of each global access has the associated type. An untyped global would then have type Any, so all globals would work the same way. Some subtleties for usability: you’ll want to at least allow redeclaring the same global with the same type so that code can be re-included interactively; you could also allow the type annotation to be made more restrictive since any code that’s already been generated with that assumption will still be correct; to be really fancy, one could add “back edges” from global binding types to methods that use those globals and increase the world age / invalidate those methods, which would allow arbitrary re-declaration of type globals at the cost of recompiling any methods that accessed the global.</p> </blockquote> <h3 id=13042021 ><a href="#13042021" class=header-anchor >13/04/2021</a></h3> <ol start=100 > <li><p>Submitted GSoC app. Godspeed. Go go Rubin.jl&#33;</p> <li><p>In BinaryBuilder.jl, <code>cd &#36;&#123;prefix&#125;/</code> is where all compilation targets are placed. </p> </ol> <p>Also, RTFM&#33; Specifically platform hijinks.</p> <h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2> <ol start=98 > <li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p> </ol> <p>Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.</p> <ol start=99 > <li><p>FINALLY got Lean4 working on VSCode. Still don&#39;t know how to use <code>nix</code> but oh well. Halfway through the manual, and this example was neat to grok:</p> </ol> <pre><code class=language-lean >def add1Times3FilterEven &#40;xs : List Nat&#41; :&#61;
+cp -r racket/bin &#36;&#123;prefix&#125;/.</code></pre>
+<ol start=103 >
+<li><p>Possible TODO? Stefan posted on <a href="https://discourse.julialang.org/t/julia-is-eight-times-slower-than-go-on-numerical-scheme/59383/29?u&#61;miguelraz">Discourse</a>:</p>
+
+</ol>
+<blockquote>
+<p>There’s an old issue to <a href="https://github.com/JuliaLang/julia/issues/964">allow type annotations on global variables</a>. <strong>This would be a great intro compiler project</strong> — not trivial by any means, but relatively straightforward. The right approach would need to be discussed with the compiler team, but I suspect the it would be to associate a type with each global binding and automatically insert a type check at each global assignment and teach the compiler that it can assume that the type of each global access has the associated type. An untyped global would then have type Any, so all globals would work the same way. Some subtleties for usability: you’ll want to at least allow redeclaring the same global with the same type so that code can be re-included interactively; you could also allow the type annotation to be made more restrictive since any code that’s already been generated with that assumption will still be correct; to be really fancy, one could add “back edges” from global binding types to methods that use those globals and increase the world age / invalidate those methods, which would allow arbitrary re-declaration of type globals at the cost of recompiling any methods that accessed the global.</p>
+</blockquote>
+<h3 id=13042021 ><a href="#13042021" class=header-anchor >13/04/2021</a></h3>
+<ol start=100 >
+<li><p>Submitted GSoC app. Godspeed. Go go Rubin.jl&#33;</p>
+
+<li><p>In BinaryBuilder.jl, <code>cd &#36;&#123;prefix&#125;/</code> is where all compilation targets are placed. </p>
+
+</ol>
+<p>Also, RTFM&#33; Specifically platform hijinks.</p>
+<h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2>
+<ol start=98 >
+<li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p>
+
+</ol>
+<p>Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.</p>
+<ol start=99 >
+<li><p>FINALLY got Lean4 working on VSCode. Still don&#39;t know how to use <code>nix</code> but oh well. Halfway through the manual, and this example was neat to grok:</p>
+
+</ol>
+<pre><code class=language-lean >def add1Times3FilterEven &#40;xs : List Nat&#41; :&#61;
 	-- this
 	--   List.filter &#40;. &#37; 2 &#61;&#61; 0&#41; &#40;List.map &#40;. * 3&#41; &#40;List.map &#40;. &#43; 1&#41; xs&#41;&#41;
 	-- becomes this
 	--   xs |&gt; List.map &#40;. &#43; 1&#41; |&gt; List.map &#40;. * 3&#41; |&gt; List.filter &#40;. &#37; 2 &#61;&#61; 0&#41;
 	-- becomes THIS&#33;
-	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre> <p>In the same note: <code>x |&gt; f</code> in Lean is the same as <code>f &lt;| a</code>, which in Haskell means <code>f &#36; a</code>. Damn, that&#39;s some crappy ascii in Haskell :/</p> <h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2> <ol start=97 > <li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p> </ol> <pre><code class=language-julia-repl >julia&gt; using primecount_jll
+	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre>
+<p>In the same note: <code>x |&gt; f</code> in Lean is the same as <code>f &lt;| a</code>, which in Haskell means <code>f &#36; a</code>. Damn, that&#39;s some crappy ascii in Haskell :/</p>
+<h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2>
+<ol start=97 >
+<li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p>
+
+</ol>
+<pre><code class=language-julia-repl >julia&gt; using primecount_jll
 
 julia&gt; @time run&#40;&#96;&#36;&#40;primecount&#40;&#41;&#41; 1e14&#96;&#41;; # can be 2x allocations in other systems&#33;
 3204941750802
-  0.150116 seconds &#40;468 allocations: 33.891 KiB&#41;</code></pre> <ol start=92 > <li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p> <li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p> <li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p> <li><p>Mosè points out <a href="https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId&#61;9980&amp;view&#61;results">that it&#39;s not too hard to look at the warning logs</a> emmitted from the PR - that&#39;s</p> </ol> <p>how he was ble to spot that <code>CompilerSupportLibraries</code> was missing, and some other warnings needed to be addressed.</p> <ol start=96 > <li><p>How to easily create a function that updates its own internal state? Use a closure&#33; <a href="https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u&#61;miguelraz"> Like this</a></p> </ol> <pre><code class=language-julia-repl >julia&gt; f&#40;state&#61;0&#41; &#61; &#40;&#41;-&gt;state&#43;&#61;1
+  0.150116 seconds &#40;468 allocations: 33.891 KiB&#41;</code></pre>
+<ol start=92 >
+<li><p>Woke up to the <code>primecount_jll</code> post getting tons of love, awesome&#33; Hat tip to Stefan Karpsinski and Carsten Bauer for alley-ooping this.</p>
+
+<li><p>Need to remember the <code>@doc</code> macro exists to document code not necessarily next to a function declaration - need to add a dispatch to DoctorDocstrings.jl for this case.</p>
+
+<li><p>Ah right, forgot the <code>make -j&#36;&#123;proc&#125;</code> flag for a parallel BBuilder recipe, thanks to Mosè for <a href="https://github.com/JuliaPackaging/Yggdrasil/pull/2779/files">catching that again</a></p>
+
+<li><p>Mosè points out <a href="https://dev.azure.com/JuliaPackaging/Yggdrasil/_build/results?buildId&#61;9980&amp;view&#61;results">that it&#39;s not too hard to look at the warning logs</a> emmitted from the PR - that&#39;s</p>
+
+</ol>
+<p>how he was ble to spot that <code>CompilerSupportLibraries</code> was missing, and some other warnings needed to be addressed.</p>
+<ol start=96 >
+<li><p>How to easily create a function that updates its own internal state? Use a closure&#33; <a href="https://discourse.julialang.org/t/in-julia-how-to-create-a-function-that-saves-its-own-internal-state/58457/4?u&#61;miguelraz"> Like this</a></p>
+
+</ol>
+<pre><code class=language-julia-repl >julia&gt; f&#40;state&#61;0&#41; &#61; &#40;&#41;-&gt;state&#43;&#61;1
 f &#40;generic function with 2 methods&#41;
 
 julia&gt; foo &#61; f&#40;&#41;
@@ -42,19 +164,107 @@ julia&gt; foo.state
 Core.Box&#40;3&#41;
 
 julia&gt; foo.state.contents
-3</code></pre> <h1 id=05042021 ><a href="#05042021" class=header-anchor >05/04/2021</a></h1> <ol start=86 > <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p> <li><p>Nice idea during the vacation: need to get</p> </ol> <ul> <li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p> <li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p> <li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p> <li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p> </ul> <ol start=88 > <li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p> <li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p> <li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p> </ol> <p>My workflow goes like this:</p> <ul> <li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p> <li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p> </ul> <ol start=91 > <li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p> </ol> <p>algorithm library for counting primes in in C/C&#43;&#43;.</p> <h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1> <ol start=85 > <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p> </ol> <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p> <p>Now to parse that into Julia full fledged.</p> <h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1> <ol start=81 > <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p> <li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p> <li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p> <li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p> </ol> <pre><code class=language-julia >git fetch upstream
+3</code></pre>
+<h1 id=05042021__2 ><a href="#05042021__2" class=header-anchor >05/04/2021</a></h1>
+<ol start=86 >
+<li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p>
+
+<li><p>Nice idea during the vacation: need to get</p>
+
+</ol>
+<ul>
+<li><p>list of all the conditions passed to the integrator and find a way to shove them into the type system.</p>
+
+<li><p>just ignore the commented rules, they don&#39;t pass those cases anyways :/</p>
+
+<li><p>find the first comment symbol &quot;/;&quot;, &#40;Only 8 are excluded&#41;, and slurp with regex the lhs :&#61; rhs /; assumptions</p>
+
+<li><p>make sure to separate the assumptions so that the weird list syntax doesn&#39;t creep in.</p>
+
+</ul>
+<ol start=88 >
+<li><p><a href="https://github.com/akavel/up">up</a> Ultimate Plumber is absolutely amazing at ripgreppin&#39; files and seeing results in real time. Someone rewrite it in Rust already&#33;</p>
+
+<li><p>Hmmm - what about just simply checking if there is a <code>With&#91;...&#93;</code>, and doing straight string replacement?</p>
+
+<li><p>Don&#39;t forget about using <code>Traceur.jl</code>&#33;, just drop a <code>@trace foo&#40;3&#41;</code> and keep going.</p>
+
+</ol>
+<p>My workflow goes like this:</p>
+<ul>
+<li><p><code>cat</code> a file into up: <code>cat file.txt | up</code></p>
+
+<li><p>setup pipes for grepping and counting <code>rg &quot;foo&quot; | rg --invert-match &quot;bar&quot; | wc</code></p>
+
+</ul>
+<ol start=91 >
+<li><p>I made a <a href="https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u&#61;miguelraz">cool tutorial</a> on making a BinaryBuilder.jl recipe for <code>primecount</code> a bleeding edge</p>
+
+</ol>
+<p>algorithm library for counting primes in in C/C&#43;&#43;.</p>
+<h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1>
+<ol start=85 >
+<li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p>
+
+</ol>
+<p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p>
+<p>Now to parse that into Julia full fledged.</p>
+<h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1>
+<ol start=81 >
+<li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p>
+
+<li><p>Somebody can export every single DiffEq method to Fortran with some cleverness and <code>FortranTarget&#40;&#41;</code> shenanigans in Symbolics.jl hmmmmm</p>
+
+<li><p><code>@less @which @edit @functionloc</code> all work the same&#33;</p>
+
+<li><p>Finally got to forwarding a GitHub fork to a new changes&#33; Here&#39;s how:</p>
+
+</ol>
+<pre><code class=language-julia >git fetch upstream
 git checkout master
 git rebase upstream/master
-git push -f origin master</code></pre> <p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p> <h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1> <ol start=78 > <li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p> </ol> <pre><code class=language-julia >julia&gt; A &#61; &#91;rand&#40;&#41; for i in 1:1000, j in 1:1000&#93;;julia&gt; function do_add4&#33;&#40;A&#41;
+git push -f origin master</code></pre>
+<p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p>
+<h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1>
+<ol start=78 >
+<li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p>
+
+</ol>
+<pre><code class=language-julia >julia&gt; A &#61; &#91;rand&#40;&#41; for i in 1:1000, j in 1:1000&#93;;julia&gt; function do_add4&#33;&#40;A&#41;
            n &#61; sizeof&#40;A&#41;&#91;1&#93;
            for j &#61; Base.OneTo&#40;n&#41;
                for i &#61; Base.OneTo&#40;n&#41;
                    @inbounds A&#91;i,j&#93; &#43;&#61; 1.0
                end
            end
-       end</code></pre> <p>Chris Elrod mentions that unless the <code>Base.OneTo</code> isn&#39;t being fed to an inlined function, it doesn&#39;t work for much.</p> <ol start=79 > <li><p>Mason also recommends <code>oneunit</code> instead of <code>one</code> as it works with arbitrary number types. BORKED though, disregard.</p> <li><p>This also works:</p> </ol> <pre><code class=language-julia >julia&gt; using LoopVectorization
+       end</code></pre>
+<p>Chris Elrod mentions that unless the <code>Base.OneTo</code> isn&#39;t being fed to an inlined function, it doesn&#39;t work for much.</p>
+<ol start=79 >
+<li><p>Mason also recommends <code>oneunit</code> instead of <code>one</code> as it works with arbitrary number types. BORKED though, disregard.</p>
+
+<li><p>This also works:</p>
+
+</ol>
+<pre><code class=language-julia >julia&gt; using LoopVectorization
 julia&gt; A &#61; # 1000 x 1000 rand float32s
-julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it</code></pre> <ol start=81 > <li><p>I should start contributing more to LoopVectorization.jl...</p> </ol> <h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021</a></h3> <ol start=73 > <li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p> </ol> <p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p> <ol start=75 > <li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p> <li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p> </ol> <pre><code class=language-julia >joinpath&#40;@__DIR__, &quot;my_new_file.json&quot;&#41;</code></pre>
+julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it</code></pre>
+<ol start=81 >
+<li><p>I should start contributing more to LoopVectorization.jl...</p>
+
+</ol>
+<h3 id=23032021 ><a href="#23032021" class=header-anchor >23/03/2021</a></h3>
+<ol start=73 >
+<li><p>Derp - remember, it&#39;s <code>match&#40;regex, string&#41;.captures&#91;index&#93;</code></p>
+
+</ol>
+<p>74. <code>FileTrees</code> needed a <code>path&#40;file&#41; |&gt; string</code> instead of a <code>File</code>.</p>
+<ol start=75 >
+<li><p>This whole thing parses and writes to a JSON3 array within 10 seconds. That rules&#33;</p>
+
+<li><p>To write files into the <code>MyPkg.jl</code> directory when activated Sukera suggests</p>
+
+</ol>
+<pre><code class=language-julia >joinpath&#40;@__DIR__, &quot;my_new_file.json&quot;&#41;</code></pre>
 <ol start=77 >
 <li><p>HELL YES RUBIN.JL LIVESSSS</p>
 
@@ -935,7 +1145,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: May 01, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: May 05, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>
