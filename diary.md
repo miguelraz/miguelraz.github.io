@@ -5,6 +5,22 @@
 
 # Virtual diary for progress on all fronts
 
+### 05/04/2021
+
+114. Don't forget to turn off `cpuscaling` when running your benchmarks! Hat tip to [Camille Fournier](https://twitter.com/skamille/status/1389731461893349380) for schooling a bunch of us on this one!
+
+[From this link:](https://nixcp.com/disable-cpu-frecuency-scaling/) we can do:
+```bash
+grep -E '^model name|^cpu MHz' /proc/cpuinfo
+```
+
+To figure out if the number on the left is lower than the number on the right. That's costing speed!
+if you install `cpupowerutils(Centos/Debian)/ cpufrequtils (ubuntu / Debian)` you can do:
+```bash
+cpupower frequency-set -g performance
+```
+
+
 ### 29/04/2021
 
 113. Added a new recipe for `simdjson`. remember to add `supported_platforms(; experimental = true)` to try and run thigns on the new Mac M1 and `julia_compat = 1.6` to get the `cpuid` feature detection.
