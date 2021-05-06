@@ -25,6 +25,25 @@ Small lessons:
 14. Hah, I clicked the moment of [triump!](https://clips.twitch.tv/ExcitedSparklyTofuTheThing-I5DsaBoyOXcZ2KMw)
 15. `../julia runtests.jl strings` to run the string test suite.
 
+116. Remembered about `ArgParse.jl`. Noice:
+```julia
+s = ArgParseSettings()
+@add_arg_table! s begin
+    "--opt1"
+        help = "an option with an argument"
+    "--opt2", "-o"
+        help = "another option with an argument"
+        arg_type = Int
+        default = 0
+    "--flag1"
+        help = "an option without argument, i.e. a flag"
+        action = :store_true
+    "arg1"
+        help = "a positional argument"
+        required = true
+end
+```
+
 ### 05/04/2021
 
 114. Don't forget to turn off `cpuscaling` when running your benchmarks! Hat tip to [Camille Fournier](https://twitter.com/skamille/status/1389731461893349380) for schooling a bunch of us on this one!
