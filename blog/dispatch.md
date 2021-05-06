@@ -57,9 +57,13 @@ To begin our journey, we sould define some terms. Per [Merriam-Webster](https://
 
 At any rate - dispatch sounds simple I guess... but all these programmers from the Object Oriented Land keep asking me about where I stand in [inheritance vs composition](https://en.wikipedia.org/wiki/Composition_over_inheritance), and my takeaway was that there's a lot of terms I *thought* knew what they meant, but I have to re-learn for all this programming stuff. I guess I'm just not that into Rectangle vs Square debates...}
 
-\dispatch{Yup, there's a lot of fancy words. It can be hard to describe where you are standing to other people because [the kingdoms of verbs](https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf) monopolized the programming language map-making business decades ago. But it's cool - just take a deep breath, and, like a well oiled StepMaster, we'll do this one step at a time. 
+\dispatch{Yup, there's a lot of fancy words. It can be hard to describe where you are standing to other people because [the Kingdoms of Nouns](https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf) monopolized the programming language map-making business decades ago. 
 
-Like namespaces, those debates are just not going to be as big a problem in Julia Land - we're not too far from them in the theory, but the language doesn't actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.} 
+Now it sucks to get directions anywhere.
+
+But it's cool - just take a deep breath, and, like a well oiled StepMaster, we'll do this one step at a time. 
+
+On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we're not too far from them in the theory, but the language doesn't actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.} 
 
 \miguelito{What? No way.}
 
@@ -179,11 +183,37 @@ And it works!}
 
 \dispatch{Hmmm, hard to say, I think we'd need to reach out to a legit PL historian for that. However, looking at some of the other key components that coalesce together helps suss some of it out:
 1. Common Lisp had a very easy opt-in multiple dispatch system, but it was slow. People didn't buy in because it cost performance.
-2. JIT compilers are a recent invention, and if LLVM didn't have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it's not at all trivial to see those two things and put them together. But don't take my word for it, hear **them** say why it wasn't practical then:
+2. Performance was not an afterthought. Look at the graveyard of attempts to [speed up Python](https://wiki.python.org/moin/PythonImplementations), all mutually incompatible. The Julia devs designed the abstractions to match LLVM semantics to optimize for performance. At some point, you have to ask if you're standing in the right place to begin with, like the London cabby:
+
+> Excuse me, what's the best way to get to Manchester?
+
+> Ah, Manchester? I wouldn't start from here...
+
+I just [wouldn't start with a language that takes 28 bytes to store an integer:](https://youtu.be/6JcMuFgnA6U?t=1089)
+```python
+Python 3.9.3 (default, Apr  8 2021, 23:35:02)
+[GCC 10.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from sys import getsizeof
+>>> x = 1
+>>> getsizeof(1)
+28
+```
+
+whereas
+```julia-repl
+julia> x = 1
+1
+
+julia> sizeof(x)
+8
+```
+
+3. Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn't have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it's not at all trivial to see those two things and put them together. But don't take my word for it, hear **them** say why it wasn't practical then:
 
 [![Lisp hackers preaching the Julia gospel](https://imgur.com/zA72zGB.png)](https://youtu.be/OscT4N2qq7o?t=1598)
 
-3. That video tells precisely the pain-point that Stefan talked about for functional languages in his talk: In Functional Land, it's easy to add new procedures to old types, but *unwieldy* to add new types to old functions.
+4. That video tells precisely the pain-point that Stefan talked about for functional languages in his talk: In Functional Land, it's easy to add new procedures to old types, but *unwieldy* to add new types to old functions.
 
 Concretely, the code that stumps object oriented PLs is
 ```julia
@@ -201,15 +231,21 @@ f(t)
 
 }
 
-\miguelito{Alright so what I'm really getting here is I should really, really [just go watch Stefan's talk](https://youtu.be/kc9HwsxE1OY?t=1564).}
+\miguelito{Alright so what I'm really getting here is 
+
+1. I should really, really [just go watch Stefan's talk](https://youtu.be/kc9HwsxE1OY?t=1564).
+2. A big "the Romans had a steam engine but didn't industrialize because they didn't have carbon deposits" vibe.
+
+There's a time and a place I guess.
+}
 
 \dispatch{Yeesh. 
 
-Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against. Julia is very much the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That's not a simple process, but I can't complain, we're still increasing the `SmileFactor` of all the things that feel like they should work, and do.
+Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against (and whose expertise they drew from!). Julia is very much the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That's not a linear process, but I can't complain, we're still increasing the `SmileFactor` of all the things that feel like they should work, and do.
 }
 
 Until next time. Toodles. :wave:
-If you want to see more posts like this, consider chucking a buck or two on my [GitHub sponsors](https://github.com/miguelraz).
+If you want to see more posts like this, consider chucking a buck or two on my [GitHub sponsors](https://github.com/miguelraz), or, you know, hiring me as a grad student.
 ----
 
 
