@@ -7,7 +7,7 @@
 # Hello, World! :wave: I'm Dispatch
 
 My name's **Dispatch**,  your friendly neighbourhood walkie-talkie, and I'm here to talk to you all about Julia -  a cool programming language and why I think they made the right calls when they built it.
-@@center ![](/assets/pixlr-bg-result.png) @@
+@@center ![](/assets/bigdispatch.png) @@
 @@
 
 
@@ -234,7 +234,7 @@ f(t)
 \miguelito{Alright so what I'm really getting here is 
 
 1. I should really, really [just go watch Stefan's talk](https://youtu.be/kc9HwsxE1OY?t=1564).
-2. A big "the Romans had a steam engine but didn't industrialize because they didn't have carbon deposits" vibe.
+2. A big "the Romans had a steam engine but didn't industrialize because they didn't have carbon deposits" vibe from all the convergence of PL ideas and techniques.
 
 There's a time and a place I guess.
 }
@@ -250,3 +250,5 @@ If you want to see more posts like this, consider chucking a buck or two on my [
 
 
 *Note*: **Dispatch** was made by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm). Thanks.
+
+**NB**: Thanks a lot to the Julia community for helping with this post, but especially to the Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his many blog posts diving into these similar materials.

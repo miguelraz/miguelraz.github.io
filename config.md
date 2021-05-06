@@ -41,7 +41,7 @@ For instance:
 @@row
 @@container
 @@colbox-blue
-@@left ![](/assets/favicon.ico)
+@@left ![](/assets/nicefavicon/favicon.ico)
 @@
 **Dispatch:**
 

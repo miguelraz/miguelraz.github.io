@@ -5,7 +5,19 @@
 
 # Virtual diary for progress on all fronts
 
-### 06/04/2021
+
+### 06/05/2021
+
+116. Simeon Schaub pulled some fancy destructuring:
+```julia
+x = [1, 2, 3]
+x[3], x[1:2]... = x
+@test x == [2, 3, 1]
+```
+
+
+
+### 05/05/2021
 
 115. WE GOT JEFF TO STREAM SMALL STRING OPTIMIZATION!
 Small lessons:
