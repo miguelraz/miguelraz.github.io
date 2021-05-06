@@ -1,4 +1,4 @@
-@def title = "Why Julia - introducing multiple dispatch"
+@def title = "Why Julia - Meet Dispatch"
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["dispatch"]
 
