@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Weasel words:"
+./weasel $1
+echo "-----"
+
+echo "Passive voice:"
+./passive $1
+echo "------"
+
