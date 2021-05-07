@@ -35,7 +35,7 @@ To talk about all these things, we'll be hearing from our newest battery-powered
 
 \dispatch{Hey peeps, that's me!}
 
-... interspersed with a comments of our not-quite-yet-super-proficient-but-keeps-working-at-it-student, **miguelito**:
+... interspersed with a comments of our not-yet-super-proficient-but-keeps-working-at-it-student, **miguelito**:
 
 
 \miguelito{¡Hola Dispatch! Nice to meet you!}
@@ -90,7 +90,7 @@ julia> 1//2 + 1//3
 julia> .25 + 5.2
 ```
 
-\dispatch{Excellent, ignore the decimals for now. Did you ever face matrices? Can you try to add `2x2` matrix of `1`s and a `2x2` matrix of `3`s?}
+\dispatch{Excelente, ignore the decimals for now. Did you ever face matrices? Can you try to add `2x2` matrix of `1`s and a `2x2` matrix of `3`s?}
 
 \miguelito{Yup - I think we defined it as element to element. So you end up with a `2x2` matrix of `4`s.}
 
@@ -118,7 +118,7 @@ julia> methods(+)
 
 This post promised comparing different languages. Now that we've discussed what we mean by dispatching, let's see how it's implemented. Astute readers have picked up that dispatching already exists in other languages, albeit in limited form: single dispatch.
 
-I'm going to do some serious hand-waving here, so strap in: in Python and C++, and many other object oriented languages, you have the barebones version of dispatch. If a function takes an argument `f(a)` you can only dispatch on the type of the first argument.
+I'm going to do some serious hand-waving here, so strap in: in Python and C++, and other object oriented languages, you have the barebones version of dispatch. If a function takes an argument `f(a)` you can only dispatch on the type of the first argument.
 
 Specifically, we want the function `f` to behave differently when the types of `a` are different. Recall our previous examples for addition: if `a` is an `Int`, we want it to do one thing - if it's an `Float64`, another thing.
 
@@ -175,14 +175,14 @@ And it works!}
 
 }
 
-\miguelito{Huh - sounds like Julia got really... lucky (?) in that it didn't need to be the first to run up against these problems? That knowledge seems to be accrued over decades by loads of smart people.}
+\miguelito{Huh - sounds like Julia got really... lucky (?) in that it didn't need to be the first to run up against these problems? That knowledge accrues over decades by loads of smart people by trying, failing, and figuring things out.}
 
 \dispatch{:tada: Correct! :tada: Julia has benefitted immensely from the efforts of others. We gain nothing from being smug about recent successes - there's still lots of problems to solve and it's in our best interests that we nurture a diverse community of people that we can cross-pollinate ideas with. Maybe someone implements multiple dispatch with some different tradeoffs in Python (like the [Plum library!](https://github.com/wesselb/plum)), or [type class resolution in Lean](https://youtu.be/UeGvhfW1v9M?t=3011) or whatever they're building with [F\*](https://www.fstar-lang.org/tutorial/) that shows us a new way of thinking. We lose nothing by encouraging people to experiment, far and wide.}
 
 \miguelito{Hold up, you had mentioned that Julia's not the first to get multiple dispatch. Why didn't it pick up in the other languages?}
 
 \dispatch{Hmmm, hard to say, I think we'd need to reach out to a legit PL historian for that. However, looking at some of the other key components that coalesce together helps suss some of it out:
-1. Common Lisp had a very easy opt-in multiple dispatch system, but it was slow. People didn't buy in because it cost performance. There's a social factor to this - if your paradigm takes more effort to use, it's less likely to be learned widely. 
+1. Common Lisp had an easy opt-in multiple dispatch system, but it was slow. People didn't buy in because it cost performance. There's a social factor to this - if your paradigm takes more effort to use, it's less likely to be grow.
 2. Performance was not an afterthought. Look at the graveyard of attempts to [speed up Python](https://wiki.python.org/moin/PythonImplementations), all mutually incompatible. The Julia devs designed the abstractions to match LLVM semantics to optimize for performance. At some point, you have to ask if you're standing in the right place to begin with, like the London cabby:
 
 > Excuse me, what's the best way to get to Manchester?
@@ -255,6 +255,6 @@ If you want to see more posts like this, consider chucking a buck or two on my [
 
 *Note*: 
 ----
-**Dispatch** was made by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
+I created **Dispatch** by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
 
-Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his many blog posts diving into these similar materials.
+Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his blog posts diving into these similar materials.
