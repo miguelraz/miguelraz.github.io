@@ -15,21 +15,21 @@ My name's **Dispatch**,  your friendly neighbourhood walkie-talkie, and I'm here
 #### Summary:
 This post is about Julia and *multiple dispatch* as its foundation.
 Julia is not
-- the first language to implement multiple dispatch (Common Lisp had it since a while ago)
-- the only language to use multiple dispatch (Dylan does use it, available as a lib in Python and others)
+- the first language to implement multiple dispatch (see the lecture link below)
+- the only language to use multiple dispatch (Dylan does use it, also available as a lib in Python and others)
 but it definitely feels like the first to stick the landing. 
-My **claim** is this: Julia is unique in implementing multiple dispatch as a fundamental design feature *and* build a language around it. Don't take it too seriously; it's more an invitation to learn than anything else.
-If you like this topic, check out ["The Unreasonable effectiveness of Multiple Dispatch" JuliaCon](https://www.youtube.com/watch?v=kc9HwsxE1OY&t=346s) by Stefan Karpinski, so if you want to hear a more in-depth talk about this, go for it. This post is heavily inspired from that talk, but you don't wanna miss it. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia on top. Your mileage may vary.
+My **claim** is this: Julia is unique in implementing multiple dispatch as a fundamental design feature *and* building a language around it. Don't take it too seriously; it's more an invitation to learn than anything else.
+If you like this topic, check out ["The Unreasonable effectiveness of Multiple Dispatch" JuliaCon](https://www.youtube.com/watch?v=kc9HwsxE1OY&t=346s) by Stefan Karpinski, and [this article on "The Expression problem"](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/) which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.
 
 The **audience** of this post are programmers who like Python/C++/80s MIT Lisp courses
 who have heard of Julia but don't get what new things it brings to the table.
-If you want to read articles that are more in depth, check out [Lyndon White's](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/) 2 part posts.
+If you want to dive deeper into emergent Julia features, check out [Lyndon White's](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/) 2 part posts.
 
 Sure, there's a fancy subtyping algorithm that Jeff Bezanson (Julia co-creator) pulled out of Turing-knows-where
 and that Swift re-adapted with some unholy [term rewriting](https://fullstackfeed.com/formalizing-swift-generics-as-a-term-rewriting-system/) shenanigans,
 but that's not the "new contribution" I mean - careful design iteration around multiple dispatch with measured trade-offs is.
 
-The rest of this post are code snippets in other programming languages and how they look like next to a Julian re-implementation.
+The rest of this post are code snippets in different programming languages and how they look like next to a Julian re-implementation.
 
 To talk about all these things, we'll be hearing from our newest battery-powered friend, **Dispatch**.
 
@@ -150,9 +150,9 @@ Just Foo
 
 ## Multiple Dispatch
 
- In the previous section, we wanted `f` to have two different behaviours depending on the types (and call it `polymorphic operator overloading`, if we want to bait some Dunning-Krugers on the [god-forsaken orange-site](http://n-gate.com/)). But we won't worry about fancy terms - we just want to our programming language tools to able to behave like the `+` we know from primary school. If you wanted 
+ In the previous section, we wanted `f` to have two different behaviours depending on the types (and call it `polymorphic operator overloading`, if we want to bait some Dunning-Krugers on the [god-forsaken orange-site](http://n-gate.com/)). But we won't worry about fancy terms - we just want to our programming language tools to able to behave like the `+` we know from primary school.
 
-\miguelito{Yeah, for reference, here's what the Julia code looks like:
+\miguelito{OK - I'll take a crack at this. Here's what the Julia code looks like:
 ```julia
 abstract type Things end # We'll come back to this line
 struct Foo <: Things end
@@ -177,19 +177,19 @@ And it works!}
 
 \miguelito{Huh - sounds like Julia got really... lucky (?) in that it didn't need to be the first to run up against these problems? That knowledge seems to be accrued over decades by loads of smart people.}
 
-\dispatch{:tada: Correct! :tada: Julia has benefitted immensely from the efforts of others. We gain nothing from being smug about recent successes - there's still lots of problems to solve and it's in our best interests that we nurture a diverse community of people that we can cross-pollinate ideas with. Maybe someone implements multiple dispatch with some different tradeoffs in Python (like the [Plum library!](https://github.com/wesselb/plum)) that show us a new way of thinking.   }
+\dispatch{:tada: Correct! :tada: Julia has benefitted immensely from the efforts of others. We gain nothing from being smug about recent successes - there's still lots of problems to solve and it's in our best interests that we nurture a diverse community of people that we can cross-pollinate ideas with. Maybe someone implements multiple dispatch with some different tradeoffs in Python (like the [Plum library!](https://github.com/wesselb/plum)), or [type class resolution in Lean](https://youtu.be/UeGvhfW1v9M?t=3011) or whatever they're building with [F\*](https://www.fstar-lang.org/tutorial/) that shows us a new way of thinking. We lose nothing by encouraging people to experiment, far and wide.}
 
 \miguelito{Hold up, you had mentioned that Julia's not the first to get multiple dispatch. Why didn't it pick up in the other languages?}
 
 \dispatch{Hmmm, hard to say, I think we'd need to reach out to a legit PL historian for that. However, looking at some of the other key components that coalesce together helps suss some of it out:
-1. Common Lisp had a very easy opt-in multiple dispatch system, but it was slow. People didn't buy in because it cost performance.
+1. Common Lisp had a very easy opt-in multiple dispatch system, but it was slow. People didn't buy in because it cost performance. There's a social factor to this - if your paradigm takes more effort to use, it's less likely to be learned widely. 
 2. Performance was not an afterthought. Look at the graveyard of attempts to [speed up Python](https://wiki.python.org/moin/PythonImplementations), all mutually incompatible. The Julia devs designed the abstractions to match LLVM semantics to optimize for performance. At some point, you have to ask if you're standing in the right place to begin with, like the London cabby:
 
 > Excuse me, what's the best way to get to Manchester?
 
 > Ah, Manchester? I wouldn't start from here...
 
-I just [wouldn't start with a language that takes 28 bytes to store an integer:](https://youtu.be/6JcMuFgnA6U?t=1089)
+I don't think Python for performance has failed, but [wouldn't start with a language that takes 28 bytes to store an integer:](https://youtu.be/6JcMuFgnA6U?t=1089)
 ```python
 Python 3.9.3 (default, Apr  8 2021, 23:35:02)
 [GCC 10.2.0] on linux
@@ -241,14 +241,20 @@ There's a time and a place I guess.
 
 \dispatch{Yeesh. 
 
-Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against (and whose expertise they drew from!). Julia is very much the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That's not a linear process, but I can't complain, we're still increasing the `SmileFactor` of all the things that feel like they should work, and do.
+Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against (and whose expertise they drew from!). Julia is the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That's not a linear process, but I can't complain, we're still increasing the `SmileFactor` of all the things that feel like they should work, and do. Like [the REPL](https://www.youtube.com/watch?v=EkgCENBFrAY).
 }
 
+
+
 Until next time. Toodles. :wave:
-If you want to see more posts like this, consider chucking a buck or two on my [GitHub sponsors](https://github.com/miguelraz), or, you know, hiring me as a grad student.
+
+---
+
+If you want to see more posts like this, consider chucking a buck or two on my [GitHub sponsors](https://github.com/miguelraz), or, you know, hire me as a grad student.
+
+
+*Note*: 
 ----
+**Dispatch** was made by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
 
-
-*Note*: **Dispatch** was made by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm). Thanks.
-
-**NB**: Thanks a lot to the Julia community for helping with this post, but especially to the Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his many blog posts diving into these similar materials.
+Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his many blog posts diving into these similar materials.
