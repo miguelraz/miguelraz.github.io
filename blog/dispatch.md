@@ -74,7 +74,7 @@ On namespaces as well, those debates are just not going to be as big a problem i
 ```julia-repl
 julia> 123 + 890
 ```
-\dispatch{Yup. What about trying to add `1//2 + 1//3`. What procedure do you follow then?}
+\dispatch{Yup. What about trying to add `1//2 + 1//3`. Those "fractions" are what we call `Rationals` in Julia. What procedure do you follow then?}
 
 \miguelito{Oh right, the famous `regla de tres` - find the common denominator, cancel, add up apples to apples...}
 
