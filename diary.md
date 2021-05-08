@@ -5,6 +5,46 @@
 
 # Virtual diary for progress on all fronts
 
+### 07/05/2021
+
+117. To write the Unicode Character `U+000A`, (Hat tip to Mason Protter), try this:
+```julia
+Char(0x000A) |> clipbaord
+```
+Thanks to Dave MacMaho, we can also do
+```julia
+'\U1f638'
+```
+and get the Cat emoji :D
+
+118. Huh, forgot to add this nice pice of `@ccall` goodness from the `primecount_jll` stuff:
+```julia-repl
+julia> myprimecount(x) = @ccall libprimecount.primecount_pi(x::Clonglong)::Clonglong
+myprimecount (generic function with 1 method)
+
+julia> @time myprimecount(1e8)
+  0.001004 seconds
+5761455
+
+julia> @time myprimecount(1e14)
+  0.149201 seconds
+3204941750802
+```
+
+119. We're dunking on the Fortran gang because they're 8x slower on a `sin` [benchmark](https://fortran-lang.discourse.group/t/simple-summation-8x-slower-than-in-julia/1171/48) :D
+I'm glad I pulled out Steven Johnsons flags to cross compile a C lib to use it with `@ccall`:
+
+```julia
+shell> ls
+cordic.c  cordic.h  cordic.html  cordic.sh
+
+shell> gcc -fPIC -O3 -xc -shared -o libcordic.so cordic.c
+
+shell> ls
+cordic.c  cordic.h  cordic.html  cordic.sh  libcordic.so
+```
+
+I pulled that from their announcement of hte Julia [broadcasting features](https://julialang.org/blog/2017/01/moredots/) and the annex notebook [here](https://julialang.org/assets/blog/moredots/More-Dots.ipynb).
 
 ### 06/05/2021
 
