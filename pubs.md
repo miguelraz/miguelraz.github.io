@@ -1,8 +1,5 @@
 @def title = "Publications/Talks/Videos"
 @def hascode = true
-@def rss = "Publication feed for Miguel Raz"
-@def rss_title = "PublicationsMiguelRaz"
-@def rss_pubdate = Date(2019, 5, 1)
 @def tags = ["talks", "videos", "publications"]
 
 ### Publications
@@ -16,7 +13,7 @@ Soon :tm:
 
 Ideal para personas que no han programado nunca antes.
 
-2. ["Considera Julia"]() - plática con XalapaCode.
+2. ["Considera Julia"](https://www.youtube.com/watch?v=EENAS6K71uw) - plática con XalapaCode.
 
 Un grupo de programadores de Xalapa, incluido @categulario, me invitaron a dar una plática sobre 
 por qué considerar Julia. Inspirada en la plática de "Considering Rust" de Jon Gjengset.

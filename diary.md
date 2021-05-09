@@ -5,6 +5,10 @@
 
 # Virtual diary for progress on all fronts
 
+### 09/05/2021
+
+120. `git log -p -- path/to/file` will show you the commits you did to a file. Amazing!
+
 ### 07/05/2021
 
 117. To write the Unicode Character `U+000A`, (Hat tip to Mason Protter), try this:
@@ -45,6 +49,25 @@ cordic.c  cordic.h  cordic.html  cordic.sh  libcordic.so
 ```
 
 I pulled that from their announcement of hte Julia [broadcasting features](https://julialang.org/blog/2017/01/moredots/) and the annex notebook [here](https://julialang.org/assets/blog/moredots/More-Dots.ipynb).
+
+And here is how to call it:
+```julia-repl
+julia> function cordic_sine(a)
+
+          cos = Ref{Float64}(0.0)
+          sin = Ref{Float64}(0.0)
+
+          # Ref: Excellent work by John Burkardt
+          # https://people.sc.fsu.edu/~jburkardt/c_src/cordic/cordic.c
+          # void cossin_cordic ( double beta, int n, double *c, double *s )
+          ccall((:cossin_cordic, "/home/mason/cordic/libcordic.so"), Cvoid, (Float64, Cint, Ref{Float64}, Ref{Float64}), a, 40, cos, sin)
+
+          return sin[]
+
+       end
+cordic_sine (generic function with 1 method)
+```
+Basically, don't forget it's the ABSOLUTE PATH!
 
 ### 06/05/2021
 
