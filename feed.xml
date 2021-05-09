@@ -32,19 +32,4 @@
     </atom:author>
                 
 </item>
-
-<item>
-    <title><![CDATA[PublicationsMiguelRaz]]></title>
-    <link>https://miguelraz.github.io/pubs/index.html</link>
-    <guid></guid>
-    <description><![CDATA[Publication feed for Miguel Raz]]></description>    
-        
-    <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>    
-    
-    
-    <atom:author>
-    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
-    </atom:author>
-                
-</item>
 </channel></rss>
