@@ -1,6 +1,7 @@
 @def title = "Why Julia - Meet Dispatch"
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["dispatch"]
+@def rss = "This blog is a friendly introduction to multiple dispatch in Julia"
 
 
 @@colbox-blue
