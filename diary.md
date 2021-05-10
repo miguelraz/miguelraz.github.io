@@ -5,6 +5,13 @@
 
 # Virtual diary for progress on all fronts
 
+### 10/05/2021
+
+121. Tim Besard and Valentin Churavy kindly helped me out on the Julia users GPU call (available on the julialang.org calendar).
+They noted a couple of good starting considerations:
+1. Try and have a function that maps to every single element in the GPU.
+2. Implementing a simple moving average is a type of convolution - there's good tutorials on optimizing that [here](http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html) and [here](https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/).
+
 ### 09/05/2021
 
 120. `git log -p -- path/to/file` will show you the commits you did to a file. Amazing!
