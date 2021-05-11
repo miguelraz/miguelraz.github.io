@@ -11,6 +11,37 @@
 They noted a couple of good starting considerations:
 1. Try and have a function that maps to every single element in the GPU.
 2. Implementing a simple moving average is a type of convolution - there's good tutorials on optimizing that [here](http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html) and [here](https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/).
+3. Fortran people [have nice parallelism](https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/) concerns.
+```fortran
+do concurrent(i = 1:N)
+    i0 = max(i - 1, 1)
+    i1 = min(i + 1, N)
+    b(:, :, 1) = 0.5 * (a(:, :, i0) + a(:, i1)) ! array assignment
+end do
+```
+Can already be sent to Tesla GPUs o.O
+4. In fortran, `functions` are `pure`, `subroutines` modify their arguments.
+5. To make a struct, it probably suffices that
+```fortran
+type :: t_point
+    real :: x
+    real :: y
+end type
+```
+And you access it with
+```fortran
+type(t_point) :: mypoint
+mypoint%x = 1.0
+mypoint%y = 2.0
+```
+
+122. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
+```julia
+using CSV, Glob
+fs = CSV.File.(readdir(glob"*.csv"))
+```
+Done! You've read all the files `fs` that are CSVs!
+
 
 ### 09/05/2021
 
