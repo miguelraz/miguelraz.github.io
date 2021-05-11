@@ -7,8 +7,21 @@ end do</code></pre> <p>Can already be sent to Tesla GPUs o.O</p> <ol start=4 > <
     real :: y
 end type</code></pre> <p>And you access it with</p> <pre><code class=language-fortran >type&#40;t_point&#41; :: mypoint
 mypoint&#37;x &#61; 1.0
-mypoint&#37;y &#61; 2.0</code></pre> <ol start=122 > <li><p>Peter Deffebach kindly helped me golf a really cool, <a href="https://twitter.com/miguelraz_/status/1392161937467731970">but simple task</a>:</p> </ol> <pre><code class=language-julia >using CSV, Glob
-fs &#61; CSV.File.&#40;readdir&#40;glob&quot;*.csv&quot;&#41;&#41;</code></pre> <p>Done&#33; You&#39;ve read all the files <code>fs</code> that are CSVs&#33;</p> <h3 id=09052021 ><a href="#09052021" class=header-anchor >09/05/2021</a></h3> <ol start=120 > <li><p><code>git log -p -- path/to/file</code> will show you the commits you did to a file. Amazing&#33;</p> </ol> <h3 id=07052021 ><a href="#07052021" class=header-anchor >07/05/2021</a></h3> <ol start=117 > <li><p>To write the Unicode Character <code>U&#43;000A</code>, &#40;Hat tip to Mason Protter&#41;, try this:</p> </ol> <pre><code class=language-julia >Char&#40;0x000A&#41; |&gt; clipbaord</code></pre>
+mypoint&#37;y &#61; 2.0</code></pre> <ol start=6 > <li><p>You can declare fields in the struct as <code>private, protected, allocatable&#91;dimension&#93;, pointer, codimension, contiguous, volatile, asynchronous</code>:</p> </ol> <pre><code class=language-fortran >type :: t_example
+    integer, private:: i &#61; 0 &#33; hites it from use outside of the t_example scope. Default init is with i &#61; 0
+    integer, protected :: i &#33; allowed access, but not definition outside of the scope
+    real, allocatable, dimension&#40;:&#41; :: x
+end type</code></pre> <ol start=7 > <li><p>You can <code>contains</code><em>type-bound procedures</em></p> </ol> <pre><code class=language-fortran >type :: t_square
+    real :: side
+    contains
+        procedure :: area
+end type
+
+contains
+    real function area&#40;self</code></pre> <ol start=122 > <li><p>Peter Deffebach kindly helped me golf a really cool, <a href="https://twitter.com/miguelraz_/status/1392161937467731970">but simple task</a>:</p> </ol> <pre><code class=language-julia >using CSV, Glob
+fs &#61; CSV.File.&#40;readdir&#40;glob&quot;*.csv&quot;&#41;&#41;</code></pre> <p>Done&#33; You&#39;ve read all the files <code>fs</code> that are CSVs&#33;</p> <pre><code class=language-julia-repl >julia&gt; using CSV, DataFrames, Glob;
+julia&gt; files &#61; readdir&#40;glob&quot;*.csv&quot;&#41;;
+julia&gt; reduce&#40;vcat, CSV.read&#40;file, DataFrame&#41; for file in files&#41;</code></pre> <h3 id=09052021 ><a href="#09052021" class=header-anchor >09/05/2021</a></h3> <ol start=120 > <li><p><code>git log -p -- path/to/file</code> will show you the commits you did to a file. Amazing&#33;</p> </ol> <h3 id=07052021 ><a href="#07052021" class=header-anchor >07/05/2021</a></h3> <ol start=117 > <li><p>To write the Unicode Character <code>U&#43;000A</code>, &#40;Hat tip to Mason Protter&#41;, try this:</p> </ol> <pre><code class=language-julia >Char&#40;0x000A&#41; |&gt; clipbaord</code></pre>
 <p>Thanks to Dave MacMaho, we can also do</p>
 <pre><code class=language-julia >&#39;\U1f638&#39;</code></pre>
 <p>and get the Cat emoji :D</p>
