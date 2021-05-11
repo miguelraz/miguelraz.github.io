@@ -34,6 +34,25 @@ type(t_point) :: mypoint
 mypoint%x = 1.0
 mypoint%y = 2.0
 ```
+6. You can declare fields in the struct as `private, protected, allocatable[dimension], pointer, codimension, contiguous, volatile, asynchronous`:
+```fortran
+type :: t_example
+    integer, private:: i = 0 ! hites it from use outside of the t_example scope. Default init is with i = 0
+    integer, protected :: i ! allowed access, but not definition outside of the scope
+    real, allocatable, dimension(:) :: x
+end type
+```
+7. You can `contains` *type-bound procedures*
+```fortran
+type :: t_square
+    real :: side
+    contains
+        procedure :: area
+end type
+
+contains
+    real function area(self
+```
 
 122. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
 ```julia
@@ -41,6 +60,11 @@ using CSV, Glob
 fs = CSV.File.(readdir(glob"*.csv"))
 ```
 Done! You've read all the files `fs` that are CSVs!
+```julia-repl
+julia> using CSV, DataFrames, Glob;
+julia> files = readdir(glob"*.csv");
+julia> reduce(vcat, CSV.read(file, DataFrame) for file in files)
+```
 
 
 ### 09/05/2021
