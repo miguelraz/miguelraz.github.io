@@ -5,13 +5,9 @@
 
 # Virtual diary for progress on all fronts
 
-### 10/05/2021
-
-121. Tim Besard and Valentin Churavy kindly helped me out on the Julia users GPU call (available on the julialang.org calendar).
-They noted a couple of good starting considerations:
-1. Try and have a function that maps to every single element in the GPU.
-2. Implementing a simple moving average is a type of convolution - there's good tutorials on optimizing that [here](http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html) and [here](https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/).
-3. Fortran people [have nice parallelism](https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/) concerns.
+### 11/05/2021
+123. Fortran learnings!
+1. Fortran people [have nice parallelism](https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/) concerns.
 ```fortran
 do concurrent(i = 1:N)
     i0 = max(i - 1, 1)
@@ -20,8 +16,8 @@ do concurrent(i = 1:N)
 end do
 ```
 Can already be sent to Tesla GPUs o.O
-4. In fortran, `functions` are `pure`, `subroutines` modify their arguments.
-5. To make a struct, it probably suffices that
+2. In fortran, `functions` are `pure`, `subroutines` modify their arguments.
+3. To make a struct, it probably suffices that
 ```fortran
 type :: t_point
     real :: x
@@ -34,7 +30,7 @@ type(t_point) :: mypoint
 mypoint%x = 1.0
 mypoint%y = 2.0
 ```
-6. You can declare fields in the struct as `private, protected, allocatable[dimension], pointer, codimension, contiguous, volatile, asynchronous`:
+4. You can declare fields in the struct as `private, protected, allocatable[dimension], pointer, codimension, contiguous, volatile, asynchronous`:
 ```fortran
 type :: t_example
     integer, private:: i = 0 ! hites it from use outside of the t_example scope. Default init is with i = 0
@@ -42,7 +38,7 @@ type :: t_example
     real, allocatable, dimension(:) :: x
 end type
 ```
-7. You can `contains` *type-bound procedures*
+5. You can `contains` *type-bound procedures*
 ```fortran
 type :: t_square
     real :: side
@@ -54,7 +50,7 @@ contains
     real function area(self
 ```
 
-122. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
+123. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
 ```julia
 using CSV, Glob
 fs = CSV.File.(readdir(glob"*.csv"))
@@ -65,6 +61,15 @@ julia> using CSV, DataFrames, Glob;
 julia> files = readdir(glob"*.csv");
 julia> reduce(vcat, CSV.read(file, DataFrame) for file in files)
 ```
+
+
+
+### 10/05/2021
+
+121. Tim Besard and Valentin Churavy kindly helped me out on the Julia users GPU call (available on the julialang.org calendar).
+They noted a couple of good starting considerations:
+1. Try and have a function that maps to every single element in the GPU.
+2. Implementing a simple moving average is a type of convolution - there's good tutorials on optimizing that [here](http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html) and [here](https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/).
 
 
 ### 09/05/2021
