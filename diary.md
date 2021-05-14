@@ -5,7 +5,37 @@
 
 # Virtual diary for progress on all fronts
 
+### 14/05/2021
+
+131. When making a PR to BinaryBuilder.jl, search the whole repo to make sure no one has tried building `jemalloc` before :upside-down: :tada:
+
+132. Julia doesn't ship binaries yet, but [BOLT](https://www.ic.unicamp.br/~ra045840/bolt-cgo19.pdf) could be worth looking into.
+
+### 13/05/2021
+
+129. Micket in the Julia chat has a nice answer for:
+"How to do this neater?"
+```julia
+d = Dict("a" => 2, "b" => 3)
+Dict(zip(keys(d), map(x -> 2x, values(d))))
+# Do this!
+map!(x -> 2x, values(d))
+# Or this!
+Dict( k => 2v for (k, v) in d)
+```
+
+130. `aur/julia-bin` is a good wrapper for Julia on Arch. Thanks Mosè!
+
+
+### 12/05/2021
+
+128. If you append a julia Markdown bloc with `=` you get line numbers on HackMD.
+```julia=
+3 + 3
+```
+
 ### 11/05/2021
+
 123. Fortran learnings!
 1. Fortran people [have nice parallelism](https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/) concerns.
 ```fortran
@@ -40,6 +70,11 @@ end type
 ```
 5. You can `contains` *type-bound procedures*
 ```fortran
+module m_shapes
+implicit none
+private
+public t_square
+
 type :: t_square
     real :: side
     contains
@@ -48,9 +83,13 @@ end type
 
 contains
     real function area(self
+    class(t_square), intent(in) :: self
+    res = self%side**2
+    end function
+end module m_shapes
 ```
 
-123. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
+124. Peter Deffebach kindly helped me golf a really cool, [but simple task](https://twitter.com/miguelraz_/status/1392161937467731970):
 ```julia
 using CSV, Glob
 fs = CSV.File.(readdir(glob"*.csv"))
@@ -62,7 +101,9 @@ julia> files = readdir(glob"*.csv");
 julia> reduce(vcat, CSV.read(file, DataFrame) for file in files)
 ```
 
-
+125. Jacob Zelko has kindly [shared some tools for dev flow]():
+1. vim FloatTerm instead of vim-slime, don't need to open a pane that way.
+2. `:MarkDownPreview` with `iamcoo/markdown-preview.nvim`.
 
 ### 10/05/2021
 
