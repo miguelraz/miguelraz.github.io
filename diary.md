@@ -5,6 +5,65 @@
 
 # Virtual diary for progress on all fronts
 
+### 18/05/2021
+
+135. Vim tricks from Emacs doom! RTFM to change the font to Julia mono!
+- `cc` in vim mode will let you change the whole line! 
+- `C` changes to the end of the line!
+- `*` to highlight all copies of the word under the cursor
+- `~` to change the case of a letter, `[#]~` to change # chars after the letter under cursor. `g~[m]`, `gU[m]` `gu[m]` toggle cases with motion `[m]`
+- `>[m]` to toggle case with motion `[m]`, `>>` to indent this line
+- `J` to move line beneath to end of this one
+- `gq[m]` format text between here and `[m]`, `gqq` formats current line
+- *Marks*: `ma` sets a mark
+- `'` and `''` to set a mark and jump back and forth between them
+
+
+### 17/05/2021
+
+134. Wow-BOB-Wow has some nifty Rust tricks:
+```rust
+pub fn sum_of_multiples(limit: u32, factors &[u32]) -> u32 {
+	(1..limit).filter(|i| factors.iter().any(|f| i % f == 0)).sum()
+}
+```
+
+- For `perfect-numbers` don't forget it might be easier to match on 
+```rust
+match x.cmp(n) {
+    Ordering::Greater => Some(Classification::Abundant),
+	...
+}
+```
+
+### 15/05/2021
+
+133. 1.7 goodies! You can destructure structs with named tuples!
+```julia
+(; a, b) = x # destructures props `a` and `b` of `x`
+```
+Can also be used like:
+```julia
+struct A
+	x
+	y
+end
+
+foo((; x, y)::A) = x + y # ermahgerddd
+```
+
+`@test` can now be passed as an additional argument `skip` and `broken`:
+```julia
+@test isequal(complex(one(T)) / complex(T(Inf), T(-Inf)), complex(zero(T), zero(T))) broken=(T == Float64)
+```
+
+- You can also now iterate on a `RegexMatch` to get its captures!
+- `Base.@invoke f(arg1::T1, arg2::T2; kwargs...) ` now resembles the `@ccall` syntax.
+- Multidimiensional array syntax!
+```julia
+[ 1; 2 ;; 3 ; 4 ;; 5 ; 6 ;;; 7 ; 8 ;; 9 ; 10 ;; 11 ; 12]
+```
+
 ### 14/05/2021
 
 131. When making a PR to BinaryBuilder.jl, search the whole repo to make sure no one has tried building `jemalloc` before :upside-down: :tada:
