@@ -18,7 +18,26 @@
 - *Marks*: `ma` sets a mark
 - `'` and `''` to set a mark and jump back and forth between them
 
+136. Kevin Bonham is helping me figure out the Emacs tabbing situation:
+```
+*Me*
+Alright, I'm tired of never knowing how to work buffers or tabs or windows inside my doom emacs.
+Who's got a good crash course?
+My ideal goal is to:
 
+1. Be able to open multiple buffers and move between them
+2. Be able to set groups of tabs with different buffers
+3. Be able to "restore" groups of tabs when starting up emacs.
+
+*Kevin Bonham*
+I've just been figuring this out myself...
+
+1. SPC b b to switch buffers in the same window (assuming you've opened them before with SPC . or something.
+    SPC w J (note the capital) will move the current buffer into a new window below (can also use H, K, or L) as last arg to do left, up, or right).
+    Then do the same thing but lowercase to move focus around to different windows
+2. SPC TAB has all of the tab-related things. SPC TAB n does new tab, SPC TAB r renames it, SPC TAB 1 to switch to tab 1 etc.
+3. SPC p has all of the "project" related stuff. I haven't played a lot with these, but they seem to all be linked to a directory, though I think if you have outside files open, they will re-open with the project
+```
 ### 17/05/2021
 
 134. Wow-BOB-Wow has some nifty Rust tricks:
