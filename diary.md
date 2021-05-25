@@ -5,6 +5,24 @@
 
 # Virtual diary for progress on all fronts
 
+### 24/05/2021
+
+138. Made a 3D print of dispatch with my sister. It was an awesome birthday.
+
+139. Got DoctorDocstrings.jl Poster and Rubin.jl Lightning talk accepted to JuliaCon! Now to work on those asap...
+
+140. Got the Kusswurm `Modern x86 Assembly Language Programming` and Min-Yih Hsu `LLVM Techniques` books in the mail now...
+
+141. Should write down the Next steps for MMTK - a written down goal is usually an easier one. 
+
+142.  🚀 💃 To setup emojis, we can insert with `SPC i e`, but the line editor gets a bit funky...?
+
+143. Found this incredibly useful [Doom emacs tips](https://gist.github.com/hjertnes/9e14416e8962ff5f03c6b9871945b165), and [this vim guide](https://gist.github.com/dmsul/8bb08c686b70d5a68da0e2cb81cd857f)
+
+### 21/05/2021
+
+137. Finally remembered to setup `mu`. Let's [see if I can finally do it...](https://www.sastibe.de/2021/01/setting-up-emacs-as-mail-client/)
+
 ### 18/05/2021
 
 135. Vim tricks from Emacs doom! RTFM to change the font to Julia mono!
@@ -401,7 +419,7 @@ cp -r racket/bin ${prefix}/.
 101. In BinaryBuilder.jl, `cd ${prefix}/` is where all compilation targets are placed. 
 Also, RTFM! Specifically platform hijinks.
 
-## 11/04/2021
+### 11/04/2021
 
 98. We got invited to give a conference talk at Alpine2021 because of a [tweet](https://twitter.com/miguelraz_/status/1381041713725153283) I sent to Alpine's main dev, Ariadne Conill.
 Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.
@@ -419,7 +437,7 @@ def add1Times3FilterEven (xs : List Nat) :=
 
 In the same note: `x |> f` in Lean is the same as `f <| a`, which in Haskell means `f $ a`. Damn, that's some crappy ascii in Haskell :/
 
-## 08/04/2021
+### 08/04/2021
 
 97. Spawning a `run(...)` can take 2x more allocations from one system to another!
 ```julia-repl
@@ -463,7 +481,7 @@ julia> foo.state.contents
 3
 ```
 
-# 05/04/2021
+### 05/04/2021
 
 86. Chris Elrod with the amazing hint that `@code_native` has a `syntax=:intel` or `syntax=:att` flag!
 
@@ -487,14 +505,14 @@ My workflow goes like this:
 91. I made a [cool tutorial](https://discourse.julialang.org/t/number-of-primes-below-a-given-number/58709/21?u=miguelraz) on making a BinaryBuilder.jl recipe for `primecount` a bleeding edge
 algorithm library for counting primes in in C/C++.
 
-# 31/03/2021
+### 31/03/2021
 
 85. Made public advances on Rubin.jl today. Turns out you can call (Within Mathematica)
 `FullForm[Hold[...]]` and that will give you the S-expression for the whole thing.
 
 Now to parse that into Julia full fledged.
 
-# 26/03/2021
+### 26/03/2021
 
 81. Apply a `SymbolicUtils.Rewriters.If(cond, rw)` to get the "facts" of our intrules.
 
@@ -511,7 +529,7 @@ git push -f origin master
 ```
 Kindly [taken from here](https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa).
 
-# 25/03/2021
+### 25/03/2021
 
 78. Instead of `Base.OneTo(n)`, use `axes(A, i)` (Thanks Mason!), like so:
 ```julia
@@ -555,7 +573,7 @@ joinpath(@__DIR__, "my_new_file.json")
 77. HELL YES RUBIN.JL LIVESSSS
 
 
-## 22/03/2021
+### 22/03/2021
 
 70. `ArtifactUtils.jl` rules! just `add_artifact!` and you're almost good to go.
 
