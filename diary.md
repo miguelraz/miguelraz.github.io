@@ -5,6 +5,43 @@
 
 # Virtual diary for progress on all fronts
 
+### 26/05/2021
+
+144. FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK!
+- I had to disable the `stdfaxh.h` whatever
+- This was the final command:
+```bash
+[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> nasm -f elf64 Ch02_01.asm
+[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> g++ Ch02_01.cpp Ch02_01.o
+[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> ./a.out
+
+```
+- and the assembly file was:
+```asm
+;-------------------------------------------------
+;               Ch02_01.asm
+;-------------------------------------------------
+
+; extern "C" int IntegerAddSub_(int a, int b, int c, int d);
+
+;        .code
+;IntegerAddSub_ proc
+	global IntegerAddSub_
+	section .text
+; Calculate a + b + c - d
+IntegerAddSub_:
+        mov eax,ecx                         ;eax = a
+        add eax,edx                         ;eax = a + b
+        add eax,r8d                         ;eax = a + b + c
+        sub eax,r9d                         ;eax = a + b + c - d
+
+        ret                                 ;return result to caller
+;IntegerAddSub_ endp
+;        end
+
+```
+- So I just had to add the `global IntegerAddSub_`, `section .text` below that, the name of the function as a section, and the last `ret` to follow `nasm` conventions.
+
 ### 24/05/2021
 
 138. Made a 3D print of dispatch with my sister. It was an awesome birthday.
