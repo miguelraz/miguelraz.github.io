@@ -30,3 +30,7 @@ Handy learning materials:
 - [multicore and atomics](https://www.youtube.com/watch?v=rMGWeSjctlY)
 9. [coz](https://github.com/plasma-umass/coz)
 10. [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking
+11. [Scientific Computing](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/) a Rust adventure and Rust ML to production
+12. [Taking ML to production with Rust](https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/)
+13. [Rust FFT](https://github.com/ejmahler/RustFFT)
+14. [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel)

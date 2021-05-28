@@ -5,6 +5,40 @@
 
 # Virtual diary for progress on all fronts
 
+### 27/05/2021
+
+145. Finally got around to the `nucleotide` in Rust exercism. My solution was a bit C-ish, this is neater: (Credits to `azymohliad`, but with no `Err`)
+```rust
+fn count(c:char, dna: &str) -> usize {
+    dna.chars().filter(|&x| x == c).count()
+}
+
+fn nucleotide_counts(dna: &str) -> HashMap<char, usize> {
+    "ACGT".chars().map(|c| (c, count(c, dna))).collect()
+}
+```
+
+Another clever initialization trick by `jtmueller`:
+```rust
+let mut counts: HashMap<char, usize> = ['A', 'C', 'T', 'G'].iter().map(|n| (*n, 0)).collect();
+```
+Probs worth using `HashMap::with_capacity(4)` since I know there's only `ACTG` as keys.
+
+147. Rust: `use enum::*;`, and then you don't need to `enum::foo` all over your match arms!
+
+148. I learned about the `slice.windows(2)` function in the `sublist` exercise, [link here](https://doc.rust-lang.org/std/primitive.slice.html#method.windows)
+```rust
+let slice = ['r', 'u', 's', 't'];
+let mut iter = slice.windows(2);
+assert_eq!(iter.next().unwrap(), &['r', 'u']);
+assert_eq!(iter.next().unwrap(), &['u', 's']);
+assert_eq!(iter.next().unwrap(), &['s', 't']);
+assert!(iter.next().is_none());
+```
+
+149. Difference between `show` and `print`: `print` uses quotes around the string, `show` doesn't, and this 
+
+150. Rust: `map.entry(letter).or_insert(0)) += 1`
 ### 26/05/2021
 
 144. FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK!
