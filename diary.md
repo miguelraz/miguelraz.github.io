@@ -197,7 +197,7 @@ Dict( k => 2v for (k, v) in d)
 ### 12/05/2021
 
 128. If you append a julia Markdown bloc with `=` you get line numbers on HackMD.
-```julia=
+```julia
 3 + 3
 ```
 
