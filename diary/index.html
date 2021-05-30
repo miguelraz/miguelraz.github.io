@@ -1,27 +1,304 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=11052021 ><a href="#11052021" class=header-anchor >11/05/2021</a></h3> <ol start=123 > <li><p>Fortran learnings&#33;</p> <li><p>Fortran people <a href="https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/">have nice parallelism</a> concerns.</p> </ol> <pre><code class=language-fortran >do concurrent&#40;i &#61; 1:N&#41;
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=27052021 ><a href="#27052021" class=header-anchor >27/05/2021</a></h3> <ol start=145 > <li><p>Finally got around to the <code>nucleotide</code> in Rust exercism. My solution was a bit C-ish, this is neater: &#40;Credits to <code>azymohliad</code>, but with no <code>Err</code>&#41;</p> </ol> <pre><code class=language-rust >fn count&#40;c:char, dna: &amp;str&#41; -&gt; usize &#123;
+    dna.chars&#40;&#41;.filter&#40;|&amp;x| x &#61;&#61; c&#41;.count&#40;&#41;
+&#125;
+
+fn nucleotide_counts&#40;dna: &amp;str&#41; -&gt; HashMap&lt;char, usize&gt; &#123;
+    &quot;ACGT&quot;.chars&#40;&#41;.map&#40;|c| &#40;c, count&#40;c, dna&#41;&#41;&#41;.collect&#40;&#41;
+&#125;</code></pre> <p>Another clever initialization trick by <code>jtmueller</code>:</p> <pre><code class=language-rust >let mut counts: HashMap&lt;char, usize&gt; &#61; &#91;&#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;&#93;.iter&#40;&#41;.map&#40;|n| &#40;*n, 0&#41;&#41;.collect&#40;&#41;;</code></pre>
+<p>Probs worth using <code>HashMap::with_capacity&#40;4&#41;</code> since I know there&#39;s only <code>ACTG</code> as keys.</p>
+<ol start=147 >
+<li><p>Rust: <code>use enum::*;</code>, and then you don&#39;t need to <code>enum::foo</code> all over your match arms&#33;</p>
+
+<li><p>I learned about the <code>slice.windows&#40;2&#41;</code> function in the <code>sublist</code> exercise, <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.windows">link here</a></p>
+
+</ol>
+<pre><code class=language-rust >let slice &#61; &#91;&#39;r&#39;, &#39;u&#39;, &#39;s&#39;, &#39;t&#39;&#93;;
+let mut iter &#61; slice.windows&#40;2&#41;;
+assert_eq&#33;&#40;iter.next&#40;&#41;.unwrap&#40;&#41;, &amp;&#91;&#39;r&#39;, &#39;u&#39;&#93;&#41;;
+assert_eq&#33;&#40;iter.next&#40;&#41;.unwrap&#40;&#41;, &amp;&#91;&#39;u&#39;, &#39;s&#39;&#93;&#41;;
+assert_eq&#33;&#40;iter.next&#40;&#41;.unwrap&#40;&#41;, &amp;&#91;&#39;s&#39;, &#39;t&#39;&#93;&#41;;
+assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
+<ol start=149 >
+<li><p>Difference between <code>show</code> and <code>print</code>: <code>print</code> uses quotes around the string, <code>show</code> doesn&#39;t, and this </p>
+
+<li><p>Rust: <code>map.entry&#40;letter&#41;.or_insert&#40;0&#41;&#41; &#43;&#61; 1</code></p>
+
+</ol>
+<h3 id=26052021 ><a href="#26052021" class=header-anchor >26/05/2021</a></h3>
+<ol start=144 >
+<li><p>FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK&#33;</p>
+
+</ol>
+<ul>
+<li><p>I had to disable the <code>stdfaxh.h</code> whatever</p>
+
+<li><p>This was the final command:</p>
+
+</ul>
+<pre><code class=language-bash >&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; nasm -f elf64 Ch02_01.asm
+&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; g&#43;&#43; Ch02_01.cpp Ch02_01.o
+&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; ./a.out</code></pre>
+<ul>
+<li><p>and the assembly file was:</p>
+
+</ul>
+<pre><code class=language-asm >;-------------------------------------------------
+;               Ch02_01.asm
+;-------------------------------------------------
+
+; extern &quot;C&quot; int IntegerAddSub_&#40;int a, int b, int c, int d&#41;;
+
+;        .code
+;IntegerAddSub_ proc
+	global IntegerAddSub_
+	section .text
+; Calculate a &#43; b &#43; c - d
+IntegerAddSub_:
+        mov eax,ecx                         ;eax &#61; a
+        add eax,edx                         ;eax &#61; a &#43; b
+        add eax,r8d                         ;eax &#61; a &#43; b &#43; c
+        sub eax,r9d                         ;eax &#61; a &#43; b &#43; c - d
+
+        ret                                 ;return result to caller
+;IntegerAddSub_ endp
+;        end</code></pre>
+<ul>
+<li><p>So I just had to add the <code>global IntegerAddSub_</code>, <code>section .text</code> below that, the name of the function as a section, and the last <code>ret</code> to follow <code>nasm</code> conventions.</p>
+
+</ul>
+<h3 id=24052021 ><a href="#24052021" class=header-anchor >24/05/2021</a></h3>
+<ol start=138 >
+<li><p>Made a 3D print of dispatch with my sister. It was an awesome birthday.</p>
+
+<li><p>Got DoctorDocstrings.jl Poster and Rubin.jl Lightning talk accepted to JuliaCon&#33; Now to work on those asap...</p>
+
+<li><p>Got the Kusswurm <code>Modern x86 Assembly Language Programming</code> and Min-Yih Hsu <code>LLVM Techniques</code> books in the mail now...</p>
+
+<li><p>Should write down the Next steps for MMTK - a written down goal is usually an easier one. </p>
+
+<li><p>🚀 💃 To setup emojis, we can insert with <code>SPC i e</code>, but the line editor gets a bit funky...?</p>
+
+<li><p>Found this incredibly useful <a href="https://gist.github.com/hjertnes/9e14416e8962ff5f03c6b9871945b165">Doom emacs tips</a>, and <a href="https://gist.github.com/dmsul/8bb08c686b70d5a68da0e2cb81cd857f">this vim guide</a></p>
+
+</ol>
+<h3 id=21052021 ><a href="#21052021" class=header-anchor >21/05/2021</a></h3>
+<ol start=137 >
+<li><p>Finally remembered to setup <code>mu</code>. Let&#39;s <a href="https://www.sastibe.de/2021/01/setting-up-emacs-as-mail-client/">see if I can finally do it...</a></p>
+
+</ol>
+<h3 id=18052021 ><a href="#18052021" class=header-anchor >18/05/2021</a></h3>
+<ol start=135 >
+<li><p>Vim tricks from Emacs doom&#33; RTFM to change the font to Julia mono&#33;</p>
+
+</ol>
+<ul>
+<li><p><code>cc</code> in vim mode will let you change the whole line&#33; </p>
+
+<li><p><code>C</code> changes to the end of the line&#33;</p>
+
+<li><p><code>*</code> to highlight all copies of the word under the cursor</p>
+
+<li><p><code>~</code> to change the case of a letter, <code>&#91;#&#93;~</code> to change # chars after the letter under cursor. <code>g~&#91;m&#93;</code>, <code>gU&#91;m&#93;</code> <code>gu&#91;m&#93;</code> toggle cases with motion <code>&#91;m&#93;</code></p>
+
+<li><p><code>&gt;&#91;m&#93;</code> to toggle case with motion <code>&#91;m&#93;</code>, <code>&gt;&gt;</code> to indent this line</p>
+
+<li><p><code>J</code> to move line beneath to end of this one</p>
+
+<li><p><code>gq&#91;m&#93;</code> format text between here and <code>&#91;m&#93;</code>, <code>gqq</code> formats current line</p>
+
+<li><p><em>Marks</em>: <code>ma</code> sets a mark</p>
+
+<li><p><code>&#39;</code> and <code>&#39;&#39;</code> to set a mark and jump back and forth between them</p>
+
+</ul>
+<ol start=136 >
+<li><p>Kevin Bonham is helping me figure out the Emacs tabbing situation:</p>
+
+</ol>
+<pre><code class=language-julia >*Me*
+Alright, I&#39;m tired of never knowing how to work buffers or tabs or windows inside my doom emacs.
+Who&#39;s got a good crash course?
+My ideal goal is to:
+
+1. Be able to open multiple buffers and move between them
+2. Be able to set groups of tabs with different buffers
+3. Be able to &quot;restore&quot; groups of tabs when starting up emacs.
+
+*Kevin Bonham*
+I&#39;ve just been figuring this out myself...
+
+1. SPC b b to switch buffers in the same window &#40;assuming you&#39;ve opened them before with SPC . or something.
+    SPC w J &#40;note the capital&#41; will move the current buffer into a new window below &#40;can also use H, K, or L&#41; as last arg to do left, up, or right&#41;.
+    Then do the same thing but lowercase to move focus around to different windows
+2. SPC TAB has all of the tab-related things. SPC TAB n does new tab, SPC TAB r renames it, SPC TAB 1 to switch to tab 1 etc.
+3. SPC p has all of the &quot;project&quot; related stuff. I haven&#39;t played a lot with these, but they seem to all be linked to a directory, though I think if you have outside files open, they will re-open with the project</code></pre>
+<h3 id=17052021 ><a href="#17052021" class=header-anchor >17/05/2021</a></h3>
+<ol start=134 >
+<li><p>Wow-BOB-Wow has some nifty Rust tricks:</p>
+
+</ol>
+<pre><code class=language-rust >pub fn sum_of_multiples&#40;limit: u32, factors &amp;&#91;u32&#93;&#41; -&gt; u32 &#123;
+	&#40;1..limit&#41;.filter&#40;|i| factors.iter&#40;&#41;.any&#40;|f| i &#37; f &#61;&#61; 0&#41;&#41;.sum&#40;&#41;
+&#125;</code></pre>
+<ul>
+<li><p>For <code>perfect-numbers</code> don&#39;t forget it might be easier to match on </p>
+
+</ul>
+<pre><code class=language-rust >match x.cmp&#40;n&#41; &#123;
+    Ordering::Greater &#61;&gt; Some&#40;Classification::Abundant&#41;,
+	...
+&#125;</code></pre>
+<h3 id=15052021 ><a href="#15052021" class=header-anchor >15/05/2021</a></h3>
+<ol start=133 >
+<li><p>1.7 goodies&#33; You can destructure structs with named tuples&#33;</p>
+
+</ol>
+<pre><code class=language-julia >&#40;; a, b&#41; &#61; x # destructures props &#96;a&#96; and &#96;b&#96; of &#96;x&#96;</code></pre>
+<p>Can also be used like:</p>
+<pre><code class=language-julia >struct A
+	x
+	y
+end
+
+foo&#40;&#40;; x, y&#41;::A&#41; &#61; x &#43; y # ermahgerddd</code></pre>
+<p><code>@test</code> can now be passed as an additional argument <code>skip</code> and <code>broken</code>:</p>
+<pre><code class=language-julia >@test isequal&#40;complex&#40;one&#40;T&#41;&#41; / complex&#40;T&#40;Inf&#41;, T&#40;-Inf&#41;&#41;, complex&#40;zero&#40;T&#41;, zero&#40;T&#41;&#41;&#41; broken&#61;&#40;T &#61;&#61; Float64&#41;</code></pre>
+<ul>
+<li><p>You can also now iterate on a <code>RegexMatch</code> to get its captures&#33;</p>
+
+<li><p><code>Base.@invoke f&#40;arg1::T1, arg2::T2; kwargs...&#41;</code> now resembles the <code>@ccall</code> syntax.</p>
+
+<li><p>Multidimiensional array syntax&#33;</p>
+
+</ul>
+<pre><code class=language-julia >&#91; 1; 2 ;; 3 ; 4 ;; 5 ; 6 ;;; 7 ; 8 ;; 9 ; 10 ;; 11 ; 12&#93;</code></pre>
+<h3 id=14052021 ><a href="#14052021" class=header-anchor >14/05/2021</a></h3>
+<ol start=131 >
+<li><p>When making a PR to BinaryBuilder.jl, search the whole repo to make sure no one has tried building <code>jemalloc</code> before :upside-down: 🎉</p>
+
+<li><p>Julia doesn&#39;t ship binaries yet, but <a href="https://www.ic.unicamp.br/~ra045840/bolt-cgo19.pdf">BOLT</a> could be worth looking into.</p>
+
+</ol>
+<h3 id=13052021 ><a href="#13052021" class=header-anchor >13/05/2021</a></h3>
+<ol start=129 >
+<li><p>Micket in the Julia chat has a nice answer for:</p>
+
+</ol>
+<p>&quot;How to do this neater?&quot;</p>
+<pre><code class=language-julia >d &#61; Dict&#40;&quot;a&quot; &#61;&gt; 2, &quot;b&quot; &#61;&gt; 3&#41;
+Dict&#40;zip&#40;keys&#40;d&#41;, map&#40;x -&gt; 2x, values&#40;d&#41;&#41;&#41;&#41;
+# Do this&#33;
+map&#33;&#40;x -&gt; 2x, values&#40;d&#41;&#41;
+# Or this&#33;
+Dict&#40; k &#61;&gt; 2v for &#40;k, v&#41; in d&#41;</code></pre>
+<ol start=130 >
+<li><p><code>aur/julia-bin</code> is a good wrapper for Julia on Arch. Thanks Mosè&#33;</p>
+
+</ol>
+<h3 id=12052021 ><a href="#12052021" class=header-anchor >12/05/2021</a></h3>
+<ol start=128 >
+<li><p>If you append a julia Markdown bloc with <code>&#61;</code> you get line numbers on HackMD.</p>
+
+</ol>
+<pre><code class=language-julia >3 &#43; 3</code></pre>
+<h3 id=11052021 ><a href="#11052021" class=header-anchor >11/05/2021</a></h3>
+<ol start=123 >
+<li><p>Fortran learnings&#33;</p>
+
+<li><p>Fortran people <a href="https://developer.nvidia.com/blog/accelerating-fortran-do-concurrent-with-gpus-and-the-nvidia-hpc-sdk/">have nice parallelism</a> concerns.</p>
+
+</ol>
+<pre><code class=language-fortran >do concurrent&#40;i &#61; 1:N&#41;
     i0 &#61; max&#40;i - 1, 1&#41;
     i1 &#61; min&#40;i &#43; 1, N&#41;
     b&#40;:, :, 1&#41; &#61; 0.5 * &#40;a&#40;:, :, i0&#41; &#43; a&#40;:, i1&#41;&#41; &#33; array assignment
-end do</code></pre> <p>Can already be sent to Tesla GPUs o.O</p> <ol start=2 > <li><p>In fortran, <code>functions</code> are <code>pure</code>, <code>subroutines</code> modify their arguments.</p> <li><p>To make a struct, it probably suffices that</p> </ol> <pre><code class=language-fortran >type :: t_point
+end do</code></pre>
+<p>Can already be sent to Tesla GPUs o.O</p>
+<ol start=2 >
+<li><p>In fortran, <code>functions</code> are <code>pure</code>, <code>subroutines</code> modify their arguments.</p>
+
+<li><p>To make a struct, it probably suffices that</p>
+
+</ol>
+<pre><code class=language-fortran >type :: t_point
     real :: x
     real :: y
-end type</code></pre> <p>And you access it with</p> <pre><code class=language-fortran >type&#40;t_point&#41; :: mypoint
+end type</code></pre>
+<p>And you access it with</p>
+<pre><code class=language-fortran >type&#40;t_point&#41; :: mypoint
 mypoint&#37;x &#61; 1.0
-mypoint&#37;y &#61; 2.0</code></pre> <ol start=4 > <li><p>You can declare fields in the struct as <code>private, protected, allocatable&#91;dimension&#93;, pointer, codimension, contiguous, volatile, asynchronous</code>:</p> </ol> <pre><code class=language-fortran >type :: t_example
+mypoint&#37;y &#61; 2.0</code></pre>
+<ol start=4 >
+<li><p>You can declare fields in the struct as <code>private, protected, allocatable&#91;dimension&#93;, pointer, codimension, contiguous, volatile, asynchronous</code>:</p>
+
+</ol>
+<pre><code class=language-fortran >type :: t_example
     integer, private:: i &#61; 0 &#33; hites it from use outside of the t_example scope. Default init is with i &#61; 0
     integer, protected :: i &#33; allowed access, but not definition outside of the scope
     real, allocatable, dimension&#40;:&#41; :: x
-end type</code></pre> <ol start=5 > <li><p>You can <code>contains</code><em>type-bound procedures</em></p> </ol> <pre><code class=language-fortran >type :: t_square
+end type</code></pre>
+<ol start=5 >
+<li><p>You can <code>contains</code><em>type-bound procedures</em></p>
+
+</ol>
+<pre><code class=language-fortran >module m_shapes
+implicit none
+private
+public t_square
+
+type :: t_square
     real :: side
     contains
         procedure :: area
 end type
 
 contains
-    real function area&#40;self</code></pre> <ol start=123 > <li><p>Peter Deffebach kindly helped me golf a really cool, <a href="https://twitter.com/miguelraz_/status/1392161937467731970">but simple task</a>:</p> </ol> <pre><code class=language-julia >using CSV, Glob
-fs &#61; CSV.File.&#40;readdir&#40;glob&quot;*.csv&quot;&#41;&#41;</code></pre> <p>Done&#33; You&#39;ve read all the files <code>fs</code> that are CSVs&#33;</p> <pre><code class=language-julia-repl >julia&gt; using CSV, DataFrames, Glob;
+    real function area&#40;self
+    class&#40;t_square&#41;, intent&#40;in&#41; :: self
+    res &#61; self&#37;side**2
+    end function
+end module m_shapes</code></pre>
+<ol start=124 >
+<li><p>Peter Deffebach kindly helped me golf a really cool, <a href="https://twitter.com/miguelraz_/status/1392161937467731970">but simple task</a>:</p>
+
+</ol>
+<pre><code class=language-julia >using CSV, Glob
+fs &#61; CSV.File.&#40;readdir&#40;glob&quot;*.csv&quot;&#41;&#41;</code></pre>
+<p>Done&#33; You&#39;ve read all the files <code>fs</code> that are CSVs&#33;</p>
+<pre><code class=language-julia-repl >julia&gt; using CSV, DataFrames, Glob;
 julia&gt; files &#61; readdir&#40;glob&quot;*.csv&quot;&#41;;
-julia&gt; reduce&#40;vcat, CSV.read&#40;file, DataFrame&#41; for file in files&#41;</code></pre> <h3 id=10052021 ><a href="#10052021" class=header-anchor >10/05/2021</a></h3> <ol start=121 > <li><p>Tim Besard and Valentin Churavy kindly helped me out on the Julia users GPU call &#40;available on the julialang.org calendar&#41;.</p> </ol> <p>They noted a couple of good starting considerations:</p> <ol> <li><p>Try and have a function that maps to every single element in the GPU.</p> <li><p>Implementing a simple moving average is a type of convolution - there&#39;s good tutorials on optimizing that <a href="http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html">here</a> and <a href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">here</a>.</p> </ol> <h3 id=09052021 ><a href="#09052021" class=header-anchor >09/05/2021</a></h3> <ol start=120 > <li><p><code>git log -p -- path/to/file</code> will show you the commits you did to a file. Amazing&#33;</p> </ol> <h3 id=07052021 ><a href="#07052021" class=header-anchor >07/05/2021</a></h3> <ol start=117 > <li><p>To write the Unicode Character <code>U&#43;000A</code>, &#40;Hat tip to Mason Protter&#41;, try this:</p> </ol> <pre><code class=language-julia >Char&#40;0x000A&#41; |&gt; clipbaord</code></pre>
+julia&gt; reduce&#40;vcat, CSV.read&#40;file, DataFrame&#41; for file in files&#41;</code></pre>
+<ol start=125 >
+<li><p>Jacob Zelko has kindly <a href="">shared some tools for dev flow</a>:</p>
+
+<li><p>vim FloatTerm instead of vim-slime, don&#39;t need to open a pane that way.</p>
+
+<li><p><code>:MarkDownPreview</code> with <code>iamcoo/markdown-preview.nvim</code>.</p>
+
+</ol>
+<h3 id=10052021 ><a href="#10052021" class=header-anchor >10/05/2021</a></h3>
+<ol start=121 >
+<li><p>Tim Besard and Valentin Churavy kindly helped me out on the Julia users GPU call &#40;available on the julialang.org calendar&#41;.</p>
+
+</ol>
+<p>They noted a couple of good starting considerations:</p>
+<ol>
+<li><p>Try and have a function that maps to every single element in the GPU.</p>
+
+<li><p>Implementing a simple moving average is a type of convolution - there&#39;s good tutorials on optimizing that <a href="http://alexminnaar.com/2019/07/12/implementing-convolutions-in-cuda.html">here</a> and <a href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">here</a>.</p>
+
+</ol>
+<h3 id=09052021 ><a href="#09052021" class=header-anchor >09/05/2021</a></h3>
+<ol start=120 >
+<li><p><code>git log -p -- path/to/file</code> will show you the commits you did to a file. Amazing&#33;</p>
+
+</ol>
+<h3 id=07052021 ><a href="#07052021" class=header-anchor >07/05/2021</a></h3>
+<ol start=117 >
+<li><p>To write the Unicode Character <code>U&#43;000A</code>, &#40;Hat tip to Mason Protter&#41;, try this:</p>
+
+</ol>
+<pre><code class=language-julia >Char&#40;0x000A&#41; |&gt; clipbaord</code></pre>
 <p>Thanks to Dave MacMaho, we can also do</p>
 <pre><code class=language-julia >&#39;\U1f638&#39;</code></pre>
 <p>and get the Cat emoji :D</p>
@@ -241,7 +518,7 @@ cp -r racket/bin &#36;&#123;prefix&#125;/.</code></pre>
 
 </ol>
 <p>Also, RTFM&#33; Specifically platform hijinks.</p>
-<h2 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h2>
+<h3 id=11042021 ><a href="#11042021" class=header-anchor >11/04/2021</a></h3>
 <ol start=98 >
 <li><p>We got invited to give a conference talk at Alpine2021 because of a <a href="https://twitter.com/miguelraz_/status/1381041713725153283">tweet</a> I sent to Alpine&#39;s main dev, Ariadne Conill.</p>
 
@@ -259,7 +536,7 @@ cp -r racket/bin &#36;&#123;prefix&#125;/.</code></pre>
 	-- becomes THIS&#33;
 	xs |&gt;.map &#40;. &#43; 1&#41; |&gt;.map &#40;. * 3&#41; |&gt;.filter &#40;. &#37; 2 &#61;&#61; 0&#41;</code></pre>
 <p>In the same note: <code>x |&gt; f</code> in Lean is the same as <code>f &lt;| a</code>, which in Haskell means <code>f &#36; a</code>. Damn, that&#39;s some crappy ascii in Haskell :/</p>
-<h2 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h2>
+<h3 id=08042021 ><a href="#08042021" class=header-anchor >08/04/2021</a></h3>
 <ol start=97 >
 <li><p>Spawning a <code>run&#40;...&#41;</code> can take 2x more allocations from one system to another&#33;</p>
 
@@ -304,7 +581,7 @@ Core.Box&#40;3&#41;
 
 julia&gt; foo.state.contents
 3</code></pre>
-<h1 id=05042021__2 ><a href="#05042021__2" class=header-anchor >05/04/2021</a></h1>
+<h3 id=05042021__2 ><a href="#05042021__2" class=header-anchor >05/04/2021</a></h3>
 <ol start=86 >
 <li><p>Chris Elrod with the amazing hint that <code>@code_native</code> has a <code>syntax&#61;:intel</code> or <code>syntax&#61;:att</code> flag&#33;</p>
 
@@ -341,14 +618,14 @@ julia&gt; foo.state.contents
 
 </ol>
 <p>algorithm library for counting primes in in C/C&#43;&#43;.</p>
-<h1 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h1>
+<h3 id=31032021 ><a href="#31032021" class=header-anchor >31/03/2021</a></h3>
 <ol start=85 >
 <li><p>Made public advances on Rubin.jl today. Turns out you can call &#40;Within Mathematica&#41;</p>
 
 </ol>
 <p><code>FullForm&#91;Hold&#91;...&#93;&#93;</code> and that will give you the S-expression for the whole thing.</p>
 <p>Now to parse that into Julia full fledged.</p>
-<h1 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h1>
+<h3 id=26032021 ><a href="#26032021" class=header-anchor >26/03/2021</a></h3>
 <ol start=81 >
 <li><p>Apply a <code>SymbolicUtils.Rewriters.If&#40;cond, rw&#41;</code> to get the &quot;facts&quot; of our intrules.</p>
 
@@ -364,7 +641,7 @@ git checkout master
 git rebase upstream/master
 git push -f origin master</code></pre>
 <p>Kindly <a href="https://gist.github.com/ravibhure/a7e0918ff4937c9ea1c456698dcd58aa">taken from here</a>.</p>
-<h1 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h1>
+<h3 id=25032021 ><a href="#25032021" class=header-anchor >25/03/2021</a></h3>
 <ol start=78 >
 <li><p>Instead of <code>Base.OneTo&#40;n&#41;</code>, use <code>axes&#40;A, i&#41;</code> &#40;Thanks Mason&#33;&#41;, like so:</p>
 
@@ -408,7 +685,7 @@ julia&gt; @avxt A .* 1f0 # multithreaded and AVX512 on platforms that support it
 <li><p>HELL YES RUBIN.JL LIVESSSS</p>
 
 </ol>
-<h2 id=22032021 ><a href="#22032021" class=header-anchor >22/03/2021</a></h2>
+<h3 id=22032021 ><a href="#22032021" class=header-anchor >22/03/2021</a></h3>
 <ol start=70 >
 <li><p><code>ArtifactUtils.jl</code> rules&#33; just <code>add_artifact&#33;</code> and you&#39;re almost good to go.</p>
 
@@ -1284,7 +1561,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: May 11, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: May 30, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
   </div>
 </div>
 </div>

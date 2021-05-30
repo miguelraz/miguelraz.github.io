@@ -141,6 +141,7 @@
 *** Hairer II
 *** Hairer III
 *** Zhang special functions Zhan Shanjie
+*** Numerical Computation of SpecialFunctions by Gil, Seguro and Temne
 *** Statistical Rethinkking https://github.com/rmcelreath/stat_rethinking_2020
 *** Programming the FEM Method toolkit https://github.com/PtFEM/PtFEM.jl
 ** SICM
@@ -301,6 +302,8 @@ Lean
 ** SGJ Special Functions jl https://sites.math.washington.edu/~morrow/335_17/history%20of%20stokes%20thm.pdf
 ** History of stokes theorem https://duetosymmetry.com/teaching/2018-fall-phys-709/
 * Testing links [[Summary]] [[ifc][ywoywoywoywo]]
+* Operating systems - Chapter 11 scheudlers [https://ia903007.us.archive.org/31/items/operatingsystemconcepts10th/OperatingSystemConcepts-10th.pdf]
+
 * Snippets
 This variable can be defined before and used in the snippets
 #+begin_src julia
@@ -315,7 +318,7 @@ println(3+3)
 ** DONE Bcome a programmer
 ** [ ] Become younger  - get there with SPC m t
 ** [ ] [#C] Strawberies
-* [ ] Morning routine  [2/4]
+* [ ] Morning routine  [0/0]
 + [-] do 50
 + [X] meditate
 + [X] pushups
@@ -324,3 +327,12 @@ println(3+3)
 +
 
   * [[https://people.smp.uq.edu.au/DirkKroese/DSML/][Data Science and Machine Learning: Mathematical and Statistical methods]]
+
+
+*** Learning other Programming langs
+**** [Modern C++](https://github.com/changkun/modern-cpp-tutorial/tree/master/.github)
+**** [Operating Systems C](Extreme C - Kamram Amini)
+*** Learning other Tools
+**** StateRight https://www.youtube.com/watch?v=Oh0Dmz6asbs&list=PLUhyBsVvEJjaF1VpNhLRfIA4E7CFPirmz&index=1
+**** [ ] Learning Git Pro book
+**** [ ] Bayesian Statistics in Julia https://gist.github.com/miguelraz/8cca9bc06f4c18ee5f5c2af70cf4b2e4
