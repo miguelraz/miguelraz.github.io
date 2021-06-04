@@ -310,7 +310,6 @@ This variable can be defined before and used in the snippets
 println(3+3)
 
 #+end_src
-
 #+RESULTS:
 ** `<sTAB` to enter a snippet
 * Getting organized:
@@ -336,3 +335,11 @@ println(3+3)
 **** StateRight https://www.youtube.com/watch?v=Oh0Dmz6asbs&list=PLUhyBsVvEJjaF1VpNhLRfIA4E7CFPirmz&index=1
 **** [ ] Learning Git Pro book
 **** [ ] Bayesian Statistics in Julia https://gist.github.com/miguelraz/8cca9bc06f4c18ee5f5c2af70cf4b2e4
+*** [Queuing theory][https://ocw.mit.edu/courses/sloan-school-of-management/15-072j-queues-theory-and-applications-spring-2006/readings/]
+
+* Doom emacs notes https://github.com/niyumard/Doom-Emacs-Cheat-Sheet
+* The Unix Game https://unixgame.io/unix50
+* Types and Programming Languages https://www.cis.upenn.edu/~bcpierce/tapl/
+* David Tong ALL OF PHYSICS https://www.damtp.cam.ac.uk/user/tong/particle.html
+* ASSEMBLY https://github.com/0xAX/asm
+** https://cs.lmu.edu/~ray/notes/nasmtutorial/

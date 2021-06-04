@@ -1,4 +1,4 @@
-@def title = "Knowing Julia, Learning High Performance Rust"
+@def title = "From Julia to Rust"
 
 0. COST paper
 
@@ -15,7 +15,7 @@ Handy learning materials:
 ### What does generic Rustian code look like?
 We love composability and multiple dispatch - what does that look like in Rust?
 - In Julia land, how do I get generic code? `zero(...)`, `eltype(...)`, `where T<:Foo`
-- In Rust Land, how do I get generic code? `impl<T>`, linear types, `#[derive(Debug, Eq, PartialOrder, Hash)]`
+- In Rust Land, how do I get generic code? `impl<T>`, ``
 
 ### Rustian projects of interest 
 1. Graph workbench Aaalto [Comparing parallel Rust and C++](https://parallel-rust-cpp.github.io/)
@@ -40,6 +40,8 @@ We love composability and multiple dispatch - what does that look like in Rust?
 13. [Rust FFT](https://github.com/ejmahler/RustFFT)
 14. [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel)
 15. egg
+16. Polars
+17. Loom
 
 ### Papercuts and sharp edges
 0. Knowing the Rustian motivations:
@@ -47,12 +49,31 @@ We love composability and multiple dispatch - what does that look like in Rust?
 1. Install `cargo-add`, use it to manage crate dependencies.
 2. For numerics, install `ndarray` and `num_traits`. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.
 3. Benchmarking with `@btime` is painless, `criterion` is your best Rustian bet.
-4. Setup your `rust-analyzer` and `error lens` plugins on VSCode or IDE asap, you'll thank me later. Rust-land expects you to be in constant dialogue with the compiler, and making that iteration cycle as ergonomic as possible will yield dividends in the long run.
+4. Setup your `rust-analyzer` and `error lens` plugins on VSCode or IDE asap, you'll thank me later. Rust-land expects you to be in constant dialogue with the compiler, and making that iteration cycle as ergonomic as possible will yield dividends in the long run. What we don't get from accessing help docs in the REPL, Rust people keep a terminal tab handy where they run `cargo watch` and get continuous feedback from the compiler.
+5. You CAN'T index into a String in Rust! [Docs are here](https://doc.rust-lang.org/std/primitive.str.html#method.chars) use slices like `&str[1..] == str[2:end]`, to mix up Julia and Rust syntax.
+6. Reading from `stdin` is a pain as a newcomer. I wanted to try out some competitive coding exercises and reading from `stdin` was waaaay too rough for me at first. Eventually I cobbled this template up [link here](https://gist.github.com/miguelraz/d0341e9fee8c728baa99fd6fe86c1be1) so that you don't struggle if you want to try a couple of CodeForces problems.
+7. Not having a generic `rand` is just painful. So painful.
+8. There is no `@code_native` and friends in Rust - your best bet is to use the Rust Playground and click on the `...` to have it emit the total assembly. This only works for the top 100 most popular crates though. You can `cargo run --release -- --emit=llvm-ir/asm` and then fish the results out of `target/`, but that's unwieldy - why does no one have a CLI for this yet?
+9. Another multiple dispatch gripe: having to implement `Display` traits for new structs feels like pulling teeth, and this initial type signature seems inscrutable as a begineer:
+```rust
+use std::fmt;
+
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+```
 
 ### Appreciation of Rust things
 1. Rust people take uwu-ification very, VERY seriously. [The uwu](https://github.com/Daniel-Liu-c0deb0t/uwu) project uses SIMD to uwu-ify strings for [great artistic value](https://twitter.com/twent_weznowor)
 2. The Rust foundation and strong community conduct codes.
-compiler error messages are.
+3. compiler error messages are second to none.
 
 ### Things I wish I'd known earlier
 0. If you can, avoid the examples with Strings and &str.

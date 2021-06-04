@@ -5,6 +5,57 @@
 
 # Virtual diary for progress on all fronts
 
+### 04/06/2021
+159. `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:
+```rust
+    let mut i = 0;
+    while i < N {
+        let d2s = f64x2::from_array([
+            (r[i] * r[i]).horizontal_sum(),
+            (r[i + 1] * r[i + 1]).horizontal_sum(),
+        ]);
+        let dmags = f64x2::splat(dt) / (d2s * d2s.sqrt());
+        mag[i] = dmags[0];
+        mag[i + 1] = dmags[1];
+        i += 2;
+    }
+```
+Can be converted to 
+```rust
+    for i in (0..N).step_by(2) {
+        let d2s = f64x2::from_array([
+            (r[i] * r[i]).horizontal_sum(),
+            (r[i + 1] * r[i + 1]).horizontal_sum(),
+        ]);
+        let dmags = f64x2::splat(dt) / (d2s * d2s.sqrt());
+        mag[i] = dmags[0];
+        mag[i + 1] = dmags[1];
+    }
+```
+
+
+### 03/06/2021
+
+155. Rust syntax for updating structs with `..other_struct` is very neat.
+156. `if let Some(word) = ... {}`
+157. `while let Some(Some(word)) = ... {}`
+158. `cargo watch` is very useful for seeing how you're code is going!
+
+### 31/05/2021
+152. `make -C debug` julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.
+153. LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn't screw up.
+154. `git add -u` 
+
+### 30/05/2021
+151. Finally got the hang of the Rust `dbg!` macro:
+```rust
+let a = 2;
+let b = dbg!(a * 2) + 1;
+//      ^-- prints: [src/main.rs:2] a * 2 = 4
+assert_eq!(b, 5);
+```
+Very useful for the competitive problems debugging!
+
 ### 27/05/2021
 
 145. Finally got around to the `nucleotide` in Rust exercism. My solution was a bit C-ish, this is neater: (Credits to `azymohliad`, but with no `Err`)
@@ -39,6 +90,7 @@ assert!(iter.next().is_none());
 149. Difference between `show` and `print`: `print` uses quotes around the string, `show` doesn't, and this 
 
 150. Rust: `map.entry(letter).or_insert(0)) += 1`
+
 ### 26/05/2021
 
 144. FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK!
