@@ -32,6 +32,18 @@ Can be converted to
         mag[i + 1] = dmags[1];
     }
 ```
+160. To run `cargo watch` on a non-standard file, use ` cargo watch -c -x "run --examples dot_product"`. Credit to `Lokathor`.
+161. Finally got the code working for the `dot_product.rs`! in the end, it wasn't so scary:
+```rust
+#![feature(array_chunks)] // gotta have this
+fn dot(a: &[f32], b: &[f32]) -> f32 {
+    a.array_chunks::<4>() // el paso de la muerte
+    .map(|&a| f32x::from_array(a))
+    .zip(b.array_chunks::<4>().map(|&b| f32x4::from_array(b))) // so aside form some ugly conversions all is peachy
+    .map(|(a,b)| (a * b).horizontal_sum())
+    .sum()
+}
+```
 
 
 ### 03/06/2021
@@ -39,7 +51,7 @@ Can be converted to
 155. Rust syntax for updating structs with `..other_struct` is very neat.
 156. `if let Some(word) = ... {}`
 157. `while let Some(Some(word)) = ... {}`
-158. `cargo watch` is very useful for seeing how you're code is going!
+158. `cargo watch -c` is very useful for seeing how you're code is going! Credit to `Lokathor` for the `-c` flag.
 
 ### 31/05/2021
 152. `make -C debug` julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.

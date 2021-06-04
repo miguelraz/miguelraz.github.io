@@ -14,3 +14,4 @@
 - pkg prompt with temp directory
 - TerminalPager.jl for DataFrames.jl stuff
 
+- `] add Foo; undo`!
