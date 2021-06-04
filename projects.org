@@ -343,3 +343,4 @@ println(3+3)
 * David Tong ALL OF PHYSICS https://www.damtp.cam.ac.uk/user/tong/particle.html
 * ASSEMBLY https://github.com/0xAX/asm
 ** https://cs.lmu.edu/~ray/notes/nasmtutorial/
+* Trefethen 100 dollar problems https://mathworld.wolfram.com/Hundred-DollarHundred-DigitChallengeProblems.html
