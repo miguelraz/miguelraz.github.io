@@ -1,28 +1,34 @@
 @def title = "From Julia to Rust"
 
+### From Julia to Rust
+
 I've been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians who are interested in Rust. I've written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a very different mindset and tradeoffs that are worth considering.
 
 I hope you enjoy it.
 
-### Why Rust?
+---
+
+### Why Rust? 🤷 
 
 There are 3 talks that sold me on Rust being worth learning, the first is [by Carol Nichols](https://www.youtube.com/watch?v=A3AdN7U24iU) and the [second is a lecture by Ryan Eberhardt and Armin Nanavari](https://www.youtube.com/watch?v=cUrggIAPJEs). The first talks about how about ~70% of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how sytems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.
 
 That's the point of technology! To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine. 
 
-The third talk that really sold me on Rust was [Alex Gaynor's](https://www.usenix.org/conference/enigma2021/presentation/gaynor). It's bad enough that a bank or a school web site could crash because of memory bugs, but once you take into account the fact that not even the best programmers in the world (sorted by salaries, roughly) can ship safe code, you start to despair a little. Then you hear about the incredibly battle-tested libraries like [sudo ](https://www.helpnetsecurity.com/2021/01/27/cve-2021-3156/) and, as the moral argument goes, you are likely going to put vulnerable people in harm's way if you keep using a broken tool. I buy that argument more and more when journalists or human rights advocates get targeted by state actors due to a trivial (but buried) C mistake.
+The third talk that really sold me on Rust was [Alex Gaynor's](https://www.usenix.org/conference/enigma2021/presentation/gaynor). It's bad enough that a bank or a school web site could crash because of memory bugs, but once you take into account the fact that not even the best programmers in the world (sorted by salaries, roughly) can ship safe code, you start to despair a little. Then you hear about the incredibly battle-tested libraries like [sudo ](https://www.helpnetsecurity.com/2021/01/27/cve-2021-3156/) and, as the moral argument goes, you are likely going to put vulnerable people in harm's way if you keep shipping a broken tool. I buy the urgency of that argument more and more when journalists or human rights advocates get targeted by state actors due to a trivial (but buried) C mistake.
 
-So that's the spiel for jumping on the Rust train when I argue with myself in the shower. What's the thinking behind Rust though?
+So that's the spiel for jumping on the Rust train when I argue with myself in the shower. What's the Rust's philosophy?
 
-### Informal introductions - tales of two langauges
+---
+
+### Informal introductions - tales of two langauges 📚 
 
 I will now give 2 very hand-wavy historical rehashings of the origins of both languages.
 
-You might know Julia's origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implemetns polymorphism through namespacing for performance needs and many other libraries re-implemented a poor man's version of multiple dispatch because of the performance constraints. If you add a very clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs.
+You might know Julia's origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and many other libraries re-implemented a poor man's version of multiple dispatch because of the performance constraints. If you add a very clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of [algorithms](https://youtu.be/lZb2JKhf-mk?t=208).
 
-Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C++ tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. 
+Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C++ tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. Eventually, they named the language after the [fungus](https://en.wikipedia.org/wiki/Rust_(fungus)).
 
-Recap: Julians were sick of unreusable code, niche DSLs and hacky polymorphism. With multiple dispatch as the central design feature they solved those problems. Rustaceans were sick of the C/C++ minefields and trying to keep all the invariants of large, error-prone codebases in their head. The idea of ownership and a borrow checker to know those errors *at compile time* is what's got them to where they are now.
+Recap: Julians were sick of unreusable code, niche DSLs and hacky polymorphism. With multiple dispatch as the central design feature they solved those problems. Rustaceans were sick of the C/C++ minefields and trying to keep all the invariants of large, error-prone codebases in their head. The idea of ownership and a borrow checker to know those errors *at compile time* and be data-race free is what's got them to where they are now.
 
 There's obviously important details missing on both stories - you can get it from proper historians if you like, this is a brief and informal introduction. I will however, mention the other big Rustian idea of affine types when I talk about how they get a version of generic code we've come to know and love in Julia land. Spoiler alert: you can get generic code if you pay the price of a Julia runtime, and that's not something Rustaceans want. If you want generics at compile time, you have to "prove" to the compiler that your types are constrained to some extent, and you relay that information by tacking on affine types to your code.
 
@@ -30,32 +36,35 @@ That's enough of an intro, here's the table of contents.
 
 \toc
 
-### Handy learning materials:
+---
 
-If for some reason you've already decided that learning Rust is a worthy endeavour, here's my list of resources to learn. I think they are a good resource to follow in approximate order, but use whatever works.
+### Handy learning materials 🍎🐛 
+
+If for some reason you've already decided that learning Rust is a worthy endeavour, here's my list of resources to learn. I think they are a good resource to follow in approximate order, but use whatever works, and if it doesn't, skip it.
 
 - [The Rust book](https://www.rust-lang.org/): Click the link to get started with installation and IDE setup. It pays to read it at least once cover to cover and not fret about coming back to the thorny bits.
-- VSCode Error Lens Plugin and Rustanalyzer: The quicker the feedback loop you get from the compiler, the sooner you can spot mistakes and keep going. These aren't mandatory but it's the easiest way to make the feedback loop faster.
-- [Tour of Rust](https://tourofrust.com/TOC_en.html) Also has good examples.
-- [cheat.rs](https://cheats.rs/) A cheat sheet for all the new syntax, priceless.
+- [VSCode Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens) and [Rustanalyzer](https://github.com/rust-analyzer/rust-analyzer): The quicker the feedback loop you get from the compiler, the sooner you can spot mistakes and keep going. These aren't mandatory but it's the easiest way to make the feedback loop faster.
+- [Tour of Rust](https://tourofrust.com/TOC_en.html): Also has good examples.
+- [cheat.rs](https://cheats.rs/): A cheat sheet for all the new syntax, priceless.
 - [Rust by example](https://doc.rust-lang.org/stable/rust-by-example/index.html): Always good for a quick MWE.
 - [Rust docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html): Their version of the Julia manual. Make sure to click a few of the `[+]` to see how the code drops down. I still spend time looking at the iterators page.
 - Courses and exercises:
   - [Exercism](https://exercism.io/my/tracks): If you want to get into some guided learning, Exercisms is great, but focuses too much on strings at the beginning for my liking. Make sure to look at the community solutions when you're done.
-  - [Advent of Code 2020 by Amos](https://fasterthanli.me/series/advent-of-code-2020/part-1): This was my first "get your hands dirty" with Rust exercise. Other articles by Amos are great and friendly too, but this series was very useful for figuring out a Rustian workflow and thinking.
-  - [Ryan Eberhardt Stanford course](https://reberhardt.com/blog/2020/10/05/designing-a-new-class-at-stanford-safety-in-systems-programming.html#lectures): University course that gets you up and running with systems programming constraints and problem solving. I'm not its target audience but it was great.
-  - [Jeff Zarnett programming for performance course repo](https://github.com/jzarnett/ece459), 
-with a [full youtube playlist](https://www.youtube.com/watch?v=BE64OK7l20k&list=PLFCH6yhq9yAHnjKmB9RLA2Qdk3XhphqrN): Another good course for stepping in directly into high performance computing - not done with it yet, but the professor is friendly and enthusiastic.
-    - [Rustlings](https://github.com/rust-lang/rustlings): I found these exercises quite hard the first time I picked up the Rust book. Your MIleage May Vary but I did them solo, so I would recommend pairing up with a buddy before attempting all of it.
-    - [Too many linked lists](https://rust-unofficial.github.io/too-many-lists/): Another great walkthrough once you feel more comfortable reading and writing Rust.
-- Jon Gjengset streams:  Jon Gjengset is a well-known Rust community member and has amazing quality streams - if you want to see a proficient Rustacean code, this is a good place to start.
-  - [sorting algos stream](https://www.youtube.com/watch?v=h4RkCyJyXmM&t=2455s): More friendly to beginners if you know your sorts
+  - [Advent of Code 2020 by Amos](https://fasterthanli.me/series/advent-of-code-2020/part-1): This was my first "get your hands dirty" with Rust experience. Other articles by Amos are great and friendly too, but this series was very useful for figuring out a Rustian workflow and design thinking.
+  - [Ryan Eberhardt Stanford course](https://reberhardt.com/blog/2020/10/05/designing-a-new-class-at-stanford-safety-in-systems-programming.html#lectures): University course that gets you up and running with systems programming constraints and problem solving. I'm not its target audience but it was great for understanding Rust's domain.
+  - [Jeff Zarnett programming for performance course repo](https://github.com/jzarnett/ece459), with a [full youtube playlist](https://www.youtube.com/watch?v=BE64OK7l20k&list=PLFCH6yhq9yAHnjKmB9RLA2Qdk3XhphqrN): Another good course for stepping in directly into high performance computing - not done with it yet, but the professor is friendly and enthusiastic.
+  - [Rustlings](https://github.com/rust-lang/rustlings): I found these exercises quite hard the first time I picked up the Rust book. Your Mileage May Vary but I did them solo and suffered. I would recommend pairing up with a buddy before attempting all of it.
+- [Too many linked lists](https://rust-unofficial.github.io/too-many-lists/): Another great walkthrough once you feel more comfortable reading and writing Rust.
+- Jon Gjengset's streams:  Jon Gjengset is a well-known Rust community member and has amazing quality streams - if you want to see a proficient Rustacean code, this is a good place to start.
+  - [sorting algos stream](https://www.youtube.com/watch?v=h4RkCyJyXmM&t=2455s): More friendly to beginners if you know your sorts.
   - [multicore and atomics](https://www.youtube.com/watch?v=rMGWeSjctlY): Gets into the weeds about all the pain that Rust can save you when you're implementing low-level tricky concurrency.
+  
+----
 
 Alright, so you're set up to go on a learning journey. What's Rust look like anyway when compared to Julia?
 
-### What does generic Rustian code look like?
-We love composability and multiple dispatch, so let's look at a short example of how to get the good ol' Julia bang-for-buck, a 1D point:
+### What does generic Rustian code look like? 🔍 
+We love composability and multiple dispatch, so let's look at a short example of how to get the good ol' Julia bang-for-buck, with a 1D point:
 ```julia
 import Base: +, zero, sum
 struct Point{T<:Real}
@@ -76,6 +85,8 @@ end
 So, in Julia land, how do I get generic code? 
 
 I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like `zero(...)`, `eltype(...)`. With the dispatches, I add them to the appropriate subtype with `where T<:Foo`. If I define the appropriate methods, the others get composed atop of them , so I don't need to define `+=` once I've defined `+`. When something errors at runtime because I forgot a case (like the fact there's no type promotion rules above) I just write a function per call I missed and keep hacking on.
+
+Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.
 
 In Rust Land, how do I get a similar generic code?
 ```rust
@@ -108,7 +119,8 @@ fn main() {
 In Rust Land, how do I get generic code? Well...
 
 I worked on like half of this code and then had to [look it up](https://doc.rust-lang.org/std/ops/trait.Add.html). You can run it in the [Rust Playground here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=e3dd98c60fa0cdebb5f1a582599d3b0d). Avid readers will notice a few things: 
-0. Damn, that's a lot of boilerplate.
+
+0. Damn, that's a lot of boilerplate. 😣 
 1. To get generics, you need a `struct` for your type, an `impl<T> $TRAIT for Point` block where the `add` function is defined, and a lot of type annotations like `Self::Output`, `Add<Output = T>` and such.
 2. There's a sort of "name spacing" with the turbo fish operator: `::<this one!>`. We don't get functions that can share names but differ in behaviour. Bummer.
 3. The `println!` function is different - it's a macro, and it runs at parse time, also like Julia's macros. The chars inside the `{:?}` signal that we want debug printing, that we got above with the `#[derive(Debug)]`.
@@ -116,13 +128,15 @@ I worked on like half of this code and then had to [look it up](https://doc.rust
 
 The main workflow feels like this: 
 
-Define the right generics. Look up the functions that are needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on: maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
+Slap a `<T>` in front of your struct. Look up the functions that are needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on: maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
 
-I also chose a particularly easy example: there's no associated data in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get quite hairy, but you'll run into them eventually.
+I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get quite hairy, but you'll run into them eventually.
 
-I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. As a Julia user, the syntax is such a breeze that Pythonistas can pick up Julia within a few hours. Rust also has a lot more surface area to cover in learning the language: traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
+I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
 
-### Rustian projects of interest 
+---
+
+### Rustian projects of interest 🥇 
 
 There's definitely a steep wall for you to climb when starting out with Rust - however, they've really nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of "We weren't missing a sufficiently smart compiler, but a more empathetic one".
 
@@ -146,7 +160,7 @@ x=28)
   - [zellij](https://github.com/zellij-org/zellij): Terminal multiplexer with friendly UX. Still young, but cool.
 - [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*.
 - [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking and databases is top-notch.
-- [Scientific Computing](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/): A *must* to dive straight into linear algebra.
+- [Scientific Computing in Rust](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/): A *must* to dive straight into linear algebra.
 - [Taking ML to production with Rust](https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/): A sister article to the one above.
 - [Rust FFT](https://github.com/ejmahler/RustFFT): They beat FFTW in some cases with this one, so it seems worthwhile to take a look 👀 .
 - [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel): Newer package, but I'd like to see how special functions pan out in Rust land.
@@ -156,7 +170,9 @@ x=28)
 - [Creusot](https://github.com/xldenis/creusot): Add some macros to your Rust code, and have it formally verified by Why3.
 - [proptest](https://altsysrq.github.io/proptest-book/proptest/getting-started.html): Configure strategies for exploring type instantiations to fuzz your tests, shrink the cases, and automatically track regressions. Impressive stuff!
 
-### Optimization walkthroughs
+---
+
+### Optimization walkthroughs 🏃 
 
 If you want to dive deep into nitty gritty performance fundamentals, these are the best guides I found for explaining the tradeoffs, gotchas, mental model, and engineering for those tasty, tasty flops.
 
@@ -167,17 +183,20 @@ If you want to dive deep into nitty gritty performance fundamentals, these are t
 4. [How to write Fast Rust code](https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html)
 5. [Fastware Workshope](http://troubles.md/posts/rustfest-2018-workshop/)
 
-### Papercuts and sharp edges
+---
+
+### Papercuts and sharp edges ✂ 
 
 So Rust is "worth learning", but these are roadblocks that I faced and would warn others about to save them some grief.
 
-- Learn to benchmark your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals, and it's an easy gotcha.
+- You can learn another hobby waiting for Rust projects to compile.
+- Learn to your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals (or `-O0` flags), and it's an easy gotcha. This will not change in Rust.
 - Rust people keep saying they have no Garbage Collector, when they have a Region Based Garbage Collector. It's all fun and games until they have to implement those linked lists...
 - Don't add crates manually! Install `cargo-add`, use it to manage crate dependencies. That and some other tricks are great from doing the `AdventOfCode2020` from the article above.
 - For numerics, install `ndarray` and `num_traits`. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.
 - Benchmarking with `@btime` is painless, `criterion` is your best Rustian bet.
 - Setup your `rust-analyzer` and `error lens` plugins on VSCode or IDE asap, you'll thank me later. Rust-land expects you to be in constant dialogue with the compiler, and making that iteration cycle as ergonomic as possible will yield dividends in the long run. What we don't get from accessing help docs in the REPL, Rust people keep a terminal tab handy where they run `cargo watch -c` and get continuous feedback from the compiler.
-- You CAN'T index into a String in Rust with ints! [Docs are here](https://doc.rust-lang.org/std/primitive.str.html#method.chars) use slices like `&str[1..] == str[2:end]`, to mix up Julia and Rust syntax.
+- You CAN'T index into a String in Rust with ints! [Instead](https://doc.rust-lang.org/std/primitive.str.html#method.chars) use slices like `&str[1..] == str[2:end]`, if I may riff on Rust and Julia syntax in the equality just there.
 - Reading from `stdin` is a pain as a newcomer. I wanted to try out some competitive coding exercises and reading from `stdin` was waaaay too rough for me at first. Eventually I cobbled this template up [link here](https://gist.github.com/miguelraz/d0341e9fee8c728baa99fd6fe86c1be1) so that you don't struggle if you want to try a couple of CodeForces problems.
 - Not having a generic `rand` is just painful. So painful. This is my easiest workaround so far for generating a vector of `n` random entries:
 ```rust
@@ -204,12 +223,14 @@ impl fmt::Display for Point {
 ```
 - Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl - worlds apart! Even the linear algebra from `ndarray` is painful to understand unless you are quite comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
 
-### Things I wish I'd known earlier
+---
+
+### Things I wish I'd known earlier 👓 
 
 These could have helped me settle down into a more productive workflow sooner. Get a buddy that knows Rust to see you code to figure most of these out.
 
 0. If you can, avoid the examples with Strings and &str. Yes, they're a great motivation for systems people for all the gnarly use-after free and double-free and memory-leak examples - stick with numerical algorithms first, to get the gist of ownership, try and do some exercisms with iterators and Strings will be much easier to get after that. I don't think it's worth worrying about at first unless your target is systems.
-1. The preferred way of "whipping up an example in the REPL" is to `cargo new foo`, mucking about and then `cargo run --release` or using the Rust Playground.
+1. The preferred way of "whipping up an example in the REPL"/getting a MWE is to `cargo new foo`, mucking about and then `cargo run --release` or using the Rust Playground.
 2. If you're using a very expansive test suite, `cargo test --test-threads 8` and `cargo test --quiet` are helpful flags.
 3. For loops are not idiomatic in Rust - writing Fortran-ey code instead of iterators will lead to pain and slower loops. Spending time reading the examples in [the iterator docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html) and the community solutions in the exercisms will help a lot.
 4. Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is fast enough that this is not likely your bottleneck at first.
@@ -223,10 +244,13 @@ the types of `v` and `w` are a `slice` of `Int32`s, which are different from `Ve
 > Recently at work I managed to hit the Orphan Rules implementing some things for an internal crate. Orphan Rules you say? These are ancient rules passed down from the before times (pre 1.0) that have to do with trait coherence. Mainly, if you and I both implement a trait from another crate on the same type in another crate and we compile the code, which implementation do we use?
 8. Rust is not as centralized with online communication as Julia is around Slack/Zulip/Discourse. Their version of `#appreciation` channels is to go on twitter and tell `@ekuber` what a joy the compilers errors are. There's tons of people on their Discord, and everywhere.
 
-### Appreciation of Rust things
+---
+
+### Appreciation of Rust things 🦀  
 
 These are things the Rust people have nailed down.
 
+0. Ferris the crab is very cute.
 1. Rust people take uwu-ification very, VERY seriously. [The uwu](https://github.com/Daniel-Liu-c0deb0t/uwu) project uses SIMD to uwu-ify strings for [great artistic value](https://twitter.com/twent_weznowor). Julia and Rust both draw me because they make me feel more powerful when I code with them than I think I should be.
 2. Governance: The Rust foundation and strong community conduct codes. Given the blow ups that have happened with several open source communities recently from short-sighted governance or hate reactionaries tanking projects, this is a welcome sight that will probably pay off for many decades to come.
 3. Compiler error messages are second to none. Definitely check out `clippy` too and follow the hints. `cargo fmt` will also format all your crate so that Rust code is almost always a unified reading experience.
@@ -235,14 +259,17 @@ These are things the Rust people have nailed down.
 6. They're doc deployment system is unified, polished, and very friendly.
 7. `cargo` is a joy compared to `Make` hell. `Pkg` is somewhat inspired by it, so that rocks.
 
-### What Rust can bring to Julia
+
+---
+
+### What Rust can bring to Julia ⚒ 
 
 1. A model of governance. The Rust community is at least 10x the size of Julia, and it's unclear that adding more hats to the same `TruckFactorCritical` people would help. That being said, it'd be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don't think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don't see what is lost from learning from them.
 2. Less vulnerable software in the world is a good thing. Oxidization is great! Sometimes. I don't think any Julia internals would be oxidized in the short term, but it would be an interesting experiment to say the least.
 3. [Error handling](https://www.youtube.com/watch?v=rAF8mLI0naQ&t=947s): Multiple dispatch may prove very advantageous in this domain, and it hasn't been as much of a priority as it has in Rust. Perhaps that merits some careful rethinking for future Julia versions.
 4. Awesome Julia mentors, I think we need this.
 
-====
+---
 * Many thanks to `Jubilee` for feedback on this post and several corrections: 
   - Rust does not necessarily have an RC GC but a [region based GC](https://en.wikipedia.org/wiki/Region-based_memory_management). You can opt into the RC GC with `Arc` and `Rc` types.
   - Technically Rust doesn't have linear types but [affine types](https://gankra.github.io/blah/linear-rust/).
