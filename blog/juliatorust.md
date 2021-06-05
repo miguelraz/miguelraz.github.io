@@ -151,7 +151,7 @@ x=28)
 - [Rust FFT](https://github.com/ejmahler/RustFFT): They beat FFTW in some cases with this one, so it seems worthwhile to take a look 👀 .
 - [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel): Newer package, but I'd like to see how special functions pan out in Rust land.
 - [Polars](https://docs.rs/polars/0.12.1/polars/): A highly tuned dataframes implementation for some use cases. They've topped the charts in some of the [H20ai benchmarks](https://h2oai.github.io/db-benchmark/), so they've definitely got technical chops.
-- [Loom](https://github.com/tokio-rs/loom): a model checker for atomic primitives. I think Julia is a more natural fit for this approach and it will be great to try something similar once Jameson's atomics PR lands.
+- [Loom](https://github.com/tokio-rs/loom): a model checker for atomic primitives, sister project to `tokio`. I think Julia is a more natural fit for this approach given the ease of operator overloading  and it will be great to try something similar once Jameson's atomics PR lands.
 - [Stateright](https://github.com/tokio-rs/loom): distributed systems model checker with a graphic user interface.
 - [Creusot](https://github.com/xldenis/creusot): Add some macros to your Rust code, and have it formally verified by Why3.
 - [proptest](https://altsysrq.github.io/proptest-book/proptest/getting-started.html): Configure strategies for exploring type instantiations to fuzz your tests, shrink the cases, and automatically track regressions. Impressive stuff!
