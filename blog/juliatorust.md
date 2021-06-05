@@ -1,4 +1,9 @@
 @def title = "From Julia to Rust"
+@def author = "Miguel Raz Guzmán Macedo"
+@def tags = ["Rust", "Julia"]
+@def rss = "From Julia to Rust - learnings and reflections"
+@def rss_pubdate = Date(2021, 06, 05)
+@def published = "05 June 2021"
 
 ### From Julia to Rust 🗺 
 
