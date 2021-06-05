@@ -8,6 +8,9 @@
 ### 05/06/2021
 
 162. [Introduction to Undefined Behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) and a blog post by [John Regehr](https://blog.regehr.org/archives/213) - time to grok some of this nonsense.
+- `for(int i = 0; i <= N; i++) {...}` if overflow is UB, then the compiler can assume the loop stops in at most `N+1` iterations (because if  `N == INT_MAX`, the loop may be infinite!)
+- Oh damn, the first post is by Chris Lattner, author of LLVM o.0
+
 
 ### 04/06/2021
 159. `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:

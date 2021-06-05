@@ -126,21 +126,21 @@ The main workflow feels like this:
 
 Slap a `<T>` in front of your struct and the fields you want it to be generic over. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on some traits; maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
 
-I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get hairy, fast, but you'll run into them eventually. I also don't know how easily you could handle multiple generic types and the compile time penalties associated with it.
+I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get hairy, fast, but you'll run into them eventually. I also don't know how easily you could handle multiple generic types and the compile time penalties associated with them.
 
-I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
+There's more syntax up front compared to Julia, and not just because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
 
-Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price.
+Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price. They might not be right for every use case but they're a solid investment.
 
 ---
 
 ### Rustian projects of interest 🥇 
 
-There's a steep wall for you to climb when starting out with ;ust - however, they've nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of "We weren't missing a sufficiently smart compiler, but a more empathetic one".
+There's a steep wall to climb when starting out with Rust - however, they've nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of "We weren't missing a sufficiently smart compiler, but a more empathetic one".
 
 Alright, so what's the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it's weight against the established candidates? 
 
-Here's a list of all the projects that I've found particularly of note to Julians, with links galore.
+Here's a list of all the projects that I've found particularly of note to Julians.
 
 - [rayon](https://github.com/rayon-rs/rayon) is the original reason I got interested in Rust. Check their [hello world](https://github.com/rayon-rs/rayon#parallel-iterators-and-more) - the promise is that if you are using iterators, you can swap (mostly) `iter()` for `par_iter()` and at compile time you can know if your code will run in parallel. That's just about the friendliest user interface to parallelism besides `Threads.@threads`, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the [same idea for work stealing thread scheduler](https://youtu.be/gof_OEv71Aw?t=1184) that Julia's parallel task run time system uses (inspired by Cilk, get it? 'Cuz Rayon is a fake silk? Ha...). 
 - [tokio](https://github.com/tokio-rs/tokio) deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though! 
@@ -154,8 +154,8 @@ Here's a list of all the projects that I've found particularly of note to Julian
   - [typeracer](https://lib.rs/crates/typeracer): fun typing game.
   - [taskwarrior-tui](https://lib.rs/crates/zoxide): Todo tracker.
   - [zoxide](https://lib.rs/crates/zoxide): directory autojumper. I don't really do `cd ../..` climbing around anymore I just do `z foo` a couple of times and that usually guesses right.
-  - [zellij](https://github.com/zellij-org/zellij): Terminal multiplexer with friendly UX. Still young, but cool.
-- [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*. [Emery Berger's](https://youtu.be/r-TLSBdHe1A?t=2182) presentation alone is worth knowing about this project.
+  - [zellij](https://github.com/zellij-org/zellij): Terminal multiplexer with friendly UX. Young and promising.
+- [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*. [Emery Berger's](https://youtu.be/r-TLSBdHe1A?t=2182) presentation alone is worth knowing about this project. I reeeeeally want to nerdsnipe someone to port this to Julia.
 - [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking and databases is top-notch. Also worthy of note is the same author's `rio` crate, which is a Rust interface for the `io_uring` linux kernel module, which can significantly speed up asynchronous programming. There's some WIP PRs for landing this for `libuv`, Julia's thread runtime backend, and that effort [is close to wrapping up](https://github.com/libuv/libuv/pull/2322).
 - [Scientific Computing in Rust](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/): A *must* to dive straight into linear algebra.
 - [Taking ML to production with Rust](https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/): A sister article to the one above.
@@ -225,6 +225,7 @@ impl fmt::Display for Point {
 }
 ```
 - Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl, or Turing.jl, or ... anything else. Even the linear algebra from `ndarray` is painful to understand unless you are comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
+- Many of your functions will be faster if you annotate them with `#[inline]`.
 
 ---
 
@@ -237,11 +238,12 @@ These could have helped me settle down into a more productive workflow sooner. G
 2. If you're using an expansive test suite, `cargo test --test-threads 8` and `cargo test --quiet` are helpful flags.
 3. For loops are not idiomatic in Rust - writing Fortran-ey code instead of iterators will lead to pain and slower loops. Spending time reading the examples in [the iterator docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html) and the community solutions in the exercisms will help a lot.
 4. Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is usually fast enough.
-5. The following function
+5. In the following function, the types of `v` and `w` are a `slice` of `Int32`s, which are different from `Vec<32>`. Read the Scientific Computing link above to see a nice table of the differences. An array like `[f32; 4]` includes the size as part of the type, a slice like `[f32]` does not. Diving into linear algebra means being familiar with many `to_array()`, `to_slice()`, `from_array()`, and `from_slice()` cases.
 ```rust
 fn dot(v: &[i32], w: &[i32]) -> i32 {...}
 ```
-the types of `v` and `w` are a `slice` of `Int32`s, which are different from `Vec<32>`. Read the Scientific Computing link above to see a nice table of the differences.
+
+
 6. Including docs and tests in the same file as your implementation is idiomatic - even the IDEs support clicking on the `#[test]` line and having that run. Julia has a nice workflow for test driven development out-of-the-box - Rust gives you some of those guarantees by... conversing with the compiler.
 7. Rust has something similar to the concept of `type piracy`: they're called the `orphan rules`, as explained by [this Michael Gattozzi](https://blog.mgattozzi.dev/orphan-rules/) post:
 > Recently at work I managed to hit the Orphan Rules implementing some things for an internal crate. Orphan Rules you say? These are ancient rules passed down from the before times (pre 1.0) that have to do with trait coherence. Mainly, if you and I both implement a trait from another crate on the same type in another crate and we compile the code, which implementation do we use?
@@ -282,3 +284,4 @@ These are things the Rust people have nailed down.
   - Tokio's story is not as simple as I had made it out to be so I cut some comments
 * `Alex Weech` helpfully suggested refactoring the original Julia Point code to be more similar to the Rust example.
 * `Daniel Menéndez` helpfully suggested adding `crates.io` or `lib.rs`
+* Thanks to `oliver` I also read about this post by Chris Lattner, author of LLVM, on the dangers of [undefined behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html), to really scare you out of thinking you know what C is doing under the hood.
