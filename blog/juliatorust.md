@@ -76,7 +76,7 @@ struct Point{T<:Real}
     val::T
 end
 
-+(x::Point{T}, y::Point{T}) where T<:Real = x.val + y.val
++(x::Point{T}, y::Point{T}) where T<:Real = Point{T}(x.val + y.val)
 a = Point{Int32}(1)
 b = Point{Int32}(2)
 a + b # works
@@ -197,7 +197,7 @@ If you want to dive deep into nitty gritty performance fundamentals, these are t
 So Rust is "worth learning", but these are roadblocks that I faced and would warn others about to save them some grief.
 
 - You can learn another hobby waiting for Rust projects to compile. The price for compile-time guarantees/being the designated driver in the codebase is offloading more work to the compiler. They're working on leveraging concurrency for speeding up the pipeline, and it's gotten better. Let's just say they also suffer from TTFP 😉 .
-- Learn to your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals (or `-O0` flags), and it's an easy gotcha. This will not change in Rust.
+- Learn to run your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals (or `-O0` flags), and it's an easy gotcha. This will not change in Rust.
 - Rust people keep saying they have no Garbage Collector, when they have a Region Based Garbage Collector. It's all fun and games until they have to implement those linked lists...
 - Don't add crates manually! Install `cargo-add`, use it to manage crate dependencies. That and some other tricks are great from doing the `AdventOfCode2020` from the article above.
 - For numerics, install `ndarray` and `num_traits`. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.
