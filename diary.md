@@ -5,6 +5,10 @@
 
 # Virtual diary for progress on all fronts
 
+### 05/06/2021
+
+162. [Introduction to Undefined Behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) and a blog post by [John Regehr](https://blog.regehr.org/archives/213) - time to grok some of this nonsense.
+
 ### 04/06/2021
 159. `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:
 ```rust

@@ -1,6 +1,6 @@
 @def title = "From Julia to Rust"
 
-### From Julia to Rust
+### From Julia to Rust 🗺 
 
 I've been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians interested in Rust. I've written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a different mindset and tradeoffs that are worth considering.
 
@@ -85,7 +85,7 @@ I make sure to not use any explicit types and let the dispatch system do the res
 
 Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.
 
-In Rust Land, how do I get a similar generic code?
+Let's look at the rust example:
 ```rust
 use std::ops::Add;
 
@@ -112,30 +112,31 @@ fn main() {
     println!("{:?}", c == c);
 }
 ```
-
-In Rust Land, how do I get generic code? Well...
+In Rust Land, how do I get a similar generic code?
 
 I worked on like half of this code and then had to [look it up](https://doc.rust-lang.org/std/ops/trait.Add.html). You can run it in the [Rust Playground here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=e3dd98c60fa0cdebb5f1a582599d3b0d). Avid readers will notice the following: 
 
 0. Damn, that's a lot of boilerplate. 😣 
-1. To get generics, you need a `struct` for your type, an `impl<T> $TRAIT for Point` block where the `add` function is defined, and a lot of type annotations like `Self::Output`, `Add<Output = T>` and such.
-2. There's a sort of "name spacing" with the turbo fish operator: `::<this one!>`. We don't get functions that can share names but differ in behaviour. Bummer. (We can omit this in Julia with some nicer outer constructors, but I think it takes from the thrust of the argument.)
-3. The `println!` function is different - it's a macro, and it runs at parse time, also like Julia's macros. The chars inside the `{:?}` signal that we want debug printing, that we got above with the `#[derive(Debug)]`.
+1. To get generics, you need a `struct` for your type, an `impl<T> $TRAIT for Point<T>` block where the `add` function is defined, and type annotations like `Self::Output`, `Add<Output = T>`.
+2. There's a sort of "name spacing" with the turbo fish operator: `::<this one!>`. We don't get functions that can share names but differ in behaviour. Bummer. (We get this in Julia with some nicer outer constructors, but I think it takes from the thrust of the argument.)
+3. The `println!` function is different - it's a macro, and it runs at parse time, also like Julia's macros. The chars inside the `{:?}` signal that we want debug printing, that we got above with the `#[derive(Debug)]`. Rust doesn't know how to print new structs if you don't define it, [which, as Lyndon White points out, is one of the problems solved by multiple dispatch ](https://discourse.julialang.org/t/is-julias-way-of-oop-superior-to-c-python-why-julia-doesnt-use-class-based-oop/52058/84?u=miguelraz).
 4. Oh, those `#[things(above_the_struct)]` are also macros. I still don't know how they're different, but they seem to affect how the compiler interacts with the crate too. Since some traits (like the ones for copying or printing) are so boilerplate heavy and predictable, you can get some behaviour for "free" if you add the right `#[derive(...)]` stuff in the declaration. That's how the `c == c` works actually, it's due to the `PartialEq`.
 
 The main workflow feels like this: 
 
-Slap a `<T>` in front of your struct. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on some traits; maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
+Slap a `<T>` in front of your struct and the fields you want it to be generic over. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on some traits; maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
 
-I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get hairy, fast, but you'll run into them eventually.
+I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get hairy, fast, but you'll run into them eventually. I also don't know how easily you could handle multiple generic types and the compile time penalties associated with it.
 
-I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
+I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
+
+Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price.
 
 ---
 
 ### Rustian projects of interest 🥇 
 
-There's definitely a steep wall for you to climb when starting out with Rust - however, they've really nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of "We weren't missing a sufficiently smart compiler, but a more empathetic one".
+There's a steep wall for you to climb when starting out with ;ust - however, they've nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of "We weren't missing a sufficiently smart compiler, but a more empathetic one".
 
 Alright, so what's the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it's weight against the established candidates? 
 
@@ -145,8 +146,7 @@ Here's a list of all the projects that I've found particularly of note to Julian
 - [tokio](https://github.com/tokio-rs/tokio) deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though! 
 *NB*: It is non-trivial to compose `rayon` and `tokio` codes.
 - [egg](https://egraphs-good.github.io/) and related projects like [herbie](https://herbie.uwplse.org/): A wicked fast egraph matching engine - a great competitor and inspiration for the Symbolics.jl ecosystem.
-x=28)
-- [MMtk and GCs](https://github.com/mmtk/mmtk-core): Garbage Collectors are a family of algorithms that share behaviour, and different strategies can be built atop of tweakable parameters. The promise for building a configurable, performant and battle-tested back-end for Garbage Collectors is alive with this project by Steve Blackburn and gang. If you haven't heard of [Immix](https://www.youtube.com/watch?v=73djjTs4sew&t=914s) or [Floorplan](https://github.com/RedlineResearch/floorplan), enjoy the rabbithole.
+- [MMtk and GCs](https://github.com/mmtk/mmtk-core): Garbage Collectors are a family of algorithms that share behaviour, and different strategies can be built atop of tweakable parameters. The promise for building a configurable, performant and battle-tested back-end for Garbage Collectors is alive with this project by Steve Blackburn and gang. If you haven't heard of [Immix](https://www.youtube.com/watch?v=73djjTs4sew&t=914s) or [Floorplan](https://github.com/RedlineResearch/floorplan), enjoy the rabbithole. If you're new to GCs, [this is a good starting point](https://www.cs.cornell.edu/courses/cs6120/2020fa/lesson/10/) for seasoned Julians.
 - [Rust CLI](https://zaiste.net/posts/shell-commands-rust/): Rust people feel comfortable working in the terminal, and they've taken that user experience Very Seriously and have a top notch performance and user experience for their command line CLIs. Here's a few of my favorites - you only need to `cargo install foo` and they should be properly installed on your system.
   - [rg](https://github.com/BurntSushi/ripgrep): SIMDified grep replacemnt tool (for some use cases). Includes colors!
   - [bat](https://github.com/sharkdp/bat): cat clone with tons more built-in syntax highlighting.
@@ -155,13 +155,13 @@ x=28)
   - [taskwarrior-tui](https://lib.rs/crates/zoxide): Todo tracker.
   - [zoxide](https://lib.rs/crates/zoxide): directory autojumper. I don't really do `cd ../..` climbing around anymore I just do `z foo` a couple of times and that usually guesses right.
   - [zellij](https://github.com/zellij-org/zellij): Terminal multiplexer with friendly UX. Still young, but cool.
-- [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*.
+- [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*. [Emery Berger's](https://youtu.be/r-TLSBdHe1A?t=2182) presentation alone is worth knowing about this project.
 - [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking and databases is top-notch. Also worthy of note is the same author's `rio` crate, which is a Rust interface for the `io_uring` linux kernel module, which can significantly speed up asynchronous programming. There's some WIP PRs for landing this for `libuv`, Julia's thread runtime backend, and that effort [is close to wrapping up](https://github.com/libuv/libuv/pull/2322).
 - [Scientific Computing in Rust](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/): A *must* to dive straight into linear algebra.
 - [Taking ML to production with Rust](https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/): A sister article to the one above.
 - [Rust FFT](https://github.com/ejmahler/RustFFT): They beat FFTW in some cases with this one, so it seems worthwhile to take a look 👀 .
 - [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel): Newer package, but I'd like to see how special functions pan out in Rust land.
-- [Polars](https://docs.rs/polars/0.12.1/polars/): A highly tuned dataframes implementation for some use cases. They've topped the charts in some of the [H20ai benchmarks](https://h2oai.github.io/db-benchmark/), so they've definitely got technical chops.
+- [Polars](https://docs.rs/polars/0.12.1/polars/): A highly tuned dataframes implementation for some use cases. They've topped the charts in some of the [H20ai benchmarks](https://h2oai.github.io/db-benchmark/), so they've definitely got technical chops. (They beat DataFrames.jl because of a sparsification trick which is a bit non-trivial to implement, but there's not necessarily an impediment to matching their speed.)
 - [Loom](https://github.com/tokio-rs/loom): a model checker for atomic primitives, sister project to `tokio`. I think Julia is a more natural fit for this approach given the ease of operator overloading  and it will be great to try something similar once Jameson's atomics PR lands.
 - [Stateright](https://github.com/tokio-rs/loom): distributed systems model checker with a graphic user interface.
 - [Creusot](https://github.com/xldenis/creusot): Add some macros to your Rust code, and have it formally verified by Why3.
@@ -170,7 +170,7 @@ x=28)
 
 There's oodles more. Check out [crates.io](crates.io) or [lib.rs](lib.rs) if you want to explore more (this is their community based JuliaHub equivalent).
 
-I'll make a special note of [evcxr](https://github.com/google/evcxr), a Rust REPL. For now, I don't think it's profitable to put Rust into a REPL-like workflow. I'm too used to that in Julia, and that works well there, but I think there's a risk of digging yourself into a "Everything must be a REPL" mentality and cutting yourself off from learning opportunities. In Rust land, I don't mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that's the package that I wanted to learn when I bought into Rust, I don't mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I'd love to be wrong on this down the road.
+I'll make a special note of [evcxr](https://github.com/google/evcxr), a Rust REPL. For now, I don't think it's profitable to use Rust with a REPL-like workflow. I'm too used to that in Julia, and that works well there, but I think there's a risk of digging yourself into a "Everything must be a REPL" mentality and cutting yourself off from learning opportunities. In Rust land, I don't mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that's the package that I wanted to learn when I bought into Rust, I don't mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I'd love to be wrong on this down the road.
 
 ---
 
@@ -191,7 +191,7 @@ If you want to dive deep into nitty gritty performance fundamentals, these are t
 
 So Rust is "worth learning", but these are roadblocks that I faced and would warn others about to save them some grief.
 
-- You can learn another hobby waiting for Rust projects to compile.
+- You can learn another hobby waiting for Rust projects to compile. The price for compile-time guarantees/being the designated driver in the codebase is offloading more work to the compiler. They're working on leveraging concurrency for speeding up the pipeline, and it's gotten better. Let's just say they also suffer from TTFP 😉 .
 - Learn to your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals (or `-O0` flags), and it's an easy gotcha. This will not change in Rust.
 - Rust people keep saying they have no Garbage Collector, when they have a Region Based Garbage Collector. It's all fun and games until they have to implement those linked lists...
 - Don't add crates manually! Install `cargo-add`, use it to manage crate dependencies. That and some other tricks are great from doing the `AdventOfCode2020` from the article above.
@@ -202,13 +202,14 @@ So Rust is "worth learning", but these are roadblocks that I faced and would war
 - Reading from `stdin` is a pain as a newcomer. I wanted to try out some competitive coding exercises and reading from `stdin` was waaaay too rough for me at first. Eventually I cobbled this template up [link here](https://gist.github.com/miguelraz/d0341e9fee8c728baa99fd6fe86c1be1) so that you don't struggle if you want to try a couple of CodeForces problems.
 - Not having a generic `rand` is just painful. So painful. This is my easiest workaround so far for generating a vector of `n` random entries:
 ```rust
-    use rand::distributions::Standard;
-    use rand::prelude::*;
-    thread_rng().sample_iter(&Standard).take(n).collect()
+let n = 100;
+use rand::distributions::Standard;
+use rand::prelude::*;
+thread_rng().sample_iter(&Standard).take(n).collect()
 ```
 (Oh, and `rand` isn't part of the stdlib so that's another papercut).
 - There is no `@code_native` and friends in Rust - your best bet is to use the Rust Playground and click on the `...` to have it emit the total assembly. This only works for the top 100 most popular crates though. You can `cargo run --release -- --emit=llvm-ir/asm` and then fish the results out of `target/`, but that's unwieldy - why does no one have a CLI for this yet?
-- Another multiple dispatch gripe: having to implement `Display` traits for new structs feels like pulling teeth, and this initial type signature seems inscrutable as a begineer:
+- Another multiple dispatch gripe: having to implement `Display` traits for new structs feels like pulling teeth, and this initial type signature seems inscrutable as a beginner:
 ```rust
 use std::fmt;
 
@@ -223,8 +224,7 @@ impl fmt::Display for Point {
     }
 }
 ```
-- Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl, or Turing.jl, or ... 
-Even the linear algebra from `ndarray` is painful to understand unless you are comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
+- Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl, or Turing.jl, or ... anything else. Even the linear algebra from `ndarray` is painful to understand unless you are comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
 
 ---
 
@@ -236,7 +236,7 @@ These could have helped me settle down into a more productive workflow sooner. G
 1. The preferred way of "whipping up an example in the REPL"/getting a MWE is to `cargo new foo`, mucking about and then `cargo run --release` or using the Rust Playground.
 2. If you're using an expansive test suite, `cargo test --test-threads 8` and `cargo test --quiet` are helpful flags.
 3. For loops are not idiomatic in Rust - writing Fortran-ey code instead of iterators will lead to pain and slower loops. Spending time reading the examples in [the iterator docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html) and the community solutions in the exercisms will help a lot.
-4. Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is fast enough that this is not likely your bottleneck at first.
+4. Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is usually fast enough.
 5. The following function
 ```rust
 fn dot(v: &[i32], w: &[i32]) -> i32 {...}
@@ -274,7 +274,7 @@ These are things the Rust people have nailed down.
 
 ---
 
-#### Acknowledgments 🙌🏻 
+### Acknowledgments 🙌🏻 
 
 * Thanks to `Jubilee` for feedback on this post and the following corrections: 
   - Rust does not necessarily have an RC GC but a [region based GC](https://en.wikipedia.org/wiki/Region-based_memory_management). You can opt into the RC GC with `Arc` and `Rc` types.
