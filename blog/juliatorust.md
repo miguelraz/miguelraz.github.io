@@ -25,7 +25,7 @@ So that's the spiel for jumping on the Rust train when I argue with myself in th
 
 ---
 
-### Informal introductions - tales of two langauges 📚 
+### Informal introductions - tales of two languages 📚 
 
 I will now give 2 hand-wavy historical rehashings of the origins of both languages.
 
