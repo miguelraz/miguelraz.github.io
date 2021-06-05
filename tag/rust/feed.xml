@@ -8,12 +8,12 @@
       xmlns:georss="http://www.georss.org/georss">
 
       <channel>
-        <title><![CDATA[PathToPerformance]]></title>
-        <link>https://miguelraz.github.io</link>
-        <description><![CDATA[A virtual diary for progress on all fronts by Miguel Raz Guzmán Macedo]]></description>
+        <title><![CDATA[{{fd2rss website_title}}]]></title>
+        <link>{{website_url}}</link>
+        <description><![CDATA[{{fd2rss website_description}}]]></description>
         <generator>Franklin.jl -- https://github.com/tlienart/Franklin.jl</generator>
         <atom:link
-            href="https://miguelraz.github.io/feed.xml"
+            href="{{fd_rss_feed_url}}"
             rel="self"
             type="application/rss+xml" />
 
@@ -25,21 +25,6 @@
     <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
         
     <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>    
-    
-    
-    <atom:author>
-    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
-    </atom:author>
-                
-</item>
-
-<item>
-    <title><![CDATA[Why Julia - Meet Dispatch]]></title>
-    <link>https://miguelraz.github.io/blog/dispatch/index.html</link>
-    <guid></guid>
-    <description><![CDATA[This blog is a friendly introduction to multiple dispatch in Julia]]></description>    
-        
-    <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
     
     
     <atom:author>
