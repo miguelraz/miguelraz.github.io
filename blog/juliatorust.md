@@ -2,7 +2,7 @@
 
 ### From Julia to Rust
 
-I've been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians who are interested in Rust. I've written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a very different mindset and tradeoffs that are worth considering.
+I've been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians interested in Rust. I've written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a different mindset and tradeoffs that are worth considering.
 
 I hope you enjoy it.
 
@@ -22,9 +22,9 @@ So that's the spiel for jumping on the Rust train when I argue with myself in th
 
 ### Informal introductions - tales of two langauges 📚 
 
-I will now give 2 very hand-wavy historical rehashings of the origins of both languages.
+I will now give 2 hand-wavy historical rehashings of the origins of both languages.
 
-You might know Julia's origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and many other libraries re-implemented a poor man's version of multiple dispatch because of the performance constraints. If you add a very clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of [algorithms](https://youtu.be/lZb2JKhf-mk?t=208).
+You might know Julia's origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man's version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of [algorithms](https://youtu.be/lZb2JKhf-mk?t=208).
 
 Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C++ tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. Eventually, they named the language after the [fungus](https://en.wikipedia.org/wiki/Rust_(fungus)).
 
@@ -47,13 +47,13 @@ If for some reason you've already decided that learning Rust is a worthy endeavo
 - [Tour of Rust](https://tourofrust.com/TOC_en.html): Also has good examples.
 - [cheat.rs](https://cheats.rs/): A cheat sheet for all the new syntax, priceless.
 - [Rust by example](https://doc.rust-lang.org/stable/rust-by-example/index.html): Always good for a quick MWE.
-- [Rust docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html): Their version of the Julia manual. Make sure to click a few of the `[+]` to see how the code drops down. I still spend time looking at the iterators page.
+- [Rust docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html): Their version of the Julia manual. Make sure to click the `[+]` to see how the code drops down. I still spend time looking at the iterators page.
 - Courses and exercises:
   - [Exercism](https://exercism.io/my/tracks): If you want to get into some guided learning, Exercisms is great, but focuses too much on strings at the beginning for my liking. Make sure to look at the community solutions when you're done.
-  - [Advent of Code 2020 by Amos](https://fasterthanli.me/series/advent-of-code-2020/part-1): This was my first "get your hands dirty" with Rust experience. Other articles by Amos are great and friendly too, but this series was very useful for figuring out a Rustian workflow and design thinking.
+  - [Advent of Code 2020 by Amos](https://fasterthanli.me/series/advent-of-code-2020/part-1): This was my first "get your hands dirty" with Rust experience. Other articles by Amos are great and friendly too, but this series was useful for figuring out a Rustian workflow and design thinking.
   - [Ryan Eberhardt Stanford course](https://reberhardt.com/blog/2020/10/05/designing-a-new-class-at-stanford-safety-in-systems-programming.html#lectures): University course that gets you up and running with systems programming constraints and problem solving. I'm not its target audience but it was great for understanding Rust's domain.
   - [Jeff Zarnett programming for performance course repo](https://github.com/jzarnett/ece459), with a [full youtube playlist](https://www.youtube.com/watch?v=BE64OK7l20k&list=PLFCH6yhq9yAHnjKmB9RLA2Qdk3XhphqrN): Another good course for stepping in directly into high performance computing - not done with it yet, but the professor is friendly and enthusiastic.
-  - [Rustlings](https://github.com/rust-lang/rustlings): I found these exercises quite hard the first time I picked up the Rust book. Your Mileage May Vary but I did them solo and suffered. I would recommend pairing up with a buddy before attempting all of it.
+  - [Rustlings](https://github.com/rust-lang/rustlings): I found some exercises too hard the first time I picked up the Rust book. Your Mileage May Vary but I did them solo and suffered. I would recommend pairing up with a buddy before attempting all of it.
 - [Too many linked lists](https://rust-unofficial.github.io/too-many-lists/): Another great walkthrough once you feel more comfortable reading and writing Rust.
 - Jon Gjengset's streams:  Jon Gjengset is a well-known Rust community member and has amazing quality streams - if you want to see a proficient Rustacean code, this is a good place to start.
   - [sorting algos stream](https://www.youtube.com/watch?v=h4RkCyJyXmM&t=2455s): More friendly to beginners if you know your sorts.
@@ -66,25 +66,22 @@ Alright, so you're set up to go on a learning journey. What's Rust look like any
 ### What does generic Rustian code look like? 🔍 
 We love composability and multiple dispatch, so let's look at a short example of how to get the good ol' Julia bang-for-buck, with a 1D point:
 ```julia
-import Base: +, zero, sum
+import Base: +
 struct Point{T<:Real}
     val::T
 end
 
 +(x::Point{T}, y::Point{T}) where T<:Real = x.val + y.val
-zero(x::Point{T}) where T<:Real = Point{T}(zero(T))
-
-function sum(xs)
-    res = zero(eltype(x))
-    for i in xs
-        res += i
-    end
-    res
-end
+a = Point{Int32}(1)
+b = Point{Int32}(2)
+a + b # works
+c = Point{Float32}(1.0)
+d = Point{Float32}(2.0)
+c + d # Also works!
 ```
 So, in Julia land, how do I get generic code? 
 
-I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like `zero(...)`, `eltype(...)`. With the dispatches, I add them to the appropriate subtype with `where T<:Foo`. If I define the appropriate methods, the others get composed atop of them , so I don't need to define `+=` once I've defined `+`. When something errors at runtime because I forgot a case (like the fact there's no type promotion rules above) I just write a function per call I missed and keep hacking on.
+I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like `zero(...)`, `eltype(...)`. With the dispatches, I add them to the appropriate subtype with `where T<:Foo`. If I define the appropriate methods, the others get composed atop of them , so I don't need to define `+=` once I've defined `+`. Duck type all the way - when something errors at runtime because I forgot a case (like the fact there's no type promotion rules above) I just write a function per call I missed and keep hacking on.
 
 Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.
 
@@ -118,19 +115,19 @@ fn main() {
 
 In Rust Land, how do I get generic code? Well...
 
-I worked on like half of this code and then had to [look it up](https://doc.rust-lang.org/std/ops/trait.Add.html). You can run it in the [Rust Playground here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=e3dd98c60fa0cdebb5f1a582599d3b0d). Avid readers will notice a few things: 
+I worked on like half of this code and then had to [look it up](https://doc.rust-lang.org/std/ops/trait.Add.html). You can run it in the [Rust Playground here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=e3dd98c60fa0cdebb5f1a582599d3b0d). Avid readers will notice the following: 
 
 0. Damn, that's a lot of boilerplate. 😣 
 1. To get generics, you need a `struct` for your type, an `impl<T> $TRAIT for Point` block where the `add` function is defined, and a lot of type annotations like `Self::Output`, `Add<Output = T>` and such.
-2. There's a sort of "name spacing" with the turbo fish operator: `::<this one!>`. We don't get functions that can share names but differ in behaviour. Bummer.
+2. There's a sort of "name spacing" with the turbo fish operator: `::<this one!>`. We don't get functions that can share names but differ in behaviour. Bummer. (We can omit this in Julia with some nicer outer constructors, but I think it takes from the thrust of the argument.)
 3. The `println!` function is different - it's a macro, and it runs at parse time, also like Julia's macros. The chars inside the `{:?}` signal that we want debug printing, that we got above with the `#[derive(Debug)]`.
-4. Oh, those `#[things(above_the_struct)]` are also macros. I still don't know how they're different. Since some traits (like the ones for copying or printing) are so boilerplate heavy and predicatble, you can get some behaviour for "free" if you add the right `#[derive(...)]` stuff in the declaration. That's how the `c == c` works actually, it's due to the `PartialEq`.
+4. Oh, those `#[things(above_the_struct)]` are also macros. I still don't know how they're different, but they seem to affect how the compiler interacts with the crate too. Since some traits (like the ones for copying or printing) are so boilerplate heavy and predictable, you can get some behaviour for "free" if you add the right `#[derive(...)]` stuff in the declaration. That's how the `c == c` works actually, it's due to the `PartialEq`.
 
 The main workflow feels like this: 
 
-Slap a `<T>` in front of your struct. Look up the functions that are needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on: maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
+Slap a `<T>` in front of your struct. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn't compile? See what `rustc` says and try and tack it on some traits; maybe you missed an affine type with `impl<T: Foo>` or the `Self::Output` - the compiler guides you through patching up your code. If you're asking for some generic behaviour, the compiler will complain and you'll have to add another trait implementation so that *it is damn sure* you're allowed to continue.
 
-I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get quite hairy, but you'll run into them eventually.
+I also chose a particularly easy example: there's no associated data (like a string) in my `Point<T>`, so I don't need to prove to the compiler that my data doesn't outlive its uses - those are `lifetimes`, and they can get hairy, fast, but you'll run into them eventually.
 
 I also think there's a lot more syntax up front compared to Julia, and I think that's because we're writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: traits, impls, enums, lifetimes, pattern matching with `match`, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...
 
@@ -144,13 +141,13 @@ Alright, so what's the view from the top look like? Like Julia, Rust is an incum
 
 Here's a list of all the projects that I've found particularly of note to Julians, with links galore.
 
-- [rayon](https://github.com/rayon-rs/rayon) is the original reason I got interested in Rust. Check their [hello world](https://github.com/rayon-rs/rayon#parallel-iterators-and-more) - the promise is that if you are using iterators, you can swap (in many cases) `iter()` for `par_iter()` and at compile time you can know if your code will run in parallel. That's just about the friendliest user interface to parallelism besides `Threads.@threads`, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the [same idea for work stealing thread scheduler](https://youtu.be/gof_OEv71Aw?t=1184) that Julia's parallel task run time system uses (inspired by Cilk, get it? 'Cuz Rayon is a fake silk? Ha...). 
-- [tokio](https://github.com/tokio-rs/tokio) deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people are excited about it though! 
+- [rayon](https://github.com/rayon-rs/rayon) is the original reason I got interested in Rust. Check their [hello world](https://github.com/rayon-rs/rayon#parallel-iterators-and-more) - the promise is that if you are using iterators, you can swap (mostly) `iter()` for `par_iter()` and at compile time you can know if your code will run in parallel. That's just about the friendliest user interface to parallelism besides `Threads.@threads`, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the [same idea for work stealing thread scheduler](https://youtu.be/gof_OEv71Aw?t=1184) that Julia's parallel task run time system uses (inspired by Cilk, get it? 'Cuz Rayon is a fake silk? Ha...). 
+- [tokio](https://github.com/tokio-rs/tokio) deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though! 
 *NB*: It is non-trivial to compose `rayon` and `tokio` codes.
 - [egg](https://egraphs-good.github.io/) and related projects like [herbie](https://herbie.uwplse.org/): A wicked fast egraph matching engine - a great competitor and inspiration for the Symbolics.jl ecosystem.
 x=28)
-- [MMtk and GCs](https://github.com/mmtk/mmtk-core): Garbage Collectors are a family of algorithms that share many traits, and many different strategies can be built atop of tweakable parameters. The promise for building a configurable, performant and battle-tested back-end for Garbage Collectors is alive with this project by Steve Blackburn and gang. If you haven't heard of [Immix](https://www.youtube.com/watch?v=73djjTs4sew&t=914s) or [Floorplan](https://github.com/RedlineResearch/floorplan), enjoy the rabbithole.
-- [Rust CLI](https://zaiste.net/posts/shell-commands-rust/): Rust people feel very comfortable working in the terminal, and they've taken that user experience Very Seriously and have a top notch performance and user experience for their many command line CLIs. Here's a few of my favorites - you only need to `cargo install foo` and they should be properly installed on your system.
+- [MMtk and GCs](https://github.com/mmtk/mmtk-core): Garbage Collectors are a family of algorithms that share behaviour, and different strategies can be built atop of tweakable parameters. The promise for building a configurable, performant and battle-tested back-end for Garbage Collectors is alive with this project by Steve Blackburn and gang. If you haven't heard of [Immix](https://www.youtube.com/watch?v=73djjTs4sew&t=914s) or [Floorplan](https://github.com/RedlineResearch/floorplan), enjoy the rabbithole.
+- [Rust CLI](https://zaiste.net/posts/shell-commands-rust/): Rust people feel comfortable working in the terminal, and they've taken that user experience Very Seriously and have a top notch performance and user experience for their command line CLIs. Here's a few of my favorites - you only need to `cargo install foo` and they should be properly installed on your system.
   - [rg](https://github.com/BurntSushi/ripgrep): SIMDified grep replacemnt tool (for some use cases). Includes colors!
   - [bat](https://github.com/sharkdp/bat): cat clone with tons more built-in syntax highlighting.
   - [dust](https://github.com/bootandy/dust): visualize disk space used by folders.
@@ -159,7 +156,7 @@ x=28)
   - [zoxide](https://lib.rs/crates/zoxide): directory autojumper. I don't really do `cd ../..` climbing around anymore I just do `z foo` a couple of times and that usually guesses right.
   - [zellij](https://github.com/zellij-org/zellij): Terminal multiplexer with friendly UX. Still young, but cool.
 - [coz](https://github.com/plasma-umass/coz): Invaluable tool for *causal profiling*.
-- [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking and databases is top-notch.
+- [sled's](https://sled.rs/perf#e-prime-and-precise-language) approach to benchmarking and databases is top-notch. Also worthy of note is the same author's `rio` crate, which is a Rust interface for the `io_uring` linux kernel module, which can significantly speed up asynchronous programming. There's some WIP PRs for landing this for `libuv`, Julia's thread runtime backend, and that effort [is close to wrapping up](https://github.com/libuv/libuv/pull/2322).
 - [Scientific Computing in Rust](https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/): A *must* to dive straight into linear algebra.
 - [Taking ML to production with Rust](https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/): A sister article to the one above.
 - [Rust FFT](https://github.com/ejmahler/RustFFT): They beat FFTW in some cases with this one, so it seems worthwhile to take a look 👀 .
@@ -169,6 +166,11 @@ x=28)
 - [Stateright](https://github.com/tokio-rs/loom): distributed systems model checker with a graphic user interface.
 - [Creusot](https://github.com/xldenis/creusot): Add some macros to your Rust code, and have it formally verified by Why3.
 - [proptest](https://altsysrq.github.io/proptest-book/proptest/getting-started.html): Configure strategies for exploring type instantiations to fuzz your tests, shrink the cases, and automatically track regressions. Impressive stuff!
+- [Gleam](https://gleam.run/) and [Lumen](https://github.com/lumen/lumen): Gleam is a Rust backend for an Erlang based language and Lumen is a Rewritten-in-Rust implementation of the ErlangVM, BEAM. Erlang is a concurrency monster, and their actor based model is scalable as hell for certain workloads. I'm glad to see Julia start to step into that domain with [Actors.jl](https://github.com/JuliaActors/Actors.jl). This seems to be the *right way* to abstract for fault tolerance workloads.
+
+There's oodles more. Check out [crates.io](crates.io) or [lib.rs](lib.rs) if you want to explore more (this is their community based JuliaHub equivalent).
+
+I'll make a special note of [evcxr](https://github.com/google/evcxr), a Rust REPL. For now, I don't think it's profitable to put Rust into a REPL-like workflow. I'm too used to that in Julia, and that works well there, but I think there's a risk of digging yourself into a "Everything must be a REPL" mentality and cutting yourself off from learning opportunities. In Rust land, I don't mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that's the package that I wanted to learn when I bought into Rust, I don't mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I'd love to be wrong on this down the road.
 
 ---
 
@@ -221,7 +223,8 @@ impl fmt::Display for Point {
     }
 }
 ```
-- Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl - worlds apart! Even the linear algebra from `ndarray` is painful to understand unless you are quite comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
+- Rust does NOT look like math and that hurts my little physicist heart. [Look at this story of a hydrodynamics simulator code](https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html) vs anything in the DiffEq verse that is user facing or from ApproxFun.jl, or Turing.jl, or ... 
+Even the linear algebra from `ndarray` is painful to understand unless you are comfortable in Rust, and all the `i as usize` conversions are a huge eye sore.
 
 ---
 
@@ -231,7 +234,7 @@ These could have helped me settle down into a more productive workflow sooner. G
 
 0. If you can, avoid the examples with Strings and &str. Yes, they're a great motivation for systems people for all the gnarly use-after free and double-free and memory-leak examples - stick with numerical algorithms first, to get the gist of ownership, try and do some exercisms with iterators and Strings will be much easier to get after that. I don't think it's worth worrying about at first unless your target is systems.
 1. The preferred way of "whipping up an example in the REPL"/getting a MWE is to `cargo new foo`, mucking about and then `cargo run --release` or using the Rust Playground.
-2. If you're using a very expansive test suite, `cargo test --test-threads 8` and `cargo test --quiet` are helpful flags.
+2. If you're using an expansive test suite, `cargo test --test-threads 8` and `cargo test --quiet` are helpful flags.
 3. For loops are not idiomatic in Rust - writing Fortran-ey code instead of iterators will lead to pain and slower loops. Spending time reading the examples in [the iterator docs](https://doc.rust-lang.org/std/iter/trait.Iterator.html) and the community solutions in the exercisms will help a lot.
 4. Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is fast enough that this is not likely your bottleneck at first.
 5. The following function
@@ -250,27 +253,32 @@ the types of `v` and `w` are a `slice` of `Int32`s, which are different from `Ve
 
 These are things the Rust people have nailed down.
 
-0. Ferris the crab is very cute.
+0. Ferris the crab is too cute.
 1. Rust people take uwu-ification very, VERY seriously. [The uwu](https://github.com/Daniel-Liu-c0deb0t/uwu) project uses SIMD to uwu-ify strings for [great artistic value](https://twitter.com/twent_weznowor). Julia and Rust both draw me because they make me feel more powerful when I code with them than I think I should be.
-2. Governance: The Rust foundation and strong community conduct codes. Given the blow ups that have happened with several open source communities recently from short-sighted governance or hate reactionaries tanking projects, this is a welcome sight that will probably pay off for many decades to come.
+2. Governance: The Rust foundation and strong community conduct codes. Given the blow ups that have happened with open source communities recently from short-sighted governance or hate reactionaries tanking projects, this is a welcome sight that will probably pay off for decades to come.
 3. Compiler error messages are second to none. Definitely check out `clippy` too and follow the hints. `cargo fmt` will also format all your crate so that Rust code is almost always a unified reading experience.
-4. [Awesome mentors](https://rustbeginners.github.io/awesome-rust-mentors/). This is a project that is carried out by `Jane Lusby` and many others, I've gotten world-class mentorship from very friendly Rust folks.
+4. [Awesome mentors](https://rustbeginners.github.io/awesome-rust-mentors/). This is a project maintained `Jane Lusby` and other volunteers. I've gotten world-class mentorship from kind, patient and friendly Rust folks. Shoutout to `Jubilee` for her great wisdom and patience and the rest of the `stdsimd` gang.
 5. They also poke the LLVM crowd to improve the compilation times, which is great.
-6. They're doc deployment system is unified, polished, and very friendly.
+6. They're doc deployment system is unified, polished, and friendly. Inline docs and tests are also great.
 7. `cargo` is a joy compared to `Make` hell. `Pkg` is somewhat inspired by it, so that rocks.
-
 
 ---
 
 ### What Rust can bring to Julia ⚒ 
 
-1. A model of governance. The Rust community is at least 10x the size of Julia, and it's unclear that adding more hats to the same `TruckFactorCritical` people would help. That being said, it'd be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don't think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don't see what is lost from learning from them.
-2. Less vulnerable software in the world is a good thing. Oxidization is great! Sometimes. I don't think any Julia internals would be oxidized in the short term, but it would be an interesting experiment to say the least.
-3. [Error handling](https://www.youtube.com/watch?v=rAF8mLI0naQ&t=947s): Multiple dispatch may prove very advantageous in this domain, and it hasn't been as much of a priority as it has in Rust. Perhaps that merits some careful rethinking for future Julia versions.
+1. A model of governance. The Rust community is at least 10x the size of Julia, and it's unclear that adding more hats to the same `TruckFactorCritical` people would help. That said, it'd be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don't think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don't see what is lost from learning from them.
+
+2. Less vulnerable software in the world is a good thing. Oxidization is great! Sometimes. I don't think any Julia internals will oxidize in the short term, but it would be an interesting experiment to say the least.
+3. [Error handling](https://www.youtube.com/watch?v=rAF8mLI0naQ&t=947s): Multiple dispatch may prove advantageous in this domain, and it hasn't been as much of a priority as it has in Rust. Perhaps that merits some careful rethinking for future Julia versions.
 4. Awesome Julia mentors, I think we need this.
 
 ---
-* Many thanks to `Jubilee` for feedback on this post and several corrections: 
+
+#### Acknowledgments 🙌🏻 
+
+* Thanks to `Jubilee` for feedback on this post and the following corrections: 
   - Rust does not necessarily have an RC GC but a [region based GC](https://en.wikipedia.org/wiki/Region-based_memory_management). You can opt into the RC GC with `Arc` and `Rc` types.
   - Technically Rust doesn't have linear types but [affine types](https://gankra.github.io/blah/linear-rust/).
   - Tokio's story is not as simple as I had made it out to be so I cut some comments
+* `Alex Weech` helpfully suggested refactoring the original Julia Point code to be more similar to the Rust example.
+* `Daniel Menéndez` helpfully suggested adding `crates.io` or `lib.rs`
