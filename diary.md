@@ -11,6 +11,8 @@
 - `for(int i = 0; i <= N; i++) {...}` if overflow is UB, then the compiler can assume the loop stops in at most `N+1` iterations (because if  `N == INT_MAX`, the loop may be infinite!)
 - Oh damn, the first post is by Chris Lattner, author of LLVM o.0
 
+163. `@agustinc3301` kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It's free and quick! You verify your account after signing up and then add the link to your Franklin footer in `_layout/foot.html` and `page_foot.html` (I think.). That did it! Now I can see redditors accessing the `Julia To Rust` post  🔎 
+
 
 ### 04/06/2021
 159. `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:
