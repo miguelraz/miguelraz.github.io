@@ -200,6 +200,7 @@ So Rust is "worth learning", but these are roadblocks that I faced and would war
 - Learn to run your code with `cargo run --release` [and other tricks](https://deterministic.space/high-performance-rust.html). This is the equivalent to running your Julia code with globals (or `-O0` flags), and it's an easy gotcha. This will not change in Rust.
 - Rust people keep saying they have no Garbage Collector, *when they have a Region Based Garbage Collector**. It's all fun and games until they have to implement those linked lists...
 (*NB*: After posting in [HackerNews](https://news.ycombinator.com/item?id=27407268), Steve Klabnik has pointed out that the term `region based` is technical jargon in Programming Language Theory Literature as seen in section [2 of this paper](https://www.cs.umd.edu/projects/cyclone/papers/cyclone-regions.pdf) on Cyclone's memory model.)
+(*NB2*: `kibwen` on HN pointed out that the term `garbage collection` implies dynamic memory management, whereas Rust's ownership system allows for lifetimes to be determined statically. In that sense, I'm wrong except for when users opt-in to using `Rc`s and the like. Glad to be corrected!)
 - Don't add crates manually! Install `cargo-add`, use it to manage crate dependencies. That and some other tricks are great from doing the `AdventOfCode2020` from the article above.
 - For numerics, install `ndarray` and `num_traits`. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.
 - Benchmarking with `@btime` is painless, `criterion` is your best Rustian bet.
@@ -292,3 +293,4 @@ These are things the Rust people have nailed down.
 * `Daniel Menéndez` helpfully suggested adding `crates.io` or `lib.rs`
 * Thanks to `oliver` I also read about this post by Chris Lattner, author of LLVM, on the dangers of [undefined behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html), to really scare you out of thinking you know what C is doing under the hood.
 * `Zamalek1` on HN also provided useful feedback on precise academese: Rust is definitely a memory managed language, but that's been hoisted to compile time.
+*
