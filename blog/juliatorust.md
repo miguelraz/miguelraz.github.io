@@ -11,6 +11,13 @@ I've been more serious about learning Rust recently, after dragging on with pass
 
 I hope you enjoy it.
 
+[TLDR:](https://www.youtube.com/watch?v=drvAftwsTlU)
+
+> "It is important to draw wisdom from many different places.
+> If you take it from only one place, it becomes rigid and stale."
+>
+> --Uncle Iroh
+
 ---
 
 ### Why Rust? 🤷 
