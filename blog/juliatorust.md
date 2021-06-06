@@ -168,7 +168,7 @@ Here's a list of all the projects that I've found particularly of note to Julian
 - [Green function evaluation kernels](https://github.com/rusty-fast-solvers/rusty-green-kernel): Newer package, but I'd like to see how special functions pan out in Rust land.
 - [Polars](https://docs.rs/polars/0.12.1/polars/): A highly tuned dataframes implementation for some use cases. They've topped the charts in some of the [H20ai benchmarks](https://h2oai.github.io/db-benchmark/), so they've definitely got technical chops. (They beat DataFrames.jl because of a sparsification trick which is a bit non-trivial to implement, but there's not necessarily an impediment to matching their speed.)
 - [Loom](https://github.com/tokio-rs/loom): a model checker for atomic primitives, sister project to `tokio`. I think Julia is a more natural fit for this approach given the ease of operator overloading  and it will be great to try something similar once Jameson's atomics PR lands.
-- [Stateright](https://github.com/tokio-rs/loom): distributed systems model checker with a graphic user interface.
+- [Stateright](https://www.stateright.rs/): distributed systems model checker with a graphic user interface.
 - [Creusot](https://github.com/xldenis/creusot): Add some macros to your Rust code, and have it formally verified by Why3.
 - [proptest](https://altsysrq.github.io/proptest-book/proptest/getting-started.html): Configure strategies for exploring type instantiations to fuzz your tests, shrink the cases, and automatically track regressions. Impressive stuff!
 - [Gleam](https://gleam.run/) and [Lumen](https://github.com/lumen/lumen): Gleam is a Rust backend for an Erlang based language and Lumen is a Rewritten-in-Rust implementation of the ErlangVM, BEAM. Erlang is a concurrency monster, and their actor based model is scalable as hell for certain workloads. I'm glad to see Julia start to step into that domain with [Actors.jl](https://github.com/JuliaActors/Actors.jl). This seems to be the *right way* to abstract for fault tolerance workloads.
@@ -215,7 +215,8 @@ use rand::prelude::*;
 thread_rng().sample_iter(&Standard).take(n).collect()
 ```
 (Oh, and `rand` isn't part of the stdlib so that's another papercut).
-- There is no `@code_native` and friends in Rust - your best bet is to use the Rust Playground and click on the `...` to have it emit the total assembly. This only works for the top 100 most popular crates though. You can `cargo run --release -- --emit=llvm-ir/asm` and then fish the results out of `target/`, but that's unwieldy - why does no one have a CLI for this yet?
+> - There is no `@code_native` and friends in Rust - your best bet is to use the Rust Playground and click on the `...` to have it emit the total assembly. This only works for the top 100 most popular crates though. You can `cargo run --release -- --emit=llvm-ir/asm` and then fish the results out of `target/`, but that's unwieldy - why does no one have a CLI for this yet?
+*NB*: `u/Schnatsel` has kindly pointed me towards `cargo-asm`. The interface is not as nice as `@code_XXX`, but I think I'm satisfied with this. Thanks a ton!
 - Another multiple dispatch gripe: having to implement `Display` traits for new structs feels like pulling teeth, and this initial type signature seems inscrutable as a beginner:
 ```rust
 use std::fmt;
@@ -293,4 +294,4 @@ These are things the Rust people have nailed down.
 * `Daniel Menéndez` helpfully suggested adding `crates.io` or `lib.rs`
 * Thanks to `oliver` I also read about this post by Chris Lattner, author of LLVM, on the dangers of [undefined behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html), to really scare you out of thinking you know what C is doing under the hood.
 * `Zamalek1` on HN also provided useful feedback on precise academese: Rust is definitely a memory managed language, but that's been hoisted to compile time.
-*
+* Thanks to `u/Schnatsel` for pointing me to a broken url here and to `cargo-asm`.
