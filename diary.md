@@ -5,6 +5,71 @@
 
 # Virtual diary for progress on all fronts
 
+### 08/06/2021
+
+164. Lord help me my `Learn LLVM 12` book is here and I'm learning C++ to be an uber Julia hacker. Taking the `C++ Beyond the Basics ` course by Kate Gregory I learned
+- `inst const zero = 0` tells the comp `zero` can't change.
+- `int taxes(int const total)` tells the copmiler `total` can't change within the lifetime of this function
+- `int GetName() const;` const modify the class its in.
+- `inst const ci = 3` and `const int ci = 3` are both valid, but prefer `const` after the thing that can't change.
+- `[=](){}` is a lambda func that copys everything by value, `[&]` by ref, but copies smartly only the things you used.
+```cpp
+vector nums {1,2,3,45};
+auto isOdd = [](int candidates){candidates % 2 != 0;};
+int odds = std::count_if(begin(nums), end(nums), isOdd);
+// std algorithms have all the goodies that apply to iterators like
+//any_of, all_of, etc
+```
+- to generate collections, instead of a for loop, try
+```cpp
+int i = 0;
+std::generate_n(std::back_inserter(v), 5, [&]() { return i++; });
+```
+
+- to accumulate the elements,
+```cpp
+int total = 0
+total = std::accumulate(begin(v), end(v), 0);
+```
+- to count elements
+```cpp
+int count3 = std::count(begin(v), end(v), 3);
+```
+- to remove elements == 3,
+```cpp
+auto v4 = v;
+auto endv4 = std::remove_if(begin(v4), end(v4), [](int elem) {return (elem == 3)}; );
+v4.erase(endv4, end(v4)); // or even v4.erase(std::remove_if(...));
+```
+- if you use functional style, you can replace `vector<int> v -> list<int> v`, (you don't have [] in lists)
+- counting all of something
+```cpp
+bool allpositive = std::all_of(begin(v4), end(v4), [](int elem) { return elem >= 0; });
+```
+- ermahgerd `sort(v4)` finally exists in g++20!!!!
+- `g++ -std=c++20 numbers.cpp` to get things to work...
+- `auto letter = find(begin(v4), end(v4), 'a');`
+- try/catch: put most specific errors first, use `std::invalid_argument("foo")`, `catch (exception& e) { cout << e.what(); }`
+- do this, not `auto x = new X(Stuff); delete x`
+```cpp
+try {
+    auto x = make_unique<X>(Stuff);
+    // risky stuff
+}
+```
+
+
+165. Rust tips: Finally found a decent SIMD tutorial for Rust! I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:
+```rust
+pub fn dotp(x: &[f32], y: &[f32], z: &mut [f32]) {
+    let n = 1024; // or let n = x.len();
+    let (x, y, z) = (&x[..n], &y[..n], &mut z[..n]);
+    for i in 0..n {
+        z[i] = x[i].mul_add(y[i], z[i]);
+    }
+}
+```
+that exploits the `x.len()` to pass that info to LLVM for more optims.
 ### 05/06/2021
 
 162. [Introduction to Undefined Behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) and a blog post by [John Regehr](https://blog.regehr.org/archives/213) - time to grok some of this nonsense.
