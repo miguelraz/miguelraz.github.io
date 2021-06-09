@@ -57,6 +57,80 @@ try {
     // risky stuff
 }
 ```
+- `constexpr` is evaluated at compile time
+- range for statements:
+```cpp
+for (auto i : v)
+for (auto x : {10, 20, 30})
+for (auto& x : v) //refers, doesn't modify
+```
+- `while (p)`, works until pointer is null - UGH
+- `x.name` accesses the struct `x` field `name` through reference and `x->name` trough the pointer. Huh?
+- `static_assert` exists
+- virtual syntax is `= 0`, means `may be redefined later in a class derived from this one`.
+```cpp
+class Container {
+    public:
+    virtual double& operator[](int) = 0;//pure virtual function
+    virtual int size() const = 0;//const member function (§4.2.1)
+    virtual  ̃Container() {} //destructor (§4.2.2)};
+}
+```
+- `:public` can be read as "is a subtype of"
+- Essential operations
+```cpp
+class X {
+    public:
+        X(Sometype);                    //ordinar y constructor: create an object
+        X();                            //default constructor
+        X(const X&);                    //copy constr uctor
+        X(X&&);                         //move constr uctor
+        X& operator=(const X&);         //copy assignment: clean up target and copy
+        X& operator=(X&&);              //move assignment: clean up target and move
+        ̃X();                            //destr uctor: clean up
+        //...
+        //Y(const) //
+};
+```
+pg 53 of Tour of Cpp really says talks about move semantics
+* soruce of an assignment
+* an object initializer
+* as a func arg
+* as a func return value
+* as an exception
+- drop objects at end of scopes == RAII
+- move/copy and be suppresed with `Shape& operator=(Shape&&) = delete;` + friends on pg 55
+- TEMPLATES!
+```cpp
+template <typename T>
+class Vector {
+private:
+    T* elem;
+    int sz;
+public:
+    explicit Vector(int s);    //constructor, establish invariant, acquire resources
+    ~Vector() {delete[] elem;} //destructor, release resources
+    //copy+move ops
+    T* operator[](int n);
+    const T& operator[](int i) const;
+    int size() const {return sz;}
+}
+```
+This is also possible:
+```cpp
+template <typename T, int N>
+struct Buffer {
+    using value_type = T;
+    constexpr int size() { return N: }
+//...
+}
+```
+- You can create function objects/closures! `it(n)` pg 64
+- add `override` after virtual ops, type your enmus, default value inits structs `int value = 5`, 
+
+
+
+
 
 
 165. Rust tips: Finally found a decent SIMD tutorial for Rust! I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:
