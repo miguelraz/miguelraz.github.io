@@ -1,4 +1,161 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=05062021 ><a href="#05062021" class=header-anchor >05/06/2021</a></h3> <ol start=162 > <li><p><a href="https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html">Introduction to Undefined Behaviour</a> and a blog post by <a href="https://blog.regehr.org/archives/213">John Regehr</a> - time to grok some of this nonsense.</p> </ol> <ul> <li><p><code>for&#40;int i &#61; 0; i &lt;&#61; N; i&#43;&#43;&#41; &#123;...&#125;</code> if overflow is UB, then the compiler can assume the loop stops in at most <code>N&#43;1</code> iterations &#40;because if <code>N &#61;&#61; INT_MAX</code>, the loop may be infinite&#33;&#41;</p> <li><p>Oh damn, the first post is by Chris Lattner, author of LLVM o.0</p> </ul> <ol start=163 > <li><p><code>@agustinc3301</code> kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It&#39;s free and quick&#33; You verify your account after signing up and then add the link to your Franklin footer in <code>_layout/foot.html</code> and <code>page_foot.html</code> &#40;I think.&#41;. That did it&#33; Now I can see redditors accessing the <code>Julia To Rust</code> post 🔎 </p> </ol> <h3 id=04062021 ><a href="#04062021" class=header-anchor >04/06/2021</a></h3> <ol start=159 > <li><p><code>Jubilee</code> recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:</p> </ol> <pre><code class=language-rust >let mut i &#61; 0;
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=08062021 ><a href="#08062021" class=header-anchor >08/06/2021</a></h3> <ol start=164 > <li><p>Lord help me my <code>Learn LLVM 12</code> book is here and I&#39;m learning C&#43;&#43; to be an uber Julia hacker. Taking the <code>C&#43;&#43; Beyond the Basics</code> course by Kate Gregory I learned</p> </ol> <ul> <li><p><code>inst const zero &#61; 0</code> tells the comp <code>zero</code> can&#39;t change.</p> <li><p><code>int taxes&#40;int const total&#41;</code> tells the copmiler <code>total</code> can&#39;t change within the lifetime of this function</p> <li><p><code>int GetName&#40;&#41; const;</code> const modify the class its in.</p> <li><p><code>inst const ci &#61; 3</code> and <code>const int ci &#61; 3</code> are both valid, but prefer <code>const</code> after the thing that can&#39;t change.</p> <li><p><code>&#91;&#61;&#93;&#40;&#41;&#123;&#125;</code> is a lambda func that copys everything by value, <code>&#91;&amp;&#93;</code> by ref, but copies smartly only the things you used.</p> </ul> <pre><code class=language-cpp >vector nums &#123;1,2,3,45&#125;;
+auto isOdd &#61; &#91;&#93;&#40;int candidates&#41;&#123;candidates &#37; 2 &#33;&#61; 0;&#125;;
+int odds &#61; std::count_if&#40;begin&#40;nums&#41;, end&#40;nums&#41;, isOdd&#41;;
+// std algorithms have all the goodies that apply to iterators like
+//any_of, all_of, etc</code></pre> <ul> <li><p>to generate collections, instead of a for loop, try</p> </ul> <pre><code class=language-cpp >int i &#61; 0;
+std::generate_n&#40;std::back_inserter&#40;v&#41;, 5, &#91;&amp;&#93;&#40;&#41; &#123; return i&#43;&#43;; &#125;&#41;;</code></pre> <ul> <li><p>to accumulate the elements,</p> </ul> <pre><code class=language-cpp >int total &#61; 0
+total &#61; std::accumulate&#40;begin&#40;v&#41;, end&#40;v&#41;, 0&#41;;</code></pre> <ul> <li><p>to count elements</p> </ul> <pre><code class=language-cpp >int count3 &#61; std::count&#40;begin&#40;v&#41;, end&#40;v&#41;, 3&#41;;</code></pre>
+<ul>
+<li><p>to remove elements &#61;&#61; 3,</p>
+
+</ul>
+<pre><code class=language-cpp >auto v4 &#61; v;
+auto endv4 &#61; std::remove_if&#40;begin&#40;v4&#41;, end&#40;v4&#41;, &#91;&#93;&#40;int elem&#41; &#123;return &#40;elem &#61;&#61; 3&#41;&#125;; &#41;;
+v4.erase&#40;endv4, end&#40;v4&#41;&#41;; // or even v4.erase&#40;std::remove_if&#40;...&#41;&#41;;</code></pre>
+<ul>
+<li><p>if you use functional style, you can replace <code>vector&lt;int&gt; v -&gt; list&lt;int&gt; v</code>, &#40;you don&#39;t have &#91;&#93; in lists&#41;</p>
+
+<li><p>counting all of something</p>
+
+</ul>
+<pre><code class=language-cpp >bool allpositive &#61; std::all_of&#40;begin&#40;v4&#41;, end&#40;v4&#41;, &#91;&#93;&#40;int elem&#41; &#123; return elem &gt;&#61; 0; &#125;&#41;;</code></pre>
+<ul>
+<li><p>ermahgerd <code>sort&#40;v4&#41;</code> finally exists in g&#43;&#43;20&#33;&#33;&#33;&#33;</p>
+
+<li><p><code>g&#43;&#43; -std&#61;c&#43;&#43;20 numbers.cpp</code> to get things to work...</p>
+
+<li><p><code>auto letter &#61; find&#40;begin&#40;v4&#41;, end&#40;v4&#41;, &#39;a&#39;&#41;;</code></p>
+
+<li><p>try/catch: put most specific errors first, use <code>std::invalid_argument&#40;&quot;foo&quot;&#41;</code>, <code>catch &#40;exception&amp; e&#41; &#123; cout &lt;&lt; e.what&#40;&#41;; &#125;</code></p>
+
+<li><p>do this, not <code>auto x &#61; new X&#40;Stuff&#41;; delete x</code></p>
+
+</ul>
+<pre><code class=language-cpp >try &#123;
+    auto x &#61; make_unique&lt;X&gt;&#40;Stuff&#41;;
+    // risky stuff
+&#125;</code></pre>
+<ul>
+<li><p><code>constexpr</code> is evaluated at compile time</p>
+
+<li><p>range for statements:</p>
+
+</ul>
+<pre><code class=language-cpp >for &#40;auto i : v&#41;
+for &#40;auto x : &#123;10, 20, 30&#125;&#41;
+for &#40;auto&amp; x : v&#41; //refers, doesn&#39;t modify</code></pre>
+<ul>
+<li><p><code>while &#40;p&#41;</code>, works until pointer is null - UGH</p>
+
+<li><p><code>x.name</code> accesses the struct <code>x</code> field <code>name</code> through reference and <code>x-&gt;name</code> trough the pointer. Huh?</p>
+
+<li><p><code>static_assert</code> exists</p>
+
+<li><p>virtual syntax is <code>&#61; 0</code>, means <code>may be redefined later in a class derived from this one</code>.</p>
+
+</ul>
+<pre><code class=language-cpp >class Container &#123;
+    public:
+    virtual double&amp; operator&#91;&#93;&#40;int&#41; &#61; 0;//pure virtual function
+    virtual int size&#40;&#41; const &#61; 0;//const member function &#40;§4.2.1&#41;
+    virtual  ̃Container&#40;&#41; &#123;&#125; //destructor &#40;§4.2.2&#41;&#125;;
+&#125;</code></pre>
+<ul>
+<li><p><code>:public</code> can be read as &quot;is a subtype of&quot;</p>
+
+<li><p>Essential operations</p>
+
+</ul>
+<pre><code class=language-cpp >class X &#123;
+    public:
+        X&#40;Sometype&#41;;                    //ordinar y constructor: create an object
+        X&#40;&#41;;                            //default constructor
+        X&#40;const X&amp;&#41;;                    //copy constr uctor
+        X&#40;X&amp;&amp;&#41;;                         //move constr uctor
+        X&amp; operator&#61;&#40;const X&amp;&#41;;         //copy assignment: clean up target and copy
+        X&amp; operator&#61;&#40;X&amp;&amp;&#41;;              //move assignment: clean up target and move
+        ̃X&#40;&#41;;                            //destr uctor: clean up
+        //...
+        //Y&#40;const&#41; //
+&#125;;</code></pre>
+<p>pg 53 of Tour of Cpp really says talks about move semantics</p>
+<ul>
+<li><p>soruce of an assignment</p>
+
+<li><p>an object initializer</p>
+
+<li><p>as a func arg</p>
+
+<li><p>as a func return value</p>
+
+<li><p>as an exception</p>
+
+<li><p>drop objects at end of scopes &#61;&#61; RAII</p>
+
+<li><p>move/copy and be suppresed with <code>Shape&amp; operator&#61;&#40;Shape&amp;&amp;&#41; &#61; delete;</code> &#43; friends on pg 55</p>
+
+<li><p>TEMPLATES&#33;</p>
+
+</ul>
+<pre><code class=language-cpp >template &lt;typename T&gt;
+class Vector &#123;
+private:
+    T* elem;
+    int sz;
+public:
+    explicit Vector&#40;int s&#41;;    //constructor, establish invariant, acquire resources
+    ~Vector&#40;&#41; &#123;delete&#91;&#93; elem;&#125; //destructor, release resources
+    //copy&#43;move ops
+    T* operator&#91;&#93;&#40;int n&#41;;
+    const T&amp; operator&#91;&#93;&#40;int i&#41; const;
+    int size&#40;&#41; const &#123;return sz;&#125;
+&#125;</code></pre>
+<p>This is also possible:</p>
+<pre><code class=language-cpp >template &lt;typename T, int N&gt;
+struct Buffer &#123;
+    using value_type &#61; T;
+    constexpr int size&#40;&#41; &#123; return N: &#125;
+//...
+&#125;</code></pre>
+<ul>
+<li><p>You can create function objects/closures&#33; <code>it&#40;n&#41;</code> pg 64</p>
+
+<li><p>add <code>override</code> after virtual ops, type your enmus, default value inits structs <code>int value &#61; 5</code>, </p>
+
+</ul>
+<ol start=165 >
+<li><p>Rust tips: Finally found a decent SIMD tutorial for Rust&#33; I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:</p>
+
+</ol>
+<pre><code class=language-rust >pub fn dotp&#40;x: &amp;&#91;f32&#93;, y: &amp;&#91;f32&#93;, z: &amp;mut &#91;f32&#93;&#41; &#123;
+    let n &#61; 1024; // or let n &#61; x.len&#40;&#41;;
+    let &#40;x, y, z&#41; &#61; &#40;&amp;x&#91;..n&#93;, &amp;y&#91;..n&#93;, &amp;mut z&#91;..n&#93;&#41;;
+    for i in 0..n &#123;
+        z&#91;i&#93; &#61; x&#91;i&#93;.mul_add&#40;y&#91;i&#93;, z&#91;i&#93;&#41;;
+    &#125;
+&#125;</code></pre>
+<p>that exploits the <code>x.len&#40;&#41;</code> to pass that info to LLVM for more optims.</p>
+<h3 id=05062021 ><a href="#05062021" class=header-anchor >05/06/2021</a></h3>
+<ol start=162 >
+<li><p><a href="https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html">Introduction to Undefined Behaviour</a> and a blog post by <a href="https://blog.regehr.org/archives/213">John Regehr</a> - time to grok some of this nonsense.</p>
+
+</ol>
+<ul>
+<li><p><code>for&#40;int i &#61; 0; i &lt;&#61; N; i&#43;&#43;&#41; &#123;...&#125;</code> if overflow is UB, then the compiler can assume the loop stops in at most <code>N&#43;1</code> iterations &#40;because if <code>N &#61;&#61; INT_MAX</code>, the loop may be infinite&#33;&#41;</p>
+
+<li><p>Oh damn, the first post is by Chris Lattner, author of LLVM o.0</p>
+
+</ul>
+<ol start=163 >
+<li><p><code>@agustinc3301</code> kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It&#39;s free and quick&#33; You verify your account after signing up and then add the link to your Franklin footer in <code>_layout/foot.html</code> and <code>page_foot.html</code> &#40;I think.&#41;. That did it&#33; Now I can see redditors accessing the <code>Julia To Rust</code> post  🔎 </p>
+
+</ol>
+<h3 id=04062021 ><a href="#04062021" class=header-anchor >04/06/2021</a></h3>
+<ol start=159 >
+<li><p><code>Jubilee</code> recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:</p>
+
+</ol>
+<pre><code class=language-rust >let mut i &#61; 0;
     while i &lt; N &#123;
         let d2s &#61; f64x2::from_array&#40;&#91;
             &#40;r&#91;i&#93; * r&#91;i&#93;&#41;.horizontal_sum&#40;&#41;,
@@ -8,7 +165,9 @@
         mag&#91;i&#93; &#61; dmags&#91;0&#93;;
         mag&#91;i &#43; 1&#93; &#61; dmags&#91;1&#93;;
         i &#43;&#61; 2;
-    &#125;</code></pre> <p>Can be converted to </p> <pre><code class=language-rust >for i in &#40;0..N&#41;.step_by&#40;2&#41; &#123;
+    &#125;</code></pre>
+<p>Can be converted to </p>
+<pre><code class=language-rust >for i in &#40;0..N&#41;.step_by&#40;2&#41; &#123;
         let d2s &#61; f64x2::from_array&#40;&#91;
             &#40;r&#91;i&#93; * r&#91;i&#93;&#41;.horizontal_sum&#40;&#41;,
             &#40;r&#91;i &#43; 1&#93; * r&#91;i &#43; 1&#93;&#41;.horizontal_sum&#40;&#41;,
@@ -16,23 +175,65 @@
         let dmags &#61; f64x2::splat&#40;dt&#41; / &#40;d2s * d2s.sqrt&#40;&#41;&#41;;
         mag&#91;i&#93; &#61; dmags&#91;0&#93;;
         mag&#91;i &#43; 1&#93; &#61; dmags&#91;1&#93;;
-    &#125;</code></pre> <ol start=160 > <li><p>To run <code>cargo watch</code> on a non-standard file, use <code>cargo watch -c -x &quot;run --examples dot_product&quot;</code>. Credit to <code>Lokathor</code>.</p> <li><p>Finally got the code working for the <code>dot_product.rs</code>&#33; in the end, it wasn&#39;t so scary:</p> </ol> <pre><code class=language-rust >#&#33;&#91;feature&#40;array_chunks&#41;&#93; // gotta have this
+    &#125;</code></pre>
+<ol start=160 >
+<li><p>To run <code>cargo watch</code> on a non-standard file, use <code>cargo watch -c -x &quot;run --examples dot_product&quot;</code>. Credit to <code>Lokathor</code>.</p>
+
+<li><p>Finally got the code working for the <code>dot_product.rs</code>&#33; in the end, it wasn&#39;t so scary:</p>
+
+</ol>
+<pre><code class=language-rust >#&#33;&#91;feature&#40;array_chunks&#41;&#93; // gotta have this
 fn dot&#40;a: &amp;&#91;f32&#93;, b: &amp;&#91;f32&#93;&#41; -&gt; f32 &#123;
     a.array_chunks::&lt;4&gt;&#40;&#41; // el paso de la muerte
     .map&#40;|&amp;a| f32x::from_array&#40;a&#41;&#41;
     .zip&#40;b.array_chunks::&lt;4&gt;&#40;&#41;.map&#40;|&amp;b| f32x4::from_array&#40;b&#41;&#41;&#41; // so aside form some ugly conversions all is peachy
     .map&#40;|&#40;a,b&#41;| &#40;a * b&#41;.horizontal_sum&#40;&#41;&#41;
     .sum&#40;&#41;
-&#125;</code></pre> <h3 id=03062021 ><a href="#03062021" class=header-anchor >03/06/2021</a></h3> <ol start=155 > <li><p>Rust syntax for updating structs with <code>..other_struct</code> is very neat.</p> <li><p><code>if let Some&#40;word&#41; &#61; ... &#123;&#125;</code></p> <li><p><code>while let Some&#40;Some&#40;word&#41;&#41; &#61; ... &#123;&#125;</code></p> <li><p><code>cargo watch -c</code> is very useful for seeing how you&#39;re code is going&#33; Credit to <code>Lokathor</code> for the <code>-c</code> flag.</p> </ol> <h3 id=31052021 ><a href="#31052021" class=header-anchor >31/05/2021</a></h3> <ol start=152 > <li><p><code>make -C debug</code> julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.</p> <li><p>LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn&#39;t screw up.</p> <li><p><code>git add -u</code> </p> </ol> <h3 id=30052021 ><a href="#30052021" class=header-anchor >30/05/2021</a></h3> <ol start=151 > <li><p>Finally got the hang of the Rust <code>dbg&#33;</code> macro:</p> </ol> <pre><code class=language-rust >let a &#61; 2;
+&#125;</code></pre>
+<h3 id=03062021 ><a href="#03062021" class=header-anchor >03/06/2021</a></h3>
+<ol start=155 >
+<li><p>Rust syntax for updating structs with <code>..other_struct</code> is very neat.</p>
+
+<li><p><code>if let Some&#40;word&#41; &#61; ... &#123;&#125;</code></p>
+
+<li><p><code>while let Some&#40;Some&#40;word&#41;&#41; &#61; ... &#123;&#125;</code></p>
+
+<li><p><code>cargo watch -c</code> is very useful for seeing how you&#39;re code is going&#33; Credit to <code>Lokathor</code> for the <code>-c</code> flag.</p>
+
+</ol>
+<h3 id=31052021 ><a href="#31052021" class=header-anchor >31/05/2021</a></h3>
+<ol start=152 >
+<li><p><code>make -C debug</code> julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.</p>
+
+<li><p>LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn&#39;t screw up.</p>
+
+<li><p><code>git add -u</code> </p>
+
+</ol>
+<h3 id=30052021 ><a href="#30052021" class=header-anchor >30/05/2021</a></h3>
+<ol start=151 >
+<li><p>Finally got the hang of the Rust <code>dbg&#33;</code> macro:</p>
+
+</ol>
+<pre><code class=language-rust >let a &#61; 2;
 let b &#61; dbg&#33;&#40;a * 2&#41; &#43; 1;
 //      ^-- prints: &#91;src/main.rs:2&#93; a * 2 &#61; 4
-assert_eq&#33;&#40;b, 5&#41;;</code></pre> <p>Very useful for the competitive problems debugging&#33;</p> <h3 id=27052021 ><a href="#27052021" class=header-anchor >27/05/2021</a></h3> <ol start=145 > <li><p>Finally got around to the <code>nucleotide</code> in Rust exercism. My solution was a bit C-ish, this is neater: &#40;Credits to <code>azymohliad</code>, but with no <code>Err</code>&#41;</p> </ol> <pre><code class=language-rust >fn count&#40;c:char, dna: &amp;str&#41; -&gt; usize &#123;
+assert_eq&#33;&#40;b, 5&#41;;</code></pre>
+<p>Very useful for the competitive problems debugging&#33;</p>
+<h3 id=27052021 ><a href="#27052021" class=header-anchor >27/05/2021</a></h3>
+<ol start=145 >
+<li><p>Finally got around to the <code>nucleotide</code> in Rust exercism. My solution was a bit C-ish, this is neater: &#40;Credits to <code>azymohliad</code>, but with no <code>Err</code>&#41;</p>
+
+</ol>
+<pre><code class=language-rust >fn count&#40;c:char, dna: &amp;str&#41; -&gt; usize &#123;
     dna.chars&#40;&#41;.filter&#40;|&amp;x| x &#61;&#61; c&#41;.count&#40;&#41;
 &#125;
 
 fn nucleotide_counts&#40;dna: &amp;str&#41; -&gt; HashMap&lt;char, usize&gt; &#123;
     &quot;ACGT&quot;.chars&#40;&#41;.map&#40;|c| &#40;c, count&#40;c, dna&#41;&#41;&#41;.collect&#40;&#41;
-&#125;</code></pre> <p>Another clever initialization trick by <code>jtmueller</code>:</p> <pre><code class=language-rust >let mut counts: HashMap&lt;char, usize&gt; &#61; &#91;&#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;&#93;.iter&#40;&#41;.map&#40;|n| &#40;*n, 0&#41;&#41;.collect&#40;&#41;;</code></pre>
+&#125;</code></pre>
+<p>Another clever initialization trick by <code>jtmueller</code>:</p>
+<pre><code class=language-rust >let mut counts: HashMap&lt;char, usize&gt; &#61; &#91;&#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;&#93;.iter&#40;&#41;.map&#40;|n| &#40;*n, 0&#41;&#41;.collect&#40;&#41;;</code></pre>
 <p>Probs worth using <code>HashMap::with_capacity&#40;4&#41;</code> since I know there&#39;s only <code>ACTG</code> as keys.</p>
 <ol start=147 >
 <li><p>Rust: <code>use enum::*;</code>, and then you don&#39;t need to <code>enum::foo</code> all over your match arms&#33;</p>
@@ -1589,7 +1790,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: June 06, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: June 09, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
