@@ -8,7 +8,7 @@ Your machine vs many other machines
 
 Does this work depend on other things?
 
-
+[Structure Parallel Programming, McCool, Reinders]()
 
 - Async file download from different sites
 - Map the function to all the elements in an array

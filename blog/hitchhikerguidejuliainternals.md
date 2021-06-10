@@ -4,8 +4,10 @@
     - Building Julia + LLVM
     - Parser
     - GC
+      https://www.cs.cornell.edu/courses/cs6120/2019fa/blog/unified-theory-gc/
     - Subtyping and inference
     - JIT and method tables
+    - World age
     - Optimizations + LLVM IR
     - Inliner
     - Parallel task runtime
@@ -15,6 +17,7 @@
     - Machine code (assembly)
     - Julia runtime
     - REPL
+    - Broadcasting... ?
     
 
 

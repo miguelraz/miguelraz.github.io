@@ -5,6 +5,167 @@
 
 # Virtual diary for progress on all fronts
 
+### 10/06/2021
+
+175. Assembly! 
+*    rax - temporary register; when we call a syscal, rax must contain syscall number
+*    rdi - used to pass 1st argument to functions
+*    rsi - ptr  to pass 2nd argument to functions
+*    rdx - used to pass 3rd argument to functions
+This mirrors this syscall in C:
+```c
+size_t sys_write(unsigned int fd, const char* buf, size_t count);
+```
+* `fd` - file descriptor, 0,1,2 for stin, stdout, and stderr respectviely
+* `buf` - points to char array, can store content from file pointed at by fd
+* `count` - specifies number of bytes to be written from the file into the char array
+
+176. Little-endian - smallest byte as smallest address. Derp.
+177. `data, bss, text` - initialized consts/dadta, non initialized vars, code section in asm.
+178. registers: rax:rdx, bp sp si di, r8:r15
+179. There's several types of initialzied data `db` (declare bytes), `dw` (declare words), etc.
+There's also `RESB, RESW` as reserved bytes, reserved words, etc. `INCBIN` is for external binary files, `EQU` for defining constants:
+```asm
+one equ 1
+```
+Exercise: try to translate the following C code into asm:
+```c
+if (rax != 50) {
+    exit();
+} else {
+    right();
+}
+```
+Attempt:
+```asm
+    cmp rax, 50
+    jne .exit
+    jmp .right ; HOT DAMN FIRST TRY YO
+```
+180. Only 6 args can be pass via registers, the rest are passed on the stack:
+*    rdi - first argument
+*    rsi - second argument
+*    rdx - third argument
+*    rcx - fourth argument
+*    r8 - fifth argument
+*    r9 - sixth
+So if you have 
+```c
+int foo(int a1, int a2, int a3, int a4, int a5, int a6, int a7)
+{
+    return (a1 + a2 - a3 - a4 + a5 - a6) * a7;
+}
+```
+The first six are pass in the registers, and the 7th arg you have to pop from the stack: `push arg/ pop arg`
+181. You can write nicer headers
+```asm
+section .data
+		SYS_WRITE equ 1
+		STD_IN    equ 1
+		SYS_EXIT  equ 60
+		EXIT_CODE equ 0
+    
+		NEW_LINE   db 0xa
+		WRONG_ARGC db "Must be two command line argument", 0xa
+```
+182. `$, $$` return the position in memory of string where `$` is defined, and position in memory of current section start, resp.
+183. Why the instruction `mov rdi, $ + 15`? You need to use the `objdump` util, and look at the line after `calculateStrLength`
+```
+objdump -D reverse
+
+reverse:     file format elf64-x86-64
+
+Disassembly of section .text:
+
+00000000004000b0 <_start>:
+  4000b0:	48 be 41 01 60 00 00 	movabs $0x600141,%rsi
+  4000b7:	00 00 00
+  4000ba:	48 31 c9             	xor    %rcx,%rcx
+  4000bd:	fc                   	cld
+  4000be:	48 bf cd 00 40 00 00 	movabs $0x4000cd,%rdi
+  4000c5:	00 00 00
+  4000c8:	e8 08 00 00 00       	callq  4000d5 <calculateStrLength>
+  4000cd:	48 31 c0             	xor    %rax,%rax
+  4000d0:	48 31 ff             	xor    %rdi,%rdi
+  4000d3:	eb 0e                	jmp    4000e3 <reverseStr>
+```
+184. To checkif a string is set:
+```asm
+    test rax, rax               ; check if name is provided 
+    jne .copy_name
+```
+
+185. Assembly has macros! These are single line
+```asm
+%define argc rsp + 8
+%define cliArg1 rsp + 24
+```
+These are multi line
+```asm
+%macro bootstrap 1          ; %macro name number_of_params
+          push ebp
+          mov ebp,esp
+%endmacro
+```
+186. Don't forget the `.period` when you `call .function`, AND in the function section titles:
+```asm
+.returnTrue
+    mov eax, 1
+    ret
+```
+187. THERE'S STRUCTS in ASSEMBLY?
+```asm
+struc person
+   name: resb 10
+   age:  resb 1
+endstruc
+; and then
+section .data
+    p: istruc person
+      at name db "name"
+      at age  db 25
+    iend
+
+section .text
+_start:
+    mov rax, [p + person.name]
+```
+187. [Call C from assembly, assembly from C](https://0xax.github.io/asm_7/)
+188. x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7
+- `fld dword [x] ` pushes x to this stack.
+- `fldpi` loads pi, lol.
+```asm
+extern printResult
+
+section .data
+		radius    dq  1.7
+		result    dq  0
+
+		SYS_EXIT  equ 60
+		EXIT_CODE equ 0
+
+global _start
+section .text
+
+_start:
+		fld qword [radius]
+		fld qword [radius]
+		fmul
+
+		fldpi
+		fmul
+		fstp qword [result]
+
+		mov rax, 0
+		movq xmm0, [result]
+		call printResult
+
+		mov rax, SYS_EXIT
+		mov rdi, EXIT_CODE
+		syscall
+```
+You have data in `radius` and `result`. `fld qword [radius]` stores radius in ST0, and again in ST1. `fmul` then multiplies both and puts it in ST0. Load pi with `fldpi`, multiply, and store that result with `fstp qword [result]`. C calling convention: pass floats to system through `xmm` registers, so you have to declare how many you are using - do that with `mov rax, 0`, `movq xmm0, [result]`, `call printResult`, then exit.
+
 ### 09/06/2021
 
 166. [Parallel Computing course](https://wgtm21.netlify.app/parallel_julia/) by WestGrid Canada + HPC.
@@ -25,6 +186,7 @@ define i32 @test() {
   ; CHECK: ret i32 9
 }
 ```
+174. [Best Tutorial for x86](https://github.com/0xAX/asm) I could find, and free! Now I gotta write syscalls snippets for the bloat...
 
 ### 08/06/2021
 
@@ -274,10 +436,9 @@ assert!(iter.next().is_none());
 - I had to disable the `stdfaxh.h` whatever
 - This was the final command:
 ```bash
-[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> nasm -f elf64 Ch02_01.asm
-[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> g++ Ch02_01.cpp Ch02_01.o
-[I] mrg@JuliaLap ~/p/a/m/C/Ch02_01 (master)> ./a.out
-
+$ nasm -g -f elf64 hello.o hello.asm
+$ ld -o hello hello.o
+$ ./a.out
 ```
 - and the assembly file was:
 ```asm
@@ -289,7 +450,7 @@ assert!(iter.next().is_none());
 
 ;        .code
 ;IntegerAddSub_ proc
-	global IntegerAddSub_
+	global IntegerAddSub_         
 	section .text
 ; Calculate a + b + c - d
 IntegerAddSub_:

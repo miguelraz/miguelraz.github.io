@@ -15,3 +15,4 @@
 - TerminalPager.jl for DataFrames.jl stuff
 
 - `] add Foo; undo`!
+- Latex shortcuts via [Keno ](https://twitter.com/KenoFischer/status/1402828171213479936)
