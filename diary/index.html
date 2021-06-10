@@ -1,16 +1,246 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=09062021 ><a href="#09062021" class=header-anchor >09/06/2021</a></h3> <ol start=166 > <li><p><a href="https://wgtm21.netlify.app/parallel_julia/">Parallel Computing course</a> by WestGrid Canada &#43; HPC.</p> <li><p><a href="https://vcpkg.io/en/getting-started.html">vcpkg</a> sounds like a decent package manager for Cpp.</p> <li><p>LLVM Tips and tricks: </p> </ol> <p>- Use Ninja and tons of flags to speedup compilation: don&#39;t build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info, -</p> <p>170.<a href="https://ohshitgit.com/">oh shit git</a> seems neat&#33;</p> <ol start=171 > <li><p>To see what is actually printed after macro replacements, use <code>clang -E foo.c</code>.</p> <li><p><code>LLVM Bugpoint</code> does case test reduction</p> <li><p>You can unit test the optimizer o.0</p> </ol> <pre><code class=language-llvm >; RUN: opt &lt; &#37;s -constprop -S | FileCheck &#37;s
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3> <ol start=175 > <li><p>Assembly&#33; </p> </ol> <ul> <li><p>rax - temporary register; when we call a syscal, rax must contain syscall number</p> <li><p>rdi - used to pass 1st argument to functions</p> <li><p>rsi - ptr to pass 2nd argument to functions</p> <li><p>rdx - used to pass 3rd argument to functions</p> </ul> <p>This mirrors this syscall in C:</p> <pre><code class=language-c >size_t sys_write&#40;unsigned int fd, const char* buf, size_t count&#41;;</code></pre>
+<ul>
+<li><p><code>fd</code> - file descriptor, 0,1,2 for stin, stdout, and stderr respectviely</p>
+
+<li><p><code>buf</code> - points to char array, can store content from file pointed at by fd</p>
+
+<li><p><code>count</code> - specifies number of bytes to be written from the file into the char array</p>
+
+</ul>
+<ol start=176 >
+<li><p>Little-endian - smallest byte as smallest address. Derp.</p>
+
+<li><p><code>data, bss, text</code> - initialized consts/dadta, non initialized vars, code section in asm.</p>
+
+<li><p>registers: rax:rdx, bp sp si di, r8:r15</p>
+
+<li><p>There&#39;s several types of initialzied data <code>db</code> &#40;declare bytes&#41;, <code>dw</code> &#40;declare words&#41;, etc.</p>
+
+</ol>
+<p>There&#39;s also <code>RESB, RESW</code> as reserved bytes, reserved words, etc. <code>INCBIN</code> is for external binary files, <code>EQU</code> for defining constants:</p>
+<pre><code class=language-asm >one equ 1</code></pre>
+<p>Exercise: try to translate the following C code into asm:</p>
+<pre><code class=language-c >if &#40;rax &#33;&#61; 50&#41; &#123;
+    exit&#40;&#41;;
+&#125; else &#123;
+    right&#40;&#41;;
+&#125;</code></pre>
+<p>Attempt:</p>
+<pre><code class=language-asm >cmp rax, 50
+    jne .exit
+    jmp .right ; HOT DAMN FIRST TRY YO</code></pre>
+<ol start=180 >
+<li><p>Only 6 args can be pass via registers, the rest are passed on the stack:</p>
+
+</ol>
+<ul>
+<li><p>rdi - first argument</p>
+
+<li><p>rsi - second argument</p>
+
+<li><p>rdx - third argument</p>
+
+<li><p>rcx - fourth argument</p>
+
+<li><p>r8 - fifth argument</p>
+
+<li><p>r9 - sixth</p>
+
+</ul>
+<p>So if you have </p>
+<pre><code class=language-c >int foo&#40;int a1, int a2, int a3, int a4, int a5, int a6, int a7&#41;
+&#123;
+    return &#40;a1 &#43; a2 - a3 - a4 &#43; a5 - a6&#41; * a7;
+&#125;</code></pre>
+<p>The first six are pass in the registers, and the 7th arg you have to pop from the stack: <code>push arg/ pop arg</code></p>
+<ol start=181 >
+<li><p>You can write nicer headers</p>
+
+</ol>
+<pre><code class=language-asm >section .data
+		SYS_WRITE equ 1
+		STD_IN    equ 1
+		SYS_EXIT  equ 60
+		EXIT_CODE equ 0
+    
+		NEW_LINE   db 0xa
+		WRONG_ARGC db &quot;Must be two command line argument&quot;, 0xa</code></pre>
+<ol start=182 >
+<li><p><code>&#36;, &#36;&#36;</code> return the position in memory of string where <code>&#36;</code> is defined, and position in memory of current section start, resp.</p>
+
+<li><p>Why the instruction <code>mov rdi, &#36; &#43; 15</code>? You need to use the <code>objdump</code> util, and look at the line after <code>calculateStrLength</code></p>
+
+</ol>
+<pre><code class=language-julia >objdump -D reverse
+
+reverse:     file format elf64-x86-64
+
+Disassembly of section .text:
+
+00000000004000b0 &lt;_start&gt;:
+  4000b0:	48 be 41 01 60 00 00 	movabs &#36;0x600141,&#37;rsi
+  4000b7:	00 00 00
+  4000ba:	48 31 c9             	xor    &#37;rcx,&#37;rcx
+  4000bd:	fc                   	cld
+  4000be:	48 bf cd 00 40 00 00 	movabs &#36;0x4000cd,&#37;rdi
+  4000c5:	00 00 00
+  4000c8:	e8 08 00 00 00       	callq  4000d5 &lt;calculateStrLength&gt;
+  4000cd:	48 31 c0             	xor    &#37;rax,&#37;rax
+  4000d0:	48 31 ff             	xor    &#37;rdi,&#37;rdi
+  4000d3:	eb 0e                	jmp    4000e3 &lt;reverseStr&gt;</code></pre>
+<ol start=184 >
+<li><p>To checkif a string is set:</p>
+
+</ol>
+<pre><code class=language-asm >test rax, rax               ; check if name is provided 
+    jne .copy_name</code></pre>
+<ol start=185 >
+<li><p>Assembly has macros&#33; These are single line</p>
+
+</ol>
+<pre><code class=language-asm >&#37;define argc rsp &#43; 8
+&#37;define cliArg1 rsp &#43; 24</code></pre>
+<p>These are multi line</p>
+<pre><code class=language-asm >&#37;macro bootstrap 1          ; &#37;macro name number_of_params
+          push ebp
+          mov ebp,esp
+&#37;endmacro</code></pre>
+<ol start=186 >
+<li><p>Don&#39;t forget the <code>.period</code> when you <code>call .function</code>, AND in the function section titles:</p>
+
+</ol>
+<pre><code class=language-asm >.returnTrue
+    mov eax, 1
+    ret</code></pre>
+<ol start=187 >
+<li><p>THERE&#39;S STRUCTS in ASSEMBLY?</p>
+
+</ol>
+<pre><code class=language-asm >struc person
+   name: resb 10
+   age:  resb 1
+endstruc
+; and then
+section .data
+    p: istruc person
+      at name db &quot;name&quot;
+      at age  db 25
+    iend
+
+section .text
+_start:
+    mov rax, &#91;p &#43; person.name&#93;</code></pre>
+<ol start=187 >
+<li><p><a href="https://0xax.github.io/asm_7/">Call C from assembly, assembly from C</a></p>
+
+<li><p>x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7</p>
+
+</ol>
+<ul>
+<li><p><code>fld dword &#91;x&#93;</code> pushes x to this stack.</p>
+
+<li><p><code>fldpi</code> loads pi, lol.</p>
+
+</ul>
+<pre><code class=language-asm >extern printResult
+
+section .data
+		radius    dq  1.7
+		result    dq  0
+
+		SYS_EXIT  equ 60
+		EXIT_CODE equ 0
+
+global _start
+section .text
+
+_start:
+		fld qword &#91;radius&#93;
+		fld qword &#91;radius&#93;
+		fmul
+
+		fldpi
+		fmul
+		fstp qword &#91;result&#93;
+
+		mov rax, 0
+		movq xmm0, &#91;result&#93;
+		call printResult
+
+		mov rax, SYS_EXIT
+		mov rdi, EXIT_CODE
+		syscall</code></pre>
+<p>You have data in <code>radius</code> and <code>result</code>. <code>fld qword &#91;radius&#93;</code> stores radius in ST0, and again in ST1. <code>fmul</code> then multiplies both and puts it in ST0. Load pi with <code>fldpi</code>, multiply, and store that result with <code>fstp qword &#91;result&#93;</code>. C calling convention: pass floats to system through <code>xmm</code> registers, so you have to declare how many you are using - do that with <code>mov rax, 0</code>, <code>movq xmm0, &#91;result&#93;</code>, <code>call printResult</code>, then exit.</p>
+<h3 id=09062021 ><a href="#09062021" class=header-anchor >09/06/2021</a></h3>
+<ol start=166 >
+<li><p><a href="https://wgtm21.netlify.app/parallel_julia/">Parallel Computing course</a> by WestGrid Canada &#43; HPC.</p>
+
+<li><p><a href="https://vcpkg.io/en/getting-started.html">vcpkg</a> sounds like a decent package manager for Cpp.</p>
+
+<li><p>LLVM Tips and tricks: </p>
+
+</ol>
+<p>- Use Ninja and tons of flags to speedup compilation: don&#39;t build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info,
+-</p>
+<p>170.<a href="https://ohshitgit.com/">oh shit git</a> seems neat&#33;</p>
+<ol start=171 >
+<li><p>To see what is actually printed after macro replacements, use <code>clang -E foo.c</code>.</p>
+
+<li><p><code>LLVM Bugpoint</code> does case test reduction</p>
+
+<li><p>You can unit test the optimizer o.0</p>
+
+</ol>
+<pre><code class=language-llvm >; RUN: opt &lt; &#37;s -constprop -S | FileCheck &#37;s
 define i32 @test&#40;&#41; &#123;
   &#37;A &#61; add i32 4, 5
   ret i32 &#37;A
   ; CHECK: @test&#40;&#41;
   ; CHECK: ret i32 9
-&#125;</code></pre> <h3 id=08062021 ><a href="#08062021" class=header-anchor >08/06/2021</a></h3> <ol start=164 > <li><p>Lord help me my <code>Learn LLVM 12</code> book is here and I&#39;m learning C&#43;&#43; to be an uber Julia hacker. Taking the <code>C&#43;&#43; Beyond the Basics</code> course by Kate Gregory I learned</p> </ol> <ul> <li><p><code>inst const zero &#61; 0</code> tells the comp <code>zero</code> can&#39;t change.</p> <li><p><code>int taxes&#40;int const total&#41;</code> tells the copmiler <code>total</code> can&#39;t change within the lifetime of this function</p> <li><p><code>int GetName&#40;&#41; const;</code> const modify the class its in.</p> <li><p><code>inst const ci &#61; 3</code> and <code>const int ci &#61; 3</code> are both valid, but prefer <code>const</code> after the thing that can&#39;t change.</p> <li><p><code>&#91;&#61;&#93;&#40;&#41;&#123;&#125;</code> is a lambda func that copys everything by value, <code>&#91;&amp;&#93;</code> by ref, but copies smartly only the things you used.</p> </ul> <pre><code class=language-cpp >vector nums &#123;1,2,3,45&#125;;
+&#125;</code></pre>
+<ol start=174 >
+<li><p><a href="https://github.com/0xAX/asm">Best Tutorial for x86</a> I could find, and free&#33; Now I gotta write syscalls snippets for the bloat...</p>
+
+</ol>
+<h3 id=08062021 ><a href="#08062021" class=header-anchor >08/06/2021</a></h3>
+<ol start=164 >
+<li><p>Lord help me my <code>Learn LLVM 12</code> book is here and I&#39;m learning C&#43;&#43; to be an uber Julia hacker. Taking the <code>C&#43;&#43; Beyond the Basics</code> course by Kate Gregory I learned</p>
+
+</ol>
+<ul>
+<li><p><code>inst const zero &#61; 0</code> tells the comp <code>zero</code> can&#39;t change.</p>
+
+<li><p><code>int taxes&#40;int const total&#41;</code> tells the copmiler <code>total</code> can&#39;t change within the lifetime of this function</p>
+
+<li><p><code>int GetName&#40;&#41; const;</code> const modify the class its in.</p>
+
+<li><p><code>inst const ci &#61; 3</code> and <code>const int ci &#61; 3</code> are both valid, but prefer <code>const</code> after the thing that can&#39;t change.</p>
+
+<li><p><code>&#91;&#61;&#93;&#40;&#41;&#123;&#125;</code> is a lambda func that copys everything by value, <code>&#91;&amp;&#93;</code> by ref, but copies smartly only the things you used.</p>
+
+</ul>
+<pre><code class=language-cpp >vector nums &#123;1,2,3,45&#125;;
 auto isOdd &#61; &#91;&#93;&#40;int candidates&#41;&#123;candidates &#37; 2 &#33;&#61; 0;&#125;;
 int odds &#61; std::count_if&#40;begin&#40;nums&#41;, end&#40;nums&#41;, isOdd&#41;;
 // std algorithms have all the goodies that apply to iterators like
-//any_of, all_of, etc</code></pre> <ul> <li><p>to generate collections, instead of a for loop, try</p> </ul> <pre><code class=language-cpp >int i &#61; 0;
-std::generate_n&#40;std::back_inserter&#40;v&#41;, 5, &#91;&amp;&#93;&#40;&#41; &#123; return i&#43;&#43;; &#125;&#41;;</code></pre> <ul> <li><p>to accumulate the elements,</p> </ul> <pre><code class=language-cpp >int total &#61; 0
-total &#61; std::accumulate&#40;begin&#40;v&#41;, end&#40;v&#41;, 0&#41;;</code></pre> <ul> <li><p>to count elements</p> </ul> <pre><code class=language-cpp >int count3 &#61; std::count&#40;begin&#40;v&#41;, end&#40;v&#41;, 3&#41;;</code></pre>
+//any_of, all_of, etc</code></pre>
+<ul>
+<li><p>to generate collections, instead of a for loop, try</p>
+
+</ul>
+<pre><code class=language-cpp >int i &#61; 0;
+std::generate_n&#40;std::back_inserter&#40;v&#41;, 5, &#91;&amp;&#93;&#40;&#41; &#123; return i&#43;&#43;; &#125;&#41;;</code></pre>
+<ul>
+<li><p>to accumulate the elements,</p>
+
+</ul>
+<pre><code class=language-cpp >int total &#61; 0
+total &#61; std::accumulate&#40;begin&#40;v&#41;, end&#40;v&#41;, 0&#41;;</code></pre>
+<ul>
+<li><p>to count elements</p>
+
+</ul>
+<pre><code class=language-cpp >int count3 &#61; std::count&#40;begin&#40;v&#41;, end&#40;v&#41;, 3&#41;;</code></pre>
 <ul>
 <li><p>to remove elements &#61;&#61; 3,</p>
 
@@ -270,9 +500,9 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 <li><p>This was the final command:</p>
 
 </ul>
-<pre><code class=language-bash >&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; nasm -f elf64 Ch02_01.asm
-&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; g&#43;&#43; Ch02_01.cpp Ch02_01.o
-&#91;I&#93; mrg@JuliaLap ~/p/a/m/C/Ch02_01 &#40;master&#41;&gt; ./a.out</code></pre>
+<pre><code class=language-bash >&#36; nasm -g -f elf64 hello.o hello.asm
+&#36; ld -o hello hello.o
+&#36; ./a.out</code></pre>
 <ul>
 <li><p>and the assembly file was:</p>
 
@@ -285,7 +515,7 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 
 ;        .code
 ;IntegerAddSub_ proc
-	global IntegerAddSub_
+	global IntegerAddSub_         
 	section .text
 ; Calculate a &#43; b &#43; c - d
 IntegerAddSub_:
