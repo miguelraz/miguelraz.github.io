@@ -5,6 +5,27 @@
 
 # Virtual diary for progress on all fronts
 
+### 09/06/2021
+
+166. [Parallel Computing course](https://wgtm21.netlify.app/parallel_julia/) by WestGrid Canada + HPC.
+167. [vcpkg](https://vcpkg.io/en/getting-started.html) sounds like a decent package manager for Cpp.
+169. LLVM Tips and tricks: 
+    - Use Ninja and tons of flags to speedup compilation: don't build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info,
+    -
+170.[oh shit git](https://ohshitgit.com/) seems neat!
+171. To see what is actually printed after macro replacements, use `clang -E foo.c`.
+172. `LLVM Bugpoint` does case test reduction
+173. You can unit test the optimizer o.0
+```llvm
+; RUN: opt < %s -constprop -S | FileCheck %s
+define i32 @test() {
+  %A = add i32 4, 5
+  ret i32 %A
+  ; CHECK: @test()
+  ; CHECK: ret i32 9
+}
+```
+
 ### 08/06/2021
 
 164. Lord help me my `Learn LLVM 12` book is here and I'm learning C++ to be an uber Julia hacker. Taking the `C++ Beyond the Basics ` course by Kate Gregory I learned
@@ -127,10 +148,6 @@ struct Buffer {
 ```
 - You can create function objects/closures! `it(n)` pg 64
 - add `override` after virtual ops, type your enmus, default value inits structs `int value = 5`, 
-
-
-
-
 
 
 165. Rust tips: Finally found a decent SIMD tutorial for Rust! I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:
