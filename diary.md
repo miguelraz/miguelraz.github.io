@@ -5,6 +5,18 @@
 
 # Virtual diary for progress on all fronts
 
+### 11/06/2021
+
+196. `MXCSR`: Multimedia eXtension Control and Store Registers - can be accessed with `vldmxcsr, vstmxcsr`
+197.  The amazing `Jubilee` shares another nugget:
+> So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions.
+> it's literally UB.
+> To touch it. At all.
+> Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it's UB.
+198. When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use `vzeroupper` before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.
+199. MASM calling convention: pass first 4 float args in xmm0:3.
+200. Leaf functions in assembly don't need a prolog or epilog, non-leaf functions *must*: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.
+
 ### 10/06/2021
 
 175. Assembly! 
@@ -56,7 +68,10 @@ int foo(int a1, int a2, int a3, int a4, int a5, int a6, int a7)
     return (a1 + a2 - a3 - a4 + a5 - a6) * a7;
 }
 ```
-The first six are pass in the registers, and the 7th arg you have to pop from the stack: `push arg/ pop arg`
+The first six are pass in the registers, and the 7th arg you have to pop from the stack: `push arg/ pop arg`.
+In MASM, you get 4 registers for calling convention and the rest are in 8 byte incremetns from the RSP.
+ALSO: After you are finished being called, you have to restor registers `rbp, rbx, r12:r15`
+
 181. You can write nicer headers
 ```asm
 section .data
@@ -165,7 +180,13 @@ _start:
 		syscall
 ```
 You have data in `radius` and `result`. `fld qword [radius]` stores radius in ST0, and again in ST1. `fmul` then multiplies both and puts it in ST0. Load pi with `fldpi`, multiply, and store that result with `fstp qword [result]`. C calling convention: pass floats to system through `xmm` registers, so you have to declare how many you are using - do that with `mov rax, 0`, `movq xmm0, [result]`, `call printResult`, then exit.
-
+189. [GREAT ASSEMBLY TUTORIAL](https://cs.lmu.edu/~ray/notes/nasmtutorial/)
+190. `shl` must use register `cl` to make the shifts.
+191. `sar` shift arithmetic right because it carries over the bit, like in arithmetic, ha.
+192. `cdq` -> "convert dobule word to quadword": Dividend in EAX must be sign extended to 64bits.
+193. Do integer conversions with `movsx`, "move integer with sign extension" and `movzxd` "move unsigned integer with sign extension double word"
+194. `@F` is a forward jump, `@B` backwards jump
+    
 ### 09/06/2021
 
 166. [Parallel Computing course](https://wgtm21.netlify.app/parallel_julia/) by WestGrid Canada + HPC.
@@ -436,8 +457,8 @@ assert!(iter.next().is_none());
 - I had to disable the `stdfaxh.h` whatever
 - This was the final command:
 ```bash
-$ nasm -g -f elf64 hello.o hello.asm
-$ ld -o hello hello.o
+$ nasm -g -f elf64 hello.asm
+$ g++ hello.cpp hello.o
 $ ./a.out
 ```
 - and the assembly file was:
@@ -465,6 +486,7 @@ IntegerAddSub_:
 
 ```
 - So I just had to add the `global IntegerAddSub_`, `section .text` below that, the name of the function as a section, and the last `ret` to follow `nasm` conventions.
+- if using extern variables, use `extern g_val`, and then `default rel`
 
 ### 24/05/2021
 
