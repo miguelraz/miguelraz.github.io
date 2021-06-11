@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3> <ol start=175 > <li><p>Assembly&#33; </p> </ol> <ul> <li><p>rax - temporary register; when we call a syscal, rax must contain syscall number</p> <li><p>rdi - used to pass 1st argument to functions</p> <li><p>rsi - ptr to pass 2nd argument to functions</p> <li><p>rdx - used to pass 3rd argument to functions</p> </ul> <p>This mirrors this syscall in C:</p> <pre><code class=language-c >size_t sys_write&#40;unsigned int fd, const char* buf, size_t count&#41;;</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=11062021 ><a href="#11062021" class=header-anchor >11/06/2021</a></h3> <ol start=196 > <li><p><code>MXCSR</code>: Multimedia eXtension Control and Store Registers - can be accessed with <code>vldmxcsr, vstmxcsr</code></p> <li><p>The amazing <code>Jubilee</code> shares another nugget:</p> </ol> <blockquote> <p>So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions. it&#39;s literally UB. To touch it. At all. Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it&#39;s UB.</p> </blockquote> <ol start=198 > <li><p>When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use <code>vzeroupper</code> before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.</p> <li><p>MASM calling convention: pass first 4 float args in xmm0:3.</p> <li><p>Leaf functions in assembly don&#39;t need a prolog or epilog, non-leaf functions <em>must</em>: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.</p> </ol> <h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3> <ol start=175 > <li><p>Assembly&#33; </p> </ol> <ul> <li><p>rax - temporary register; when we call a syscal, rax must contain syscall number</p> <li><p>rdi - used to pass 1st argument to functions</p> <li><p>rsi - ptr to pass 2nd argument to functions</p> <li><p>rdx - used to pass 3rd argument to functions</p> </ul> <p>This mirrors this syscall in C:</p> <pre><code class=language-c >size_t sys_write&#40;unsigned int fd, const char* buf, size_t count&#41;;</code></pre>
 <ul>
 <li><p><code>fd</code> - file descriptor, 0,1,2 for stin, stdout, and stderr respectviely</p>
 
@@ -52,7 +52,7 @@
 &#123;
     return &#40;a1 &#43; a2 - a3 - a4 &#43; a5 - a6&#41; * a7;
 &#125;</code></pre>
-<p>The first six are pass in the registers, and the 7th arg you have to pop from the stack: <code>push arg/ pop arg</code></p>
+<p>The first six are pass in the registers, and the 7th arg you have to pop from the stack: <code>push arg/ pop arg</code>. In MASM, you get 4 registers for calling convention and the rest are in 8 byte incremetns from the RSP. ALSO: After you are finished being called, you have to restor registers <code>rbp, rbx, r12:r15</code></p>
 <ol start=181 >
 <li><p>You can write nicer headers</p>
 
@@ -171,6 +171,20 @@ _start:
 		mov rdi, EXIT_CODE
 		syscall</code></pre>
 <p>You have data in <code>radius</code> and <code>result</code>. <code>fld qword &#91;radius&#93;</code> stores radius in ST0, and again in ST1. <code>fmul</code> then multiplies both and puts it in ST0. Load pi with <code>fldpi</code>, multiply, and store that result with <code>fstp qword &#91;result&#93;</code>. C calling convention: pass floats to system through <code>xmm</code> registers, so you have to declare how many you are using - do that with <code>mov rax, 0</code>, <code>movq xmm0, &#91;result&#93;</code>, <code>call printResult</code>, then exit.</p>
+<ol start=189 >
+<li><p><a href="https://cs.lmu.edu/~ray/notes/nasmtutorial/">GREAT ASSEMBLY TUTORIAL</a></p>
+
+<li><p><code>shl</code> must use register <code>cl</code> to make the shifts.</p>
+
+<li><p><code>sar</code> shift arithmetic right because it carries over the bit, like in arithmetic, ha.</p>
+
+<li><p><code>cdq</code> -&gt; &quot;convert dobule word to quadword&quot;: Dividend in EAX must be sign extended to 64bits.</p>
+
+<li><p>Do integer conversions with <code>movsx</code>, &quot;move integer with sign extension&quot; and <code>movzxd</code> &quot;move unsigned integer with sign extension double word&quot;</p>
+
+<li><p><code>@F</code> is a forward jump, <code>@B</code> backwards jump</p>
+
+</ol>
 <h3 id=09062021 ><a href="#09062021" class=header-anchor >09/06/2021</a></h3>
 <ol start=166 >
 <li><p><a href="https://wgtm21.netlify.app/parallel_julia/">Parallel Computing course</a> by WestGrid Canada &#43; HPC.</p>
@@ -500,8 +514,8 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 <li><p>This was the final command:</p>
 
 </ul>
-<pre><code class=language-bash >&#36; nasm -g -f elf64 hello.o hello.asm
-&#36; ld -o hello hello.o
+<pre><code class=language-bash >&#36; nasm -g -f elf64 hello.asm
+&#36; g&#43;&#43; hello.cpp hello.o
 &#36; ./a.out</code></pre>
 <ul>
 <li><p>and the assembly file was:</p>
@@ -529,6 +543,8 @@ IntegerAddSub_:
 ;        end</code></pre>
 <ul>
 <li><p>So I just had to add the <code>global IntegerAddSub_</code>, <code>section .text</code> below that, the name of the function as a section, and the last <code>ret</code> to follow <code>nasm</code> conventions.</p>
+
+<li><p>if using extern variables, use <code>extern g_val</code>, and then <code>default rel</code></p>
 
 </ul>
 <h3 id=24052021 ><a href="#24052021" class=header-anchor >24/05/2021</a></h3>
@@ -2026,7 +2042,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: June 10, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: June 11, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
