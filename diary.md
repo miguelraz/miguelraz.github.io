@@ -9,6 +9,17 @@
 
 206. Discovered [upgrep](https://github.com/Genivia/ugrep), which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive `ugrep -Q 'foo'` mode. The debranching algo is [exposed in this talk](https://www.youtube.com/watch?v=kA7qZgmfwD8).
 207. Rediscovered [Calculus made easy](https://calculusmadeeasy.org/) and [AoPS boards](https://artofproblemsolving.com/school).
+208. Never a bad time to remember the [CFDPython](https://github.com/miguelraz/CFDPython) exists.
+209. Found the books `More/Surprises in Theoretical Physics by Rudolf Peierls`.
+210. Also found [Fundamentals of Numerical Computing](https://github.com/tobydriscoll/fnc-extras) by Toby Driscoll and [Exploring ODEs](http://people.maths.ox.ac.uk/trefethen/Exploring.pdf)
+211. PROJECT IDEA: Scrape [uops.info](https://uops.info/xml.html) with `TableScraper.jl`.
+212. PROJECT IDEA: CourseTemplates.jl based on [Computational Thinking from MIT](https://github.com/mitmath/18S191) which is [very pretty](https://computationalthinking.mit.edu/Spring21/semesters/).
+213. Remember the Intel OPtimization manuals come with [attached example codes](https://github.com/intel/optimization-manual/tree/2a7418eb5b6d750437c51542aec276a4d688fcba/common)
+214. PROJECT IDEA: Port [GW Open Data Workshop](https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome) too.
+215. [Read George's grad guide](https://github.com/gwisk/gradguide).
+216. Julius' post on [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/) is great.
+217. PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS!
+218. PROJECT IDEA: Open Data structures in Julia with the MIT course template.
 
 ### 11/06/2021
 
