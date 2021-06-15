@@ -1,0 +1,34 @@
+@def title = "1 Month numerical challenge, in parallel, in Julia!"
+
+** https://nicoguaro.github.io/posts/numerical_summary/
+- Bisection
+- Regula falsi
+- Newton
+- Newton multivariate
+- Broyden
+- Gradient descent
+- Nelder-Mead
+- Newton for optimization
+- Lagrange interpolation
+- Lagrange interpolation with Lobatto sampling
+- Lagrange interpolation using Vandermonde matrix
+- Hermite interpolation
+- Spline interpolation
+- Trapezoid quadrature
+- Simpson quadrature
+- Clenshaw-Curtis quadrature
+- Euler integration
+- Runge-Kutta integration
+- Verlet integration
+- Shooting method
+- Finite differences with Jacobi method
+- Finite differences for eigenvalues
+- Ritz method
+- Finite element method in 1D
+- Finite element method in 2D
+- Boundary element method
+- Monte-Carlo integration
+- LU factorization
+- Cholesky factorization
+- Conjugate gradient
+- Finite element method with solver
