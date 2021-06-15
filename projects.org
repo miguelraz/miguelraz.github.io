@@ -344,3 +344,5 @@ println(3+3)
 * ASSEMBLY https://github.com/0xAX/asm
 ** https://cs.lmu.edu/~ray/notes/nasmtutorial/
 * Trefethen 100 dollar problems https://mathworld.wolfram.com/Hundred-DollarHundred-DigitChallengeProblems.html
+
+* LLVMCall.jl add sqrt and fsqrt

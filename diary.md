@@ -5,6 +5,11 @@
 
 # Virtual diary for progress on all fronts
 
+### 15/06/2021
+
+206. Discovered [upgrep](https://github.com/Genivia/ugrep), which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive `ugrep -Q 'foo'` mode. The debranching algo is [exposed in this talk](https://www.youtube.com/watch?v=kA7qZgmfwD8).
+207. Rediscovered [Calculus made easy](https://calculusmadeeasy.org/) and [AoPS boards](https://artofproblemsolving.com/school).
+
 ### 11/06/2021
 
 196. `MXCSR`: Multimedia eXtension Control and Store Registers - can be accessed with `vldmxcsr, vstmxcsr`
@@ -16,6 +21,39 @@
 198. When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use `vzeroupper` before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.
 199. MASM calling convention: pass first 4 float args in xmm0:3.
 200. Leaf functions in assembly don't need a prolog or epilog, non-leaf functions *must*: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.
+201. In C++, you can align xmm values with
+```cpp
+struct XmmVal {
+public:
+    union {
+        int8_t m_I8[16];
+        int16_t m_I16[8];
+        //...
+        float m_F32[4];
+        double m_F64[2];
+    }
+}
+void AvxPackedMathF64 {
+    alignas(16) XmmVal a;
+    alignas(16) XmmVal b;
+    alignas(16) XmmVal c[8];
+}
+```
+202. To get those xmm's into vector registers:
+```asm
+; Load packed SPFP values
+    vmovaps xmm0, xmmword ptr [rcx] ;xmm0 = a
+    vmovaps xmm1, xmmword ptr [rdx] ;xmm1 = b
+```
+So, note you load the entire `xmm` register with `xmmword ptr [foo]`.
+203. Super cool trick to check 16 byte alignment (no perf penalty)
+```asm
+test rcx, ofh ; jump if x not aligned to 16 byte boundary
+jnz Done
+```
+204. Macros avoid overehad of a function call.
+205. Want to transpose a matrix? Use a bunch of `vunpcklps`, `vunpckhps`, `vmovlhps`, `vmovhlps`.
+
 
 ### 10/06/2021
 
