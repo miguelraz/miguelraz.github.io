@@ -1,4 +1,4 @@
-@def title = "1 Month numerical challenge, in parallel, in Julia!"
+@def title = "🚧WIP🚧: 1 Month numerical challenge, in parallel, in Julia!"
 
 ** https://nicoguaro.github.io/posts/numerical_summary/
 - Bisection
