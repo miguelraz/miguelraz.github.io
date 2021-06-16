@@ -1,4 +1,4 @@
-@def title = "Julia REPL Tips and Tricks"
+@def title = "🚧WIP🚧: Julia REPL Tips and Tricks"
 @def tags = ["REPL"]
 
 
@@ -16,3 +16,6 @@
 
 - `] add Foo; undo`!
 - Latex shortcuts via [Keno ](https://twitter.com/KenoFischer/status/1402828171213479936)
+
+- Jacob Quinn: ?foo gives you help, but ??foo gives you the stuff under "# Extended help"
+https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500

@@ -5,6 +5,16 @@
 
 # Virtual diary for progress on all fronts
 
+### 16/06/2021
+
+230. [Travis Downs recommends this x86 link dump](https://stackoverflow.com/tags/x86/info) - it's great! OMG it's way too much...
+231. `git format-patch -1 --pretty=fuller 3a38e874d70b` to format patches for the linux kernel.
+232. `git send-email mypatch.patch` to send patches, `git format-patch` to make it.
+233. `cregit, bison, flex, cscope` are useful tools for navigating kernel source code.
+234. `git log -2 Makefile` shows the last 2 commits that went into `Makefile`.
+235. `git log -2 --author=Linus` checks for the last 2 commits by Linus o.0
+
+
 ### 15/06/2021
 
 206. Discovered [upgrep](https://github.com/Genivia/ugrep), which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive `ugrep -Q 'foo'` mode. The debranching algo is [exposed in this talk](https://www.youtube.com/watch?v=kA7qZgmfwD8).
@@ -18,8 +28,25 @@
 214. PROJECT IDEA: Port [GW Open Data Workshop](https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome) too.
 215. [Read George's grad guide](https://github.com/gwisk/gradguide).
 216. Julius' post on [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/) is great.
-217. PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS!
+217. PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS + TextUserInterfaces.jl maybe?. YES. YES!
 218. PROJECT IDEA: Open Data structures in Julia with the MIT course template.
+219. Look into [DIANA](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf) and Julian ports of it ([paper is here](https://core.ac.uk/download/pdf/25359736.pdf), [code is here](https://github.com/apik/diana)).
+    - [FeynCalc](https://github.com/FeynCalc/feyncalc) in Mathematica is an interesting contender: [3.4 seconds](https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar) to calculate the Higgs decaying into a fermion-antifermion pair.
+220. Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink's elbow. Twist off the bottom of the elbow. If there's no much when you take off the cap, it's likely there's no blockage at the elbow. Next, scrape the circumferences of the sink's drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don't forget to wrench up the bottom of the elbow again.
+221. PROJECT IDEA: LLVMPassAnalyzer.jl with [Text User Interfaces.jl](https://github.com/ronisbr/TextUserInterfaces.jl) as the backend. Or maybe [TerminalUserInterfaces.jl](https://github.com/kdheepak/TerminalUserInterfaces.jl)
+222. Lean: `import Leanpkg; #eval Leanpkg.leanVersionString`, commetns are with `--`, arrays `#[1,2,3][1] == 1`, functions don't need spaces so `gcd 1 10 == 1`, Lists are `[1,2,3]`, 
+```lean
+structure Array (a : Type u) where
+    data : List a
+```
+223. `eval List.map (fun x => x + 1) [1, 2, 3]` and `#eval List.map (fun (x,y) => x + y) [(1,2), (3,4)] == [3,7]`
+224. There's [Lean for hackers](https://agentultra.github.io/lean-for-hackers/), and you can run your file with `lean --run leanpkg.lean`.
+225. [Functional Algorithms Verified!](https://functional-algorithms-verified.org/functional_algorithms_verified.pdf) sounds awesome, but not in Lean4 
+226. [Logical Verification in Lean](https://lean-forward.github.io/logical-verification/2020/index.html)
+227. [Temporal Logic slides and exams](https://www.dc.fi.udc.es/~cabalar/vv/index.html)
+228. [LTL Model checking course](https://www.youtube.com/watch?v=qDyJ9H6r0YA) and book `Principles of MOdel Checking - J P Katoen`
+229. [Lean 4 course by Seb. Ullrich](https://github.com/IPDSnelting/tba-2021)
+
 
 ### 11/06/2021
 

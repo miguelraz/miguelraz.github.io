@@ -1,4 +1,4 @@
-@def title = "Hitchhiker's guide to Julia Internals"
+@def title = "🚧WIP🚧: Hitchhiker's guide to Julia Internals"
 
 ### Map
     - Building Julia + LLVM
