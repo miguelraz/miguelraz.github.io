@@ -13,6 +13,23 @@
 233. `cregit, bison, flex, cscope` are useful tools for navigating kernel source code.
 234. `git log -2 Makefile` shows the last 2 commits that went into `Makefile`.
 235. `git log -2 --author=Linus` checks for the last 2 commits by Linus o.0
+236. You can comput in subtype expressions! Thanks to `Dr. Bauman` for this gem.
+```julia
+struct MyArrayWrapper{A} <: supertype(A)
+    data::A
+end
+```
+237. `make core` will maek the core tests in Julia.
+238. `JULIA_LLVM_ARGS=-timepasses ./julia` To time all passes! Cool Stuff I learned from `Jameson Nash`. 
+239. `cat Make.user` to get 
+240. `cp -a v1.7/ v1.8/` to copy over all files
+241. Disabling DWARF with `./julia -g0` will make your code go *slightly faster* because you don't emit as much DWARF stuff - Probs worth looking into disabling it more.
+242. User vs System time: User land vs Kernel land timings  
+243. Profiler tricks:
+```julia
+Profile.print(C = true, nosiefloor = 1, mincount = 10)
+```
+244. `e->Lunions = oldLunions;` is copying by value (which means a stack of 100 int32s is being copied on all that)
 
 
 ### 15/06/2021
