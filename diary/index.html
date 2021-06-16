@@ -1,5 +1,89 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=16062021 ><a href="#16062021" class=header-anchor >16/06/2021</a></h3> <ol start=230 > <li><p><a href="https://stackoverflow.com/tags/x86/info">Travis Downs recommends this x86 link dump</a> - it&#39;s great&#33; OMG it&#39;s way too much...</p> <li><p><code>git format-patch -1 --pretty&#61;fuller 3a38e874d70b</code> to format patches for the linux kernel.</p> <li><p><code>git send-email mypatch.patch</code> to send patches, <code>git format-patch</code> to make it.</p> <li><p><code>cregit, bison, flex, cscope</code> are useful tools for navigating kernel source code.</p> <li><p><code>git log -2 Makefile</code> shows the last 2 commits that went into <code>Makefile</code>.</p> <li><p><code>git log -2 --author&#61;Linus</code> checks for the last 2 commits by Linus o.0</p> </ol> <h3 id=15062021 ><a href="#15062021" class=header-anchor >15/06/2021</a></h3> <ol start=206 > <li><p>Discovered <a href="https://github.com/Genivia/ugrep">upgrep</a>, which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive <code>ugrep -Q &#39;foo&#39;</code> mode. The debranching algo is <a href="https://www.youtube.com/watch?v&#61;kA7qZgmfwD8">exposed in this talk</a>.</p> <li><p>Rediscovered <a href="https://calculusmadeeasy.org/">Calculus made easy</a> and <a href="https://artofproblemsolving.com/school">AoPS boards</a>.</p> <li><p>Never a bad time to remember the <a href="https://github.com/miguelraz/CFDPython">CFDPython</a> exists.</p> <li><p>Found the books <code>More/Surprises in Theoretical Physics by Rudolf Peierls</code>.</p> <li><p>Also found <a href="https://github.com/tobydriscoll/fnc-extras">Fundamentals of Numerical Computing</a> by Toby Driscoll and <a href="http://people.maths.ox.ac.uk/trefethen/Exploring.pdf">Exploring ODEs</a></p> <li><p>PROJECT IDEA: Scrape <a href="https://uops.info/xml.html">uops.info</a> with <code>TableScraper.jl</code>.</p> <li><p>PROJECT IDEA: CourseTemplates.jl based on <a href="https://github.com/mitmath/18S191">Computational Thinking from MIT</a> which is <a href="https://computationalthinking.mit.edu/Spring21/semesters/">very pretty</a>.</p> <li><p>Remember the Intel OPtimization manuals come with <a href="https://github.com/intel/optimization-manual/tree/2a7418eb5b6d750437c51542aec276a4d688fcba/common">attached example codes</a></p> <li><p>PROJECT IDEA: Port <a href="https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome">GW Open Data Workshop</a> too.</p> <li><p><a href="https://github.com/gwisk/gradguide">Read George&#39;s grad guide</a>.</p> <li><p>Julius&#39; post on <a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a> is great.</p> <li><p>PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS &#43; TextUserInterfaces.jl maybe?. YES. YES&#33;</p> <li><p>PROJECT IDEA: Open Data structures in Julia with the MIT course template.</p> <li><p>Look into <a href="https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf">DIANA</a> and Julian ports of it &#40;<a href="https://core.ac.uk/download/pdf/25359736.pdf">paper is here</a>, <a href="https://github.com/apik/diana">code is here</a>&#41;.</p> </ol> <p>- &#91;FeynCalc&#93;&#40;https://github.com/FeynCalc/feyncalc&#41; in Mathematica is an interesting contender: &#91;3.4 seconds&#93;&#40;https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar&#41; to calculate the Higgs decaying into a fermion-antifermion pair.</p> <ol start=220 > <li><p>Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink&#39;s elbow. Twist off the bottom of the elbow. If there&#39;s no much when you take off the cap, it&#39;s likely there&#39;s no blockage at the elbow. Next, scrape the circumferences of the sink&#39;s drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don&#39;t forget to wrench up the bottom of the elbow again.</p> <li><p>PROJECT IDEA: LLVMPassAnalyzer.jl with <a href="https://github.com/ronisbr/TextUserInterfaces.jl">Text User Interfaces.jl</a> as the backend. Or maybe <a href="https://github.com/kdheepak/TerminalUserInterfaces.jl">TerminalUserInterfaces.jl</a></p> <li><p>Lean: <code>import Leanpkg; #eval Leanpkg.leanVersionString</code>, commetns are with <code>--</code>, arrays <code>#&#91;1,2,3&#93;&#91;1&#93; &#61;&#61; 1</code>, functions don&#39;t need spaces so <code>gcd 1 10 &#61;&#61; 1</code>, Lists are <code>&#91;1,2,3&#93;</code>, </p> </ol> <pre><code class=language-lean >structure Array &#40;a : Type u&#41; where
-    data : List a</code></pre> <ol start=223 > <li><p><code>eval List.map &#40;fun x &#61;&gt; x &#43; 1&#41; &#91;1, 2, 3&#93;</code> and <code>#eval List.map &#40;fun &#40;x,y&#41; &#61;&gt; x &#43; y&#41; &#91;&#40;1,2&#41;, &#40;3,4&#41;&#93; &#61;&#61; &#91;3,7&#93;</code></p> <li><p>There&#39;s <a href="https://agentultra.github.io/lean-for-hackers/">Lean for hackers</a>, and you can run your file with <code>lean --run leanpkg.lean</code>.</p> <li><p><a href="https://functional-algorithms-verified.org/functional_algorithms_verified.pdf">Functional Algorithms Verified&#33;</a> sounds awesome, but not in Lean4 </p> <li><p><a href="https://lean-forward.github.io/logical-verification/2020/index.html">Logical Verification in Lean</a></p> <li><p><a href="https://www.dc.fi.udc.es/~cabalar/vv/index.html">Temporal Logic slides and exams</a></p> <li><p><a href="https://www.youtube.com/watch?v&#61;qDyJ9H6r0YA">LTL Model checking course</a> and book <code>Principles of MOdel Checking - J P Katoen</code></p> <li><p><a href="https://github.com/IPDSnelting/tba-2021">Lean 4 course by Seb. Ullrich</a></p> </ol> <h3 id=11062021 ><a href="#11062021" class=header-anchor >11/06/2021</a></h3> <ol start=196 > <li><p><code>MXCSR</code>: Multimedia eXtension Control and Store Registers - can be accessed with <code>vldmxcsr, vstmxcsr</code></p> <li><p>The amazing <code>Jubilee</code> shares another nugget:</p> </ol> <blockquote> <p>So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions. it&#39;s literally UB. To touch it. At all. Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it&#39;s UB.</p> </blockquote> <ol start=198 > <li><p>When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use <code>vzeroupper</code> before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.</p> <li><p>MASM calling convention: pass first 4 float args in xmm0:3.</p> <li><p>Leaf functions in assembly don&#39;t need a prolog or epilog, non-leaf functions <em>must</em>: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.</p> <li><p>In C&#43;&#43;, you can align xmm values with</p> </ol> <pre><code class=language-cpp >struct XmmVal &#123;
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=16062021 ><a href="#16062021" class=header-anchor >16/06/2021</a></h3> <ol start=230 > <li><p><a href="https://stackoverflow.com/tags/x86/info">Travis Downs recommends this x86 link dump</a> - it&#39;s great&#33; OMG it&#39;s way too much...</p> <li><p><code>git format-patch -1 --pretty&#61;fuller 3a38e874d70b</code> to format patches for the linux kernel.</p> <li><p><code>git send-email mypatch.patch</code> to send patches, <code>git format-patch</code> to make it.</p> <li><p><code>cregit, bison, flex, cscope</code> are useful tools for navigating kernel source code.</p> <li><p><code>git log -2 Makefile</code> shows the last 2 commits that went into <code>Makefile</code>.</p> <li><p><code>git log -2 --author&#61;Linus</code> checks for the last 2 commits by Linus o.0</p> <li><p>You can comput in subtype expressions&#33; Thanks to <code>Dr. Bauman</code> for this gem.</p> </ol> <pre><code class=language-julia >struct MyArrayWrapper&#123;A&#125; &lt;: supertype&#40;A&#41;
+    data::A
+end</code></pre> <ol start=237 > <li><p><code>make core</code> will maek the core tests in Julia.</p> <li><p><code>JULIA_LLVM_ARGS&#61;-timepasses ./julia</code> To time all passes&#33; Cool Stuff I learned from <code>Jameson Nash</code>. </p> <li><p><code>cat Make.user</code> to get </p> <li><p><code>cp -a v1.7/ v1.8/</code> to copy over all files</p> <li><p>Disabling DWARF with <code>./julia -g0</code> will make your code go <em>slightly faster</em> because you don&#39;t emit as much DWARF stuff - Probs worth looking into disabling it more.</p> <li><p>User vs System time: User land vs Kernel land timings </p> <li><p>Profiler tricks:</p> </ol> <pre><code class=language-julia >Profile.print&#40;C &#61; true, nosiefloor &#61; 1, mincount &#61; 10&#41;</code></pre>
+<ol start=244 >
+<li><p><code>e-&gt;Lunions &#61; oldLunions;</code> is copying by value &#40;which means a stack of 100 int32s is being copied on all that&#41;</p>
+
+</ol>
+<h3 id=15062021 ><a href="#15062021" class=header-anchor >15/06/2021</a></h3>
+<ol start=206 >
+<li><p>Discovered <a href="https://github.com/Genivia/ugrep">upgrep</a>, which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive <code>ugrep -Q &#39;foo&#39;</code> mode. The debranching algo is <a href="https://www.youtube.com/watch?v&#61;kA7qZgmfwD8">exposed in this talk</a>.</p>
+
+<li><p>Rediscovered <a href="https://calculusmadeeasy.org/">Calculus made easy</a> and <a href="https://artofproblemsolving.com/school">AoPS boards</a>.</p>
+
+<li><p>Never a bad time to remember the <a href="https://github.com/miguelraz/CFDPython">CFDPython</a> exists.</p>
+
+<li><p>Found the books <code>More/Surprises in Theoretical Physics by Rudolf Peierls</code>.</p>
+
+<li><p>Also found <a href="https://github.com/tobydriscoll/fnc-extras">Fundamentals of Numerical Computing</a> by Toby Driscoll and <a href="http://people.maths.ox.ac.uk/trefethen/Exploring.pdf">Exploring ODEs</a></p>
+
+<li><p>PROJECT IDEA: Scrape <a href="https://uops.info/xml.html">uops.info</a> with <code>TableScraper.jl</code>.</p>
+
+<li><p>PROJECT IDEA: CourseTemplates.jl based on <a href="https://github.com/mitmath/18S191">Computational Thinking from MIT</a> which is <a href="https://computationalthinking.mit.edu/Spring21/semesters/">very pretty</a>.</p>
+
+<li><p>Remember the Intel OPtimization manuals come with <a href="https://github.com/intel/optimization-manual/tree/2a7418eb5b6d750437c51542aec276a4d688fcba/common">attached example codes</a></p>
+
+<li><p>PROJECT IDEA: Port <a href="https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome">GW Open Data Workshop</a> too.</p>
+
+<li><p><a href="https://github.com/gwisk/gradguide">Read George&#39;s grad guide</a>.</p>
+
+<li><p>Julius&#39; post on <a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a> is great.</p>
+
+<li><p>PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS &#43; TextUserInterfaces.jl maybe?. YES. YES&#33;</p>
+
+<li><p>PROJECT IDEA: Open Data structures in Julia with the MIT course template.</p>
+
+<li><p>Look into <a href="https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf">DIANA</a> and Julian ports of it &#40;<a href="https://core.ac.uk/download/pdf/25359736.pdf">paper is here</a>, <a href="https://github.com/apik/diana">code is here</a>&#41;.</p>
+
+</ol>
+<p>- &#91;FeynCalc&#93;&#40;https://github.com/FeynCalc/feyncalc&#41; in Mathematica is an interesting contender: &#91;3.4 seconds&#93;&#40;https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar&#41; to calculate the Higgs decaying into a fermion-antifermion pair.</p>
+<ol start=220 >
+<li><p>Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink&#39;s elbow. Twist off the bottom of the elbow. If there&#39;s no much when you take off the cap, it&#39;s likely there&#39;s no blockage at the elbow. Next, scrape the circumferences of the sink&#39;s drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don&#39;t forget to wrench up the bottom of the elbow again.</p>
+
+<li><p>PROJECT IDEA: LLVMPassAnalyzer.jl with <a href="https://github.com/ronisbr/TextUserInterfaces.jl">Text User Interfaces.jl</a> as the backend. Or maybe <a href="https://github.com/kdheepak/TerminalUserInterfaces.jl">TerminalUserInterfaces.jl</a></p>
+
+<li><p>Lean: <code>import Leanpkg; #eval Leanpkg.leanVersionString</code>, commetns are with <code>--</code>, arrays <code>#&#91;1,2,3&#93;&#91;1&#93; &#61;&#61; 1</code>, functions don&#39;t need spaces so <code>gcd 1 10 &#61;&#61; 1</code>, Lists are <code>&#91;1,2,3&#93;</code>, </p>
+
+</ol>
+<pre><code class=language-lean >structure Array &#40;a : Type u&#41; where
+    data : List a</code></pre>
+<ol start=223 >
+<li><p><code>eval List.map &#40;fun x &#61;&gt; x &#43; 1&#41; &#91;1, 2, 3&#93;</code> and <code>#eval List.map &#40;fun &#40;x,y&#41; &#61;&gt; x &#43; y&#41; &#91;&#40;1,2&#41;, &#40;3,4&#41;&#93; &#61;&#61; &#91;3,7&#93;</code></p>
+
+<li><p>There&#39;s <a href="https://agentultra.github.io/lean-for-hackers/">Lean for hackers</a>, and you can run your file with <code>lean --run leanpkg.lean</code>.</p>
+
+<li><p><a href="https://functional-algorithms-verified.org/functional_algorithms_verified.pdf">Functional Algorithms Verified&#33;</a> sounds awesome, but not in Lean4 </p>
+
+<li><p><a href="https://lean-forward.github.io/logical-verification/2020/index.html">Logical Verification in Lean</a></p>
+
+<li><p><a href="https://www.dc.fi.udc.es/~cabalar/vv/index.html">Temporal Logic slides and exams</a></p>
+
+<li><p><a href="https://www.youtube.com/watch?v&#61;qDyJ9H6r0YA">LTL Model checking course</a> and book <code>Principles of MOdel Checking - J P Katoen</code></p>
+
+<li><p><a href="https://github.com/IPDSnelting/tba-2021">Lean 4 course by Seb. Ullrich</a></p>
+
+</ol>
+<h3 id=11062021 ><a href="#11062021" class=header-anchor >11/06/2021</a></h3>
+<ol start=196 >
+<li><p><code>MXCSR</code>: Multimedia eXtension Control and Store Registers - can be accessed with <code>vldmxcsr, vstmxcsr</code></p>
+
+<li><p>The amazing <code>Jubilee</code> shares another nugget:</p>
+
+</ol>
+<blockquote>
+<p>So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions. it&#39;s literally UB. To touch it. At all. Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it&#39;s UB.</p>
+</blockquote>
+<ol start=198 >
+<li><p>When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use <code>vzeroupper</code> before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.</p>
+
+<li><p>MASM calling convention: pass first 4 float args in xmm0:3.</p>
+
+<li><p>Leaf functions in assembly don&#39;t need a prolog or epilog, non-leaf functions <em>must</em>: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.</p>
+
+<li><p>In C&#43;&#43;, you can align xmm values with</p>
+
+</ol>
+<pre><code class=language-cpp >struct XmmVal &#123;
 public:
     union &#123;
         int8_t m_I8&#91;16&#93;;
@@ -13,10 +97,44 @@ void AvxPackedMathF64 &#123;
     alignas&#40;16&#41; XmmVal a;
     alignas&#40;16&#41; XmmVal b;
     alignas&#40;16&#41; XmmVal c&#91;8&#93;;
-&#125;</code></pre> <ol start=202 > <li><p>To get those xmm&#39;s into vector registers:</p> </ol> <pre><code class=language-asm >; Load packed SPFP values
+&#125;</code></pre>
+<ol start=202 >
+<li><p>To get those xmm&#39;s into vector registers:</p>
+
+</ol>
+<pre><code class=language-asm >; Load packed SPFP values
     vmovaps xmm0, xmmword ptr &#91;rcx&#93; ;xmm0 &#61; a
-    vmovaps xmm1, xmmword ptr &#91;rdx&#93; ;xmm1 &#61; b</code></pre> <p>So, note you load the entire <code>xmm</code> register with <code>xmmword ptr &#91;foo&#93;</code>.</p> <ol start=203 > <li><p>Super cool trick to check 16 byte alignment &#40;no perf penalty&#41;</p> </ol> <pre><code class=language-asm >test rcx, ofh ; jump if x not aligned to 16 byte boundary
-jnz Done</code></pre> <ol start=204 > <li><p>Macros avoid overehad of a function call.</p> <li><p>Want to transpose a matrix? Use a bunch of <code>vunpcklps</code>, <code>vunpckhps</code>, <code>vmovlhps</code>, <code>vmovhlps</code>.</p> </ol> <h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3> <ol start=175 > <li><p>Assembly&#33; </p> </ol> <ul> <li><p>rax - temporary register; when we call a syscal, rax must contain syscall number</p> <li><p>rdi - used to pass 1st argument to functions</p> <li><p>rsi - ptr to pass 2nd argument to functions</p> <li><p>rdx - used to pass 3rd argument to functions</p> </ul> <p>This mirrors this syscall in C:</p> <pre><code class=language-c >size_t sys_write&#40;unsigned int fd, const char* buf, size_t count&#41;;</code></pre>
+    vmovaps xmm1, xmmword ptr &#91;rdx&#93; ;xmm1 &#61; b</code></pre>
+<p>So, note you load the entire <code>xmm</code> register with <code>xmmword ptr &#91;foo&#93;</code>.</p>
+<ol start=203 >
+<li><p>Super cool trick to check 16 byte alignment &#40;no perf penalty&#41;</p>
+
+</ol>
+<pre><code class=language-asm >test rcx, ofh ; jump if x not aligned to 16 byte boundary
+jnz Done</code></pre>
+<ol start=204 >
+<li><p>Macros avoid overehad of a function call.</p>
+
+<li><p>Want to transpose a matrix? Use a bunch of <code>vunpcklps</code>, <code>vunpckhps</code>, <code>vmovlhps</code>, <code>vmovhlps</code>.</p>
+
+</ol>
+<h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3>
+<ol start=175 >
+<li><p>Assembly&#33; </p>
+
+</ol>
+<ul>
+<li><p>rax - temporary register; when we call a syscal, rax must contain syscall number</p>
+
+<li><p>rdi - used to pass 1st argument to functions</p>
+
+<li><p>rsi - ptr  to pass 2nd argument to functions</p>
+
+<li><p>rdx - used to pass 3rd argument to functions</p>
+
+</ul>
+<p>This mirrors this syscall in C:</p>
+<pre><code class=language-c >size_t sys_write&#40;unsigned int fd, const char* buf, size_t count&#41;;</code></pre>
 <ul>
 <li><p><code>fd</code> - file descriptor, 0,1,2 for stin, stdout, and stderr respectviely</p>
 
