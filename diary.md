@@ -10,7 +10,12 @@
 247. [io_uring tutorial here](https://unixism.net/loti/async_intro.html), with a [chatbot example here](https://github.com/robn/yoctochat)
 248. [6 ways to make async Rust easier](https://carllerche.com/2021/06/17/six-ways-to-make-async-rust-easier/)
 249. Triage: `filter(func)` makes `func` a `Fix1`.
-
+250. Lazy iterators have uppercase names!
+251. GC is broken in multithreading - if thread 1 is allocating a bunch of garbage, and thread 2 isn't, then thread 1 can trigger a dozen collections, making thread 2 think its few objects are very old, and thus don't need to be collected.
+252. Lean4: `return` at the end will hurt type inference.
+253. `fpcontract` is a type of `fastmath flag`. If you use LLVMCall, you can use specific ones. Here's a specific issue for [automatic FMA](https://github.com/JuliaLang/julia/issues/40139).
+254. Turns out [folds are universal](https://www.cs.nott.ac.uk/~pszgmh/fold.pdf) - 
+255. PROJECT IDEA: [Feynman Diagrams???](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf)
 
 ### 16/06/2021
 
@@ -48,7 +53,7 @@ Profile.print(C = true, nosiefloor = 1, mincount = 10)
 - [beginner friendly examples](https://github.com/tlaplus/Examples/issues/15)
 - [advent of code 2020](https://github.com/arnaudbos/aoc2020-tla-plus/blob/master/day1/DayOne.tla)
 - [tortoise and hare cycle detection algo](https://github.com/lorin/tla-tortoise-hare/blob/master/CycleDetection.tla)
-- [Rust and TLA+](https://github.com/spacejam/tla-rust#here-we-go-jumping-into-pluscal),
+- [Rust and TLA+](  https://github.com/spacejam/tla-rust#here-we-go-jumping-into-pluscal),
 
 
 
