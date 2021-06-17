@@ -5,6 +5,13 @@
 
 # Virtual diary for progress on all fronts
 
+### 17/06/2021
+
+247. [io_uring tutorial here](https://unixism.net/loti/async_intro.html), with a [chatbot example here](https://github.com/robn/yoctochat)
+248. [6 ways to make async Rust easier](https://carllerche.com/2021/06/17/six-ways-to-make-async-rust-easier/)
+249. Triage: `filter(func)` makes `func` a `Fix1`.
+
+
 ### 16/06/2021
 
 230. [Travis Downs recommends this x86 link dump](https://stackoverflow.com/tags/x86/info) - it's great! OMG it's way too much...
