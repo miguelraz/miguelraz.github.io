@@ -188,13 +188,19 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://miguelraz.github.io/blog/juliatorust/index.html</loc>
+    <loc>https://miguelraz.github.io/blog/drawyourrng/index.html</loc>
     <lastmod>2021-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://miguelraz.github.io/index.html</loc>
+    <lastmod>2021-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://miguelraz.github.io/blog/juliatorust/index.html</loc>
     <lastmod>2021-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
