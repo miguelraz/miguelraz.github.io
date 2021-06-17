@@ -19,3 +19,5 @@
 
 - Jacob Quinn: ?foo gives you help, but ??foo gives you the stuff under "# Extended help"
 https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
+
+- `LLVM_JULIA_ARGS=-time-passes ./julia -e 'using Plots; plot(1:10)'`

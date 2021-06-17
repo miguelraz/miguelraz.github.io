@@ -30,6 +30,19 @@ end
 Profile.print(C = true, nosiefloor = 1, mincount = 10)
 ```
 244. `e->Lunions = oldLunions;` is copying by value (which means a stack of 100 int32s is being copied on all that)
+245. Charpov sent me `homework1` and friends - MPI assignment is Homework 5.
+246. TLA+ Link dump
+- [mpmc.c Lemmy tutorial](https://www.youtube.com/watch?v=wjsI0lTSjIo) [with C code](https://github.com/lemmy/BlockingQueue/blob/master/impl/producer_consumer.c), [java example](https://www.cs.unh.edu/~charpov/programming-tlabuffer.html)
+- [PlusCal course](https://weblog.cs.uiowa.edu/cs5620f15/Homework)
+- [cheat sheet](https://d3s.mff.cuni.cz/f/teaching/nswi101/pluscal.pdf)
+- PROJECT IDEA: [Lean 4 Runge Kutta](https://lpsa.swarthmore.edu/NumInt/NumIntFourth.html), [Functional Fold!](https://www.johndcook.com/blog/2016/06/02/ode-solver-as-a-functional-fold/)
+- [Intro to Distributed Systems book - Murat Demirbas recc](https://cse.buffalo.edu/~demirbas/CSE586/book.pdf)
+- [Dao attack in PlusCal](https://muratbuffalo.blogspot.com/2018/01/modeling-doa-attack-in-pluscal.html), [code is here](https://github.com/muratdem/PlusCal-examples/tree/master/DAO)
+- [beginner friendly examples](https://github.com/tlaplus/Examples/issues/15)
+- [advent of code 2020](https://github.com/arnaudbos/aoc2020-tla-plus/blob/master/day1/DayOne.tla)
+- [tortoise and hare cycle detection algo](https://github.com/lorin/tla-tortoise-hare/blob/master/CycleDetection.tla)
+- [Rust and TLA+](https://github.com/spacejam/tla-rust#here-we-go-jumping-into-pluscal),
+
 
 
 ### 15/06/2021
@@ -62,7 +75,10 @@ structure Array (a : Type u) where
 226. [Logical Verification in Lean](https://lean-forward.github.io/logical-verification/2020/index.html)
 227. [Temporal Logic slides and exams](https://www.dc.fi.udc.es/~cabalar/vv/index.html)
 228. [LTL Model checking course](https://www.youtube.com/watch?v=qDyJ9H6r0YA) and book `Principles of MOdel Checking - J P Katoen`
-229. [Lean 4 course by Seb. Ullrich](https://github.com/IPDSnelting/tba-2021)
+229. [Lean 4 course by Seb. Ullrich](https://github.com/IPDSnelting/tba-2021) is THE source and [Lean for hackers](https://github.com/agentultra/lean-for-hackers/blob/master/index.md) looks like a good hello world post.
+- Bonus [advent of lean4](https://github.com/rwbarton/advent-of-lean-4)
+- PROJECT IDEA: [Linear Temporal Logic in Lean4](https://github.com/GaloisInc/lean-protocol-support/blob/cabfa3abedbdd6fdca6e2da6fbbf91a13ed48dda/galois/temporal/temporal.lean)
+- [All the adhd feels today](https://twitter.com/visakanv/status/1405252979301634049)
 
 
 ### 11/06/2021
