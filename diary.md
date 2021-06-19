@@ -5,6 +5,49 @@
 
 # Virtual diary for progress on all fronts
 
+### 18/06/2021
+
+256. A `behaviour` of a system is a sequence of states. A `state machine` is described by all its possible initial states and a next state relation. A `state` is an assignment of values to variables. The part of the program that controls what action is executed next is called the `control state`.
+257. A new TLA+ spec...
+```tla
+------------------------------- MODULE simple -------------------------------
+EXTENDS Integers
+VARIABLES pc, i
+
+
+Init == i = 0 /\ pc = "start"
+
+Pick == \/ /\ pc = "start"
+           /\ i' \in 0..1000
+           /\ pc' = "middle"
+         
+Add1 == \/ /\ pc = "middle"
+           /\ i' = i + 1
+           /\ pc' = "done"
+
+Next == Pick \/ Add1
+
+=============================================================================
+\* Modification History
+\* Last modified Fri Jun 18 20:58:16 CDT 2021 by mrg
+\* Created Fri Jun 18 20:50:35 CDT 2021 by mrg
+
+```
+258. To produce the PDF, type `Ctrl + Alt + P`.
+259. DON'T use Tabs (config in Preferences), F3/F4 to jump back and forth, F5 to see all defs, F6 for all uses of word under cursor, F10 is jump to PlusCal unfolded def, Oooh boxed comments are neat with `Ctrl+O + Ctrl+B` and friends, don't shade PlusCal code, regen pdf on save, `Ctrl+TAB` to swap between tabs, `Ctrl+Alt` to swap between subtabs
+260. [Hillel's super cool tricks for TLA+](https://twitter.com/hillelogram/status/1406081888498892807)
+261. This formula `FillSmall == small' = 3` is WRONG. It's true for some steps and false for others. It is NOT an assignment. The `big` must remain unchanged! If you don't you are coding, if you do keep it same, you are doing math. eg:
+```tla
+FillSmall == /\ small' = 3
+             /\ big' = big
+```
+262. Remember you can add `TypeOK` as an invariant and `big # 4` too!
+263. `big + small =< 5` , not `big + small <= 5` 🙁 
+264. Equality is commutative! `0 = small === small' = 0`
+265. Use a ' expression only in `v' = ...` and `v' \in ...`
+
+
+
 ### 17/06/2021
 
 247. [io_uring tutorial here](https://unixism.net/loti/async_intro.html), with a [chatbot example here](https://github.com/robn/yoctochat)
