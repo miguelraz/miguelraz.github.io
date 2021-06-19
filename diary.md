@@ -5,6 +5,64 @@
 
 # Virtual diary for progress on all fronts
 
+### 19/06/2021
+
+267. In TLA+, every value is a set: 42 is a set, "abc" is a set.
+268. This represents 
+```tla
+TCTypeOK ==
+    rmState \in [RM -> {"working", "prepared", "committeed", "aborted"}]
+TCInit == rmState = [r \in RM |-> "working"] (* this means the array with index set RM such that every element rm of RM is mapped to "working"*)
+```
+269. Terminology
+| Programming | Math|
+|---|---|
+| array | function |
+|index set | domain |
+|f[e] | f(e) |
+270. Remember notation for updating a record: 
+```tla
+Prepare(r) == /\ rmState[r] = "working"
+              /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
+
+Decide(r)  == \/ /\ rmState[r] = "prepared"
+                 /\ canCommit
+                 /\ rmState' = [rmState EXCEPT ![r] = "committed"]
+              \/ /\ rmState[r] \in {"working", "prepared"}
+                 /\ notCommitted
+                 /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+```
+271. Ah! Draw the state machine and then figure out the actions that transition to each state!
+272. If you see the Coverage of actions and some of the actions were never taken `Count == 0`, it usually means there's an error in the spec.
+273. End of line `\* comment syntax`
+274. This record is actually a function, whose domain is `{"prof", "name"} such that f["prof"] = "Fred" and f["num"] = 42`. `f.prof === f["prof"]`
+```tla
+[prof |-> "Fred", num |-> 42]
+```
+275. Abbreviate `[f EXCEPT !["prof"] = "Red"` as `[f EXCEPT !.prof = "Red"}]`
+276. `UNCHANGED <<rmState, tmSTate, msgs>>` is an ordered triple. It's equivalent to 
+```tla
+... /\ rmState' = rmState
+    /\ tmState' = tmState
+    /\ msgs' = msgs
+```
+277. Conditions which have no primes' are calle *enabling conditions*, and  in an Action Formula should go at the beginning, like so.
+```tla
+TMRcvPrepared(r) == /\ tmState = "init"
+                    /\ [type |-> "Prepared", rm |-> r] \in msgs
+```
+278. Update the CommunityModules.jar... or else get hit by a bug..
+279. `Symmetry sets`: if "r1"↔ "r3" in all states of behavior `b` allowed by `TwoPhase` produces a behaviour `b\_{1,3}` allowed by `TwoPhase`, TLC does not have to check `b\_{1,3}` if it has checked `b`. Becuase `RM = {"r1", "r2", "r3"}`, We say that RM is a `symmetry set` of `TwoPhase`. To exploit this, replace
+```tla 
+RM <- {"r1", "r2", "r3"}
+```
+with 
+```tla
+RM <- {r1, r2, r3}
+```
+select `Set of model values/Symmetry Set` just below it.
+
+
 ### 18/06/2021
 
 256. A `behaviour` of a system is a sequence of states. A `state machine` is described by all its possible initial states and a next state relation. A `state` is an assignment of values to variables. The part of the program that controls what action is executed next is called the `control state`.
@@ -45,8 +103,6 @@ FillSmall == /\ small' = 3
 263. `big + small =< 5` , not `big + small <= 5` 🙁 
 264. Equality is commutative! `0 = small === small' = 0`
 265. Use a ' expression only in `v' = ...` and `v' \in ...`
-
-
 
 ### 17/06/2021
 
