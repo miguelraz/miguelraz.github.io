@@ -12,9 +12,49 @@
              bal  |-&gt; aState&#91;m.ins&#93;&#91;acc&#93;.bal, 
              val  |-&gt; aState&#91;m.ins&#93;&#91;acc&#93;.val,
              acc  |-&gt; acc&#93;&#41;
-    /\ UNCHANGED rmState</code></pre> <ol start=288 > <li><p>Elements of a <code>Symmetry Set</code> may not appear in a <code>CHOOSE</code>.</p> <li><p><code>ASSUME</code> must be a constant formula.</p> <li><p>Specs hold as undefined all values of all variables not used at all times. It&#39;s best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly. </p> <li><p>Steps that leave are variable values unchanged are called <code>stuttering steps</code>. Including stuttering steps helps us say what a system <em>may</em> do, but now we want to specify what a system <em>must</em> do.</p> <li><p>A finite sequence is another name for <code>tuple</code>.</p> </ol> <h3 id=19062021 ><a href="#19062021" class=header-anchor >19/06/2021</a></h3> <ol start=267 > <li><p>In TLA&#43;, every value is a set: 42 is a set, &quot;abc&quot; is a set.</p> <li><p>This represents </p> </ol> <pre><code class=language-tla >TCTypeOK &#61;&#61;
+    /\ UNCHANGED rmState</code></pre> <ol start=288 > <li><p>Elements of a <code>Symmetry Set</code> may not appear in a <code>CHOOSE</code>.</p> <li><p><code>ASSUME</code> must be a constant formula.</p> <li><p>Specs hold as undefined all values of all variables not used at all times. It&#39;s best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly. </p> <li><p>Steps that leave are variable values unchanged are called <code>stuttering steps</code>. Including stuttering steps helps us say what a system <em>may</em> do, but now we want to specify what a system <em>must</em> do.</p> <li><p>A finite sequence is another name for <code>tuple</code>.</p> <li><p><a href="https://lamport.azurewebsites.net/video/ABSpec.tla">Alternating Bit</a> protocol: Let&#39;s say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart <code>Fred, Mary, Mary, Ted, Ted, Ted, Ann</code> from <code>Fred, Mary, Ted, Ann</code>. You could timestamp it, but let&#39;s not. It&#39;s easiest to just append a bit that flips after every message. Appending a bit can be done with</p> </ol> <pre><code class=language-tla >TypeOK &#61;&#61; /\ Data \X &#123;0, 1&#125; \* where \X is the cartesian product</code></pre>
+<ol start=293 >
+<li><p>To talk about <code>may/must</code>, we will talk about liveness and Safety properties.</p>
+
+</ol>
+<ul>
+<li><p><code>Safety Formula</code>: Asserts what may happen. Any behavior that violates it does so at some point. Nothing past that point makes nay difference.</p>
+
+<li><p><code>🔷 Liveness / eventually Formula</code>: Asserts only what must happen. A behavior can <em>not</em> violate it at any point. Only liveness property sequential programs must satisfy is <code>🔷Terminated</code></p>
+
+<li><p>Weak fairness of Action A: if A ever remains continuously enabled, then A step must eventually occur. Equivalent - A cannot remain enabled forever without another A step occurring. It&#39;s written as <code>WF_vars&#40;A&#41;</code></p>
+<ul>
+<li><p>A spec with liveness is writeen as <code>Init &#91;&#93;&#91;Next&#93;_vars /\ Fairness</code></p>
+
+<li><p>Have TLC check the liveness property by clicking on the <code>Properties</code> part of the toolbox and then <code>\A v \in Data \X &#123;0,1&#125; : &#40;AVar &#61; v&#41; ~&gt; &#40;BVar &#61; v&#41;</code>.</p>
+
+</ul>
+
+</ul>
+<ol start=294 >
+<li><p>Now on to the full <a href="https://lamport.azurewebsites.net/video/AB.tla">AB Protocol</a></p>
+
+</ol>
+<h3 id=19062021 ><a href="#19062021" class=header-anchor >19/06/2021</a></h3>
+<ol start=267 >
+<li><p>In TLA&#43;, every value is a set: 42 is a set, &quot;abc&quot; is a set.</p>
+
+<li><p>This represents </p>
+
+</ol>
+<pre><code class=language-tla >TCTypeOK &#61;&#61;
     rmState \in &#91;RM -&gt; &#123;&quot;working&quot;, &quot;prepared&quot;, &quot;committeed&quot;, &quot;aborted&quot;&#125;&#93;
-TCInit &#61;&#61; rmState &#61; &#91;r \in RM |-&gt; &quot;working&quot;&#93; &#40;* this means the array with index set RM such that every element rm of RM is mapped to &quot;working&quot;*&#41;</code></pre> <ol start=269 > <li><p>Terminology</p> </ol> <table><tr><th align=right >Programming<th align=right >Math<tr><td align=right >array<td align=right >function<tr><td align=right >index set<td align=right >domain<tr><td align=right >f&#91;e&#93;<td align=right >f&#40;e&#41;</table> <ol start=270 > <li><p>Remember notation for updating a record: </p> </ol> <pre><code class=language-tla >Prepare&#40;r&#41; &#61;&#61; /\ rmState&#91;r&#93; &#61; &quot;working&quot;
+TCInit &#61;&#61; rmState &#61; &#91;r \in RM |-&gt; &quot;working&quot;&#93; &#40;* this means the array with index set RM such that every element rm of RM is mapped to &quot;working&quot;*&#41;</code></pre>
+<ol start=269 >
+<li><p>Terminology</p>
+
+</ol>
+<table><tr><th align=right >Programming<th align=right >Math<tr><td align=right >array<td align=right >function<tr><td align=right >index set<td align=right >domain<tr><td align=right >f&#91;e&#93;<td align=right >f&#40;e&#41;</table>
+<ol start=270 >
+<li><p>Remember notation for updating a record: </p>
+
+</ol>
+<pre><code class=language-tla >Prepare&#40;r&#41; &#61;&#61; /\ rmState&#91;r&#93; &#61; &quot;working&quot;
               /\ rmState&#39; &#61; &#91;rmState EXCEPT &#33;&#91;r&#93; &#61; &quot;prepared&quot;&#93;
 
 Decide&#40;r&#41;  &#61;&#61; \/ /\ rmState&#91;r&#93; &#61; &quot;prepared&quot;
@@ -22,7 +62,18 @@ Decide&#40;r&#41;  &#61;&#61; \/ /\ rmState&#91;r&#93; &#61; &quot;prepared&quot
                  /\ rmState&#39; &#61; &#91;rmState EXCEPT &#33;&#91;r&#93; &#61; &quot;committed&quot;&#93;
               \/ /\ rmState&#91;r&#93; \in &#123;&quot;working&quot;, &quot;prepared&quot;&#125;
                  /\ notCommitted
-                 /\ rmState&#39; &#61; &#91;rmState EXCEPT &#33;&#91;r&#93; &#61; &quot;aborted&quot;&#93;</code></pre> <ol start=271 > <li><p>Ah&#33; Draw the state machine and then figure out the actions that transition to each state&#33;</p> <li><p>If you see the Coverage of actions and some of the actions were never taken <code>Count &#61;&#61; 0</code>, it usually means there&#39;s an error in the spec.</p> <li><p>End of line <code>\* comment syntax</code></p> <li><p>This record is actually a function, whose domain is <code>&#123;&quot;prof&quot;, &quot;name&quot;&#125; such that f&#91;&quot;prof&quot;&#93; &#61; &quot;Fred&quot; and f&#91;&quot;num&quot;&#93; &#61; 42</code>. <code>f.prof &#61;&#61;&#61; f&#91;&quot;prof&quot;&#93;</code></p> </ol> <pre><code class=language-tla >&#91;prof |-&gt; &quot;Fred&quot;, num |-&gt; 42&#93;</code></pre>
+                 /\ rmState&#39; &#61; &#91;rmState EXCEPT &#33;&#91;r&#93; &#61; &quot;aborted&quot;&#93;</code></pre>
+<ol start=271 >
+<li><p>Ah&#33; Draw the state machine and then figure out the actions that transition to each state&#33;</p>
+
+<li><p>If you see the Coverage of actions and some of the actions were never taken <code>Count &#61;&#61; 0</code>, it usually means there&#39;s an error in the spec.</p>
+
+<li><p>End of line <code>\* comment syntax</code></p>
+
+<li><p>This record is actually a function, whose domain is <code>&#123;&quot;prof&quot;, &quot;name&quot;&#125; such that f&#91;&quot;prof&quot;&#93; &#61; &quot;Fred&quot; and f&#91;&quot;num&quot;&#93; &#61; 42</code>. <code>f.prof &#61;&#61;&#61; f&#91;&quot;prof&quot;&#93;</code></p>
+
+</ol>
+<pre><code class=language-tla >&#91;prof |-&gt; &quot;Fred&quot;, num |-&gt; 42&#93;</code></pre>
 <ol start=275 >
 <li><p>Abbreviate <code>&#91;f EXCEPT &#33;&#91;&quot;prof&quot;&#93; &#61; &quot;Red&quot;</code> as <code>&#91;f EXCEPT &#33;.prof &#61; &quot;Red&quot;&#125;&#93;</code></p>
 
