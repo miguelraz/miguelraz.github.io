@@ -47,6 +47,17 @@ Phase1b(acc) ==
 290. Specs hold as undefined all values of all variables not used at all times. It's best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly.   
 291. Steps that leave are variable values unchanged are called `stuttering steps`. Including stuttering steps helps us say what a system *may* do, but now we want to specify what a system *must* do.
 292. A finite sequence is another name for `tuple`.
+292. [Alternating Bit](https://lamport.azurewebsites.net/video/ABSpec.tla) protocol: Let's say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart `Fred, Mary, Mary, Ted, Ted, Ted, Ann` from `Fred, Mary, Ted, Ann`. You could timestamp it, but let's not. It's easiest to just append a bit that flips after every message. Appending a bit can be done with
+```tla
+TypeOK == /\ Data \X {0, 1} \* where \X is the cartesian product
+```
+293. To talk about `may/must`, we will talk about liveness and Safety properties.
+- `Safety Formula`: Asserts what may happen. Any behavior that violates it does so at some point. Nothing past that point makes nay difference.
+- `🔷 Liveness / eventually Formula`: Asserts only what must happen. A behavior can *not* violate it at any point. Only liveness property sequential programs must satisfy is `🔷Terminated`
+- Weak fairness of Action A: if A ever remains continuously enabled, then A step must eventually occur. Equivalent - A cannot remain enabled forever without another A step occurring. It's written as `WF_vars(A)`
+  - A spec with liveness is writeen as `Init [][Next]_vars /\ Fairness`
+  - Have TLC check the liveness property by clicking on the `Properties` part of the toolbox and then `\A v \in Data \X {0,1} : (AVar = v) ~> (BVar = v)`.
+294. Now on to the full [AB Protocol](https://lamport.azurewebsites.net/video/AB.tla)
 
 ### 19/06/2021
 
