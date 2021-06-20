@@ -5,6 +5,49 @@
 
 # Virtual diary for progress on all fronts
 
+### 20/06/2021
+
+281. I read [Lamports Logical Clocks](https://lamport.azurewebsites.net/pubs/time-clocks.pdf) paper today. I learned a couple of things.
+- To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.
+- However, these total orderings can be "unsynched" from the real world - if you include some small perturbations in your timestamps, you can, within bounded time (and quite fast) always synchronize your system.
+282. Now reading [Paxos Paper](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf).
+- To coordinate proposals of a value, it's good to keep a threshold counter and reject proposals which are inferior to that.
+- [Fischer, Lynch, and Patterson]() implies that " a reliable algoritm for eledcting a proposer must use either randomness or real time -- for example, by using timeouts."
+283. `CHOOSE` is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write `x' = CHOOSE i \in 1..9 : TRUE`, just use `x' \in 1..99`. Use `CHOOSE` only when there's exactly 1 `v` in `S` satisfying formula `P`, like in the definition of `Maximum(s)`
+```tla
+Maximum(S) == IF S = {} THEN -1
+              ELSE CHOOSE x \in S : \A m \in S : x \geq m
+```
+284. The `ASSUME` statement is made for assumptions about the constants
+285. `SUBSET Acceptor` == `PowerSetOf(Acceptor)`.
+286. `EXCEPT` can be chained!
+```tla
+       /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal,
+                                   ![m.ins][acc].bal  = m.bal,
+                                   ![m.ins][acc].val  = m.val]
+```
+287. This is also legit:
+```tla
+Phase1b(acc) ==  
+  \E m \in msgs : 
+    /\ m.type = "phase1a"
+    /\ aState[m.ins][acc].mbal < m.bal
+    /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal]
+    /\ Send([type |-> "phase1b", 
+             ins  |-> m.ins, 
+             mbal |-> m.bal, 
+             bal  |-> aState[m.ins][acc].bal, 
+             val  |-> aState[m.ins][acc].val,
+             acc  |-> acc])
+    /\ UNCHANGED rmState
+
+```
+288. Elements of a `Symmetry Set` may not appear in a `CHOOSE`.
+289. `ASSUME` must be a constant formula.
+290. Specs hold as undefined all values of all variables not used at all times. It's best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly.   
+291. Steps that leave are variable values unchanged are called `stuttering steps`. Including stuttering steps helps us say what a system *may* do, but now we want to specify what a system *must* do.
+292. A finite sequence is another name for `tuple`.
+
 ### 19/06/2021
 
 267. In TLA+, every value is a set: 42 is a set, "abc" is a set.
@@ -61,6 +104,8 @@ with
 RM <- {r1, r2, r3}
 ```
 select `Set of model values/Symmetry Set` just below it.
+280. So it turns out that TwoPhase Commit can break if the TM fails. If you try to "just" engineer it with a second TM, they can cannibalize messages if TM1 pauses and TM2 takes over and sends an abort signal.
+
 
 
 ### 18/06/2021
