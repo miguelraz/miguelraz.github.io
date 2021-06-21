@@ -58,6 +58,27 @@ TypeOK == /\ Data \X {0, 1} \* where \X is the cartesian product
   - A spec with liveness is writeen as `Init [][Next]_vars /\ Fairness`
   - Have TLC check the liveness property by clicking on the `Properties` part of the toolbox and then `\A v \in Data \X {0,1} : (AVar = v) ~> (BVar = v)`.
 294. Now on to the full [AB Protocol](https://lamport.azurewebsites.net/video/AB.tla)
+295. `Strong Fairness` of action A asserts of a behavior: 
+    - If A is ever `repeatedly enabled`, then an A step must eventually occur.
+    - Equivalently: A cannot be repeatedly enabled forever without another A step occurring.
+    - Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.
+296. What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there's no hard real time requirements.
+297. Recursive declarations must be prepended with `RECURSIVE`
+```tla
+RECURSIVE RemoveX(_)
+RemoveX(seq) == IF seq = << >>
+                THEN << >>
+                ELSE IF Head(seq) = "X"
+                     THEN RemoveX(Tail(seq))
+                     ELSE <<Head(seq)>> \o RemoveX(Tail(seq))
+```
+298. The Temporal Substitution law: can't do the basic maths trick have to had the 🔲 
+```tla
+THEOREM 🔲 (v = e) => (f = (f WITH v <- e))
+```
+299. When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential "Bad" string, and TLC will yell at formulas like `"Bad" = 0`. Instead, we can call the constant `Bad` a model value.
+300. When trying to specify the liveness of the spec, it's good to try and attach metadata for what actually happened, but don't append `TRUE/FALSE` to your messages - separate another Sequence as `<<TRUE,FALSE,TRUE...>>` to keep track of the *real* and *imaginary* parts of the spec.
+301. Refinement mappings help make implementations easier.
 
 ### 19/06/2021
 
