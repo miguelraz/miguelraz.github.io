@@ -5,6 +5,78 @@
 
 # Virtual diary for progress on all fronts
 
+### 21/06/2021
+
+302. [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/): `esc` means "treat this variable like a variable the user has written themselves." AKA interpolating within the macro only gives you variables local to the macro's module, escaping treats it as a user variable.
+- Before writing a macro for an expression, try to understand it first with `Meta.@dump`.
+- A good check for correct escaping is passing in local variables.
+```julia
+julia> module m
+           export fill
+           macro fill(exp, sizes...)
+               iterator_expressions = map(sizes) do s
+                   Expr(
+                       :(=),
+                       :_,
+                       quote 1:$(esc(s)) end
+                       )
+               end
+               Expr(:comprehension,
+                   esc(exp),
+                   iterator_expressions...
+                   )
+           end
+       end
+Main.m
+
+julia> Main.m.@fill(rand(3), 5)
+5-element Vector{Vector{Float64}}:
+ [0.7935931741613422, 0.009320195062872738, 0.586287521697819]
+ [0.5090383286377023, 0.8500671589320301, 0.023782332100151793]
+ [0.31575252460961667, 0.30058298960206287, 0.2873940760156002]
+ [0.07225330666900165, 0.22506420288160234, 0.225626098738561]
+ [0.5753508713492259, 0.37821541454348995, 0.3146472409806831]
+```
+303. `Dr. Takafumi Arakaki` has some good recommendations on globals - mark them inside functions!
+```julia
+julia> global a = 1;
+
+julia> good() = global a += 1;
+
+julia> bad() = a += 1;
+
+julia> good()
+2
+
+julia> bad()
+ERROR: UndefVarError: a not defined
+```
+304. Try to also avoid this idiom:
+```julia
+function consumer()
+    id = threadid()
+    report = 0
+    println("I'm consumer $(threadid())")
+    ...
+```
+Instead try doing
+```julia
+for id in 1:numProducers
+    @spawn producer(id)
+end
+```
+He also recommends that "while debugging, you'd probably wan tto show the error from producers and consumers like this"
+```julia
+@spawn try
+    producer()
+catch err
+    @error "Unexpected error from a producer" exception = (err, catch_backtrace())
+    rethrow()
+end
+```
+305. Neat trick - don't use `while true` loops in the beginning 😅 . Use `for _ in 1:10_000` to check if the threads are even alive.
+
+
 ### 20/06/2021
 
 281. I read [Lamports Logical Clocks](https://lamport.azurewebsites.net/pubs/time-clocks.pdf) paper today. I learned a couple of things.
