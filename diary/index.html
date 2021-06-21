@@ -34,6 +34,36 @@
 <ol start=294 >
 <li><p>Now on to the full <a href="https://lamport.azurewebsites.net/video/AB.tla">AB Protocol</a></p>
 
+<li><p><code>Strong Fairness</code> of action A asserts of a behavior: </p>
+
+</ol>
+<p>- If A is ever <code>repeatedly enabled</code>, then an A step must eventually occur.
+- Equivalently: A cannot be repeatedly enabled forever without another A step occurring.
+- Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.</p>
+<ol start=296 >
+<li><p>What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there&#39;s no hard real time requirements.</p>
+
+<li><p>Recursive declarations must be prepended with <code>RECURSIVE</code></p>
+
+</ol>
+<pre><code class=language-tla >RECURSIVE RemoveX&#40;_&#41;
+RemoveX&#40;seq&#41; &#61;&#61; IF seq &#61; &lt;&lt; &gt;&gt;
+                THEN &lt;&lt; &gt;&gt;
+                ELSE IF Head&#40;seq&#41; &#61; &quot;X&quot;
+                     THEN RemoveX&#40;Tail&#40;seq&#41;&#41;
+                     ELSE &lt;&lt;Head&#40;seq&#41;&gt;&gt; \o RemoveX&#40;Tail&#40;seq&#41;&#41;</code></pre>
+<ol start=298 >
+<li><p>The Temporal Substitution law: can&#39;t do the basic maths trick have to had the 🔲 </p>
+
+</ol>
+<pre><code class=language-tla >THEOREM 🔲 &#40;v &#61; e&#41; &#61;&gt; &#40;f &#61; &#40;f WITH v &lt;- e&#41;&#41;</code></pre>
+<ol start=299 >
+<li><p>When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential &quot;Bad&quot; string, and TLC will yell at formulas like <code>&quot;Bad&quot; &#61; 0</code>. Instead, we can call the constant <code>Bad</code> a model value.</p>
+
+<li><p>When trying to specify the liveness of the spec, it&#39;s good to try and attach metadata for what actually happened, but don&#39;t append <code>TRUE/FALSE</code> to your messages - separate another Sequence as <code>&lt;&lt;TRUE,FALSE,TRUE...&gt;&gt;</code> to keep track of the <em>real</em> and <em>imaginary</em> parts of the spec.</p>
+
+<li><p>Refinement mappings help make implementations easier.</p>
+
 </ol>
 <h3 id=19062021 ><a href="#19062021" class=header-anchor >19/06/2021</a></h3>
 <ol start=267 >
@@ -2422,7 +2452,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: June 20, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: June 21, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
