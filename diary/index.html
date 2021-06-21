@@ -1,4 +1,49 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=20062021 ><a href="#20062021" class=header-anchor >20/06/2021</a></h3> <ol start=281 > <li><p>I read <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamports Logical Clocks</a> paper today. I learned a couple of things.</p> </ol> <ul> <li><p>To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.</p> <li><p>However, these total orderings can be &quot;unsynched&quot; from the real world - if you include some small perturbations in your timestamps, you can, within bounded time &#40;and quite fast&#41; always synchronize your system.</p> </ul> <ol start=282 > <li><p>Now reading <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Paper</a>.</p> </ol> <ul> <li><p>To coordinate proposals of a value, it&#39;s good to keep a threshold counter and reject proposals which are inferior to that.</p> <li><p><a href="">Fischer, Lynch, and Patterson</a> implies that &quot; a reliable algoritm for eledcting a proposer must use either randomness or real time – for example, by using timeouts.&quot;</p> </ul> <ol start=283 > <li><p><code>CHOOSE</code> is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write <code>x&#39; &#61; CHOOSE i \in 1..9 : TRUE</code>, just use <code>x&#39; \in 1..99</code>. Use <code>CHOOSE</code> only when there&#39;s exactly 1 <code>v</code> in <code>S</code> satisfying formula <code>P</code>, like in the definition of <code>Maximum&#40;s&#41;</code></p> </ol> <pre><code class=language-tla >Maximum&#40;S&#41; &#61;&#61; IF S &#61; &#123;&#125; THEN -1
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=21062021 ><a href="#21062021" class=header-anchor >21/06/2021</a></h3> <ol start=302 > <li><p><a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a>: <code>esc</code> means &quot;treat this variable like a variable the user has written themselves.&quot; AKA interpolating within the macro only gives you variables local to the macro&#39;s module, escaping treats it as a user variable.</p> </ol> <ul> <li><p>Before writing a macro for an expression, try to understand it first with <code>Meta.@dump</code>.</p> <li><p>A good check for correct escaping is passing in local variables.</p> </ul> <pre><code class=language-julia >julia&gt; module m
+           export fill
+           macro fill&#40;exp, sizes...&#41;
+               iterator_expressions &#61; map&#40;sizes&#41; do s
+                   Expr&#40;
+                       :&#40;&#61;&#41;,
+                       :_,
+                       quote 1:&#36;&#40;esc&#40;s&#41;&#41; end
+                       &#41;
+               end
+               Expr&#40;:comprehension,
+                   esc&#40;exp&#41;,
+                   iterator_expressions...
+                   &#41;
+           end
+       end
+Main.m
+
+julia&gt; Main.m.@fill&#40;rand&#40;3&#41;, 5&#41;
+5-element Vector&#123;Vector&#123;Float64&#125;&#125;:
+ &#91;0.7935931741613422, 0.009320195062872738, 0.586287521697819&#93;
+ &#91;0.5090383286377023, 0.8500671589320301, 0.023782332100151793&#93;
+ &#91;0.31575252460961667, 0.30058298960206287, 0.2873940760156002&#93;
+ &#91;0.07225330666900165, 0.22506420288160234, 0.225626098738561&#93;
+ &#91;0.5753508713492259, 0.37821541454348995, 0.3146472409806831&#93;</code></pre> <ol start=303 > <li><p><code>Dr. Takafumi Arakaki</code> has some good recommendations on globals - mark them inside functions&#33;</p> </ol> <pre><code class=language-julia >julia&gt; global a &#61; 1;
+
+julia&gt; good&#40;&#41; &#61; global a &#43;&#61; 1;
+
+julia&gt; bad&#40;&#41; &#61; a &#43;&#61; 1;
+
+julia&gt; good&#40;&#41;
+2
+
+julia&gt; bad&#40;&#41;
+ERROR: UndefVarError: a not defined</code></pre> <ol start=304 > <li><p>Try to also avoid this idiom:</p> </ol> <pre><code class=language-julia >function consumer&#40;&#41;
+    id &#61; threadid&#40;&#41;
+    report &#61; 0
+    println&#40;&quot;I&#39;m consumer &#36;&#40;threadid&#40;&#41;&#41;&quot;&#41;
+    ...</code></pre> <p>Instead try doing</p> <pre><code class=language-julia >for id in 1:numProducers
+    @spawn producer&#40;id&#41;
+end</code></pre> <p>He also recommends that &quot;while debugging, you&#39;d probably wan tto show the error from producers and consumers like this&quot;</p> <pre><code class=language-julia >@spawn try
+    producer&#40;&#41;
+catch err
+    @error &quot;Unexpected error from a producer&quot; exception &#61; &#40;err, catch_backtrace&#40;&#41;&#41;
+    rethrow&#40;&#41;
+end</code></pre> <ol start=305 > <li><p>Neat trick - don&#39;t use <code>while true</code> loops in the beginning 😅 . Use <code>for _ in 1:10_000</code> to check if the threads are even alive.</p> </ol> <h3 id=20062021 ><a href="#20062021" class=header-anchor >20/06/2021</a></h3> <ol start=281 > <li><p>I read <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamports Logical Clocks</a> paper today. I learned a couple of things.</p> </ol> <ul> <li><p>To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.</p> <li><p>However, these total orderings can be &quot;unsynched&quot; from the real world - if you include some small perturbations in your timestamps, you can, within bounded time &#40;and quite fast&#41; always synchronize your system.</p> </ul> <ol start=282 > <li><p>Now reading <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Paper</a>.</p> </ol> <ul> <li><p>To coordinate proposals of a value, it&#39;s good to keep a threshold counter and reject proposals which are inferior to that.</p> <li><p><a href="">Fischer, Lynch, and Patterson</a> implies that &quot; a reliable algoritm for eledcting a proposer must use either randomness or real time – for example, by using timeouts.&quot;</p> </ul> <ol start=283 > <li><p><code>CHOOSE</code> is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write <code>x&#39; &#61; CHOOSE i \in 1..9 : TRUE</code>, just use <code>x&#39; \in 1..99</code>. Use <code>CHOOSE</code> only when there&#39;s exactly 1 <code>v</code> in <code>S</code> satisfying formula <code>P</code>, like in the definition of <code>Maximum&#40;s&#41;</code></p> </ol> <pre><code class=language-tla >Maximum&#40;S&#41; &#61;&#61; IF S &#61; &#123;&#125; THEN -1
               ELSE CHOOSE x \in S : \A m \in S : x \geq m</code></pre> <ol start=284 > <li><p>The <code>ASSUME</code> statement is made for assumptions about the constants</p> <li><p><code>SUBSET Acceptor</code> &#61;&#61; <code>PowerSetOf&#40;Acceptor&#41;</code>.</p> <li><p><code>EXCEPT</code> can be chained&#33;</p> </ol> <pre><code class=language-tla >/\ aState&#39; &#61; &#91;aState EXCEPT &#33;&#91;m.ins&#93;&#91;acc&#93;.mbal &#61; m.bal,
                                    &#33;&#91;m.ins&#93;&#91;acc&#93;.bal  &#61; m.bal,
                                    &#33;&#91;m.ins&#93;&#91;acc&#93;.val  &#61; m.val&#93;</code></pre> <ol start=287 > <li><p>This is also legit:</p> </ol> <pre><code class=language-tla >Phase1b&#40;acc&#41; &#61;&#61;  
