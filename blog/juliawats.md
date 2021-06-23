@@ -5,7 +5,8 @@ This talk is inspired by the classic [Wat](https://www.destroyallsoftware.com/ta
 Huge thanks to Mason Protter, most of these are his.
 
 - and, or on empty collections
-
+- RNG seed set by `@testset`
+- 
 - Stealing the pipe operator with an even uglier syntax 
 ```julia
 struct PseudoClass{T}

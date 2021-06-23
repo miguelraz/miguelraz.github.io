@@ -5,6 +5,14 @@
 
 # Virtual diary for progress on all fronts
 
+### 22/06/2021
+
+306. Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.
+307. Julia 1.7 has implicit multiplication of radicals! `xSQ3y` works! Also `(; a, b) = x` can destructure `x`.
+308. [MPI Formal TLA+ spec!](http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf) + [formal lab link](http://formalverification.cs.utah.edu/mpitla/)
+309. [Practical Specification course!](https://web.cecs.pdx.edu/~apt/cs510spec/).
+310. Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.
+
 ### 21/06/2021
 
 302. [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/): `esc` means "treat this variable like a variable the user has written themselves." AKA interpolating within the macro only gives you variables local to the macro's module, escaping treats it as a user variable.
