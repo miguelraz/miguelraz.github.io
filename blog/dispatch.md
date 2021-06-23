@@ -70,12 +70,13 @@ On namespaces as well, those debates are just not going to be as big a problem i
 
 \miguelito{What? No way.}
 
-\dispatch{Of course! What's more natural than addition? You just haven't used the name multiple dispatch for it, which is fine. Bear with me for some simple arithmetic: Can you describe the procedure you know for adding integers? Say you want to add `123 + 890`. (This is a good moment to install and open julia from [julialang.org](julialang.org)) if you haven't already done so)}
+\dispatch{Of course! What's more natural than addition? You just haven't used the name multiple dispatch for it, which is fine. Bear with me for some simple arithmetic: Can you describe the procedure you know for adding integers? Say you want to add `123 + 890`. (This is a good moment to install and open julia from [julialang.org](julialang.org) if you haven't already done so.)}
 
 \miguelito{Sure, you line up the digits, add the columns right to left, carry the ones...}
 
 ```julia-repl
 julia> 123 + 890
+1013
 ```
 \dispatch{Yup. What about trying to add `1//2 + 1//3`. Those "fractions" are what we call `Rationals` in Julia. What procedure do you follow then?}
 
@@ -90,7 +91,8 @@ julia> 1//2 + 1//3
 
 \miguelito{Yup, like adding natural numbers - line 'em up, carry the one.}
 ```julia-repl
-julia> .25 + 5.2
+julia> .25 + 5.5
+5.5
 ```
 
 \dispatch{Excelente, ignore the decimals for now. Did you ever face matrices? Can you try to add `2x2` matrix of `1`s and a `2x2` matrix of `3`s?}
@@ -99,7 +101,9 @@ julia> .25 + 5.2
 
 ```julia-repl
 julia> [1 1; 1 1] + [3 3; 3 3]
-[4 4; 4 4]
+2×2 Matrix{Int64}:
+ 4  4
+ 4  4
 ```
 
 \dispatch{Alright - thanks for following along. Now here's the tickler question - Who does the `+` belong to?}
@@ -110,11 +114,16 @@ julia> [1 1; 1 1] + [3 3; 3 3]
 
 ```julia-repl
 julia> methods(+)
+# 195 methods for generic function "+":
+[1] +(x::T, y::T) where T<:Union{Int128, Int16, Int32, Int64, Int8, UInt128, UInt16, UInt32, UInt64, UInt8} in Base at int.jl:87
+[2] +(c::Union{UInt16, UInt32, UInt64, UInt8}, x::BigInt) in Base.GMP at gmp.jl:528
+[3] +(c::Union{Int16, Int32, Int64, Int8}, x::BigInt) in Base.GMP at gmp.jl:534
+...
 ```
 
-\miguelito{Oh! So what does `+` have to do with property?}
+\miguelito{Oh! But you stated that `+` "belongs" to someone, so what does `+` have to do with property?}
 
-\dispatch{Nothing - that's the point! It doesn't make sense to say that the `+` belongs to the `1` or the `2` in the statement `1 + 2`, and that's where the headaches come from: when you bind identity to objects, you're gonna have a bad time, [as 80s lisp hackers and philosophers alike have struggled with that question for a long, long time](https://youtu.be/dO1aqPBJCPg?t=3583) -- it's just *devilishly* hard to reason about identity when objects change. Avoid worrying about that if you can. Just worry about calling the right procedure in the right case. In other words, "just dispatch and carry on."}
+\dispatch{Nothing - that's the point! At least not in Julia. It doesn't make sense to say that the `+` belongs to the `1` or the `2` in the statement `1 + 2`, and that's where the headaches come from: when you bind identity to objects, you're gonna have a bad time, [as 80s lisp hackers and philosophers alike have struggled with that question for a long, long time](https://youtu.be/dO1aqPBJCPg?t=3583) -- it's just *devilishly* hard to reason about identity when objects change. Avoid worrying about that if you can. Just worry about calling the right procedure in the right case. In other words, "just dispatch and carry on."}
 
 ---
 ### Single dispatch
@@ -155,7 +164,7 @@ Just Foo
 
  In the previous section, we wanted `f` to have two different behaviours depending on the types (and call it `polymorphic operator overloading`, if we want to bait some Dunning-Krugers on the [god-forsaken orange-site](http://n-gate.com/)). But we won't worry about fancy terms - we just want to our programming language tools to able to behave like the `+` we know from primary school.
 
-\miguelito{OK - I'll take a crack at this. Here's what the Julia code looks like:
+\miguelito{OK - I'll take a crack at this. I've read and reread the [Julia Manual page for Methods](https://docs.julialang.org/en/v1/manual/methods/), and I think I have a better idea of this now. Here's what my Julia code looks like:
 ```julia
 abstract type Things end # We'll come back to this line
 struct Foo <: Things end
@@ -168,9 +177,17 @@ y = Bar()
 f(x)
 f(y)
 ```
-And it works!}
+And it works! I like thinking about this as a table, just like what we talked about with `+`: I just check what types the arguments I'm applying `+` to are, and apply to proper procedure. Adding integers means line them up and carry the digits. Fractions, common denominators, etc. For `f`, if I apply it to an `Foo`, the procedure is to return the string `"Just Foo"`. If I apply `f` to `"Just Bar"`, it returns the string `"Just Bar."`. Dispatch and carry on...}
 
-\dispatch{Small nitpick - You actually *can* dispatch in Python, but it requires a bit of boilerplate, but that's a secondary concern. Since it wasn't a foundational design of the language, people didn't build a vocabulary or an ecosystem around it. In the words of Turing award winner Barbara Liskov,
+\dispatch{Great! You're on your way to learn the *Zen of Julia!*. It usually looks like
+1. Setup an abstract type like `Things`.
+2. Make some structs that are subtypes of `Things` with `<:`
+3. Define functions `f` that act on specific subtypes of `Things` - aka dispatching.
+4. Create your structs/objects with constructors like `x = Foo()` and then call `f(x)` to handle different behaviors.
+
+That's it!
+
+Small nitpick - You actually *can* dispatch in Python, but it requires a bit of boilerplate, but that's a secondary concern. Since it wasn't a foundational design of the language, people didn't build a vocabulary or an ecosystem around it. In the words of Turing award winner Barbara Liskov,
 
 > The quality of software depends primarily on the programming methodology in use. [...] A methodology can be easy or difficult to apply in a given language, depending on how well the language constructs match the structures that the methodology deems desirable. [...] -- Barbara Liskov, Abstractions Mechanisms in CLU (1977)
 
@@ -208,8 +225,8 @@ whereas
 julia> x = 1
 1
 
-julia> sizeof(x)
-8
+julia> sizeof(x) # This is in bytes, so an Int on my system is 64 bits
+8 
 ```
 
 3. Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn't have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it's not at all trivial to see those two things and put them together. But don't take my word for it, hear **them** say why it wasn't practical then:
