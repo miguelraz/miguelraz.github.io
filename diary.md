@@ -5,6 +5,16 @@
 
 # Virtual diary for progress on all fronts
 
+### 24/06/2021
+314. Asesorias online de la fac...
+315. LLVM has options to investigate base language code coverage with `llvm-profdata` and `llvm-cov` tooling.
+316. Reading atomic habits - this blog works well as a braindump, but it would be a good idea to include reflections and reviews on proposed monthly and weekly goals on maths, physics, computing projects, physical activity and life.
+
+### 23/06/2021
+311. God I want [to tkae the Algorithm Engineering 2021](https://people.csail.mit.edu/jshun/6886-s21/) course so bad... or at least translate it.
+312. Mosè posted about [Reproducible build academic guidelines](https://reproducible-builds.org/docs/).
+313. [RISC V course!](https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110x)
+
 ### 22/06/2021
 
 306. Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.
@@ -12,6 +22,7 @@
 308. [MPI Formal TLA+ spec!](http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf) + [formal lab link](http://formalverification.cs.utah.edu/mpitla/)
 309. [Practical Specification course!](https://web.cecs.pdx.edu/~apt/cs510spec/).
 310. Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.
+
 
 ### 21/06/2021
 

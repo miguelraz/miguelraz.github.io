@@ -22,3 +22,6 @@ https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
 
 - `LLVM_JULIA_ARGS=-time-passes ./julia -e 'using Plots; plot(1:10)'`
 - switch repl modes via menu https://github.com/JuliaLang/julia/pull/33875
+- fzf reverse search
+- https://github.com/JuliaLang/julia/pull/38791
+

@@ -177,7 +177,7 @@ y = Bar()
 f(x)
 f(y)
 ```
-And it works! I like thinking about this as a table, just like what we talked about with `+`: I just check what types the arguments I'm applying `+` to are, and apply to proper procedure. Adding integers means line them up and carry the digits. Fractions, common denominators, etc. For `f`, if I apply it to an `Foo`, the procedure is to return the string `"Just Foo"`. If I apply `f` to `"Just Bar"`, it returns the string `"Just Bar."`. Dispatch and carry on...}
+And it works! I like thinking about this as a table, just like what we talked about with `+`: I just check what types the arguments I'm applying `+` to are, and apply to proper procedure. Adding integers means line them up and carry the digits. Fractions, common denominators, etc. For `f`, if I apply it to an `Foo`, the procedure is to return the string `"Just Foo"`. If I apply `f` to an object `Bar`, it returns the string `"Just Bar."`. Dispatch and carry on, ach so...}
 
 \dispatch{Great! You're on your way to learn the *Zen of Julia!*. It usually looks like
 1. Setup an abstract type like `Things`.
@@ -215,17 +215,13 @@ Python 3.9.3 (default, Apr  8 2021, 23:35:02)
 [GCC 10.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from sys import getsizeof
->>> x = 1
 >>> getsizeof(1)
 28
 ```
 
 whereas
 ```julia-repl
-julia> x = 1
-1
-
-julia> sizeof(x) # This is in bytes, so an Int on my system is 64 bits
+julia> sizeof(1) # This is in bytes, so an Int on my system is 64 bits
 8 
 ```
 
