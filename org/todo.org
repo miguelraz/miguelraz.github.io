@@ -1,4 +1,7 @@
 * Inbox
+** [ ] Fetch JuliaLang Youtube API keys and test an upload
+
+[[file:~/org-basics.org::*example one][example one]]
 ** [ ] Cita visa
 ** [ ] Just checking how to capture stuff
 * Compasion

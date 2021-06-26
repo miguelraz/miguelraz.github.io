@@ -5,6 +5,13 @@
 
 # Virtual diary for progress on all fronts
 
+### 25/06/2021
+317. [Leiserson course]() is level 1, [Design and analysis of algorithms is level 2](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html), Jelani course is level 3.
+318. [Nancy Lynch distributed algorithms course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm)
+319. Ooooh [Self adjusting binary search trees](https://dl.acm.org/doi/10.1145/3828.3835)
+320. [MITOCW: Matrix Methods in Data Analysis, Signal Processing and Machine Learning](https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/index.htm)
+321. [Doom config by Fausto Marques](https://www.reddit.com/r/DoomEmacs/comments/o0gqoi/any_julia_users_here_to_help_a_n00b/) for julia... should read it sometime...
+
 ### 24/06/2021
 314. Asesorias online de la fac...
 315. LLVM has options to investigate base language code coverage with `llvm-profdata` and `llvm-cov` tooling.
