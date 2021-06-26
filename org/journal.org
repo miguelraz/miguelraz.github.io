@@ -1,0 +1,10 @@
+
+
+* 2021
+
+** 2021-06 June
+
+*** 2021-06-25 Friday
+**** [2021-06-25 Fri 19:35] Remembering how this org mode worked...
+
+[[file:~/org-basics.org::*example one][example one]]
