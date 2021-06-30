@@ -5,6 +5,26 @@
 
 # Virtual diary for progress on all fronts
 
+### 29/06/2021
+
+### 27/06/2021
+323. Loop invariants have 3 steps:
+- you have a loop with `E` a loop guard and body `S`
+```
+while E:
+    S
+```
+- You then initialize the loop, see that the condition holds
+- You then prove that if the Loop Invariant condition holds before the i-th iteration of the loop, it holds in the i+1-th iteration of the loop
+- At the end, you use the negation of `E` and the LI to affirm something useful about the program.
+  * Merge Sort example:
+    - Hardest part is thinking of the LI in the first place.
+    - "For arrays L and I, L[i] and R[j] hold the smallest elements not in S (target vector)"
+
+### 26/06/2021
+322. TLA+ Loop invariants here we go...
+
+
 ### 25/06/2021
 317. [Leiserson course]() is level 1, [Design and analysis of algorithms is level 2](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html), Jelani course is level 3.
 318. [Nancy Lynch distributed algorithms course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm)
