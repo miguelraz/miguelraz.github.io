@@ -5,18 +5,44 @@
 
 # Virtual diary for progress on all fronts
 
+### 09/07/2021
+- [Should read George's appying to a PhD guidea](https://github.com/gwisk/gradguide) at some point...
+
+### 06/07/2021
+- [Brendan Greg on performance](https://brendangregg.com/blog/2021-07-05/computing-performance-on-the-horizon.html) on the horizon.
+- [How a computer should talk to people by M. Dean](https://twitter.com/TartanLlama/status/1409834646087606276) and posted by Sy Brand.
+- Move recs by the amazing `@JoyOfPhysics:`
+```
+Depends on what subgenres you like! Besides the Jordan Peele horror you mentioned, 
+ I always recommend 
+ A Girl Walks Home Alone At Night,
+ Creep and Creep 2, 
+ Blackcoat’s Daughter, 
+ It Comes At Night, 
+ REC (the Spanish original)...
+ 
+  The Ritual and Midsomma
+```
+- [Learning J book](https://www.learningj.com/book.htm#toc)
+- [Ran into the Puffin profiler written in Rust](https://github.com/EmbarkStudios/puffin) looks cool!
+
 ### 29/06/2021
+- There's a Rust based client for neovim: `neovide`. Looks cool.
+
+### 28/06/2021
+- Found the Bret Contreras [Triangle approach](https://bretcontreras.com/wp-content/uploads/PDF_DOWNLOAD_BcPyramid.pdf) useful. Should set that up for 6 muscle groups, 2 times a year.
+- ... I need to start a workout diary.
 
 ### 27/06/2021
-323. Loop invariants have 3 steps:
+323. [Loop invariants](https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf) have 3 steps:
 - you have a loop with `E` a loop guard and body `S`
 ```
 while E:
     S
 ```
-- You then initialize the loop, see that the condition holds
+- You then initialize the loop, see that the LI condition holds with the guard `E` and the precondition.
 - You then prove that if the Loop Invariant condition holds before the i-th iteration of the loop, it holds in the i+1-th iteration of the loop
-- At the end, you use the negation of `E` and the LI to affirm something useful about the program.
+- At the end, you use the negation of `E` and the LI to affirm something useful about the program (most likely, the post condition).
   * Merge Sort example:
     - Hardest part is thinking of the LI in the first place.
     - "For arrays L and I, L[i] and R[j] hold the smallest elements not in S (target vector)"
