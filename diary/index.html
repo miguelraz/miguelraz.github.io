@@ -1,4 +1,44 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=09072021 ><a href="#09072021" class=header-anchor >09/07/2021</a></h3> <ul> <li><p><a href="https://github.com/gwisk/gradguide">Should read George&#39;s appying to a PhD guidea</a> at some point...</p> </ul> <h3 id=06072021 ><a href="#06072021" class=header-anchor >06/07/2021</a></h3> <ul> <li><p><a href="https://brendangregg.com/blog/2021-07-05/computing-performance-on-the-horizon.html">Brendan Greg on performance</a> on the horizon.</p> <li><p><a href="https://twitter.com/TartanLlama/status/1409834646087606276">How a computer should talk to people by M. Dean</a> and posted by Sy Brand.</p> <li><p>Move recs by the amazing <code>@JoyOfPhysics:</code></p> </ul> <pre><code class=language-julia >Depends on what subgenres you like&#33; Besides the Jordan Peele horror you mentioned, 
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=14072021 ><a href="#14072021" class=header-anchor >14/07/2021</a></h3> <ol start=325 > <li><p>Federico Simonetta <a href="https://julialang.slack.com/archives/C67910KEH/p1626281444356200">asks</a>:</p> </ol> <pre><code class=language-julia >Dummy question: if I have T&#61;Vector&#123;Int32&#125;, I can get the inner type using eltype. How can I get the outer type? &#40;i.e. Vector so that I can create a new Vector but using a different inner type?&#41;</code></pre>
+<p>Which I think Erik Schnetter wanted since a &#91;long time ago.&#93; There&#39;s now a Base method <a href="">for this</a>:</p>
+<pre><code class=language-julia >Base.typename&#40;T&#41;.wrapper # credit to Jakob Nissen</code></pre>
+<p>But name is being bikeshed currently.</p>
+<p>If you want to use <code>CustomType&#123;Matrix&#123;Float32&#125;&#125;</code>, Rackauckas says that </p>
+<pre><code class=language-julia >Base.@pure __parameterless_type&#40;T&#41; &#61; Base.typename&#40;T&#41;.wrapper</code></pre>
+<p>can be used, instead of <code>SciMLBase.parameterless_type&#40;T&#41;</code>.</p>
+<p>Matt Bauman is convinced it&#39;s a footgun, and we should just stick to using <code>similar&#40;x, AnotherType&#41;</code> instead.</p>
+<ol start=326 >
+<li><p>Conor Hoekstra nerdsniped me into learning some APL - here&#39;s my attempt for printing &#39;Even&#39; or &#39;Odd&#39; depending on a summation</p>
+
+</ol>
+<pre><code class=language-julia >EvenOrOdd←&#123;&#40;1&#43;2|&#40;&#43;/⍵&#41;&#41;⌷ &#39;Even&#39; &#39;Odd&#39;&#125;
+      EvenOrOdd 1
+┌───┐
+│Odd│
+└───┘
+      EvenOrOdd 1 1
+┌────┐
+│Even│
+└────┘</code></pre>
+<p>There&#39;s oodles more to learn <a href="https://problems.tryapl.org/">here</a> and <a href="https://tryapl.org/#">here</a>.</p>
+<ol start=326 >
+<li><p>Right, the <a href="https://www.math.uci.edu/~chenlong/lectures.html">Chen Long</a> courses exist. And the Barba CFD Python course. And the Leveque book... sigh.</p>
+
+</ol>
+<h3 id=09072021 ><a href="#09072021" class=header-anchor >09/07/2021</a></h3>
+<ul>
+<li><p><a href="https://github.com/gwisk/gradguide">Should read George&#39;s appying to a PhD guidea</a> at some point...</p>
+
+</ul>
+<h3 id=06072021 ><a href="#06072021" class=header-anchor >06/07/2021</a></h3>
+<ul>
+<li><p><a href="https://brendangregg.com/blog/2021-07-05/computing-performance-on-the-horizon.html">Brendan Greg on performance</a> on the horizon.</p>
+
+<li><p><a href="https://twitter.com/TartanLlama/status/1409834646087606276">How a computer should talk to people by M. Dean</a> and posted by Sy Brand.</p>
+
+<li><p>Move recs by the amazing <code>@JoyOfPhysics:</code></p>
+
+</ul>
+<pre><code class=language-julia >Depends on what subgenres you like&#33; Besides the Jordan Peele horror you mentioned, 
  I always recommend 
  A Girl Walks Home Alone At Night,
  Creep and Creep 2, 
@@ -6,8 +46,115 @@
  It Comes At Night, 
  REC &#40;the Spanish original&#41;...
  
-  The Ritual and Midsomma</code></pre> <ul> <li><p><a href="https://www.learningj.com/book.htm#toc">Learning J book</a></p> <li><p><a href="https://github.com/EmbarkStudios/puffin">Ran into the Puffin profiler written in Rust</a> looks cool&#33;</p> </ul> <h3 id=29062021 ><a href="#29062021" class=header-anchor >29/06/2021</a></h3> <ul> <li><p>There&#39;s a Rust based client for neovim: <code>neovide</code>. Looks cool.</p> </ul> <h3 id=28062021 ><a href="#28062021" class=header-anchor >28/06/2021</a></h3> <ul> <li><p>Found the Bret Contreras <a href="https://bretcontreras.com/wp-content/uploads/PDF_DOWNLOAD_BcPyramid.pdf">Triangle approach</a> useful. Should set that up for 6 muscle groups, 2 times a year.</p> <li><p>... I need to start a workout diary.</p> </ul> <h3 id=27062021 ><a href="#27062021" class=header-anchor >27/06/2021</a></h3> <ol start=323 > <li><p><a href="https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf">Loop invariants</a> have 3 steps:</p> </ol> <ul> <li><p>you have a loop with <code>E</code> a loop guard and body <code>S</code></p> </ul> <pre><code class=language-julia >while E:
-    S</code></pre> <ul> <li><p>You then initialize the loop, see that the LI condition holds with the guard <code>E</code> and the precondition.</p> <li><p>You then prove that if the Loop Invariant condition holds before the i-th iteration of the loop, it holds in the i&#43;1-th iteration of the loop</p> <li><p>At the end, you use the negation of <code>E</code> and the LI to affirm something useful about the program &#40;most likely, the post condition&#41;.</p> <ul> <li><p>Merge Sort example:</p> <ul> <li><p>Hardest part is thinking of the LI in the first place.</p> <li><p>&quot;For arrays L and I, L&#91;i&#93; and R&#91;j&#93; hold the smallest elements not in S &#40;target vector&#41;&quot;</p> </ul> </ul> </ul> <h3 id=26062021 ><a href="#26062021" class=header-anchor >26/06/2021</a></h3> <ol start=322 > <li><p>TLA&#43; Loop invariants here we go...</p> </ol> <h3 id=25062021 ><a href="#25062021" class=header-anchor >25/06/2021</a></h3> <ol start=317 > <li><p><a href="">Leiserson course</a> is level 1, <a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html">Design and analysis of algorithms is level 2</a>, Jelani course is level 3.</p> <li><p><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm">Nancy Lynch distributed algorithms course</a></p> <li><p>Ooooh <a href="https://dl.acm.org/doi/10.1145/3828.3835">Self adjusting binary search trees</a></p> <li><p><a href="https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/index.htm">MITOCW: Matrix Methods in Data Analysis, Signal Processing and Machine Learning</a></p> <li><p><a href="https://www.reddit.com/r/DoomEmacs/comments/o0gqoi/any_julia_users_here_to_help_a_n00b/">Doom config by Fausto Marques</a> for julia... should read it sometime...</p> </ol> <h3 id=24062021 ><a href="#24062021" class=header-anchor >24/06/2021</a></h3> <ol start=314 > <li><p>Asesorias online de la fac...</p> <li><p>LLVM has options to investigate base language code coverage with <code>llvm-profdata</code> and <code>llvm-cov</code> tooling.</p> <li><p>Reading atomic habits - this blog works well as a braindump, but it would be a good idea to include reflections and reviews on proposed monthly and weekly goals on maths, physics, computing projects, physical activity and life.</p> </ol> <h3 id=23062021 ><a href="#23062021" class=header-anchor >23/06/2021</a></h3> <ol start=311 > <li><p>God I want <a href="https://people.csail.mit.edu/jshun/6886-s21/">to tkae the Algorithm Engineering 2021</a> course so bad... or at least translate it.</p> <li><p>Mosè posted about <a href="https://reproducible-builds.org/docs/">Reproducible build academic guidelines</a>.</p> <li><p><a href="https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110x">RISC V course&#33;</a></p> </ol> <h3 id=22062021 ><a href="#22062021" class=header-anchor >22/06/2021</a></h3> <ol start=306 > <li><p>Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.</p> <li><p>Julia 1.7 has implicit multiplication of radicals&#33; <code>xSQ3y</code> works&#33; Also <code>&#40;; a, b&#41; &#61; x</code> can destructure <code>x</code>.</p> <li><p><a href="http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf">MPI Formal TLA&#43; spec&#33;</a> &#43; <a href="http://formalverification.cs.utah.edu/mpitla/">formal lab link</a></p> <li><p><a href="https://web.cecs.pdx.edu/~apt/cs510spec/">Practical Specification course&#33;</a>.</p> <li><p>Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.</p> </ol> <h3 id=21062021 ><a href="#21062021" class=header-anchor >21/06/2021</a></h3> <ol start=302 > <li><p><a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a>: <code>esc</code> means &quot;treat this variable like a variable the user has written themselves.&quot; AKA interpolating within the macro only gives you variables local to the macro&#39;s module, escaping treats it as a user variable.</p> </ol> <ul> <li><p>Before writing a macro for an expression, try to understand it first with <code>Meta.@dump</code>.</p> <li><p>A good check for correct escaping is passing in local variables.</p> </ul> <pre><code class=language-julia >julia&gt; module m
+  The Ritual and Midsomma</code></pre>
+<ul>
+<li><p><a href="https://www.learningj.com/book.htm#toc">Learning J book</a></p>
+
+<li><p><a href="https://github.com/EmbarkStudios/puffin">Ran into the Puffin profiler written in Rust</a> looks cool&#33;</p>
+
+</ul>
+<h3 id=29062021 ><a href="#29062021" class=header-anchor >29/06/2021</a></h3>
+<ul>
+<li><p>There&#39;s a Rust based client for neovim: <code>neovide</code>. Looks cool.</p>
+
+</ul>
+<h3 id=28062021 ><a href="#28062021" class=header-anchor >28/06/2021</a></h3>
+<ul>
+<li><p>Found the Bret Contreras <a href="https://bretcontreras.com/wp-content/uploads/PDF_DOWNLOAD_BcPyramid.pdf">Triangle approach</a> useful. Should set that up for 6 muscle groups, 2 times a year.</p>
+
+<li><p>... I need to start a workout diary.</p>
+
+</ul>
+<h3 id=27062021 ><a href="#27062021" class=header-anchor >27/06/2021</a></h3>
+<ol start=323 >
+<li><p><a href="https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf">Loop invariants</a> have 3 steps:</p>
+
+</ol>
+<ul>
+<li><p>you have a loop with <code>E</code> a loop guard and body <code>S</code></p>
+
+</ul>
+<pre><code class=language-julia >while E:
+    S</code></pre>
+<ul>
+<li><p>You then initialize the loop, see that the LI condition holds with the guard <code>E</code> and the precondition.</p>
+
+<li><p>You then prove that if the Loop Invariant condition holds before the i-th iteration of the loop, it holds in the i&#43;1-th iteration of the loop</p>
+
+<li><p>At the end, you use the negation of <code>E</code> and the LI to affirm something useful about the program &#40;most likely, the post condition&#41;.</p>
+<ul>
+<li><p>Merge Sort example:</p>
+<ul>
+<li><p>Hardest part is thinking of the LI in the first place.</p>
+
+<li><p>&quot;For arrays L and I, L&#91;i&#93; and R&#91;j&#93; hold the smallest elements not in S &#40;target vector&#41;&quot;</p>
+
+</ul>
+
+</ul>
+
+</ul>
+<h3 id=26062021 ><a href="#26062021" class=header-anchor >26/06/2021</a></h3>
+<ol start=322 >
+<li><p>TLA&#43; Loop invariants here we go...</p>
+
+</ol>
+<h3 id=25062021 ><a href="#25062021" class=header-anchor >25/06/2021</a></h3>
+<ol start=317 >
+<li><p><a href="">Leiserson course</a> is level 1, <a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html">Design and analysis of algorithms is level 2</a>, Jelani course is level 3.</p>
+
+<li><p><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm">Nancy Lynch distributed algorithms course</a></p>
+
+<li><p>Ooooh <a href="https://dl.acm.org/doi/10.1145/3828.3835">Self adjusting binary search trees</a></p>
+
+<li><p><a href="https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/index.htm">MITOCW: Matrix Methods in Data Analysis, Signal Processing and Machine Learning</a></p>
+
+<li><p><a href="https://www.reddit.com/r/DoomEmacs/comments/o0gqoi/any_julia_users_here_to_help_a_n00b/">Doom config by Fausto Marques</a> for julia... should read it sometime...</p>
+
+</ol>
+<h3 id=24062021 ><a href="#24062021" class=header-anchor >24/06/2021</a></h3>
+<ol start=314 >
+<li><p>Asesorias online de la fac...</p>
+
+<li><p>LLVM has options to investigate base language code coverage with <code>llvm-profdata</code> and <code>llvm-cov</code> tooling.</p>
+
+<li><p>Reading atomic habits - this blog works well as a braindump, but it would be a good idea to include reflections and reviews on proposed monthly and weekly goals on maths, physics, computing projects, physical activity and life.</p>
+
+</ol>
+<h3 id=23062021 ><a href="#23062021" class=header-anchor >23/06/2021</a></h3>
+<ol start=311 >
+<li><p>God I want <a href="https://people.csail.mit.edu/jshun/6886-s21/">to tkae the Algorithm Engineering 2021</a> course so bad... or at least translate it.</p>
+
+<li><p>Mosè posted about <a href="https://reproducible-builds.org/docs/">Reproducible build academic guidelines</a>.</p>
+
+<li><p><a href="https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110x">RISC V course&#33;</a></p>
+
+</ol>
+<h3 id=22062021 ><a href="#22062021" class=header-anchor >22/06/2021</a></h3>
+<ol start=306 >
+<li><p>Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.</p>
+
+<li><p>Julia 1.7 has implicit multiplication of radicals&#33; <code>xSQ3y</code> works&#33; Also <code>&#40;; a, b&#41; &#61; x</code> can destructure <code>x</code>.</p>
+
+<li><p><a href="http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf">MPI Formal TLA&#43; spec&#33;</a> &#43; <a href="http://formalverification.cs.utah.edu/mpitla/">formal lab link</a></p>
+
+<li><p><a href="https://web.cecs.pdx.edu/~apt/cs510spec/">Practical Specification course&#33;</a>.</p>
+
+<li><p>Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.</p>
+
+</ol>
+<h3 id=21062021 ><a href="#21062021" class=header-anchor >21/06/2021</a></h3>
+<ol start=302 >
+<li><p><a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a>: <code>esc</code> means &quot;treat this variable like a variable the user has written themselves.&quot; AKA interpolating within the macro only gives you variables local to the macro&#39;s module, escaping treats it as a user variable.</p>
+
+</ol>
+<ul>
+<li><p>Before writing a macro for an expression, try to understand it first with <code>Meta.@dump</code>.</p>
+
+<li><p>A good check for correct escaping is passing in local variables.</p>
+
+</ul>
+<pre><code class=language-julia >julia&gt; module m
            export fill
            macro fill&#40;exp, sizes...&#41;
                iterator_expressions &#61; map&#40;sizes&#41; do s
@@ -31,7 +178,12 @@ julia&gt; Main.m.@fill&#40;rand&#40;3&#41;, 5&#41;
  &#91;0.5090383286377023, 0.8500671589320301, 0.023782332100151793&#93;
  &#91;0.31575252460961667, 0.30058298960206287, 0.2873940760156002&#93;
  &#91;0.07225330666900165, 0.22506420288160234, 0.225626098738561&#93;
- &#91;0.5753508713492259, 0.37821541454348995, 0.3146472409806831&#93;</code></pre> <ol start=303 > <li><p><code>Dr. Takafumi Arakaki</code> has some good recommendations on globals - mark them inside functions&#33;</p> </ol> <pre><code class=language-julia >julia&gt; global a &#61; 1;
+ &#91;0.5753508713492259, 0.37821541454348995, 0.3146472409806831&#93;</code></pre>
+<ol start=303 >
+<li><p><code>Dr. Takafumi Arakaki</code> has some good recommendations on globals - mark them inside functions&#33;</p>
+
+</ol>
+<pre><code class=language-julia >julia&gt; global a &#61; 1;
 
 julia&gt; good&#40;&#41; &#61; global a &#43;&#61; 1;
 
@@ -41,21 +193,74 @@ julia&gt; good&#40;&#41;
 2
 
 julia&gt; bad&#40;&#41;
-ERROR: UndefVarError: a not defined</code></pre> <ol start=304 > <li><p>Try to also avoid this idiom:</p> </ol> <pre><code class=language-julia >function consumer&#40;&#41;
+ERROR: UndefVarError: a not defined</code></pre>
+<ol start=304 >
+<li><p>Try to also avoid this idiom:</p>
+
+</ol>
+<pre><code class=language-julia >function consumer&#40;&#41;
     id &#61; threadid&#40;&#41;
     report &#61; 0
     println&#40;&quot;I&#39;m consumer &#36;&#40;threadid&#40;&#41;&#41;&quot;&#41;
-    ...</code></pre> <p>Instead try doing</p> <pre><code class=language-julia >for id in 1:numProducers
+    ...</code></pre>
+<p>Instead try doing</p>
+<pre><code class=language-julia >for id in 1:numProducers
     @spawn producer&#40;id&#41;
-end</code></pre> <p>He also recommends that &quot;while debugging, you&#39;d probably wan tto show the error from producers and consumers like this&quot;</p> <pre><code class=language-julia >@spawn try
+end</code></pre>
+<p>He also recommends that &quot;while debugging, you&#39;d probably wan tto show the error from producers and consumers like this&quot;</p>
+<pre><code class=language-julia >@spawn try
     producer&#40;&#41;
 catch err
     @error &quot;Unexpected error from a producer&quot; exception &#61; &#40;err, catch_backtrace&#40;&#41;&#41;
     rethrow&#40;&#41;
-end</code></pre> <ol start=305 > <li><p>Neat trick - don&#39;t use <code>while true</code> loops in the beginning 😅 . Use <code>for _ in 1:10_000</code> to check if the threads are even alive.</p> </ol> <h3 id=20062021 ><a href="#20062021" class=header-anchor >20/06/2021</a></h3> <ol start=281 > <li><p>I read <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamports Logical Clocks</a> paper today. I learned a couple of things.</p> </ol> <ul> <li><p>To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.</p> <li><p>However, these total orderings can be &quot;unsynched&quot; from the real world - if you include some small perturbations in your timestamps, you can, within bounded time &#40;and quite fast&#41; always synchronize your system.</p> </ul> <ol start=282 > <li><p>Now reading <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Paper</a>.</p> </ol> <ul> <li><p>To coordinate proposals of a value, it&#39;s good to keep a threshold counter and reject proposals which are inferior to that.</p> <li><p><a href="">Fischer, Lynch, and Patterson</a> implies that &quot; a reliable algoritm for eledcting a proposer must use either randomness or real time – for example, by using timeouts.&quot;</p> </ul> <ol start=283 > <li><p><code>CHOOSE</code> is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write <code>x&#39; &#61; CHOOSE i \in 1..9 : TRUE</code>, just use <code>x&#39; \in 1..99</code>. Use <code>CHOOSE</code> only when there&#39;s exactly 1 <code>v</code> in <code>S</code> satisfying formula <code>P</code>, like in the definition of <code>Maximum&#40;s&#41;</code></p> </ol> <pre><code class=language-tla >Maximum&#40;S&#41; &#61;&#61; IF S &#61; &#123;&#125; THEN -1
-              ELSE CHOOSE x \in S : \A m \in S : x \geq m</code></pre> <ol start=284 > <li><p>The <code>ASSUME</code> statement is made for assumptions about the constants</p> <li><p><code>SUBSET Acceptor</code> &#61;&#61; <code>PowerSetOf&#40;Acceptor&#41;</code>.</p> <li><p><code>EXCEPT</code> can be chained&#33;</p> </ol> <pre><code class=language-tla >/\ aState&#39; &#61; &#91;aState EXCEPT &#33;&#91;m.ins&#93;&#91;acc&#93;.mbal &#61; m.bal,
+end</code></pre>
+<ol start=305 >
+<li><p>Neat trick - don&#39;t use <code>while true</code> loops in the beginning 😅 . Use <code>for _ in 1:10_000</code> to check if the threads are even alive.</p>
+
+</ol>
+<h3 id=20062021 ><a href="#20062021" class=header-anchor >20/06/2021</a></h3>
+<ol start=281 >
+<li><p>I read <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamports Logical Clocks</a> paper today. I learned a couple of things.</p>
+
+</ol>
+<ul>
+<li><p>To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.</p>
+
+<li><p>However, these total orderings can be &quot;unsynched&quot; from the real world - if you include some small perturbations in your timestamps, you can, within bounded time &#40;and quite fast&#41; always synchronize your system.</p>
+
+</ul>
+<ol start=282 >
+<li><p>Now reading <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Paper</a>.</p>
+
+</ol>
+<ul>
+<li><p>To coordinate proposals of a value, it&#39;s good to keep a threshold counter and reject proposals which are inferior to that.</p>
+
+<li><p><a href="">Fischer, Lynch, and Patterson</a> implies that &quot; a reliable algoritm for eledcting a proposer must use either randomness or real time – for example, by using timeouts.&quot;</p>
+
+</ul>
+<ol start=283 >
+<li><p><code>CHOOSE</code> is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write <code>x&#39; &#61; CHOOSE i \in 1..9 : TRUE</code>, just use <code>x&#39; \in 1..99</code>. Use <code>CHOOSE</code> only when there&#39;s exactly 1 <code>v</code> in <code>S</code> satisfying formula <code>P</code>, like in the definition of <code>Maximum&#40;s&#41;</code></p>
+
+</ol>
+<pre><code class=language-tla >Maximum&#40;S&#41; &#61;&#61; IF S &#61; &#123;&#125; THEN -1
+              ELSE CHOOSE x \in S : \A m \in S : x \geq m</code></pre>
+<ol start=284 >
+<li><p>The <code>ASSUME</code> statement is made for assumptions about the constants</p>
+
+<li><p><code>SUBSET Acceptor</code> &#61;&#61; <code>PowerSetOf&#40;Acceptor&#41;</code>.</p>
+
+<li><p><code>EXCEPT</code> can be chained&#33;</p>
+
+</ol>
+<pre><code class=language-tla >/\ aState&#39; &#61; &#91;aState EXCEPT &#33;&#91;m.ins&#93;&#91;acc&#93;.mbal &#61; m.bal,
                                    &#33;&#91;m.ins&#93;&#91;acc&#93;.bal  &#61; m.bal,
-                                   &#33;&#91;m.ins&#93;&#91;acc&#93;.val  &#61; m.val&#93;</code></pre> <ol start=287 > <li><p>This is also legit:</p> </ol> <pre><code class=language-tla >Phase1b&#40;acc&#41; &#61;&#61;  
+                                   &#33;&#91;m.ins&#93;&#91;acc&#93;.val  &#61; m.val&#93;</code></pre>
+<ol start=287 >
+<li><p>This is also legit:</p>
+
+</ol>
+<pre><code class=language-tla >Phase1b&#40;acc&#41; &#61;&#61;  
   \E m \in msgs : 
     /\ m.type &#61; &quot;phase1a&quot;
     /\ aState&#91;m.ins&#93;&#91;acc&#93;.mbal &lt; m.bal
@@ -66,7 +271,22 @@ end</code></pre> <ol start=305 > <li><p>Neat trick - don&#39;t use <code>while t
              bal  |-&gt; aState&#91;m.ins&#93;&#91;acc&#93;.bal, 
              val  |-&gt; aState&#91;m.ins&#93;&#91;acc&#93;.val,
              acc  |-&gt; acc&#93;&#41;
-    /\ UNCHANGED rmState</code></pre> <ol start=288 > <li><p>Elements of a <code>Symmetry Set</code> may not appear in a <code>CHOOSE</code>.</p> <li><p><code>ASSUME</code> must be a constant formula.</p> <li><p>Specs hold as undefined all values of all variables not used at all times. It&#39;s best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly. </p> <li><p>Steps that leave are variable values unchanged are called <code>stuttering steps</code>. Including stuttering steps helps us say what a system <em>may</em> do, but now we want to specify what a system <em>must</em> do.</p> <li><p>A finite sequence is another name for <code>tuple</code>.</p> <li><p><a href="https://lamport.azurewebsites.net/video/ABSpec.tla">Alternating Bit</a> protocol: Let&#39;s say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart <code>Fred, Mary, Mary, Ted, Ted, Ted, Ann</code> from <code>Fred, Mary, Ted, Ann</code>. You could timestamp it, but let&#39;s not. It&#39;s easiest to just append a bit that flips after every message. Appending a bit can be done with</p> </ol> <pre><code class=language-tla >TypeOK &#61;&#61; /\ Data \X &#123;0, 1&#125; \* where \X is the cartesian product</code></pre>
+    /\ UNCHANGED rmState</code></pre>
+<ol start=288 >
+<li><p>Elements of a <code>Symmetry Set</code> may not appear in a <code>CHOOSE</code>.</p>
+
+<li><p><code>ASSUME</code> must be a constant formula.</p>
+
+<li><p>Specs hold as undefined all values of all variables not used at all times. It&#39;s best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly.   </p>
+
+<li><p>Steps that leave are variable values unchanged are called <code>stuttering steps</code>. Including stuttering steps helps us say what a system <em>may</em> do, but now we want to specify what a system <em>must</em> do.</p>
+
+<li><p>A finite sequence is another name for <code>tuple</code>.</p>
+
+<li><p><a href="https://lamport.azurewebsites.net/video/ABSpec.tla">Alternating Bit</a> protocol: Let&#39;s say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart <code>Fred, Mary, Mary, Ted, Ted, Ted, Ann</code> from <code>Fred, Mary, Ted, Ann</code>. You could timestamp it, but let&#39;s not. It&#39;s easiest to just append a bit that flips after every message. Appending a bit can be done with</p>
+
+</ol>
+<pre><code class=language-tla >TypeOK &#61;&#61; /\ Data \X &#123;0, 1&#125; \* where \X is the cartesian product</code></pre>
 <ol start=293 >
 <li><p>To talk about <code>may/must</code>, we will talk about liveness and Safety properties.</p>
 
@@ -2506,7 +2726,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: July 10, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: July 15, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
