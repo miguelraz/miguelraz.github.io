@@ -5,6 +5,43 @@
 
 # Virtual diary for progress on all fronts
 
+### 14/07/2021
+325. Federico Simonetta [asks](https://julialang.slack.com/archives/C67910KEH/p1626281444356200):
+```
+Dummy question: if I have T=Vector{Int32}, I can get the inner type using eltype. How can I get the outer type? (i.e. Vector so that I can create a new Vector but using a different inner type?)
+```
+Which I think Erik Schnetter wanted since a [long time ago.]
+There's now a Base method [for this]():
+```julia
+Base.typename(T).wrapper # credit to Jakob Nissen
+```
+But name is being bikeshed currently.
+
+If you want to use `CustomType{Matrix{Float32}}`, Rackauckas says that 
+```julia
+Base.@pure __parameterless_type(T) = Base.typename(T).wrapper
+```
+can be used, instead of `SciMLBase.parameterless_type(T)`.
+
+Matt Bauman is convinced it's a footgun, and we should just stick to using `similar(x, AnotherType)` instead.
+
+326. Conor Hoekstra nerdsniped me into learning some APL - here's my attempt for printing 'Even' or 'Odd' depending on a summation
+```
+      EvenOrOdd←{(1+2|(+/⍵))⌷ 'Even' 'Odd'}
+      EvenOrOdd 1
+┌───┐
+│Odd│
+└───┘
+      EvenOrOdd 1 1
+┌────┐
+│Even│
+└────┘
+```
+There's oodles more to learn [here](https://problems.tryapl.org/) and [here](https://tryapl.org/#).
+
+326. Right, the [Chen Long](https://www.math.uci.edu/~chenlong/lectures.html) courses exist. And the Barba CFD Python course. And the Leveque book... sigh.
+
+
 ### 09/07/2021
 - [Should read George's appying to a PhD guidea](https://github.com/gwisk/gradguide) at some point...
 
