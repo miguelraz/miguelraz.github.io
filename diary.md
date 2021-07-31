@@ -5,6 +5,48 @@
 
 # Virtual diary for progress on all fronts
 
+### 31/07/2021
+
+340. `tmux` can be used to keep persistent sessions on `ssh`, so `mosh` is not necessarily needed.
+The way to do this (Credit to Danny Sharp) is do the ssh inside a tmux session and then
+`tmux ls` to see which sessions you have made and then `tmux attach-session -t 3` to connect to session 3.
+This is a smart way of checking in on long running compute jobs.
+
+### 29/07/2021
+334. To run code with the interpreter, use `julia --compile=no`.
+335. [Buffy](https://github.com/openjournals/buffy) for JOSS submissions.
+336. [Crafting Interpreters](https://craftinginterpreters.com/) for speeding up the Debugger and such.
+337. [Advance bash scripting guide](https://tldp.org/LDP/abs/html/)
+338. [Proceedings Bot](https://discourse.julialang.org/t/juliacon-2021-proceedings/55354)
+339. [Toby Driscoll online book](https://tobydriscoll.net/fnc-julia/linsys/efficiency.html)
+
+### 28/07/2021
+333. Link dump:
+https://lazy.codes/posts/awesome-unstable-rust-features/
+https://github.com/koalaman/shellcheck
+https://github.com/Apress/beginning-cpp20/blob/main/Exercises/Modules/Chapter%2002/Soln2_01A.cpp
+https://rustc-dev-guide.rust-lang.org/
+
+### 21/07/2021
+331. To clean up a video with ffmpeg, do:
+```
+ffmpeg -i elrodtest.mov -af "highpass=f=300, lowpass=f=3000, afftdn" -c:v copy passeselrod.mov
+```
+This applies a FFT filter, with a highpass and lowpass of 300Hz and 3000Hz
+332. This is an awesome thread on [LLVM resources](https://twitter.com/matt_dz/status/1417857422559952897)
+And WOW is [this super list thorough LLVM Program Analysis resources](https://gist.github.com/MattPD/00573ee14bf85ccac6bed3c0678ddbef#introduction)
+
+### 20/07/2021
+
+327. [sortperm is sorta slow](https://github.com/JuliaLang/julia/issues/939) - up for grabs!
+328. [Setup donation links to JuliaCon](https://twitter.com/Anno0770/status/1414009622583783432)
+329. [Submit to the procceedings...](https://proceedings.juliacon.org)
+330. FFMPEG is HUGE ! Here's what I needed to concat 2 videos together:
+```bash
+ffmpeg -i "concat:input1.ts|input2.ts" -c copy output.ts
+```
+Now I need to apply that to every `*.mov/mp4/mkv` video in the folder and then I have a lot of processed videos. Perhaps I should also dump that info into a CSV file...
+
 ### 14/07/2021
 325. Federico Simonetta [asks](https://julialang.slack.com/archives/C67910KEH/p1626281444356200):
 ```
