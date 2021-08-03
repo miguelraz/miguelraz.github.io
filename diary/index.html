@@ -1,4 +1,126 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=31072021 ><a href="#31072021" class=header-anchor >31/07/2021</a></h3> <ol start=340 > <li><p><code>tmux</code> can be used to keep persistent sessions on <code>ssh</code>, so <code>mosh</code> is not necessarily needed.</p> </ol> <p>The way to do this &#40;Credit to Danny Sharp&#41; is do the ssh inside a tmux session and then <code>tmux ls</code> to see which sessions you have made and then <code>tmux attach-session -t 3</code> to connect to session 3. This is a smart way of checking in on long running compute jobs.</p> <h3 id=29072021 ><a href="#29072021" class=header-anchor >29/07/2021</a></h3> <ol start=334 > <li><p>To run code with the interpreter, use <code>julia --compile&#61;no</code>.</p> <li><p><a href="https://github.com/openjournals/buffy">Buffy</a> for JOSS submissions.</p> <li><p><a href="https://craftinginterpreters.com/">Crafting Interpreters</a> for speeding up the Debugger and such.</p> <li><p><a href="https://tldp.org/LDP/abs/html/">Advance bash scripting guide</a></p> <li><p><a href="https://discourse.julialang.org/t/juliacon-2021-proceedings/55354">Proceedings Bot</a></p> <li><p><a href="https://tobydriscoll.net/fnc-julia/linsys/efficiency.html">Toby Driscoll online book</a></p> </ol> <h3 id=28072021 ><a href="#28072021" class=header-anchor >28/07/2021</a></h3> <ol start=333 > <li><p>Link dump:</p> </ol> <p>https://lazy.codes/posts/awesome-unstable-rust-features/ https://github.com/koalaman/shellcheck https://github.com/Apress/beginning-cpp20/blob/main/Exercises/Modules/Chapter&#37;2002/Soln2_01A.cpp https://rustc-dev-guide.rust-lang.org/</p> <h3 id=21072021 ><a href="#21072021" class=header-anchor >21/07/2021</a></h3> <ol start=331 > <li><p>To clean up a video with ffmpeg, do:</p> </ol> <pre><code class=language-julia >ffmpeg -i elrodtest.mov -af &quot;highpass&#61;f&#61;300, lowpass&#61;f&#61;3000, afftdn&quot; -c:v copy passeselrod.mov</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=02082021 ><a href="#02082021" class=header-anchor >02/08/2021</a></h3> <ol start=343 > <li><p>Extract 20 seconds without re-encoding:</p> </ol> <pre><code class=language-bash >ffmpeg -ss 00:01:30.000 -i YOUR_VIDEO.mp4 -t 00:00:20.000 -c copy YOUR_EXTRACTED_VIDEO.mp4</code></pre>
+<ol start=344 >
+<li><p>Tuning options in ffmpeg:</p>
+
+</ol>
+<pre><code class=language-julia >film – use for high quality movie content;
+animation – good for cartoons;
+grain – preserves the grain structure in old, grainy film material;stillimage – good for slideshow-like content;
+fastdecode – allows faster decoding by disabling certain filters;
+zerolatency – good for fast encoding and low-latency streaming;
+psnr – only used for codec development;
+ssim – only used for codec development;
+Example: 
+ffmpeg -i your_video.mov -c:v h264 -crf 23 -tune film your_output.mp4</code></pre>
+<ol start=345 >
+<li><p>You can use 2 pass encoding for targeting a specific output file size, but not care so much about output quality from frame to frame.</p>
+
+<li><p><code>For an output that is roughly &#39;visually lossless&#39; but not technically and waaaay less file size, just use -crf 17 or 18</code>.</p>
+
+<li><p>You can also constrain the maximum bitrate &#40;useful for streaming&#33;&#41;</p>
+
+</ol>
+<pre><code class=language-julia >ffmpet -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M output.mp4</code></pre>
+<ol start=348 >
+<li><p>Recommend adding a <code>faststart</code> flag to your video so that it begins playing faster &#40;recommended by YouTube&#41;.</p>
+
+</ol>
+<pre><code class=language-julia >ffmpeg -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M -movflags &#43;faststart output.mp4</code></pre>
+<ol start=349 >
+<li><p>If you want to produce 1080p and above, h265 offers great savings in bitrates/file size &#40;ntoe: needs to be built with <code>--enable-gpl --enable-libx265</code>&#41;.</p>
+
+</ol>
+<pre><code class=language-julia >ffmpeg -i input -c:v libx265 -crf 28 -c:a aac -b:a 128k output.mp4</code></pre>
+<ol start=350 >
+<li><p>h266 video codec: </p>
+
+</ol>
+<ul>
+<li><p>with h265, to transmite a 90min UHD file, it needs about 10 gigabytes of data</p>
+
+<li><p>with h266, you need only about 5 gigabytes.</p>
+
+</ul>
+<p>Can deal with 4k/8k and 360 degree video&#33;</p>
+<ol start=351 >
+<li><p>VP8 videos: Supposed to be web standard.</p>
+
+<li><p>OF COURSE Google made vp9 in direct competition of h265, you need <code>libvpx-vp9</code>.</p>
+
+<li><p>OH LORD Youtube recommends it&#39;s own <a href="https://developers.google.com/media/vp9/settings/vod">ffmpeg settings&#33;&#33;&#33;</a></p>
+
+<li><p>AV1 video - SD and HD under bandwidth constrained networks.</p>
+
+<li><p>Netflix codedc is SVT-AV1 and they <a href="https://netflixtechblog.com/svt-av1-an-open-source-av1-encoder-and-decoder-ad295d9b5ca2">have blog posts explaining it</a>, as well as github repos&#33;</p>
+
+<li><p>AV1AN exists becuase AV1/VP9/VP8 are not easily multithreaded ... 😕 </p>
+
+<li><p>RTMP is for &quot;Real time Messaging Protocol&quot; and is the de facto standard for all live videos in FB, Insta, YT, Twitch, Twitter, Periscope etc. Streaming pre recorded video to live can be done in at least 2 ways:</p>
+
+</ol>
+<ul>
+<li><p>take input file &quot;as is&quot; and convert in real time to FLV &#40;and stream it live via:&#41;</p>
+
+</ul>
+<pre><code class=language-julia >-f flv rtmp://a.rtmp.youtube.com/live2/&#91;YOUR_STREAM_KEY&#93;
+#: this will instruct FFMPEG to output everything into the required FLV format to the YouTube RTMP server</code></pre>
+<ol start=358 >
+<li><p>PRE PROCESS FILES IN BATCH: pg 113/122</p>
+
+</ol>
+<pre><code class=language-julia >for i in *.mov; do ffmpeg -i &quot;&#36;i&quot; -c:v libx264 -profile:v high -level:v 4.1 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -r 25 -g 50 -keyint_min 50 -sc_threshold 0 -c:a aac -b:a 128k -ac 2 -ar 44100 &quot;&#36;&#123;i&#37;.*&#125;.mp4&quot;; done</code></pre>
+<p>&quot;The above example script will pre-process every .movfile contained in the directory, in line with the YouTube&#39;s requirements for streaming a Full-HD 1080p at 25FPS.&quot;</p>
+<h3 id=31072021 ><a href="#31072021" class=header-anchor >31/07/2021</a></h3>
+<ol start=340 >
+<li><p><code>tmux</code> can be used to keep persistent sessions on <code>ssh</code>, so <code>mosh</code> is not necessarily needed.</p>
+
+</ol>
+<p>The way to do this &#40;Credit to Danny Sharp&#41; is do the ssh inside a tmux session and then <code>tmux ls</code> to see which sessions you have made and then <code>tmux attach-session -t 3</code> to connect to session 3. This is a smart way of checking in on long running compute jobs.</p>
+<ol start=341 >
+<li><p>From <code>FFMPEG Zero to Hero</code>:</p>
+
+</ol>
+<pre><code class=language-julia >BITRATE: Bitrate or data rate is the amount of data per
+second in the encoded video file, usually expressed in kilobits per second &#40;kbps&#41;
+or megabits per second &#40;Mbps&#41;.  The bitrate measurement is also applied to audio files.
+An Mp3 file, for example, can reach a maximum bitrate of 320 kilobit per second,
+while a standard CD &#40;non-compressed&#41; audio track can have up to 1.411 kilobit per 
+second. A typical compressed h264 video in Full-HD has a bitrate 
+in the range of 3.000 - 6.000 kbps, while a 4k video can reach
+a bitrate value up to 51.000 kbps.  A non-compressed video format,
+such as the Apple ProRes format in 4K resolution, can reach a bitrate of 253.900 kbps and higher.</code></pre>
+<ol start=342 >
+<li><p>FFMPEG can read and write to basically any format under the sun, and has been designed by the MPEG:</p>
+
+</ol>
+<p><code>Moving Pictures Expert Group</code>.</p>
+<h3 id=29072021 ><a href="#29072021" class=header-anchor >29/07/2021</a></h3>
+<ol start=334 >
+<li><p>To run code with the interpreter, use <code>julia --compile&#61;no</code>.</p>
+
+<li><p><a href="https://github.com/openjournals/buffy">Buffy</a> for JOSS submissions.</p>
+
+<li><p><a href="https://craftinginterpreters.com/">Crafting Interpreters</a> for speeding up the Debugger and such.</p>
+
+<li><p><a href="https://tldp.org/LDP/abs/html/">Advance bash scripting guide</a></p>
+
+<li><p><a href="https://discourse.julialang.org/t/juliacon-2021-proceedings/55354">Proceedings Bot</a></p>
+
+<li><p><a href="https://tobydriscoll.net/fnc-julia/linsys/efficiency.html">Toby Driscoll online book</a></p>
+
+</ol>
+<h3 id=28072021 ><a href="#28072021" class=header-anchor >28/07/2021</a></h3>
+<ol start=333 >
+<li><p>Link dump:</p>
+
+</ol>
+<p>https://lazy.codes/posts/awesome-unstable-rust-features/ https://github.com/koalaman/shellcheck https://github.com/Apress/beginning-cpp20/blob/main/Exercises/Modules/Chapter&#37;2002/Soln2_01A.cpp https://rustc-dev-guide.rust-lang.org/</p>
+<h3 id=21072021 ><a href="#21072021" class=header-anchor >21/07/2021</a></h3>
+<ol start=331 >
+<li><p>To clean up a video with ffmpeg, do:</p>
+
+</ol>
+<pre><code class=language-julia >ffmpeg -i elrodtest.mov -af &quot;highpass&#61;f&#61;300, lowpass&#61;f&#61;3000, afftdn&quot; -c:v copy passeselrod.mov</code></pre>
 <p>This applies a FFT filter, with a highpass and lowpass of 300Hz and 3000Hz</p>
 <ol start=332 >
 <li><p>This is an awesome thread on <a href="https://twitter.com/matt_dz/status/1417857422559952897">LLVM resources</a></p>
@@ -2751,7 +2873,7 @@ pub fn total&#40;&#41; -&gt; u64 &#123;
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: July 31, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: August 03, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>

@@ -100,7 +100,11 @@
 ** ** Courses
 *** SciML [link](https://sciml.ai/documentation/)
 **** DiffEqOperators [link](https://github.com/SciML/DiffEqOperators.jl)
-*** Shen Long UCI courses
+*** Shen Long [UCI courses](https://www.math.uci.edu/~chenlong/lectures.html)
+**** [A](https://www.math.uci.edu/~chenlong/Math226AFall2013.html)
+**** [B](https://www.math.uci.edu/~chenlong/Math226BWinter2014.html)
+**** [C](https://www.math.uci.edu/~chenlong/Math226CSpring2016.html)
+
 *** Lorena Barba CFD Courses
 *** Vector Linear Algebra Stanford [link](https://github.com/vbartle/VMLS-Companions/tree/master/VMLS%20Julia%20Companion)
 **** [book](http://vmls-book.stanford.edu/)
