@@ -48,7 +48,8 @@ Different things happen simultaneously at JuliaCon, here's what you can expect i
 - **Workshops**: Start 1 week before JuliaCon (week of the 21st of July). These are longer talks (~few hours) on a specific topic like Differential Equations, DataFrames, GPU examples - all the fun stuff.. The point is to work through examples as a group and be able to ask the presenters questions during the talk.
 - **Talk/Lightning talk**: The meat and potatoes of the conference. All year round, people build cool stuff with Julia and share those experiences here. Lightning talks are shorter (~5-10 mins) and talks are longer. You _do not_ have to be an uber wizard to present a talk - as long as it's interesting, people will likely want to hear about it!
 - **Experience**: a new addition to JuliaCon. We want to cast a wide net and hear about any experience that you had while learning or using Julia, especially if you're getting started.
-- **Poster**: Some talks make more sense presented as a poster (in the style of an academic poster). There is a dedicated time slot for these and people also come and ask questions about them. Great for sharpening your technical chops for rigorous presentations.
+- **Poster**: Some talks make more sense presented as a poster (in the style of an academic poster). There is a dedicated time slot for these and people also come and ask questions about them. Great for sharpening your technical chops for rigorous presentations. 
+**TODO**: Gather town!
 - **Birds of a Feather**: known as BoFs.
 - **Keynotes**:
 

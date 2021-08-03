@@ -9,7 +9,7 @@
     - JIT and method tables
     - World age
     - Optimizations + LLVM IR
-    - Inliner
+    - Inliner heuristics
     - Parallel task runtime
     - Core and boot strapping
     - C ABI
@@ -19,8 +19,6 @@
     - REPL
     - Broadcasting... ?
     
-
-
 ### Reading source files
 - `clang -E foo.c` will let you look at what code look slike after macro expansion.
 - Demo of a C function in `gc.c`

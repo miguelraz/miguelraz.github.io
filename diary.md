@@ -5,12 +5,82 @@
 
 # Virtual diary for progress on all fronts
 
+### 02/08/2021
+
+343. Extract 20 seconds without re-encoding:
+```bash
+ffmpeg -ss 00:01:30.000 -i YOUR_VIDEO.mp4 -t 00:00:20.000 -c copy YOUR_EXTRACTED_VIDEO.mp4
+```
+344. Tuning options in ffmpeg:
+```
+film – use for high quality movie content;
+animation – good for cartoons;
+grain – preserves the grain structure in old, grainy film material;stillimage – good for slideshow-like content;
+fastdecode – allows faster decoding by disabling certain filters;
+zerolatency – good for fast encoding and low-latency streaming;
+psnr – only used for codec development;
+ssim – only used for codec development;
+Example: 
+ffmpeg -i your_video.mov -c:v h264 -crf 23 -tune film your_output.mp4
+```
+345. You can use 2 pass encoding for targeting a specific output file size, but not care so much about output quality from frame to frame.
+346. `For an output that is roughly 'visually lossless' but not technically and waaaay less file size, just use -crf 17 or 18`.
+347. You can also constrain the maximum bitrate (useful for streaming!)
+```
+ffmpet -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M output.mp4
+```
+348. Recommend adding a `faststart` flag to your video so that it begins playing faster (recommended by YouTube).
+```
+ffmpeg -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M -movflags +faststart output.mp4
+```
+349. If you want to produce 1080p and above, h265 offers great savings in bitrates/file size (ntoe: needs to be built with `--enable-gpl --enable-libx265`).
+```
+ffmpeg -i input -c:v libx265 -crf 28 -c:a aac -b:a 128k output.mp4
+```
+350. h266 video codec: 
+- with h265, to transmite a 90min UHD file, it needs about 10 gigabytes of data
+- with h266, you need only about 5 gigabytes.
+Can deal with 4k/8k and 360 degree video!
+
+351. VP8 videos: Supposed to be web standard.
+352. OF COURSE Google made vp9 in direct competition of h265, you need `libvpx-vp9`.
+353. OH LORD Youtube recommends it's own [ffmpeg settings!!!](https://developers.google.com/media/vp9/settings/vod)
+354. AV1 video - SD and HD under bandwidth constrained networks.
+355. Netflix codedc is SVT-AV1 and they [have blog posts explaining it](https://netflixtechblog.com/svt-av1-an-open-source-av1-encoder-and-decoder-ad295d9b5ca2), as well as github repos!
+356. AV1AN exists becuase AV1/VP9/VP8 are not easily multithreaded ... 😕 
+357. RTMP is for "Real time Messaging Protocol" and is the de facto standard for all live videos in FB, Insta, YT, Twitch, Twitter, Periscope etc. Streaming pre recorded video to live can be done in at least 2 ways:
+- take input file "as is" and convert in real time to FLV (and stream it live via:)
+```
+-f flv rtmp://a.rtmp.youtube.com/live2/[YOUR_STREAM_KEY]
+#: this will instruct FFMPEG to output everything into the required FLV format to the YouTube RTMP server
+```
+
+358. PRE PROCESS FILES IN BATCH: pg 113/122
+```
+for i in *.mov; do ffmpeg -i "$i" -c:v libx264 -profile:v high -level:v 4.1 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -r 25 -g 50 -keyint_min 50 -sc_threshold 0 -c:a aac -b:a 128k -ac 2 -ar 44100 "${i%.*}.mp4"; done
+```
+"The above example script will pre-process every .movfile contained in the directory, in line with the YouTube's requirements for streaming a Full-HD 1080p at 25FPS."
+
 ### 31/07/2021
 
 340. `tmux` can be used to keep persistent sessions on `ssh`, so `mosh` is not necessarily needed.
 The way to do this (Credit to Danny Sharp) is do the ssh inside a tmux session and then
 `tmux ls` to see which sessions you have made and then `tmux attach-session -t 3` to connect to session 3.
 This is a smart way of checking in on long running compute jobs.
+341. From `FFMPEG Zero to Hero`:
+```
+BITRATE: Bitrate or data rate is the amount of data per
+second in the encoded video file, usually expressed in kilobits per second (kbps)
+or megabits per second (Mbps).  The bitrate measurement is also applied to audio files.
+An Mp3 file, for example, can reach a maximum bitrate of 320 kilobit per second,
+while a standard CD (non-compressed) audio track can have up to 1.411 kilobit per 
+second. A typical compressed h264 video in Full-HD has a bitrate 
+in the range of 3.000 - 6.000 kbps, while a 4k video can reach
+a bitrate value up to 51.000 kbps.  A non-compressed video format,
+such as the Apple ProRes format in 4K resolution, can reach a bitrate of 253.900 kbps and higher. 
+```
+342. FFMPEG can read and write to basically any format under the sun, and has been designed by the MPEG:
+`Moving Pictures Expert Group`.
 
 ### 29/07/2021
 334. To run code with the interpreter, use `julia --compile=no`.
