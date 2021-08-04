@@ -61,6 +61,7 @@ for i in *.mov; do ffmpeg -i "$i" -c:v libx264 -profile:v high -level:v 4.1 -pre
 ```
 "The above example script will pre-process every .movfile contained in the directory, in line with the YouTube's requirements for streaming a Full-HD 1080p at 25FPS."
 
+
 ### 31/07/2021
 
 340. `tmux` can be used to keep persistent sessions on `ssh`, so `mosh` is not necessarily needed.
