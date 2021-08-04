@@ -5,6 +5,10 @@
 
 # Virtual diary for progress on all fronts
 
+### 03/08/2021
+
+359. All the JuliaCon posters are uploaded! 🎉 I heard a lot of interesting proposals from people from NZ, photolithography people and many others... posters are fun! Life's lookin' good!
+
 ### 02/08/2021
 
 343. Extract 20 seconds without re-encoding:
