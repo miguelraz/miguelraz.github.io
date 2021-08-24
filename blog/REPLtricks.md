@@ -25,3 +25,5 @@ https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
 - fzf reverse search
 - https://github.com/JuliaLang/julia/pull/38791
 
+
+- Reverse latex/emoji lookup with `?\partial`

@@ -5,6 +5,59 @@
 
 # Virtual diary for progress on all fronts
 
+### 16/08/2021
+
+366. Linux [perf guide](https://twitter.com/derKha/status/1426195407395299329).
+367. [Go fix some DiffEq compile times yo](https://discourse.julialang.org/t/22-seconds-to-3-and-now-more-lets-fix-all-of-the-differentialequations-jl-universe-compile-times/66313)
+368. [Semver autodetection in Rust](https://github.com/rust-lang/rust-semverver)
+369. [Plz someone help out Keno with Cxx.jl](https://compiler-research.org/assets/presentations/K_Fischer_Cxx_jl.pdf)
+370. [Amos Rust futures post](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
+371. 
+
+### 11/08/2021
+
+363. Jon Sterling writes about a metalanguage for `multi phase modularity` [here](https://twitter.com/jonmsterling/status/1423655072303489024).
+364. Consider using `TimeWarrior`[linked here](https://timewarrior.net/docs/what/).
+365. Dr. Devon Price [has an amazing article criticizing the biological understanding of mental health:](https://devonprice.medium.com/no-mental-illness-isnt-caused-by-chemicals-in-the-brain-1b01d6808871).
+
+### 04/08/2021
+
+360. Parallel Julia priorites from the State of Julia 2021 talk:
+
+| Features/Correctness | Performance |
+|---|---|
+| Thread safety: Distributed | Optimize scheduler |
+| thread safety: package loading | Parallel mark/sweep |
+| Memory model | Type inference of `fetch(::Task)` |
+| Finalizer thread | Better for loop and reduce |
+| Interactive threads | BLAS integration |
+| GC state transitions in codegen | TAPIR Integration|
+
+361. Compiler priorities from State of Julia 2021:
+
+Latency related:
+
+- Staged JIT, faster interpreter
+- Caching code
+- Subtyping an dmethod-lookup optimizations
+
+System images and other build artifacts:
+
+- Faster and easier sysimg builds
+- separate LLVM/codegen from runtime
+- strip debug info, IR
+- Tree shaking
+- Language support for separate compilation
+
+Array optimizations
+
+GC performance work
+
+Compiler extensibility
+
+362. `ghostscript` can be used for batch pdf processing.
+ 
+
 ### 03/08/2021
 
 359. All the JuliaCon posters are uploaded! 🎉 I heard a lot of interesting proposals from people from NZ, photolithography people and many others... posters are fun! Life's lookin' good!
