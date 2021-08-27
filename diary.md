@@ -5,14 +5,17 @@
 
 # Virtual diary for progress on all fronts
 
+### 27/08/2021
+371. Writing a cover letter... godspeed to me.
+
 ### 16/08/2021
 
+Link dump time!
 366. Linux [perf guide](https://twitter.com/derKha/status/1426195407395299329).
 367. [Go fix some DiffEq compile times yo](https://discourse.julialang.org/t/22-seconds-to-3-and-now-more-lets-fix-all-of-the-differentialequations-jl-universe-compile-times/66313)
 368. [Semver autodetection in Rust](https://github.com/rust-lang/rust-semverver)
 369. [Plz someone help out Keno with Cxx.jl](https://compiler-research.org/assets/presentations/K_Fischer_Cxx_jl.pdf)
 370. [Amos Rust futures post](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
-371. 
 
 ### 11/08/2021
 
