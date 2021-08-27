@@ -2,7 +2,7 @@
 ** [ ] Fetch JuliaLang Youtube API keys and test an upload
 
 [[file:~/org-basics.org::*example one][example one]]
-** [ ] Cita visa
+** [X] Cita visa
 ** [ ] Just checking how to capture stuff
 * Compasion
 *** La compasión TAMPOCO es perdón. Puedes ser empático y entender que tu pareja no tiene la intención de hacerte daño y, al mismo tiempo, validar tu propio dolor y responsabilizar al otro de lo que le toca. Una respuesta compasiva es:
