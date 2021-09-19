@@ -5,6 +5,153 @@
 
 # Virtual diary for progress on all fronts
 
+### 18/09/2021
+
+373. FORTRAN learnigns:
+-`&` is used for line breaks
+- `parameter` is for constants
+- functions and subroutines are procedures - subroutines are with `call add(a, 3)`, modify args in place, functions can only return 1 value
+- `do concurrent (i = 2:grid_size)` is for SIMD stuff/parallelism
+- `contains` separates the program code from functions/subroutines
+- `implicit none` is to stop fortran from making integers from variables that start with I/J/K/N etc.
+- `intent(in)` declares that the vars are provided by the calling program or procedure, and their values won't change inside this function.
+- you can specify data type result and name
+```fortran
+integer function sum(a, b) result(res)
+    integer, intent(in) :: a, b
+    res = a + b
+end function sum
+```
+- `intent(out)` value is assigned inside the procedure and returned to the calling program
+- `intent(in out)` given to the proc, can be modified. Always specify intent for all args.
+- `elemental` allows the scalar dummy args to be treated as arrays - nice!
+```fortran
+integer elemental function sum(a,b)
+    integer, intent(in) :: a, b
+    integer, intent(out) :: res
+    res = a + b
+end function sum
+```
+- `optional` is useful for `debug` scenarios, may not be defined at all.
+```fortran
+subroutine add(a, b, res, debug)
+    integer, intent(in) :: a, b
+    integer, intent(out) :: res
+    logical, intent(in), optional :: debug
+    
+    if (present(debug)) then
+        if (debug) then
+        ! ...
+    end if
+    ! ...
+end subroutine add
+
+! used with 
+call add(3, 5, res, .true.) ! or call add(3, 5, res, debug=.true.)
+```
+- some barebones [functional FORTRAN](https://github.com/wavebitscientific/functional-fortran) exists and oh lord.
+- `use iso_fortran_env` for constants and compiler version and options:
+```fortran
+program opts
+    use iso_fortran_env
+    implicit none
+    print *, 'Compiler version: ', compiler_version()
+    print *, 'Compiler options: ', compiler_options()
+end opts
+```
+- `gfortran -fcheck=all -g -O0 -fbacktrace` leads to: all runtime checks (array bounds), debugger info, disable any optimizations, print useful tracebacks.
+- debug in dev, optimize in prod
+- other built-in modules are `ieee_arithmetic/exceptions/features`
+- you can specify types of nums with `integer(kind=i32) :: n` and `real(kind=real32) :: dt` or `integer(i32) :: n` more concisely
+- `use iso_fortran_env, only: int32, real32` which are "more portable" and preferred by the smart kids.
+- Define one module per source file:
+```
+module mod_diff
+
+end module mod_diff
+```
+- to compile several modules, do mods, then main: `gfortran mod_diff.f90 tsunami.f90 -o tsunami`
+- `use mod_ocean, only: temperature_ocean => temperature` with `=>` as alias
+- Best practices for [Fortran Arrays](https://www.fortran90.org/src/best-practices.html#arrays)
+- implicit vs explicit shaped arrays, you can get to do:
+```fortran
+integer :: r(5)
+r = [1,2,3,4,5]
+```
+- ARRAYTIPS: Access as `v(:, 1), v(:, :, 1)` - colons on the left for contiguous strides.
+- OPENMP example: (remember to set `OPEN_MP_THREADS=8` in your bash env or something)
+```
+program testopenmp
+  use omp_lib
+  implicit none
+
+  integer :: nthreads
+
+  nthreads = -1
+  !$ nthreads = omp_get_num_threads()
+  print *, "nthreads = ", nthreads
+end program
+```
+and remember to `gfortran testopenmp.f90 -o openmp -fopenmp`
+- this is a static array: `real :: h(grid_size)` and can be exploited by the compiler.
+- `real, allocatable :: h(:)` <- this is a dynamic/allocatable array
+- `character(len=4)` to set a max length for the string
+- `['AAPL', 'IBM']` ! initialized the stock symbols
+- concat strings with `'this ' // 'syntax' // ' plz'`
+- avoid `save implicit` behavior.
+- these:
+```fortran
+integer :: a(5) = [1,2,3,4,5]
+! and these
+integer :: a(5)
+a = [1,2,3,4,5]
+```
+are equivalent.
+- `a = [(i, i = 1, 100)]` is sugar for 
+```fortran
+do i = 1, 100
+    a(i) = i ! integer, allocatable :: a(:)
+end do
+```
+- `[integer ::]` or `[real ::]` makes an empty array, useful for invoking a generator.
+- `character(*)` is an `assumed-length` character string.
+- `allocate(a(im))` tells FORTRAN to allocate an array of size `im`.
+- `allocate(a(-5:10))` can have first index as -5 :D
+- `mold/source` - help allocate array from another array. `mold` mimics type + doesn't initalize, `source` copies elements.
+- auto reallocation:
+```fortran
+integer, allocatable :: a(:)
+a = [integer ::]
+a = [a, 1] ! a = [1]
+a = [a, 2] ! a = [1, 2]
+a = [a, 2* a] ! a = [1, 2, 2, 4]
+```
+arrays are autodeallocated on scope drop.
+- `allocate(u(im), stat=stat, errmsg =err)`, check for `allocated(a)`.
+- `arr(5:10:2)` results in `array = [5, 7, 9]`
+- `a(10:)` is from 10 on, `a(:10)` up to 10, `a(::3)` every 3rd element
+- `pack(x, mask)` allows you return elements only where `mask` is true. common idiom is to do `res = pack(res, ...)` to have autorealloc.
+```fortran
+! reversing an array
+pure function reverse(x)
+    real, intent(in) :: x(:)
+    real :: reverse(size(x))
+    reverse = x(size(x):1:-1)
+end function reverse
+```
+- arrays are Fortran's only builtin data structure
+- clauses for openmp: `shared,nowait, if, reduction, copyin, private, firstprivate, num_threads, default`
+
+
+
+
+
+
+
+### 01/09/2021
+
+372. TODO [Visualize the Julia repo with this tool](https://discourse.julialang.org/t/this-tool-for-understanding-repos-is-brilliant/67226/5)
+
 ### 27/08/2021
 371. Writing a cover letter... godspeed to me.
 

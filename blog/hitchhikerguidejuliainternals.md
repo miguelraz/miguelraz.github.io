@@ -1,6 +1,8 @@
 @def title = "🚧WIP🚧: Hitchhiker's guide to Julia Internals"
 
 ### Map
+
+    - [This tool to see](https://discourse.julialang.org/t/this-tool-for-understanding-repos-is-brilliant/67226/5)
     - Building Julia + LLVM
     - Parser
     - GC
