@@ -5,6 +5,71 @@
 
 # Virtual diary for progress on all fronts
 
+### 22/11/2021
+
+389. TODO: Make a BinaryBuilder.jl recipe for [CReduce](https://github.com/maleadt/creduce_julia), get some fuzzing going in Julia.
+
+### 29/10/2021
+
+387. In [LLVM speak](https://www.cs.cornell.edu/%7Easampson/blog/llvm.html),Modules > Functions > BasicBlock > Instruction, and everything inherits from the `Value` class.
+388. Useful snippet:
+```cpp
+for (auto& B : F) {
+  for (auto& I : B) {
+    if (auto* op = dyn_cast<BinaryOperator>(&I)) {
+      // Insert at the point where the instruction `op` appears.
+      IRBuilder<> builder(op);
+
+      // Make a multiply with the same operands as `op`.
+      Value* lhs = op->getOperand(0);
+      Value* rhs = op->getOperand(1);
+      Value* mul = builder.CreateMul(lhs, rhs);
+
+      // Everywhere the old instruction was used as an operand, use our
+      // new multiply instruction instead.
+      for (auto& U : op->uses()) { // NICE
+        User* user = U.getUser();  // A User is anything with operands.
+        user->setOperand(U.getOperandNo(), mul);
+      }
+
+      // We modified the code.
+      return true;
+    }
+  }
+}
+```
+- `dyn_cast<T>(p)` is a LLVM `typeof` that is very efficient.
+- `IRBUilder` has a gajillion methods for constructiong instructions
+
+
+### 23/10/2021
+
+377. When reading LLVM source code, I need to find the name of many things (like using your IDE for tooltip hovering/documentation). `ctags` can help with that. 
+- Go into the `llvm` src dir, run `ctags -e -R .` and a `TAGS` file will be made.
+- I keep a terminal tab open in the `llvm` src dir, and then do `vim -t LLVM_READNONE` to have Vim open up where `LLVM_READNONE` is defined.
+- That way, I don't need to fish everywhere for what symbols/functions mean
+
+### 22/10/2021
+
+376. Phew, moving out was a hassle.
+- `llvm-config` is very useful for knowing if your LLVM build was built with `shared libs`, `run time type info`, `split debug` and all that stuff.
+
+### 23/09/2021
+
+375. Downloaded a code with CVS today. 
+
+### 19/09/2021
+
+374. Fortran `coarrays` use `tile_indices`, `this_image()`, `num_images()` and are run with `cafrun -n 4 ./test`. 
+- `gather(size(ids))[*]` and `real, allocatable :: gather(:)[:]` with `[*]` means a coarray.
+- coarrays are synced with `sync all`.
+- `real, codimension[*] :: a` == `real :: a[*]`, a coarray scalar.
+- `real, dimension(10), codimension[*] :: a` == `real :: a(10)[*]`
+- `real, dimension(:), codimension[:], allocatable :: a` == `real, allocatable :: a(:)[:]`
+- `sync` is triggered on all `allocate` and `deallocate` of coarrays.
+- `a[2] = 3.141`
+- Needed to install [OpenCoarrays](https://github.com/sourceryinstitute/OpenCoarrays/blob/main/INSTALL.md#advanced-installation-from-source) to get `caf hello_images.f90 -o hello_images` and `cafrun -n 4 hello_images` to run. Wasn't bad at all.
+- This is a remote copy: `h(ime)[left] = h(ils)`
 ### 18/09/2021
 
 373. FORTRAN learnigns:
