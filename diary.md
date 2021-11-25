@@ -5,6 +5,14 @@
 
 # Virtual diary for progress on all fronts
 
+### 25/11/2021
+
+390. Jean Yang kindly suggested [Write you a Scheme in 48 hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/First_Steps) as a stream with a timer, it sounds RAD!
+391. [This Haskell setup video](https://www.youtube.com/watch?v=5p2Aq3bRuL0) looks fantastic by using
+- ghcid (reloading REPL)
+- hlint (suggests better patterns and helps explore stdlib)
+- don't mess with cabal/stack when starting
+
 ### 22/11/2021
 
 389. TODO: Make a BinaryBuilder.jl recipe for [CReduce](https://github.com/maleadt/creduce_julia), get some fuzzing going in Julia.
