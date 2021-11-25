@@ -1,0 +1,76 @@
+#+TITLE: Notes
+* Proca stars - Gravitating Bose-Einstein condensates of massive spin 1 particles :: Richard Brito ( CENTRA, Universidade de Lisboa ) , Vitor Cardoso (Perimeter), Carlos A.R. Herdeiro (CIDMA, Universidade de Aveiro), Eugen Radu
+** Abstract:
+- Massive complex Abelian vector fields an form gravitating solitons when minimally coupled to Einstein's gravity.
+- stationary everywhere regular and asymptotically flat geometry
+- Proca field has a harmonic time dependence, realizing Wheelers' "geons" for Abelian spin 1 field.
+- Noether charge is conserved for spherical and cylindrical Proca Stars, and there is a limited range of frequencies and a maximal ADM mass, known as M_max.
+- Spherically symmetric PSs (rotating PSs with m=1,2,3) M_max ≈ 1.058 M^2_Pl
+- Perturbative stability was established for a subset of olutions in the spherical case
+- PSs opens up work on scalar boson stars and dark matter andidates
+
+** Gravitationally bound bosonic structure are relevant to DM searches.
+** Axions (ultra-light bosonic particles, with masses << eV) may form gravitationally macroscopic Bose-Einstein condensates
+** Gravitationally bound bosonic structures are used in teh Newtonian limit. In the relativistic regime, Scalar Boson Stars (SBS) are gravitating solitons - proposed as Wheeler's "geon" idea, have other applications.
+** Recent proposals advocate for massive spin 1 particles as a DM ingredient.
+*** Like massive spin 0 particles, massive spin 1 particles can cluster as everywhere smooth, asymptotically flat lumps of neergy uner their own weight, producing gravitating solitons called PROCA STARS.
+** QUESTION: Complex conjugates... pg 292
+** QUESTION: U(1) invariance of the action?
+** QUESTION: O(r^5) Order ... ?
+** WHY RUNGE KUTTA??? and a shooting method in therms of the parameter f(0)
+** QUESTION: family of solutions in Fig. 1 has one node -
+** QUESTION: Fourier frequency
+** QUESTION: Gague freedom allows to write the perturbed metric as ...
+** "Imposing regularity of the perturbations at the origin and at infinity, the resulting system is a two dimensional eigenvalue problem for Omega and one other constant which we have chosen to be the value of h_0 at the origin. A numerical solution is then obtained bya two dimensional shooting, with the result shown in Fig. 3"
+** QUESTION: elliptic PDE solver FIDISOL, based on the Newton Raphson procedure,
+** RESEARCH: Catastrophe theory?
+** QUESTION Field lines for the rotating SBS?
+** QUESTION: What is the research question - long lived quasisolitons from *Discoussion and Outlook*? Can you add a black hole inside a PS? DM phenomenology?
+* Numerical Evolutions of spherical Proca stars :: Nicolas Sanchis-Gual (Universidad de Valencia), Carlos Herdeiro (Valencia), Eugen Radu (CIDMA Portugal), Juan Carlos Degollado (IFC UNAM), José A. Font (Valencia) 2017
+** SUMMARY: confirm Fig. 1 by doing full non-linear solutions, and determine the fate of unstable solutions by evolving a sample of representative cases RESEARCH QUESTION: not amenable to surrogate models?
+** Abstract
+*** TODO self gravitating, everywhere non-singular, horizonless Bose-Einstein condensates of a massive vecto field
+*** Separaition between stable and unstable configurations occur at the solution with the maximal ADM mass
+*** TODO numerical unstalbe solutions, when evolved, depending on the sign of the binding energy of the solution and the perturbation, have 3 different outcomes
+**** migration to the stable branch
+**** total dispersion of the scalar field
+**** collapse to a schwarzschild black hole
+*** Proca wig - long lived Proca field remnant, may be seen outsie the horizon after its formation
+** I Intro:
+*** TODO Klein-Gordon equation has a solution in terms of Fourier modes, which correspond to different frequencies
+*** Amplitudes of the solutions can be chosen to give lumped solutions in space, which will disperse due to differing phase velocities
+*** TODO No-soliton Derrick / virial type theorems
+*** Scalar Binary Stars (SBS) require a mass term but no self interactions
+*** Open Question: are SBS stable, may they form dynamically?
+**** yes, if you use generic initial data for an unbound scalar field, after releasing the excess energy via the mechanism of "gravitational cooling"
+*** QUESTION What is a "vector analogue to SBS"?
+*** QUESTION: Proca frequency diagram of Fig 1?
+*** "Introducing a perturbation can change the fate of an unstable solution in a way that dpeends on the sign of its "
+** PLAN:
+*** Section II has the numerical evolution equations
+*** Section III describes initial data for 5 representative solutions
+*** QUESTION: How do they know this is exhaustive?
+*** Section IV  has description of the numerical techniques
+*** Section V Results
+*** Section VI final remarks
+** II Basic Equations:
+*** A: BSSN equations
+**** spherical polar coordinates, Brown's covariant form
+***** conformally related spatial metric
+***** physical spatial metric
+***** background connection
+***** Connection vector
+***** 5 convolution equations
+***** 4 matter sources
+***** Ricci tensor
+***** Hamiltonian constraint
+***** 4 momentum constraints
+*** B: The Procca Equations
+**** 4 evolution equations
+**** stress energy tensor of teh Proca fields
+**** 4 source terms of theEinstein Equations
+**** Gauss constraint
+*** C: Proca Star solution and initial data
+**** A. The stationary solutions
+
+*
