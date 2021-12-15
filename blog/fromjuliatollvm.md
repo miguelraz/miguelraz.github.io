@@ -10,6 +10,7 @@
 We basically just call the C++ API with a few range based for loops and lambdas sprinkled here and there.
 Let's show some examples.
 - `clang` and `clangd` are NOT the same thing, nor are they bundled together. `clangd` is closer to `clippy` and it does not come preinstalled.
+- `libstdc++` and `libc++` are the stdlibs pulled in by `gcc` and `clang`, respectively, make sure to update both of them before proceeding.
 - If you want to compile a C++20 "Hello World like this one:
 ```cpp
 import <iostream>
@@ -17,4 +18,5 @@ int main() {
     std::cout << "hello world" << std::endl;
 }
 ```
+- I found the `cpp reference` and `clangd` extensions for VSCode to be crucial in navigating C++.
 You should pass in the flags `clang++ -std=c++20 test.cpp -o test`.
