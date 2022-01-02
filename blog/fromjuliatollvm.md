@@ -7,6 +7,9 @@
 3. move semantics
 4. gnarly object oriented shenanigans like inheritance and the like
 
+### Greppin' around:
+- To find a `struct` try: `grep "} jl_binding_t;"`.
+
 We basically just call the C++ API with a few range based for loops and lambdas sprinkled here and there.
 Let's show some examples.
 - `clang` and `clangd` are NOT the same thing, nor are they bundled together. `clangd` is closer to `clippy` and it does not come preinstalled.

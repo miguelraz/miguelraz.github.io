@@ -5,6 +5,54 @@
 
 # Virtual diary for progress on all fronts
 
+### 01/01/2022
+
+- OK so the reason  this is exists `p->x++;` is because the precedence here is so annoying:`(*p).x++`. Thank the lord for [Learn-C online](https://www.learn-c.org/en/Dynamic_allocation)
+- malloc returns a void pointer, so if you write 
+```c
+person *myperson = (person *) malloc(sizeof(person));
+```
+then you've typecasted it.
+- neat exercies for dealing with linked lists: `pop_last`, `pop_first`, `push`, `print_list`, `pop_by_index`
+- understand the `DFS-search` algo
+
+### 16/12/2021
+- Messing around with typed globals...
+
+### 15/12/2021
+- `libc++` and `libstdc++` can be upgrade via pacman
+- NEVER upgrade with `pacman -Sy foo` - that's a partial upgrade and will breakshit.
+- Another day, another time that trying to install Emery Berger's MESH allocator fails :/
+- `mold` went 1.0 today! Submitted a patch to make a BBuilder recipe.
+
+### 13/12/2021
+
+393. Found thise great code review checklists:
+- [michaelgreiler.com](https://www.michaelagreiler.com/wp-content/uploads/2020/05/Code-Review-Checklist-Michaela-Greiler.pdf)
+- C++20 before [and after ranges](https://mariusbancila.ro/blog/2019/01/20/cpp-code-samples-before-and-after-ranges/)
+- University of Champagna Illinois Systems C [programming book course](https://raw.githubusercontent.com/illinois-cs241/coursebook/pdf_deploy/main.pdf)
+- TODO An introduction to [libuv](https://nikhilm.github.io/uvbook/threads.html)
+- TODO [libuv advanced tutorial](https://unixism.net/loti/ref-liburing/advanced_usage.html)
+
+394. CLANGD IS NOT INCLUDED IN A CLANG INSTALLATION. Just install the VSCode IDE thing for [christ sake's](https://clangd.llvm.org/installation)
+
+395. Holy crap - [modules in cpp20](https://itnext.io/c-20-modules-complete-guide-ae741ddbae3d) can help cut down bloat size IMMENSELY: this is like 5 orders of magnitude for a "hello world" program.
+- To compare this: write the "hello world with 'import <iostream>' and '#include <iostream>' directives swapped out, compile with:
+> clang++ -std=c++20 -stdlib=libc++ -E hello_world.cc | wc -c # Here the -E makes clang only spit out the preprocessor stuff.
+> 1956614
+
+vs
+> clang++ -std=c++20 -stdlib=libc++ -fmodules -fbuiltin-module-map -E hello_modular_world.cc | wc -c
+> 239
+
+### 30/11/2021
+
+392. [New PATCH 1.7!](https://julialang.org/blog/2021/11/julia-1.7-highlights/) and contained this lil' nugget:
+```julia
+myreal((; re)::Complex) = re
+myreal(2 + 3im) == 2
+```
+
 ### 25/11/2021
 
 390. Jean Yang kindly suggested [Write you a Scheme in 48 hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/First_Steps) as a stream with a timer, it sounds RAD!
