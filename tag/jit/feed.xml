@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:media="http://search.yahoo.com/mrss/"
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:georss="http://www.georss.org/georss">
+
+      <channel>
+        <title><![CDATA[{{fd2rss website_title}}]]></title>
+        <link>{{website_url}}</link>
+        <description><![CDATA[{{fd2rss website_description}}]]></description>
+        <generator>Franklin.jl -- https://github.com/tlienart/Franklin.jl</generator>
+        <atom:link
+            href="{{fd_rss_feed_url}}"
+            rel="self"
+            type="application/rss+xml" />
+
+
+<item>
+    <title><![CDATA[🚧 WIP: 🚧 On Compilers and Warehouse Managers]]></title>
+    <link>https://miguelraz.github.io/blog/OnCompilersAndWarehouseMangers/index.html</link>
+    <guid></guid>
+    <description><![CDATA[This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view.]]></description>    
+        
+    <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
+</item>
+</channel></rss>
