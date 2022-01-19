@@ -28,7 +28,7 @@ It is my deep held conviction that compilers are explainable to curious children
 There's a spoiler about all the technical terms at the end if you want to keep going down the rabbit hole, because I'm all about lowering all the gates and building all the bridges. And if you want to read oodles more, you can always [sponsor me on GitHub](https://github.com/sponsors/miguelraz/) to keep the blog rolling along.
  ---- 
 
-### The warehouse
+### The warehouse: Meet the compilers
 
 First day at the new gig.
 
@@ -69,33 +69,40 @@ You sigh at the thought of filling all these forms for boxes by hand all the tim
 ---
 You spend a few weeks with Cece and you get good at what you do. Cece takes particular delight in packing the structures compactly and not wasting more boxes than what they deem necessary; that, they claim, is the ultimate crime. You keep noticing however, that CeCe definitely fudges some of the form sheets - some boxes are just filled with the wrong name, names get overwritten, stuff spills out when it doesn't fit in the boxes the client asked for and then a few hours of everyone's time is wasted picking up the mess. Credit where it's due - some clients ask exclusively for CeCe and are used to his manual and error-prone ways, something about the devil they know...
 
-Cece was also devilishly brief about what your assignment *actually* meant (Cece has a knack for understating complexity). See, some of these boxes sometimes have a tracking code on the side, and so you have to go and find the box in the warehouse that that the tracking code is referring to, because that's where your items are actually stored. On the happy days, you get a full detail sheet of all the concrete things you gotta haul, but boy when you have to unbox everything and drag it around... it's not fun, or fast AND you have to go back and forth from the form sheets the client gave you and manage the tracking codes manually. You guess it's the price of admission into this gig and hunker on.
+Cece was also devilishly brief about what your assignment *actually* meant (Cece has a knack for understating complexity in your daily tasks). See, some of these boxes sometimes have a tracking code on the side, and so you have to go and find the box in the warehouse that that the tracking code is referring to, because that's where your items are actually stored. On the happy days, you get a full detail sheet of all the concrete things you gotta haul, but boy when you have to chase boxes[^4] for everything and drag it around and rewrite the detail sheet... it's not fun, or fast AND you have to go back and forth from the form sheets the client gave you and manage the tracking codes manually. And sometimes they change their mind as you're 3 tracking code jumps into the order and you have to start again. You guess it's the price of admission into this gig and hunker on. At least the gig pays.
 
-Ash has kept coming around and chatting with you, asking how the box packing is treating you and if you like working close to the metal. 
+Ash has kept coming around and chatting with you, asking how the box shuffling is treating you and if you like working close to the metal. 
 
 > Hey, you should come with me to bikeshed, there's a person you should meet.
 
 You're on your lunch break and could use a break from stamping forms as `null` so you take Ash up.
 
-Ash presents you to Rusty[^3], also a part of the compilers team. He's fixing his bike chain and hasn't taken the helmet high-visibility vest off.
+Ash introduces you to Rusty[^3], also a part of the compilers team. He's fixing his bike chain and hasn't taken the helmet or high-visibility vest off.
 
-> Nice to meet you! 
+> Nice to meet you! 👷 
 
-He says. He asks about your last few weeks with Cece and groans at all the manual paperwork.
+He says. He asks about your last few weeks with Cece and groans reminiscing of all the manual paperwork.
 
 > ... boy have I been there - I've told Cece a million times that's no way to live. If only he'd plan a little...
 
-Rusty is very enthusiastic about workplace safety and definitely sounds like a fun guy. Rusty started out with Cece but got tired of all the potential accidents and mishaps on the main floor and had to come up with a system.
+Rusty is very enthusiastic about workplace safety and definitely sounds like a fun guy. Rusty started out with Cece but got tired of all the potential accidents and mishaps on the main floor and had to come up with neat hacks for "never facing those problems again":
 
-> It's like a hall pass system for the orders that are coming in - Only one person can hold the permission slip for the order boxes they're touching at the time. That way, no one can mess up anyone else's orders.
+> It's like a hall pass system for the orders that are coming in - Only one person can hold the permission slip for the order boxes they're touching at the time. That way, no one can mess up anyone else's orders, because they can't modify them in the first place!
 
 Rusty has a smaller working space than Cece, and it takes him a bit longer to work through the form sheets with this added ownership slip system, but he says he never has to worry about all the crap that Cece is used to.
 
-Your lunch break is over and you start scuttling back to your station as you write something he mumbles about "making errors unrepresentable" and [train emergency breaks](https://www.youtube.com/watch?v=A3AdN7U24iU) or something. Rusty really talks **fast** and seems to love trains. **Loves** them.
+Your lunch break is over and you start scuttling back to your station as he mumbles something about "making errors unrepresentable" and [train emergency breaks](https://www.youtube.com/watch?v=A3AdN7U24iU) or something. Rusty talks **fast** and can't stop talking about trains in general. **Loves** them.
 
 ----
 
-You've been clearing oodles of orders with the Rusty system for a few weeks now and Ash rolls around again. Ash says you're not going to improve much if you don't learn from how other people work at the warehouse, and that your next rotation is with the "interpreter" camp. 
+### Meet the interpreters
+
+You've been clearing oodles of orders with the Rusty system for a few weeks now - you've seen fewer box spills since you started with the halls slip system but it seems worth it with the demanding clients Cece gets overwhelmed with. 
+
+Ash rolls around again. Ash gives you a glowing performance review but says you're not going to improve much if you don't learn from how other people work at the warehouse, and that your next rotation is with the "interpreter" camp. 
+
+You both stroll to the docking bay where orders are received and Peter[^6] is waiting for you. They have a cool snake 🐍  tattoo on one arm and a Jolly Roger in the other ☠ .
+
 
 
 
@@ -117,10 +124,10 @@ You've been clearing oodles of orders with the Rusty system for a few weeks now 
 
 [^1]: `Ash` is supposed to be `bash` the languages used to install stuff and compile/run programs from your terminal.
 [^2]: `Cece` is supposed to be the `C` programming language, because in `make` scripts it's the name of the C compiler variable `CC=gcc` or something like that. His manual style of asking for all sizes upfront is indicative of a compiled programming language - They can be fast, and waste little space.
-[^3]: `Rusty`
-[^4]:
+[^3]: `Rusty` - Rusty is supposed to be Rust, the programming language that trades compile time for the safety guarantees that an ownership system gives.
+[^4]: unboxing -  
 [^5]:
-[^6]:
+[^6]: Peter is supposed to be Python and R, the interpreted languages.
 [^7]:
 [^8]:
 [^9]:
