@@ -1,4 +1,7 @@
 @def title = "🚧WIP🚧: Hitchhiker's guide to Julia Internals"
+# The monster at the bottom of Julia's internals
+
+[Monster at the end of this book](https://www.youtube.com/watch?v=r3947-T_hHw).
 
 ### Map
 
@@ -16,10 +19,10 @@
     - Core and boot strapping
     - C ABI
     - Base and stdlibs + Pkg.jl
-    - Machine code (assembly)
     - Julia runtime
     - REPL
     - Broadcasting... ?
+    - Machine code (assembly)
     
 ### Reading source files
 - `clang -E foo.c` will let you look at what code look slike after macro expansion.
@@ -28,3 +31,4 @@
 ### Tools, tools, tools
 - ripgrep/ack for scouring the codebase
 - gdb + sysimg jeff trick
+

@@ -5,6 +5,91 @@
 
 # Virtual diary for progress on all fronts
 
+### 18/01/2022
+412. Let's help Simeon out with that globals PR. Maybe also the freakin' blog post. And then the LLVM13->LLVM14 upgrade.
+
+### 15/01/2022
+411. FUTHARK BABY! Futhark is a Haskell-like, ML, pure functional language that is super parallel, compiles to GPUs and has a REPL! [It's just amazing](https://futhark-book.readthedocs.io/en/latest/random-sampling.html)
+- OK Futhark is also in that Midsommar movie. Weird.
+
+### 03/01/2022
+407. Limited Direct Execution - setup all the stuff for a program, run it's `main()`, free mem and process from task list. But how do you know it didn't do bad stuff, and how can you time share with that? The OS has facilities that can limit the running programs, otherwise it would be just another library.
+408. To go from `user` mode to `kernel` mode you need to use a `system call`, which looks like a normal C function. These functions use a `trap` instruction,and when done a `return from trap` instruction (while de escalating kernel privileges).
+A bit of state from program counters, flags, registers and trap will be pushed into a per-process `kernel stack`, and popped when execution resumes. 
+To know which code to run, the kernel sets up a `trap table` at boot time, which has code for when a keyboard interrupt or disk interrupt is sent, etc.
+System calls must be made via a service number to increase security.
+Also, regaining control of the CPU by the OS is tricky if there was a process running on it. You can cooperate and trust the process will make system calls eventually (and then do your OS things) or take over. You can use a `timer interrupt` that will disrupt the machine every few milliseconds and the OS interrupt handler takes over. This timer can also be TURNED_OFF! OS can also decide to switch... which is called a `context switch.`
+409. To context switch, save a few registers, pop a few registers, ^-_-^.
+410. Remember about `setting core affinity` - if you want to measure context switching timings, make sure it isn't switching across threads.
+
+### 02/01/2022
+400. Process API:
+* Create - 
+* Destroy
+* Wait
+* Miscellaneous control
+* Status
+Process states: * Running, Ready, Blocked (or zombie, to check that children exited succesfully by the parent)
+The Process List/task list will have a struct to keep track of all the running programs in the system. Also called a Process Control Block or process descriptor. (It's just a `struct`).
+ 401. `./run-process.py` was a trip:
+ ```
+ -intro (master)> ./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH_ON_END -I IO_RUN_LATER -c -p -L 5
+Time        PID: 0        PID: 1        PID: 2        PID: 3           CPU           IOs
+  1         RUN:io         READY         READY         READY             1          
+  2        WAITING         READY         READY         READY                           1
+  3        WAITING         READY         READY         READY                           1
+  4        WAITING         READY         READY         READY                           1
+  5        WAITING         READY         READY         READY                           1
+  6        WAITING         READY         READY         READY                           1
+  7*   RUN:io_done         READY         READY         READY             1          
+  8         RUN:io         READY         READY         READY             1          
+  9        WAITING         READY         READY         READY                           1
+ 10        WAITING         READY         READY         READY                           1
+ 11        WAITING         READY         READY         READY                           1
+ 12        WAITING         READY         READY         READY                           1
+ 13        WAITING         READY         READY         READY                           1
+ 14*   RUN:io_done         READY         READY         READY             1          
+ 15         RUN:io         READY         READY         READY             1          
+ 16        WAITING         READY         READY         READY                           1
+ 17        WAITING         READY         READY         READY                           1
+ 18        WAITING         READY         READY         READY                           1
+ 19        WAITING         READY         READY         READY                           1
+ 20        WAITING         READY         READY         READY                           1
+ 21*   RUN:io_done         READY         READY         READY             1          
+ 22           DONE       RUN:cpu         READY         READY             1          
+ 23           DONE       RUN:cpu         READY         READY             1          
+ 24           DONE       RUN:cpu         READY         READY             1          
+ 25           DONE       RUN:cpu         READY         READY             1          
+ 26           DONE       RUN:cpu         READY         READY             1          
+ 27           DONE          DONE       RUN:cpu         READY             1          
+ 28           DONE          DONE       RUN:cpu         READY             1          
+ 29           DONE          DONE       RUN:cpu         READY             1          
+ 30           DONE          DONE       RUN:cpu         READY             1          
+ 31           DONE          DONE       RUN:cpu         READY             1          
+ 32           DONE          DONE          DONE       RUN:cpu             1          
+ 33           DONE          DONE          DONE       RUN:cpu             1          
+ 34           DONE          DONE          DONE       RUN:cpu             1          
+ 35           DONE          DONE          DONE       RUN:cpu             1          
+ 36           DONE          DONE          DONE       RUN:cpu             1          
+
+Stats: Total Time 36
+Stats: CPU Busy 21 (58.33%)
+Stats: IO Busy  15 (41.67%)
+ ```
+402. `wait` waits on a PID, `fork` makes a copy except for the PID, `exec` runs a different program than the calling program. There are several variatns of `exec`.
+403. Colorful man pages with: `export MANPAGER="less -R --use-color -Dd+r -Du+b"`
+404. If you want to use `exec`, you hand craft a vector for 
+```
+char *myargs[3];
+myargs[0] = strdup("wc");
+myargs[1] = strdup("p3.c");
+myargs[2] = NULL; // marks end of array
+execvp(myargs[0], myargs);
+printf("This never gets printed");
+```
+This literally transforms your program into the new one you are calling. Succesful calls to `exec` never return o.0.
+405. Huh, `killall` seems like a useful thing to know...
+406. List available `man` pages with `man -f ls`
 ### 01/01/2022
 
 - OK so the reason  this is exists `p->x++;` is because the precedence here is so annoying:`(*p).x++`. Thank the lord for [Learn-C online](https://www.learn-c.org/en/Dynamic_allocation)
@@ -15,6 +100,7 @@ person *myperson = (person *) malloc(sizeof(person));
 then you've typecasted it.
 - neat exercies for dealing with linked lists: `pop_last`, `pop_first`, `push`, `print_list`, `pop_by_index`
 - understand the `DFS-search` algo
+- DEAREST LORD BLESS OSTEP!!!
 
 ### 16/12/2021
 - Messing around with typed globals...
