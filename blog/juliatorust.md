@@ -212,7 +212,7 @@ So Rust is "worth learning", but these are roadblocks that I faced and would war
 - For numerics, install `ndarray` and `num_traits`. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.
 - Benchmarking with `@btime` is painless, `criterion` is your best Rustian bet.
 - Setup your `rust-analyzer` and `error lens` plugins on VSCode or IDE asap, you'll thank me later. Rust-land expects you to be in constant dialogue with the compiler, and making that iteration cycle as ergonomic as possible will yield dividends in the long run. What we don't get from accessing help docs in the REPL, Rust people keep a terminal tab handy where they run `cargo watch -c` and get continuous feedback from the compiler.
-- You CAN'T index into a String in Rust with ints! [Instead](https://doc.rust-lang.org/std/primitive.str.html#method.chars) use slices like `&str[1..] == str[2:end]`, if I may riff on Rust and Julia syntax in the equality just there.
+- You CAN'T index into a String in Rust with ints! [Instead](https://doc.rust-lang.org/std/primitive.str.html#method.chars) use slices like `&str[1..] == str[2:end]` or iterators like `str.chars()`, if I may riff on Rust and Julia syntax in the equality just there.
 - Reading from `stdin` is a pain as a newcomer. I wanted to try out some competitive coding exercises and reading from `stdin` was waaaay too rough for me at first. Eventually I cobbled this template up [link here](https://gist.github.com/miguelraz/d0341e9fee8c728baa99fd6fe86c1be1) so that you don't struggle if you want to try a couple of CodeForces problems.
 - Not having a generic `rand` is just painful. So painful. This is my easiest workaround so far for generating a vector of `n` random entries:
 ```rust
@@ -302,3 +302,4 @@ These are things the Rust people have nailed down.
 * Thanks to `oliver` I also read about this post by Chris Lattner, author of LLVM, on the dangers of [undefined behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html), to really scare you out of thinking you know what C is doing under the hood.
 * `Zamalek1` on HN also provided useful feedback on precise academese: Rust is definitely a memory managed language, but that's been hoisted to compile time.
 * Thanks to `u/Schnatsel` for pointing me to a broken url here and to `cargo-asm`.
+* Thanks to `ministatsdev` for the string iterator nit.
