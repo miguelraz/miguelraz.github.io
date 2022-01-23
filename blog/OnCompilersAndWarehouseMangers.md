@@ -2,10 +2,10 @@
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["compilers", "JIT"]
 @def rss = "This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view." 
-#@def rss_pubdate = Date(2021, 05, 09)
-#@def published = "09 May 2021"
+#@def rss_pubdate = Date(2022, 01, 19)
+#@def published = "19 January 2022"
 
-### Reading time: 15 minutes
+### Reading time: 25 minutes
 ### Summary:
 As a soon-to-be physicist, there's nothing I value more than a useful lie. A story that's simple, captivating, and a good builder for intuition that can last for years -- those are the lies that I like. I also like to code in the Julia programming language, and I get very excited talking about very intricate technical details to supportive friends and helpless victims. Not many of my friends and family are into computers, which means I have to come up with great ~~lies~~ stories to talk about compiler optimizations with other people. 
 
@@ -17,9 +17,9 @@ My **useful lie** for the rest of this post is that programs are plans to move b
 
 That's *it*, that's my post. 
 
-The rest of it is just narrative coloring, but the TL;DR is:
+The rest of it is just narrative frosting, but the TL;DR is:
 
-> If you think of programs as boxes of bits to be moved around inside a computer, you can plan ahead or do it on the fly. The ones that plan upfront are called **compilers** (in languages like C/Rust) and can come up with very efficient ways to move the boxes because they know the sizes of everything before hand and can plan accordingly (make optimizations). **Interpreters** (Python/R) delay planning and trade the convenience of having to plan with just using more storage space and not badgering clients with plans all the time. This means they mostly can't optimize better routes or shipments of the boxes because they don't know how much is coming in or when, but there's enough space to accommodate their needs (usually). **Speculating JITs** (Javascript) are interpreters that "bet" that frequent orders that have been made before will be made again, and so try to make a plan for those when enough identical orders are made. **Type-based JIT Compilers** (Julia) try to figure out the sizes of the boxes when they arrive with fancy tech (type inference algorithms/x-ray goggles to figure out what's inside the boxes) and then make a clearing plan like a compiler would. They rely on their fancy tech to work as expected (no lead linings in the boxes) and for the order not to be too urgent when they are doing the on-the-fly planning, but they get the compiler speed throughput when things work out.
+> If you think of programs as boxes of bits to be moved around inside a computer, you can plan ahead or do it on the fly. The ones that plan upfront are called **compilers** (languages like C/Rust) and can come up with very efficient ways to move the boxes because they know the sizes of everything before hand and can plan accordingly (make optimizations). **Interpreters** (Python/R) delay planning and trade the convenience of having to plan with just using more storage space and not badgering clients with plans all the time. This means they mostly can't optimize better routes or shipments of the boxes because they don't know how much is coming in or when, but there's enough space to accommodate their needs (usually). **Speculating JITs** (Javascript) are interpreters that "bet" that frequent orders that have been made before will be made again, and so try to make a plan for those when enough identical orders are made. **Type-based JIT Compilers** (Julia) try to figure out the sizes of the boxes when they arrive with fancy tech (type inference algorithms/x-ray goggles to figure out what's inside the boxes) and then make a clearing plan like a compiler would. They rely on their fancy tech to work as expected (don't line your boxes with lead, silly user) and for the order not to be too urgent when they are doing the on-the-fly planning, but they get the compiler speed throughput when things work out.
 
 It is my deep held conviction that compilers are explainable to curious children, if one is patient and willing to help the listener build the right [language for it](https://www.youtube.com/watch?v=_ahvzDzKdB0), though perhaps not yet by me. Guy Steele explained Operating Systems in monosyllables in the previous link, and [Sy Brand helped me understand monads with cats in under 2 minutes.](https://twitter.com/TartanLlama/status/1460608706048106501) -- or at least the gist of it, which is enough for me right now. Both of them are the inspiration for this post and worth your time, so here's my own hand in this endeavor.
 

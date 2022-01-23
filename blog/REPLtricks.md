@@ -27,3 +27,5 @@ https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
 
 
 - Reverse latex/emoji lookup with `?\partial`
+
+- Stack traces with `CTRL+Q`, but also `methods(foo) + 1 + CTRL+Q`.

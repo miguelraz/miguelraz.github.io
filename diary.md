@@ -5,6 +5,51 @@
 
 # Virtual diary for progress on all fronts
 
+### 23/01/2022
+415. [Why meshgrid is inefficient](https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli=1) and what the Julia anternative is: 2D array copmrehension
+```julia
+inflate(f, xs, ys) = [f(x,y) for x in xs, y in ys]
+
+# call version 1: with a named function
+inflate(foo, xs, ys) 
+
+# call version 2: anonymous function syntax
+inflate((x,y) -> sin(x) + 2 * y^2 / cos(x,y), xs, ys)
+
+# call version 3: with a do block
+inflate(xs, ys) do x, y
+    sin(x) + 2 * y^2 / cos(x,y)
+end
+```
+
+### 21/01/2022
+414. GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:
+- scale the intro video and poster video
+- concat them
+- encode to final product
+When we can do instead
+- scale the intro video once
+- concat the poster video and the intro video on each invocation
+- encode the final product.
+
+415. Tips for job interviews:
+> When was the lat time you promoted someone on your team?
+> Why did the last person leave?
+> How do you nurture the wellbeing of people under a challenging environemnt?
+> When was the last time you supported a direct report's growth, even if it meant leaving the company?
+> Can I speak to some latino/women who have held this role before?
+
+
+
+### 20/01/2022
+413. Got this oneliner for downloading from `JuliaCon talk title urllink.mp4`:
+```
+miguelraz@cyclops ~/J/src> bat posters.csv | awk '{print $NF}' | rg "mp4" |xargs  wget -v
+```
+And it would be parallel with a `xargs -n 1 -P 8 filename` to download with 8 cores simultaneously.
+
+414. Rescued the `ffmpeg` script for processing JuliaCon videos. Should shape into a nice package. Need to recruit CI wizards + a cron job so that it can be kicked on demand for uploads.
+
 ### 18/01/2022
 412. Let's help Simeon out with that globals PR. Maybe also the freakin' blog post. And then the LLVM13->LLVM14 upgrade.
 
