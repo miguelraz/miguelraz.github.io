@@ -19,12 +19,12 @@
 
 
 <item>
-    <title><![CDATA[From Julia to Rust]]></title>
-    <link>https://miguelraz.github.io/blog/juliatorust/index.html</link>
+    <title><![CDATA[🚧 WIP: 🚧 Programs, Compilers, and Warehouse Managers]]></title>
+    <link>https://miguelraz.github.io/blog/OnCompilersAndWarehouseMangers/index.html</link>
     <guid></guid>
-    <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
+    <description><![CDATA[This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view.]]></description>    
         
-    <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>    
+    <pubDate>Wed, 19 Jan 2022 00:00:00 +0000</pubDate>    
     
     
     <atom:author>
@@ -34,12 +34,12 @@
 </item>
 
 <item>
-    <title><![CDATA[🚧 WIP: 🚧 Programs, Compilers, and Warehouse Managers]]></title>
-    <link>https://miguelraz.github.io/blog/OnCompilersAndWarehouseMangers/index.html</link>
+    <title><![CDATA[From Julia to Rust]]></title>
+    <link>https://miguelraz.github.io/blog/juliatorust/index.html</link>
     <guid></guid>
-    <description><![CDATA[This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view.]]></description>    
+    <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
         
-    <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
+    <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>    
     
     
     <atom:author>
