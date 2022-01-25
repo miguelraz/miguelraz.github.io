@@ -1,4 +1,4 @@
-@def title = "🚧 WIP 🚧: Hitchhiker's guide to Julia Internals"
+@def title = "🚧 WIP 🚧 Hitchhiker's guide to Julia Internals"
 
 # The monster at the bottom of Julia's internals
 

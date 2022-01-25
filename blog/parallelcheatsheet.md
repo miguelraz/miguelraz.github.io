@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: Julia parallel patterns cheatsheet"
+@def title = "🚧 WIP 🚧 Julia parallel patterns cheatsheet"
 
 With atomics landing soon in Julia, and parallel projects taking off, the time seems ripe to post about different parallel programming paradigms and how Julia can help you achieve them.
 This post is geared towards people who feel already somewhat comfortable in Julia, but you don't need to be a seasoned dev to read it. The aim is to explain (to myself) and others what tools for speeding up your code are available if you want to parallelize.

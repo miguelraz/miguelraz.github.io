@@ -1,4 +1,4 @@
-@def title = "🚧 WIP: 🚧 Programs, Compilers, and Warehouse Managers"
+@def title = "🚧 WIP 🚧 Programs, Compilers, and Warehouse Managers"
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["compilers", "JIT"]
 

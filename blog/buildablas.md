@@ -1,6 +1,6 @@
-@def title = "🚧WIP🚧: From Julia to BLAS"
+@def title = "🚧 WIP 🚧 From Julia to BLAS"
 
-Based on BLIS / [UlmBLAS](https://github.com/michael-lehn/ulmBLAS)
+  * [ ] Based on BLIS / [UlmBLAS](https://github.com/michael-lehn/ulmBLAS)
 
 Do this in the style of Computational Thinking MIT course
 

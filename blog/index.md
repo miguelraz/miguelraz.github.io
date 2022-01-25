@@ -1,4 +1,5 @@
-@def title = "WIP"
+@def title = "PathToPerformance blog"
+
 ### Blog
 
 ---

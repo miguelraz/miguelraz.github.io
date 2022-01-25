@@ -1,4 +1,4 @@
-@def title = "🚧 WIP 🚧: FrankenJulia - all the knobs you can twist and turn"
+@def title = "🚧 WIP 🚧 FrankenJulia - all the knobs you can twist and turn"
 
 ### Everything but Julia code
 

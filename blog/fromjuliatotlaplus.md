@@ -1,3 +1,3 @@
-@def title = "🚧WIP:🚧 From Julia to TLA+"
+@def title = "🚧 WIP 🚧 From Julia to TLA+"
 
 

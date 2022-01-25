@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: A most refined collection of Julia WATs "
+@def title = "🚧 WIP 🚧 A most refined collection of Julia WATs "
 
 This talk is inspired by the classic [Wat](https://www.destroyallsoftware.com/talks/wat) talk by Gary Bernhardt, applied to Julia.
 

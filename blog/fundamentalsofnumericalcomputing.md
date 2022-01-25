@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: Fundamentals of Numerical Computing"
+@def title = "🚧 WIP 🚧 Fundamentals of Numerical Computing"
 
 Toby Driscoll book here https://github.com/tobydriscoll/fnc-extras/tree/master/julia
 

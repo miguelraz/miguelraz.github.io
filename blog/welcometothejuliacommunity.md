@@ -1,4 +1,4 @@
-@def title = "🚧WIP:🚧 Welcome to the Julia Community!"
+@def title = "🚧 WIP 🚧 Welcome to the Julia Community!"
 
 ### Where to start
 

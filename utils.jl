@@ -25,14 +25,18 @@ function hfun_recentblogposts()
     io = IOBuffer()
     write(io, "<ul>")
 	  # for (k, i) in enumerate(idxs)
-    for i in 1:length(list)
+    @sync for i in 1:length(list)
+        if list[i] == "index.md"
+            continue
+        end
+
 		    fi = "/blog/" * splitext(list[i])[1] * "/"
         @show fi
-        title = pagevar("blog/" * list[i], "title")
+        title = pagevar("blog/" * list[i] * ".md", "title")
         @show title
-        title =  occursin("WIP", title) ? "🕵🏻 Shhhh secret 🕵🏻 " : title
-		    # write(io, """<li><a href="$fi">$(pagevar("blog/" * list[i], "title"))</a></li>\n""")
-		    write(io, """<li><a href="$fi">$title</a></li>\n""")
+        # title =  occursin("WIP", title) ? "🕵🏻 Shhhh... secret 🕵🏻 " : title
+		    write(io, """<li><a href="$fi">$(pagevar("blog/" * list[i], "title"))</a></li>\n""")
+		    # write(io, """<li><a href="$fi"> $(title) </a></li>\n""")
     end
     write(io, "</ul>")
     return String(take!(io))

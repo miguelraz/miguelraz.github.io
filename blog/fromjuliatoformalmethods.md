@@ -1,4 +1,4 @@
-@def title = "🚧 WIP 🚧: From Julia to Formal Methods"
+@def title = "🚧 WIP 🚧 From Julia to Formal Methods"
 @def author = "Miguel Raz Guzmán Macedo"
 
 In software engineering, sometimes tests arent' enough. Tests are great! They help us know that our footguns shoot straight - but how can we know we're aiming in the right direction? That would mean "debugging" our design with formal methods, and not the implementation of it with tests.

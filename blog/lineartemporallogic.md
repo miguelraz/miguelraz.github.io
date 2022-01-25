@@ -1,4 +1,4 @@
-@def title = "🚧WIP:🚧 Linear Temporal Logic in Lean4"
+@def title = "🚧 WIP 🚧 Linear Temporal Logic in Lean4"
 
 https://www.dc.fi.udc.es/~cabalar/vv/T4-LTL.pdf
 

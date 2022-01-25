@@ -1,4 +1,4 @@
-@def title = "WIP Julia and Numerical Relativity"
+@def title = "🚧 WIP 🚧 Julia and Numerical Relativity"
 @def tags = ["Julia", "HPC", "Fortran", "numerical relativity", "pde"]
 @def date_format = "10 April 2021"
 

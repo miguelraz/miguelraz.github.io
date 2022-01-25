@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: 12 sentences for speedy language learning"
+@def title = "🚧 WIP 🚧 12 sentences for speedy language learning"
 
 
 

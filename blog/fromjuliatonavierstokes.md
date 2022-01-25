@@ -1,4 +1,5 @@
-@def title = "🚧WIP🚧: From Julia to Navier Stokes in 12 steps"
+@def title = "🚧 WIP 🚧 From Julia to Navier Stokes in 12 steps"
+
 
 https://github.com/barbagroup/CFDPython
 

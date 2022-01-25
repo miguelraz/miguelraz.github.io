@@ -1,4 +1,4 @@
-@def title = "🚧 WIP 🚧: From Julia to LLVM C++ and C internals"
+@def title = "🚧 WIP 🚧 From Julia to LLVM C++ and C internals"
 
 ### Things I wish I'd known from the start:
 - Julia's C++ is "comically unidiomatic", as said by Stefan Karpinski. Specifically, you do NOT have to worry about anything resembling

@@ -1,4 +1,4 @@
-@def title = "🚧 WIP 🚧: The road to typed globals in Julia"
+@def title = "🚧 WIP 🚧 The road to typed globals in Julia"
 
 Plan of attack:
 - Add a type field to every global binding -> Easier task, probably mechanical. Look for it in the C code that implements global bindings.

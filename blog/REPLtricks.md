@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: Julia REPL Tips and Tricks"
+@def title = "🚧 WIP 🚧 Julia REPL Tips and Tricks"
 @def tags = ["REPL"]
 
 
