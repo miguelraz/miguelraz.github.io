@@ -7,8 +7,8 @@
 
 ~ 20 minutes.
 * This post talks about parsing, aka how to read file. It is focused on formats of interest for scientific / data processing, but is meant more as an introduction than a complete overview.
-* We will use Julia, Parsing.jl, and will be trying to parse the [DOT](X) and [EdgeList](X) formats.
-* This post draws from my experience rewriting a graph formats parsing library, [LightGraphsIO](X), and is intended to be documentation / a tutorial for others / Parsers.jl who may venture into similar waters.
+* We will use Julia, Parsing.jl, and will be trying to parse the [DOT]() and [EdgeList]() formats.
+* This post draws from my experience rewriting a graph formats parsing library, [LightGraphsIO](), and is intended to be documentation / a tutorial for others / Parsers.jl who may venture into similar waters.
 * Special shout out to the LightGraphs.jl contributors and to Jacob Quinn, who kindly answered my questions about his Parsers.jl library.
 
 ### What is parsing?

@@ -70,7 +70,7 @@ On namespaces as well, those debates are just not going to be as big a problem i
 
 \miguelito{What? No way.}
 
-\dispatch{Of course! What's more natural than addition? You just haven't used the name multiple dispatch for it, which is fine. Bear with me for some simple arithmetic: Can you describe the procedure you know for adding integers? Say you want to add `123 + 890`. (This is a good moment to install and open julia from [julialang.org](julialang.org) if you haven't already done so.)}
+\dispatch{Of course! What's more natural than addition? You just haven't used the name multiple dispatch for it, which is fine. Bear with me for some simple arithmetic: Can you describe the procedure you know for adding integers? Say you want to add `123 + 890`. (This is a good moment to install and open julia from [julialang.org](https://www.julialang.org) if you haven't already done so.)}
 
 \miguelito{Sure, you line up the digits, add the columns right to left, carry the ones...}
 

@@ -1,4 +1,4 @@
-@def title = "🚧WIP🚧: Great plots in scientifc history, remixed"
+@def title = " WIP: Great plots in scientific history, remixed"
 
 There's been great scientific plots throughout experimental history, let's re-do them in Julia!
 

@@ -1,5 +1,5 @@
-@def title = "🚧 WIP 🚧 Julia(Numerical_relativity) = 🚀🌌"
-@def tags = ["Julia", "HPC", "Fortran", "numerical relativity", "pdes"]
+@def title = "WIP Julia and Numerical Relativity"
+@def tags = ["Julia", "HPC", "Fortran", "numerical relativity", "pde"]
 @def date_format = "10 April 2021"
 
 ### Where does Julia fit in the world of numerical relativity? A roadmap towards gravitational inclusion

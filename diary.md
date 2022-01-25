@@ -767,20 +767,20 @@ end
 - To coordinate proposals of a value, it's good to keep a threshold counter and reject proposals which are inferior to that.
 - [Fischer, Lynch, and Patterson]() implies that " a reliable algoritm for eledcting a proposer must use either randomness or real time -- for example, by using timeouts."
 283. `CHOOSE` is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write `x' = CHOOSE i \in 1..9 : TRUE`, just use `x' \in 1..99`. Use `CHOOSE` only when there's exactly 1 `v` in `S` satisfying formula `P`, like in the definition of `Maximum(s)`
-```tla
+```
 Maximum(S) == IF S = {} THEN -1
               ELSE CHOOSE x \in S : \A m \in S : x \geq m
 ```
 284. The `ASSUME` statement is made for assumptions about the constants
 285. `SUBSET Acceptor` == `PowerSetOf(Acceptor)`.
 286. `EXCEPT` can be chained!
-```tla
+```
        /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal,
                                    ![m.ins][acc].bal  = m.bal,
                                    ![m.ins][acc].val  = m.val]
 ```
 287. This is also legit:
-```tla
+```
 Phase1b(acc) ==  
   \E m \in msgs : 
     /\ m.type = "phase1a"
@@ -801,7 +801,7 @@ Phase1b(acc) ==
 291. Steps that leave are variable values unchanged are called `stuttering steps`. Including stuttering steps helps us say what a system *may* do, but now we want to specify what a system *must* do.
 292. A finite sequence is another name for `tuple`.
 292. [Alternating Bit](https://lamport.azurewebsites.net/video/ABSpec.tla) protocol: Let's say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart `Fred, Mary, Mary, Ted, Ted, Ted, Ann` from `Fred, Mary, Ted, Ann`. You could timestamp it, but let's not. It's easiest to just append a bit that flips after every message. Appending a bit can be done with
-```tla
+```
 TypeOK == /\ Data \X {0, 1} \* where \X is the cartesian product
 ```
 293. To talk about `may/must`, we will talk about liveness and Safety properties.
@@ -817,7 +817,7 @@ TypeOK == /\ Data \X {0, 1} \* where \X is the cartesian product
     - Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.
 296. What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there's no hard real time requirements.
 297. Recursive declarations must be prepended with `RECURSIVE`
-```tla
+```
 RECURSIVE RemoveX(_)
 RemoveX(seq) == IF seq = << >>
                 THEN << >>
@@ -826,7 +826,7 @@ RemoveX(seq) == IF seq = << >>
                      ELSE <<Head(seq)>> \o RemoveX(Tail(seq))
 ```
 298. The Temporal Substitution law: can't do the basic maths trick have to had the 🔲 
-```tla
+```
 THEOREM 🔲 (v = e) => (f = (f WITH v <- e))
 ```
 299. When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential "Bad" string, and TLC will yell at formulas like `"Bad" = 0`. Instead, we can call the constant `Bad` a model value.
@@ -837,7 +837,7 @@ THEOREM 🔲 (v = e) => (f = (f WITH v <- e))
 
 267. In TLA+, every value is a set: 42 is a set, "abc" is a set.
 268. This represents 
-```tla
+```
 TCTypeOK ==
     rmState \in [RM -> {"working", "prepared", "committeed", "aborted"}]
 TCInit == rmState = [r \in RM |-> "working"] (* this means the array with index set RM such that every element rm of RM is mapped to "working"*)
@@ -849,7 +849,7 @@ TCInit == rmState = [r \in RM |-> "working"] (* this means the array with index 
 |index set | domain |
 |f[e] | f(e) |
 270. Remember notation for updating a record: 
-```tla
+```
 Prepare(r) == /\ rmState[r] = "working"
               /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
 
@@ -864,28 +864,28 @@ Decide(r)  == \/ /\ rmState[r] = "prepared"
 272. If you see the Coverage of actions and some of the actions were never taken `Count == 0`, it usually means there's an error in the spec.
 273. End of line `\* comment syntax`
 274. This record is actually a function, whose domain is `{"prof", "name"} such that f["prof"] = "Fred" and f["num"] = 42`. `f.prof === f["prof"]`
-```tla
+```
 [prof |-> "Fred", num |-> 42]
 ```
 275. Abbreviate `[f EXCEPT !["prof"] = "Red"` as `[f EXCEPT !.prof = "Red"}]`
 276. `UNCHANGED <<rmState, tmSTate, msgs>>` is an ordered triple. It's equivalent to 
-```tla
+```
 ... /\ rmState' = rmState
     /\ tmState' = tmState
     /\ msgs' = msgs
 ```
 277. Conditions which have no primes' are calle *enabling conditions*, and  in an Action Formula should go at the beginning, like so.
-```tla
+```
 TMRcvPrepared(r) == /\ tmState = "init"
                     /\ [type |-> "Prepared", rm |-> r] \in msgs
 ```
 278. Update the CommunityModules.jar... or else get hit by a bug..
 279. `Symmetry sets`: if "r1"↔ "r3" in all states of behavior `b` allowed by `TwoPhase` produces a behaviour `b\_{1,3}` allowed by `TwoPhase`, TLC does not have to check `b\_{1,3}` if it has checked `b`. Becuase `RM = {"r1", "r2", "r3"}`, We say that RM is a `symmetry set` of `TwoPhase`. To exploit this, replace
-```tla 
+``` 
 RM <- {"r1", "r2", "r3"}
 ```
 with 
-```tla
+```
 RM <- {r1, r2, r3}
 ```
 select `Set of model values/Symmetry Set` just below it.
@@ -897,7 +897,7 @@ select `Set of model values/Symmetry Set` just below it.
 
 256. A `behaviour` of a system is a sequence of states. A `state machine` is described by all its possible initial states and a next state relation. A `state` is an assignment of values to variables. The part of the program that controls what action is executed next is called the `control state`.
 257. A new TLA+ spec...
-```tla
+```
 ------------------------------- MODULE simple -------------------------------
 EXTENDS Integers
 VARIABLES pc, i
@@ -925,7 +925,7 @@ Next == Pick \/ Add1
 259. DON'T use Tabs (config in Preferences), F3/F4 to jump back and forth, F5 to see all defs, F6 for all uses of word under cursor, F10 is jump to PlusCal unfolded def, Oooh boxed comments are neat with `Ctrl+O + Ctrl+B` and friends, don't shade PlusCal code, regen pdf on save, `Ctrl+TAB` to swap between tabs, `Ctrl+Alt` to swap between subtabs
 260. [Hillel's super cool tricks for TLA+](https://twitter.com/hillelogram/status/1406081888498892807)
 261. This formula `FillSmall == small' = 3` is WRONG. It's true for some steps and false for others. It is NOT an assignment. The `big` must remain unchanged! If you don't you are coding, if you do keep it same, you are doing math. eg:
-```tla
+```
 FillSmall == /\ small' = 3
              /\ big' = big
 ```
@@ -982,7 +982,7 @@ Profile.print(C = true, nosiefloor = 1, mincount = 10)
 - [beginner friendly examples](https://github.com/tlaplus/Examples/issues/15)
 - [advent of code 2020](https://github.com/arnaudbos/aoc2020-tla-plus/blob/master/day1/DayOne.tla)
 - [tortoise and hare cycle detection algo](https://github.com/lorin/tla-tortoise-hare/blob/master/CycleDetection.tla)
-- [Rust and TLA+](  https://github.com/spacejam/tla-rust#here-we-go-jumping-into-pluscal),
+- [Rust and TLA+](https://github.com/spacejam/tla-rust)
 
 
 
@@ -1006,7 +1006,7 @@ Profile.print(C = true, nosiefloor = 1, mincount = 10)
 220. Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink's elbow. Twist off the bottom of the elbow. If there's no much when you take off the cap, it's likely there's no blockage at the elbow. Next, scrape the circumferences of the sink's drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don't forget to wrench up the bottom of the elbow again.
 221. PROJECT IDEA: LLVMPassAnalyzer.jl with [Text User Interfaces.jl](https://github.com/ronisbr/TextUserInterfaces.jl) as the backend. Or maybe [TerminalUserInterfaces.jl](https://github.com/kdheepak/TerminalUserInterfaces.jl)
 222. Lean: `import Leanpkg; #eval Leanpkg.leanVersionString`, commetns are with `--`, arrays `#[1,2,3][1] == 1`, functions don't need spaces so `gcd 1 10 == 1`, Lists are `[1,2,3]`, 
-```lean
+```
 structure Array (a : Type u) where
     data : List a
 ```
@@ -1052,14 +1052,14 @@ void AvxPackedMathF64 {
 }
 ```
 202. To get those xmm's into vector registers:
-```asm
+```
 ; Load packed SPFP values
     vmovaps xmm0, xmmword ptr [rcx] ;xmm0 = a
     vmovaps xmm1, xmmword ptr [rdx] ;xmm1 = b
 ```
 So, note you load the entire `xmm` register with `xmmword ptr [foo]`.
 203. Super cool trick to check 16 byte alignment (no perf penalty)
-```asm
+```
 test rcx, ofh ; jump if x not aligned to 16 byte boundary
 jnz Done
 ```
@@ -1087,7 +1087,7 @@ size_t sys_write(unsigned int fd, const char* buf, size_t count);
 178. registers: rax:rdx, bp sp si di, r8:r15
 179. There's several types of initialzied data `db` (declare bytes), `dw` (declare words), etc.
 There's also `RESB, RESW` as reserved bytes, reserved words, etc. `INCBIN` is for external binary files, `EQU` for defining constants:
-```asm
+```
 one equ 1
 ```
 Exercise: try to translate the following C code into asm:
@@ -1099,7 +1099,7 @@ if (rax != 50) {
 }
 ```
 Attempt:
-```asm
+```
     cmp rax, 50
     jne .exit
     jmp .right ; HOT DAMN FIRST TRY YO
@@ -1123,7 +1123,7 @@ In MASM, you get 4 registers for calling convention and the rest are in 8 byte i
 ALSO: After you are finished being called, you have to restor registers `rbp, rbx, r12:r15`
 
 181. You can write nicer headers
-```asm
+```
 section .data
 		SYS_WRITE equ 1
 		STD_IN    equ 1
@@ -1155,31 +1155,31 @@ Disassembly of section .text:
   4000d3:	eb 0e                	jmp    4000e3 <reverseStr>
 ```
 184. To checkif a string is set:
-```asm
+```
     test rax, rax               ; check if name is provided 
     jne .copy_name
 ```
 
 185. Assembly has macros! These are single line
-```asm
+```
 %define argc rsp + 8
 %define cliArg1 rsp + 24
 ```
 These are multi line
-```asm
+```
 %macro bootstrap 1          ; %macro name number_of_params
           push ebp
           mov ebp,esp
 %endmacro
 ```
 186. Don't forget the `.period` when you `call .function`, AND in the function section titles:
-```asm
+```
 .returnTrue
     mov eax, 1
     ret
 ```
 187. THERE'S STRUCTS in ASSEMBLY?
-```asm
+```
 struc person
    name: resb 10
    age:  resb 1
@@ -1199,7 +1199,7 @@ _start:
 188. x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7
 - `fld dword [x] ` pushes x to this stack.
 - `fldpi` loads pi, lol.
-```asm
+```
 extern printResult
 
 section .data
@@ -1512,7 +1512,7 @@ $ g++ hello.cpp hello.o
 $ ./a.out
 ```
 - and the assembly file was:
-```asm
+```
 ;-------------------------------------------------
 ;               Ch02_01.asm
 ;-------------------------------------------------
@@ -1958,7 +1958,7 @@ Also, RTFM! Specifically platform hijinks.
 Now to coordinate a cool talk/proposal with Mosè and Elliot and show off cool Julia stuff.
 
 99. FINALLY got Lean4 working on VSCode. Still don't know how to use `nix` but oh well. Halfway through the manual, and this example was neat to grok:
-```lean
+```
 def add1Times3FilterEven (xs : List Nat) :=
 	-- this
 	--   List.filter (. % 2 == 0) (List.map (. * 3) (List.map (. + 1) xs))
@@ -2721,7 +2721,7 @@ so that you don't need to do `git pull --rebase --autostash` and can just `git p
 
  - whelp I think I lost it. Will fish it back but it was an easy google.
 
- 16. Polytomous recommended ["Taguette"](www.taguette.org) for highlighting documents and its open source. Super cool! Should send to Ponzi.
+ 16. Polytomous recommended [this site Taguette](https://www.taguette.org) for highlighting documents and its open source. Super cool! Should send to Ponzi.
 
 ### 06/11/2020
 
@@ -2833,7 +2833,7 @@ julia> (^2, sqrt, inv).([2,4,4])
 
 3. Rust allows for defining anonymous functions!
 
-```rust
+```
 fn raindrops(n: u32) -> String {
 	let is_factor = |f| x % f == 0;
 	...
@@ -2841,7 +2841,7 @@ fn raindrops(n: u32) -> String {
 ```
 
 4. Rust match is very powerful... try and setup the anonymous functions in a tuple after the `match` and then filter by `(each, available, case) => action`.
-```plaintext
+```
 pub fn raindrops(num: i64) -> String {
     let mut raindrop = String::new();
 
@@ -2862,7 +2862,7 @@ pub fn raindrops(num: i64) -> String {
 
 5. This was a good use of match
 
-```plaintext
+```
 pub fn square(s: u32) -> u64 {
     match s {
         1...64 => 1u64.wrapping_shl(s-1),
