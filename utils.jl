@@ -31,9 +31,9 @@ end
         end
 
 		    fi = "/blog/" * splitext(list[i])[1] * "/"
-        @show fi
+        # @show fi
         title = pagevar("blog/" * list[i] * ".md", "title")
-        @show title
+        # @show title
         # title =  occursin("WIP", title) ? "🕵🏻 Shhhh... secret 🕵🏻 " : title
 		    write(io, """<li><a href="$fi">$(pagevar("blog/" * list[i], "title"))</a></li>\n""")
 		    # write(io, """<li><a href="$fi"> $(title) </a></li>\n""")
