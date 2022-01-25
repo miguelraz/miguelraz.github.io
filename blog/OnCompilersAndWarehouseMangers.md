@@ -1,9 +1,6 @@
 @def title = "🚧 WIP: 🚧 Programs, Compilers, and Warehouse Managers"
 @def author = "Miguel Raz Guzmán Macedo"
 @def tags = ["compilers", "JIT"]
-@def rss = "This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view." 
-#@def rss_pubdate = Date(2022, 01, 19)
-#@def published = "19 January 2022"
 
 ### Reading time: 25 minutes
 ### Summary:

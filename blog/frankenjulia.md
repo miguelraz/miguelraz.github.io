@@ -1,6 +1,14 @@
-@def title = "FrankenJulia - all the knobs you can twist and turn"
+@def title = "🚧 WIP 🚧: FrankenJulia - all the knobs you can twist and turn"
 
 ### Everything but Julia code
+
+This question is an effort to try and answer the question
+
+> Just how much can I modify a Julia program's behaviour without touching it's code?
+
+And then try to turn all the different knobs and switches as possible.
+
+You know, for science 🔭.
 
 ### Allocators
 - mimalloc

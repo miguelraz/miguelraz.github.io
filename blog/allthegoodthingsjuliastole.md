@@ -1,4 +1,6 @@
 @def title = "🚧WIP🚧: Cross pollination of ideas in PL, or great things Julia stole from other languages"
+@def author = "Miguel Raz Guzmán Macedo"
+
 
 # Cross pollination of ideas in PL - all the great things Julia stole from other languages
 

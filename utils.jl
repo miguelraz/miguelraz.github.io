@@ -8,6 +8,7 @@ function hfun_m1fill(vname)
   return pagevar("index", var)
 end
 
+
 function lx_baz(com, _)
   # keep this first line
   brace_content = Franklin.content(com.braces[1]) # input string
@@ -18,14 +19,18 @@ end
 function hfun_recentblogposts()
     list = readdir("blog")
 	filter!(f -> endswith(f, ".md") && !startswith(f, "index"), list)
-    dates = [stat(joinpath("blog", f)).mtime for f in list]
-    perm = sortperm(dates, rev=true)
-    idxs = perm[1:length(perm)]
+    #dates = [stat(joinpath("blog", f)).mtime for f in list]
+    #perm = sortperm(dates, rev=true)
+    #idxs = perm[1:length(perm)]
     io = IOBuffer()
     write(io, "<ul>")
-	for (k, i) in enumerate(idxs)
+	#for (k, i) in enumerate(idxs)
+    for i in 1:length(list)
 		fi = "/blog/" * splitext(list[i])[1] * "/"
-		write(io, """<li><a href="$fi">$(pagevar("blog/"*list[i], "title"))</a></li>\n""")
+        title = pagevar("blog/" * list[i], "title")
+        title = contains(title, "WIP") ? "🕵🏻 Shhhh secret 🕵🏻 " : title
+		#write(io, """<li><a href="$fi">$(pagevar("blog/" * list[i], "title"))</a></li>\n""")
+		write(io, """<li><a href="$fi">$title</a></li>\n""")
     end
     write(io, "</ul>")
     return String(take!(io))
