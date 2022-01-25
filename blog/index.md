@@ -1,4 +1,4 @@
-@title = ""
+@def title = ""
 ### Blog
 
 ---
