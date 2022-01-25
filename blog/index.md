@@ -1,5 +1,4 @@
-@def title = "Blog landing page"
-
+@def title = "WIP"
 ### Blog
 
 ---
