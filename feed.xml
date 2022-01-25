@@ -19,21 +19,6 @@
 
 
 <item>
-    <title><![CDATA[🚧 WIP: 🚧 Programs, Compilers, and Warehouse Managers]]></title>
-    <link>https://miguelraz.github.io/blog/OnCompilersAndWarehouseMangers/index.html</link>
-    <guid></guid>
-    <description><![CDATA[This blog is about trying to explain to non computer people what compilers do, and why JITs are cool and how they fit in that world view.]]></description>    
-        
-    <pubDate>Wed, 19 Jan 2022 00:00:00 +0000</pubDate>    
-    
-    
-    <atom:author>
-    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
-    </atom:author>
-                
-</item>
-
-<item>
     <title><![CDATA[From Julia to Rust]]></title>
     <link>https://miguelraz.github.io/blog/juliatorust/index.html</link>
     <guid></guid>
