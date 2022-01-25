@@ -320,7 +320,7 @@ println(3+3)
 ** TODO Become astronaut
 ** DONE Bcome a programmer
 ** [ ] Become younger  - get there with SPC m t
-** [ ] [#C] Strawberies
+** [ ]
 * [ ] Morning routine  [0/0]
 + [-] do 50
 + [X] meditate
@@ -350,3 +350,11 @@ println(3+3)
 * Trefethen 100 dollar problems https://mathworld.wolfram.com/Hundred-DollarHundred-DigitChallengeProblems.html
 
 * LLVMCall.jl add sqrt and fsqrt
+* TODO Welcome to the Julia community blog post
+* TODO Read Franklin JL Docs -> Fix blog
+* TODO How to Prove it with a time attack
+* TODO Nautilus [ ]
+* TODO Chris Peel Translations
+* TODO Kaleidoscope translatio
+* TODO Tensors course
+* TODO inscripcion facultad

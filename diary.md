@@ -5,6 +5,10 @@
 
 # Virtual diary for progress on all fronts
 
+### 24/01/2022
+416. Jeebus I spent way too much time on Franklin blog today. 
+417. This [DataFrames.jl](https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf) worksheet is super userful.
+
 ### 23/01/2022
 415. [Why meshgrid is inefficient](https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli=1) and what the Julia anternative is: 2D array copmrehension
 ```julia
