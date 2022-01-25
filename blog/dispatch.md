@@ -92,7 +92,7 @@ julia> 1//2 + 1//3
 \miguelito{Yup, like adding natural numbers - line 'em up, carry the one.}
 ```julia-repl
 julia> .25 + 5.5
-5.5
+5.75
 ```
 
 \dispatch{Excelente, ignore the decimals for now. Did you ever face matrices? Can you try to add `2x2` matrix of `1`s and a `2x2` matrix of `3`s?}
