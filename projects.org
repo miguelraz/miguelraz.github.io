@@ -358,3 +358,5 @@ println(3+3)
 * TODO Kaleidoscope translatio
 * TODO Tensors course
 * TODO inscripcion facultad
+* TODO LLV< GC stack maps?
+* TODO Setup lsp emacs properly jeebus

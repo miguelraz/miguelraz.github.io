@@ -16,7 +16,7 @@ function lx_baz(com, _)
   return uppercase(brace_content)
 end
 
-function hfun_recentblogposts()
+@delay function hfun_recentblogposts()
     list = readdir("blog")
 	  filter!(f -> endswith(f, ".md") && !startswith(f, "index"), list)
     dates = [stat(joinpath("blog", f)).mtime for f in list]
