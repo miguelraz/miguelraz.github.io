@@ -28,6 +28,7 @@ function hfun_recentblogposts()
     for i in 1:length(list)
 		fi = "/blog/" * splitext(list[i])[1] * "/"
         title = pagevar("blog/" * list[i], "title")
+        @show title
         title = contains(title, "WIP") ? "🕵🏻 Shhhh secret 🕵🏻 " : title
 		#write(io, """<li><a href="$fi">$(pagevar("blog/" * list[i], "title"))</a></li>\n""")
 		write(io, """<li><a href="$fi">$title</a></li>\n""")
