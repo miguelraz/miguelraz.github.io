@@ -7,7 +7,7 @@ Huge thanks to Mason Protter, most of these are his.
 ### Empty collections and truthiness
 - and, or on empty collections
 
-### Broadcasting
+### Broadcasting is hard
 - broadcasting shenanigans: (Credit to Mosè Giordano)
 ```julia-repl
 julia> all([] .== [42])
@@ -20,7 +20,7 @@ true
 ### RNG
 - RNG seed set by `@testset`
 
-### Parsing - it's hard!
+### Parsing is hard
 - Operator precedene with ranges: (Credit to Oscar Smith)
 ```julia-repl
 julia> -5:5 .+ .5
@@ -51,8 +51,69 @@ julia> 2e+4
 julia> 2e+5
 ```
 
-### Equality
-- `isequal` vs `egal` vs `==`
+- Shadowing: Courtesy of [Kristoffer Carlsson](https://github.com/JuliaLang/julia/issues/15483)
+```julia-repl
+julia> git_tree-sha1 = "8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8";
+
+julia> 1-2
+"8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8"
+```
+And another example:
+```julia-repl
+julia> function f(x)
+           my_cool-variable=3
+           if x > 5
+               return my_cool_variable
+           else
+               return 3 - 1
+           end
+       end
+f (generic function with 1 method)
+
+julia> f(2)
+3
+
+julia> 3-1
+2
+```
+
+- Symbols and numbers: Courtesy of `Mosè Giordano`:
+```julia-repl
+julia> :a === "a"
+false
+
+julia> :2 === 2
+true
+```
+As a corollary, a Pythonista stumper:
+```julia-repl
+julia> arr1 = reshape(1.0:4.0, 2, 2)
+2×2 reshape(::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, 2, 2) with eltype Float64:
+ 1.0  3.0
+ 2.0  4.0
+
+julia> arr2 = zeros(2, 2)
+2×2 Matrix{Float64}:
+ 0.0  0.0
+ 0.0  0.0
+
+julia> arr2 .= arr1[:, :2]
+2×2 Matrix{Float64}:
+ 3.0  3.0
+ 4.0  4.0
+```
+because `:2` is not the same as `1:2`
+```julia-repl
+julia> arr2 .= arr1[:, 1:2]
+2×2 Matrix{Float64}:
+ 1.0  3.0
+ 2.0  4.0
+```
+
+
+
+### Equality is hard
+- `isequal` vs `egal` vs `==` vs `===`
 
 ### Numbers are iterable:
 ```julia-repl
