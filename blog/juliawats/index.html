@@ -1,8 +1,8 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>🚧 WIP 🚧 A most refined collection of Julia WATs </title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><p>This talk is inspired by the classic <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a> talk by Gary Bernhardt, applied to Julia.</p> <p>Huge thanks to Mason Protter, most of these are his.</p> <h3 id=empty_collections_and_truthiness ><a href="#empty_collections_and_truthiness" class=header-anchor >Empty collections and truthiness</a></h3> <ul> <li><p>and, or on empty collections</p> </ul> <h3 id=broadcasting ><a href="#broadcasting" class=header-anchor >Broadcasting</a></h3> <ul> <li><p>broadcasting shenanigans: &#40;Credit to Mosè Giordano&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > all([] .== [<span class=hljs-number >42</span>])
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>🚧 WIP 🚧 A most refined collection of Julia WATs </title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><p>This talk is inspired by the classic <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a> talk by Gary Bernhardt, applied to Julia.</p> <p>Huge thanks to Mason Protter, most of these are his.</p> <h3 id=empty_collections_and_truthiness ><a href="#empty_collections_and_truthiness" class=header-anchor >Empty collections and truthiness</a></h3> <ul> <li><p>and, or on empty collections</p> </ul> <h3 id=broadcasting_is_hard ><a href="#broadcasting_is_hard" class=header-anchor >Broadcasting is hard</a></h3> <ul> <li><p>broadcasting shenanigans: &#40;Credit to Mosè Giordano&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > all([] .== [<span class=hljs-number >42</span>])
 </span>true
 
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > all([] .≈ [<span class=hljs-number >42</span>])
-</span>true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code></p> </ul> <h3 id=parsing_-_its_hard ><a href="#parsing_-_its_hard" class=header-anchor >Parsing - it&#39;s hard&#33;</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > -<span class=hljs-number >5</span>:<span class=hljs-number >5</span> .+ <span class=hljs-number >.5</span>
+</span>true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code></p> </ul> <h3 id=parsing_is_hard ><a href="#parsing_is_hard" class=header-anchor >Parsing is hard</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > -<span class=hljs-number >5</span>:<span class=hljs-number >5</span> .+ <span class=hljs-number >.5</span>
 </span>-5.0:1.0:5.0
 
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > (-<span class=hljs-number >5</span>:<span class=hljs-number >5</span>) .+ <span class=hljs-number >.5</span>
@@ -19,7 +19,44 @@ my_thing&#x27;ᶜ(stuff)&#x27;ᶜ(more_stuff, an_argument)&#x27;ᶜ(final_stuff;
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >2e+4</span>
 </span>20000.0
 
-<span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >2e+5</span></span></code></pre> <h3 id=equality ><a href="#equality" class=header-anchor >Equality</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > first(<span class=hljs-number >1</span>,<span class=hljs-number >2</span>)
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >2e+5</span></span></code></pre> <ul> <li><p>Shadowing: Courtesy of <a href="https://github.com/JuliaLang/julia/issues/15483">Kristoffer Carlsson</a></p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > git_tree-sha1 = <span class=hljs-string >&quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;</span>;
+</span>
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span>-<span class=hljs-number >2</span>
+</span>&quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;</code></pre> <p>And another example:</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-keyword >function</span> f(x)
+           my_cool-variable=<span class=hljs-number >3</span>
+           <span class=hljs-keyword >if</span> x &gt; <span class=hljs-number >5</span>
+               <span class=hljs-keyword >return</span> my_cool_variable
+           <span class=hljs-keyword >else</span>
+               <span class=hljs-keyword >return</span> <span class=hljs-number >3</span> - <span class=hljs-number >1</span>
+           <span class=hljs-keyword >end</span>
+       <span class=hljs-keyword >end</span>
+</span>f (generic function with 1 method)
+
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > f(<span class=hljs-number >2</span>)
+</span>3
+
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >3</span>-<span class=hljs-number >1</span>
+</span>2</code></pre> <ul> <li><p>Symbols and numbers: Courtesy of <code>Mosè Giordano</code>:</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > :a === <span class=hljs-string >&quot;a&quot;</span>
+</span>false
+
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > :<span class=hljs-number >2</span> === <span class=hljs-number >2</span>
+</span>true</code></pre> <p>As a corollary, a Pythonista stumper:</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > arr1 = reshape(<span class=hljs-number >1.0</span>:<span class=hljs-number >4.0</span>, <span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
+</span>2×2 reshape(::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, 2, 2) with eltype Float64:
+ 1.0  3.0
+ 2.0  4.0
+
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > arr2 = zeros(<span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
+</span>2×2 Matrix{Float64}:
+ 0.0  0.0
+ 0.0  0.0
+
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > arr2 .= arr1[:, :<span class=hljs-number >2</span>]
+</span>2×2 Matrix{Float64}:
+ 3.0  3.0
+ 4.0  4.0</code></pre> <p>because <code>:2</code> is not the same as <code>1:2</code></p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > arr2 .= arr1[:, <span class=hljs-number >1</span>:<span class=hljs-number >2</span>]
+</span>2×2 Matrix{Float64}:
+ 1.0  3.0
+ 2.0  4.0</code></pre> <h3 id=equality_is_hard ><a href="#equality_is_hard" class=header-anchor >Equality is hard</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code> vs <code>&#61;&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > first(<span class=hljs-number >1</span>,<span class=hljs-number >2</span>)
 </span>1-element Vector{Int64}:
  1</code></pre> <p>Rationale: Partly explained in the docstring for <code>first</code>. Maybe a MATLAB-ism.</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-comment ># Credit to Dheepak Krishnamurthy</span>
 </span><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span>[<span class=hljs-number >1</span>][<span class=hljs-number >1</span>][<span class=hljs-number >1</span>] == <span class=hljs-number >1</span>
