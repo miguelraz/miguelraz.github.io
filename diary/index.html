@@ -1,4 +1,43 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=24012022 ><a href="#24012022" class=header-anchor >24/01/2022</a></h3> <ol start=416 > <li><p>Jeebus I spent way too much time on Franklin blog today. </p> <li><p>This <a href="https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf">DataFrames.jl</a> worksheet is super userful.</p> </ol> <h3 id=23012022 ><a href="#23012022" class=header-anchor >23/01/2022</a></h3> <ol start=415 > <li><p><a href="https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli&#61;1">Why meshgrid is inefficient</a> and what the Julia anternative is: 2D array copmrehension</p> </ol> <pre><code class="julia hljs">inflate(f, xs, ys) = [f(x,y) <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> xs, y <span class=hljs-keyword >in</span> ys]
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <ol start=419 > <li><p>To change the Julia prompt:</p> </ol> <pre><code class="julia hljs">Base.active_repl.interface.modes[<span class=hljs-number >1</span>].prompt = <span class=hljs-string >&quot;julia 😷&gt;&quot;</span></code></pre>
+<p>credit to <code>rickhg12hs</code>.</p>
+<h3 id=25012022 ><a href="#25012022" class=header-anchor >25/01/2022</a></h3>
+<ol start=418 >
+<li><p>Time to actually learn the freakin&#39; commands to the Julia REPL:</p>
+
+</ol>
+<ul>
+<li><p>exit with <code>^d</code></p>
+
+<li><p>Move to beginnign with <code>^A</code>, <code>^E</code> move to end</p>
+
+<li><p><code>^R</code> is reverse search and <code>^S</code> is forward search</p>
+
+<li><p><code>^F</code> is forward a word, <code>^B</code> is back a word</p>
+
+<li><p><code>^-Space</code> sets a mark, <code>^X</code> swaps places with the mark, <code>^G</code> deactivates de mark</p>
+
+<li><p><code>^-T</code> transposes chars with cursor, <code>meta-Up/down arrow</code> transpose line with one above</p>
+
+<li><p><code>meta-u/c/l</code> change next word to uppercase, titlecase, lowercase</p>
+
+<li><p><code>^/,</code>, <code>^_</code> undo previous edit</p>
+
+<li><p><code>^W</code> delete word up to nearest whitespace, <code>meta-d</code> delete next work, <code>meta-backspace</code></p>
+
+</ul>
+<h3 id=24012022 ><a href="#24012022" class=header-anchor >24/01/2022</a></h3>
+<ol start=416 >
+<li><p>Jeebus I spent way too much time on Franklin blog today. </p>
+
+<li><p>This <a href="https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf">DataFrames.jl</a> worksheet is super userful.</p>
+
+</ol>
+<h3 id=23012022 ><a href="#23012022" class=header-anchor >23/01/2022</a></h3>
+<ol start=415 >
+<li><p><a href="https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli&#61;1">Why meshgrid is inefficient</a> and what the Julia anternative is: 2D array copmrehension</p>
+
+</ol>
+<pre><code class="julia hljs">inflate(f, xs, ys) = [f(x,y) <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> xs, y <span class=hljs-keyword >in</span> ys]
 
 <span class=hljs-comment ># call version 1: with a named function</span>
 inflate(foo, xs, ys) 
@@ -9,7 +48,42 @@ inflate((x,y) -&gt; sin(x) + <span class=hljs-number >2</span> * y^<span class=h
 <span class=hljs-comment ># call version 3: with a do block</span>
 inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
     sin(x) + <span class=hljs-number >2</span> * y^<span class=hljs-number >2</span> / cos(x,y)
-<span class=hljs-keyword >end</span></code></pre> <h3 id=21012022 ><a href="#21012022" class=header-anchor >21/01/2022</a></h3> <ol start=414 > <li><p>GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:</p> </ol> <ul> <li><p>scale the intro video and poster video</p> <li><p>concat them</p> <li><p>encode to final product</p> </ul> <p>When we can do instead</p> <ul> <li><p>scale the intro video once</p> <li><p>concat the poster video and the intro video on each invocation</p> <li><p>encode the final product.</p> </ul> <ol start=415 > <li><p>Tips for job interviews:</p> </ol> <blockquote> <p>When was the lat time you promoted someone on your team? Why did the last person leave? How do you nurture the wellbeing of people under a challenging environemnt? When was the last time you supported a direct report&#39;s growth, even if it meant leaving the company? Can I speak to some latino/women who have held this role before?</p> </blockquote> <h3 id=20012022 ><a href="#20012022" class=header-anchor >20/01/2022</a></h3> <ol start=413 > <li><p>Got this oneliner for downloading from <code>JuliaCon talk title urllink.mp4</code>:</p> </ol> <pre><code class="julia hljs">miguelraz<span class=hljs-meta >@cyclops</span> ~/J/src&gt; bat posters.csv | awk &#x27;{print $NF}&#x27; | rg <span class=hljs-string >&quot;mp4&quot;</span> |xargs  wget -v</code></pre>
+<span class=hljs-keyword >end</span></code></pre>
+<h3 id=21012022 ><a href="#21012022" class=header-anchor >21/01/2022</a></h3>
+<ol start=414 >
+<li><p>GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:</p>
+
+</ol>
+<ul>
+<li><p>scale the intro video and poster video</p>
+
+<li><p>concat them</p>
+
+<li><p>encode to final product</p>
+
+</ul>
+<p>When we can do instead</p>
+<ul>
+<li><p>scale the intro video once</p>
+
+<li><p>concat the poster video and the intro video on each invocation</p>
+
+<li><p>encode the final product.</p>
+
+</ul>
+<ol start=415 >
+<li><p>Tips for job interviews:</p>
+
+</ol>
+<blockquote>
+<p>When was the lat time you promoted someone on your team? Why did the last person leave? How do you nurture the wellbeing of people under a challenging environemnt? When was the last time you supported a direct report&#39;s growth, even if it meant leaving the company? Can I speak to some latino/women who have held this role before?</p>
+</blockquote>
+<h3 id=20012022 ><a href="#20012022" class=header-anchor >20/01/2022</a></h3>
+<ol start=413 >
+<li><p>Got this oneliner for downloading from <code>JuliaCon talk title urllink.mp4</code>:</p>
+
+</ol>
+<pre><code class="julia hljs">miguelraz<span class=hljs-meta >@cyclops</span> ~/J/src&gt; bat posters.csv | awk &#x27;{print $NF}&#x27; | rg <span class=hljs-string >&quot;mp4&quot;</span> |xargs  wget -v</code></pre>
 <p>And it would be parallel with a <code>xargs -n 1 -P 8 filename</code> to download with 8 cores simultaneously.</p>
 <ol start=414 >
 <li><p>Rescued the <code>ffmpeg</code> script for processing JuliaCon videos. Should shape into a nice package. Need to recruit CI wizards &#43; a cron job so that it can be kicked on demand for uploads.</p>
@@ -3453,7 +3527,7 @@ pub fn total() -&gt; u64 {
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: January 25, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: January 26, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
