@@ -20,7 +20,7 @@ true
 ### RNG
 - RNG seed set by `@testset`
 
-### Parsing
+### Parsing - it's hard!
 - Operator precedene with ranges: (Credit to Oscar Smith)
 ```julia-repl
 julia> -5:5 .+ .5
@@ -37,6 +37,19 @@ end(o::PseudoClass)(f, args...; kwargs...) = f(o.data, args...; kwargs...)
 var"'ᶜ" = PseudoClass
 my_thing'ᶜ(stuff)'ᶜ(more_stuff, an_argument)'ᶜ(final_stuff; a_keyword_argument)
 ```
+- Courtesy of [Stefan Karpinski](https://github.com/miguelraz/miguelraz.github.io/issues/2#issuecomment-1022312868)
+```julia-repl
+julia> e = 9998.0
+9998.0
+
+julia> 2e
+19996.0
+
+julia> 2e+4
+20000.0
+
+julia> 2e+5
+```
 
 ### Equality
 - `isequal` vs `egal` vs `==`
@@ -48,3 +61,9 @@ julia> first(1,2)
  1
 ```
 Rationale: Partly explained in the docstring for `first`. Maybe a MATLAB-ism.
+```julia-repl
+julia> # Credit to Dheepak Krishnamurthy
+julia> 1[1][1][1] == 1
+true
+```
+

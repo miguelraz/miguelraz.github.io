@@ -14,7 +14,7 @@ My **useful lie** for the rest of this post is that programs are plans to move b
 
 That's *it*, that's my post. 
 
-The rest of it is just narrative frosting, but the TL;DR is:
+The rest of it is just narrative frosting, but the TL;DR (🤣) is:
 
 > If you think of programs as boxes of bits to be moved around inside a computer, you can plan ahead or do it on the fly. The ones that plan upfront are called **compilers** (languages like C/Rust) and can come up with very efficient ways to move the boxes because they know the sizes of everything before hand and can plan accordingly (make optimizations). **Interpreters** (Python/R) delay planning and trade the convenience of having to plan with just using more storage space and not badgering clients with plans all the time. This means they mostly can't optimize better routes or shipments of the boxes because they don't know how much is coming in or when, but there's enough space to accommodate their needs (usually). **Speculating JITs** (Javascript) are interpreters that "bet" that frequent orders that have been made before will be made again, and so try to make a plan for those when enough identical orders are made. **Type-based JIT Compilers** (Julia) try to figure out the sizes of the boxes when they arrive with fancy tech (type inference algorithms/x-ray goggles to figure out what's inside the boxes) and then make a clearing plan like a compiler would. They rely on their fancy tech to work as expected (don't line your boxes with lead, silly user) and for the order not to be too urgent when they are doing the on-the-fly planning, but they get the compiler speed throughput when things work out.
 

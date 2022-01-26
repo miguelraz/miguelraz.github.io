@@ -3,19 +3,22 @@
 ### Where to start
 
 Hello and welcome to the Julia Community!
-
+  
 This is a blog post for newcomers and community members alike to describe where and when you can find Julians around cyberspace and in the real world. I will talk about what different venues offer, how people usually interact, and what you can expect from going to these forums.
 
 Enjoy! If you find this blog post helpful, consider sponsoring this [account on GitHub](https://github.com/sponsors/miguelraz).
 
 ### Code of conduct
-### Online forums - JuliaCon!
 
-#### Website
-#### Submission and the Call for Proposals
+#  Online forums - JuliaCon!
+
+## Website
+
+## Submission and the Call for Proposals
+
 JuliaCon is centered around people presenting cool stuff they've learned or built and sharing those experiences and code with others. Given the growth of the community, a committee exists to select proposals months in advance and guide them through a submission process so that their talk/poster can be processed and uploaded online as part of the conference. [The announcement](https://discourse.julialang.org/t/juliacon-2021-cfp-closes-mar-31st-2021/54355) happens on Discourse and is usually 3-4 months before JuliaCon itself. Submission is open to everybody, including you! (And we'd love to hear from you!) This year, a workshop for [livestreamed Questions and Answers CfP](https://www.youtube.com/watch?v=ou03SfY8lNo) was made to help newcomers. Once the submissions are sorted out, the Organizing Committee (OrgComm) publishes a schedule for which talks will happen where.
 
-#### Schedule, Registration and REPL goodies
+## Schedule, Registration and REPL goodies
 
 Due to the ongoing Covid19 pandemic, JuliaCon2020 and JuliaCon2021 have been online. This makes physical conferences a logistical nightmare and health hazard, so it's easier to do the following:
 1. Ask every accepted submission to pre-record their talk.
@@ -42,7 +45,7 @@ That's the conference!
 
 Let's dig a lil' deeper into all the different events.
 
-#### Workshops, talks, lightning talks, posters and Birds of a Feather, and more!
+## Workshops, talks, lightning talks, posters and Birds of a Feather, and more!
 
 Different things happen simultaneously at JuliaCon, here's what you can expect if you attend any of these:
 - **Workshops**: Start 1 week before JuliaCon (week of the 21st of July). These are longer talks (~few hours) on a specific topic like Differential Equations, DataFrames, GPU examples - all the fun stuff.. The point is to work through examples as a group and be able to ask the presenters questions during the talk.
@@ -55,18 +58,23 @@ Different things happen simultaneously at JuliaCon, here's what you can expect i
 
 A special mention about the **Proceedings**: This is an open-access journal published in cooperation with `Open Journals`. This is a great venue for those who need academic credit for contributing in the conference, but it's by no means limited to just an academic audience.
 
-#### Discord and chatting
+## Discord and chatting
 
-### Online forums and netiquette
+# Online forums and netiquette
+
 - English and other languages
-### Discourse
+
+# Discourse
+
 - Not StackOverflow
 - MWE
 - Code fencing
 - thread splitting
 - Liking / bookmarking
 - Tags 
-### Slack
+
+# Slack
+
 - Convo model: find where you should ask, then go for it.
   - don't ask to ask, just do it.
 - emojis
@@ -76,13 +84,23 @@ A special mention about the **Proceedings**: This is an open-access journal publ
 - triage calls
 - *not* private
 - the slack holeeeee
-### Zulip
+
+# Zulip
+
 - Very similar to slack: open source, more private, different convo model
-### Github
-### Twitter
+
+# Github
+
+# Twitter
+
 - [Josh Cornin resource](https://docs.google.com/document/d/1b7P71-OjEt5dHlgKEf9EbUBTkXRVrpDQaz7giXUd3n4/edit)
-### Blogs
+
+# Blogs
+
 - JuliaBloggers (shoutout to RandyZwitch)
 - Franklin.jl to build your own.
-### Mailing lists, IRC
-### Offline forums - JuliaCon
+
+# Mailing lists, IRC
+
+# Offline forums - JuliaCon
+

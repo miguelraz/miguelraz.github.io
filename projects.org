@@ -23,7 +23,7 @@
 ***** Useful links
 ****** https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/#C-Wrapper-Examples
 ****** https://github.com/kdheepak/juliacon2019-why-writing-c-interfaces-in-julia-is-so-easy-asterisk
-**** [ ] [#A] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
+**** [ ] [PETSc.jl](https://discourse.julialang.org/t/mention-of-julia-for-the-re-implementation-of-petsc/46199/11)
 **** [ ] OrthogonalPolynomials.jl :publications:
 **** [ ] AnalyticDiffeq.jl + SymbolicUtils.jl combo!/
 **** [ ] GarbageCollectors.jl
@@ -350,13 +350,41 @@ println(3+3)
 * Trefethen 100 dollar problems https://mathworld.wolfram.com/Hundred-DollarHundred-DigitChallengeProblems.html
 
 * LLVMCall.jl add sqrt and fsqrt
-* TODO Welcome to the Julia community blog post
-* TODO Read Franklin JL Docs -> Fix blog
+* TODO [#A] Welcome to the Julia community blog post
+* TODO [#A] LLVM 13 -> 14 PR
+* TODO Globals typed PR
+* TODO [#A] [ ] Warehouse Blogpost
+** TODO Warehouse blog final corrections
+** TODO Warehouse publish
+** TODO Medium
+** TODO Ask Logan for JSOC and GSOC
+* STRT Help Katie out with JuliaCon local meetups
+* TODO Awesome-Julia mentors with Logan
+* TODO Systems programming course
+** TODO [ ] Multip rocessing
+* TODO Open Systems workbook
+* DONE Read Franklin JL Docs -> Fix blog
 * TODO How to Prove it with a time attack
-* TODO Nautilus [ ]
-* TODO Chris Peel Translations
-* TODO Kaleidoscope translatio
+* TODO [#A] YoutubeAPI.jl
+* TODO Nautilus.jl [ ]
+** TODO Send to Viral with LLVM 13 -> 14 port
+* TODO [ ] Translations
+** TODO Kaleidoscope translation
+** TODO Chris Peel Translations
+** TODO Julia Data Visualization
+** TODO Julia DataFrames tutorial
 * TODO Tensors course
+* TODO Stream
+** TODO Setup alerts
+** TODO Monetize youtube?
+* TODO Videos for channel
+** TODO Pluto dark mode and remote editing features
+** TODO Julia DataFrames tutorials
+* TODO
+
 * TODO inscripcion facultad
-* TODO LLV< GC stack maps?
-* TODO Setup lsp emacs properly jeebus
+* TODO LLVM GC stack maps?
+* TODO Setup LSP emacs properly jeebus
+* TODO Setup email properly jeebus
+* TODO Stream setup
+** TODO Alerts

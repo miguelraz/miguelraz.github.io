@@ -5,6 +5,24 @@
 
 # Virtual diary for progress on all fronts
 
+419. To change the Julia prompt:
+```
+Base.active_repl.interface.modes[1].prompt = "julia 😷>"
+```
+credit to `rickhg12hs`.
+
+### 25/01/2022
+418. Time to actually learn the freakin' commands to the Julia REPL:
+- exit with `^d`
+- Move to beginnign with `^A`, `^E` move to end
+- `^R` is reverse search and `^S` is forward search
+- `^F` is forward a word, `^B` is back a word
+- `^-Space` sets a mark, `^X` swaps places with the mark, `^G` deactivates de mark
+- `^-T` transposes chars with cursor, `meta-Up/down arrow` transpose line with one above
+- `meta-u/c/l` change next word to uppercase, titlecase, lowercase
+- `^/,`, `^_` undo previous edit
+- `^W` delete word up to nearest whitespace, `meta-d` delete next work, `meta-backspace`
+
 ### 24/01/2022
 416. Jeebus I spent way too much time on Franklin blog today. 
 417. This [DataFrames.jl](https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf) worksheet is super userful.
