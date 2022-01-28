@@ -109,7 +109,34 @@ julia> arr2 .= arr1[:, 1:2]
  1.0  3.0
  2.0  4.0
 ```
+- Callable ints by `Alexander Plavin`: [link here](https://julialang.slack.com/archives/C67TK21LJ/p1643312895067919)
+```
+julia> (1)(2)
+2
 
+# but
+julia> x = 1
+1
+julia> (x)(2)
+ERROR: MethodError: objects of type Int64 are not callable
+```
+BUT! This can be avoided, as `Mason Protter` invokes through the magic of type piracy:
+```julia-repl
+julia> (x::Int)(y) = x * y
+
+julia> x = 1
+1
+
+julia> (x)(2)
+2 
+```
+and the following super dirty:
+```julia-repl
+julia> (s::Symbol)(x) = getproperty(x, s)
+
+julia> :im(1 - im)
+-1
+```
 
 
 ### Equality is hard

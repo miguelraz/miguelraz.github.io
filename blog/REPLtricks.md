@@ -15,7 +15,7 @@
 - TerminalPager.jl for DataFrames.jl stuff
 
 - `] add Foo; undo`!
-- Latex shortcuts via [Keno ](https://twitter.com/KenoFischer/status/1402828171213479936)
+- Latex shortcuts via [Keno](https://twitter.com/KenoFischer/status/1402828171213479936)
 
 - Jacob Quinn: ?foo gives you help, but ??foo gives you the stuff under "# Extended help"
 https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
@@ -25,7 +25,11 @@ https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
 - fzf reverse search
 - https://github.com/JuliaLang/julia/pull/38791
 
-
 - Reverse latex/emoji lookup with `?\partial`
 
 - Stack traces with `CTRL+Q`, but also `methods(foo) + 1 + CTRL+Q`.
+
+- Change your prompt:
+```julia-repl
+julia> Base.active_repl.interface.modes[1].prompt = "julia 😷>"
+```
