@@ -6,7 +6,7 @@ Hello and welcome to the Julia Community!
   
 This is a blog post for newcomers and community members alike to describe where and when you can find Julians around cyberspace and in the real world. I will talk about what different venues offer, how people usually interact, and what you can expect from going to these forums.
 
-Enjoy! If you find this blog post helpful, consider sponsoring this [account on GitHub](https://github.com/sponsors/miguelraz).
+Enjoy! If you find this blog post helpful, consider sponsoring this [account on GitHub](  https://github.com/sponsors/miguelraz).
 
 ### Code of conduct
 

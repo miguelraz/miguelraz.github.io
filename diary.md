@@ -5,11 +5,24 @@
 
 # Virtual diary for progress on all fronts
 
+### 30/01/2022
+421. Pluto autoreload trick:
+```julia-repl
+using Pluton: run
+run(; auto_relaod_from_file=true);
+```
+
+### 28/01/2022
 419. To change the Julia prompt:
 ```
 Base.active_repl.interface.modes[1].prompt = "julia 😷>"
 ```
 credit to `rickhg12hs`.
+
+420. Damn, today was really cool. Sounds like Nautilus.jl project has some real legs. I got toggle buttons working but there's still so much to build.
+Also, I blocked twitter and social media on my phone. Time to hunker down. Also this number is a good sign. I've started to do a small number of *impossible* things
+before breakfast... I kinda like this streak.
+421. Joined Lemmster's TLA+ workshop last minute. Maybe I should try it out for realsies sometime.
 
 ### 25/01/2022
 418. Time to actually learn the freakin' commands to the Julia REPL:

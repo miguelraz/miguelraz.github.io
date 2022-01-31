@@ -117,6 +117,8 @@
 *** Julia Courses
 *** MATRIX COMPUTATIONS GOLUB AND VAN LOAN [link](https://nhigham.com/2013/05/31/fourth-edition-of-matrix-computations/)
 *** DevilIEEEsh.jl / HPC + Leiserson course?
+**** HOLD SIMD course with Lemire papers?
+***** HOLD Uwu in Julia
 **** HOLD Lemire Parsing JSON really quickly [link](https://www.infoq.com/presentations/simdjson-parser/?itm_source=infoq&itm_campaign=user_page&itm_medium=link)
 **** HOLD Lomuto's comeback https://duckduckgo.com/?t=ffab&q=lomutos+comeback&atb=v226-1&ia=web
 **** HOLD Parsing Int series http://0x80.pl/
@@ -129,6 +131,7 @@
 **** Performance Engineering of Software Systems https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-172-performance-engineering-of-software-systems-fall-2018/index.htm
 ***** Julian Shun - Algorithm engineering https://people.csail.mit.edu/jshun/6886-s20/
 **** pospopcount lemire https://arxiv.org/pdf/1911.02696.pdf
+*** PROJ [#B] Denis Bakhalov PerfNinja Course in Julia :courses:
 *** Partial SGJ Course
 *** Olver Course mathematical physics
 ***
@@ -137,8 +140,8 @@
 *** Signals and Systems Alan V. Oppenheim https://ocw.mit.edu/resources/res-6-007-signals-and-systems-spring-2011/
 *** Lorena Barba CFD in Julia Intro https://github.com/miguelraz/CFDPython
 ****
-*** Tim Davis Sparse matrix
-*** BLIS course
+*** PROJ Tim Davis Sparse matrix :courses:
+*** PROJ BLIS course in Julia :courses:
 *** NLAlgebra course
 *** LEVEEQUE Numerical Methods
 *** Hairer I
