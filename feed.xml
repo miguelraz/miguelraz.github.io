@@ -34,6 +34,21 @@
 </item>
 
 <item>
+    <title><![CDATA[Popotismo]]></title>
+    <link>https://miguelraz.github.io/blog/popotismo/index.html</link>
+    <guid></guid>
+    <description><![CDATA[Acuñando popotismo]]></description>    
+        
+    <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
+</item>
+
+<item>
     <title><![CDATA[From Julia to Rust]]></title>
     <link>https://miguelraz.github.io/blog/juliatorust/index.html</link>
     <guid></guid>

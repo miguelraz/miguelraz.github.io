@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:media="http://search.yahoo.com/mrss/"
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:georss="http://www.georss.org/georss">
+
+      <channel>
+        <title><![CDATA[PathToPerformance]]></title>
+        <link>https://miguelraz.github.io</link>
+        <description><![CDATA[A virtual diary for progress on all fronts by Miguel Raz Guzmán Macedo]]></description>
+        <generator>Franklin.jl -- https://github.com/tlienart/Franklin.jl</generator>
+        <atom:link
+            href="https://miguelraz.github.io/feed.xml"
+            rel="self"
+            type="application/rss+xml" />
+
+
+<item>
+    <title><![CDATA[Popotismo]]></title>
+    <link>https://miguelraz.github.io/blog/popotismo/index.html</link>
+    <guid></guid>
+    <description><![CDATA[Acuñando popotismo]]></description>    
+        
+    <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
+</item>
+</channel></rss>
