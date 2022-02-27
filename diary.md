@@ -5,12 +5,50 @@
 
 # Virtual diary for progress on all fronts
 
+### 22/02/2022
+425. [Bodo Scholz](https://www.youtube.com/watch?v=RrCuUqKQhrw) Tensor comprehensions in SaC.
+
+### 03/02/2022
+423. Makie has a few tricks up its sleeve: 
+- `on` to register listeners that update on a change to the observable
+- `onany` to register a listener to many observables
+- `connect!` to forward all updates from `obs1` to `obs2`
+- Oh, Makie has `Keyboard.Button` for all possible interactions/clicks/presses. That's neat.
+
+424. Pro-tip: When trying to figure out a package:
+- look at what's exported to see what's available
+```julia
+# eg for Makie, I would have found this useful before wasting a few hours...
+export Observable, Observable, lift, map_once, to_value, on, onany, @lift, off, connect!
+```
+- look at tests to see the typical idioms
+- look at documentation
+
+425. wtf is this syntax yo
+```julia
+function updater(i, f::Flatten)
+    function (val)
+        #...
+    end
+end
+```
+omgggg
+```julia
+function (YOLO)
+    YOLO + 1
+end
+```
+
+### 02/02/2022
+422. `content` is useful for not indexing into the `contents(f[1,1])` figure in Makie.
+
 ### 30/01/2022
 421. Pluto autoreload trick:
 ```julia-repl
 using Pluton: run
 run(; auto_relaod_from_file=true);
 ```
+
 
 ### 28/01/2022
 419. To change the Julia prompt:

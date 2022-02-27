@@ -33,3 +33,6 @@ https://julialang.slack.com/archives/C6FGJ8REC/p1623860727294500
 ```julia-repl
 julia> Base.active_repl.interface.modes[1].prompt = "julia 😷>"
 ```
+
+- `] activate @juliaimages`
+

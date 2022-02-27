@@ -190,8 +190,6 @@ DiscreteGalerkin.jl
 HPC MIT course
 Contracts.jl
 SIMD.jl
-
-BenfordsLaw.jl
 Fadeeva
 AMOS
 Intervals
@@ -202,9 +200,11 @@ Lean
 * Lean
 ** https://leanprover-community.github.io//img/lean-tactics.pdf
 ** https://www.youtube.com/watch?v=EnZvGCU_jpc&list=PLlF-CfQhukNlxexiNJErGJd2dte_J1t1N&index=14
-* TLA
+* PROJ TLA
 - Real world bug [link](https://probablydance.com/2020/10/31/using-tla-in-the-real-world-to-understand-a-glibc-bug/)
 - EECS 356 course [link](http://users.ece.northwestern.edu/~haizhou/356/)
+
+- [Blocking Queue](https://github.com/lemmy/blockingqueue)
 
 - CSE 128 http://cseweb.ucsd.edu/classes/sp05/cse128/
 - LICS web tutor https://www.cs.bham.ac.uk/research/projects/lics/tutor/

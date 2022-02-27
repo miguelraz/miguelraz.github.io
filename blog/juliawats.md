@@ -155,3 +155,10 @@ julia> 1[1][1][1] == 1
 true
 ```
 
+### Closures and functions
+- What is this syntax?
+```julia
+function (YOLO)
+    YOLO + 1
+end
+```
