@@ -19,12 +19,12 @@
 
 
 <item>
-    <title><![CDATA[Why Julia - Meet Dispatch]]></title>
-    <link>https://miguelraz.github.io/blog/dispatch/index.html</link>
+    <title><![CDATA[Julia&#39;s nothing, missing and NaN - a simple mental model]]></title>
+    <link>https://miguelraz.github.io/blog/nothingforbeginners/index.html</link>
     <guid></guid>
-    <description><![CDATA[This blog is a friendly introduction to multiple dispatch in Julia]]></description>    
+    <description><![CDATA[An intuitive explanation of nothing, missing, and NaN]]></description>    
         
-    <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
+    <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>    
     
     
     <atom:author>
