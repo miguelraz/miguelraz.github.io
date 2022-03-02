@@ -81,7 +81,23 @@ ERROR: <span class=hljs-built_in >MethodError</span>: objects of type <span clas
 </span>2</code></pre> <p>and the following super dirty:</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > (s::<span class=hljs-built_in >Symbol</span>)(x) = getproperty(x, s)
 </span>
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > :<span class=hljs-literal >im</span>(<span class=hljs-number >1</span> - <span class=hljs-literal >im</span>)
-</span>-1</code></pre> <h3 id=equality_is_hard ><a href="#equality_is_hard" class=header-anchor >Equality is hard</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code> vs <code>&#61;&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > first(<span class=hljs-number >1</span>,<span class=hljs-number >2</span>)
+</span>-1</code></pre> <p>Lowering is hard, credit to <code>Jonnie Diegelman</code>:</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > nums = zeros(<span class=hljs-built_in >Int</span>, <span class=hljs-number >10</span>);
+</span>
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-keyword >for</span> nums[rand(<span class=hljs-number >1</span>:<span class=hljs-number >10</span>)] <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >20</span>
+       <span class=hljs-keyword >end</span>
+</span>
+<span class=hljs-meta >julia&gt;</span><span class=language-julia > nums
+</span>10-element Vector{Int64}:
+ 12
+ 16
+  7
+ 20
+ 19
+ 18
+ 15
+  0
+ 13
+ 17</code></pre> <p>&#40;Python suffers from something <a href="https://twitter.com/nedbat/status/1498426481906786305?s&#61;20&amp;t&#61;1fmfRPR3rpzGVp2y4_vMoQ">similar</a>&#41;. Explanation: As <code>Jabon Nissen</code> pointed out, &quot;It&#39;s because for i in 1:20 lowers to for i &#61; 1:20 in Julia. Here, it&#39;s nums&#91;rand&#40;1:10&#41;&#93; &#61; 1:20&quot;</p> <h3 id=equality_is_hard ><a href="#equality_is_hard" class=header-anchor >Equality is hard</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code> vs <code>&#61;&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > first(<span class=hljs-number >1</span>,<span class=hljs-number >2</span>)
 </span>1-element Vector{Int64}:
  1</code></pre> <p>Rationale: Partly explained in the docstring for <code>first</code>. Maybe a MATLAB-ism.</p> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-comment ># Credit to Dheepak Krishnamurthy</span>
 </span><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span>[<span class=hljs-number >1</span>][<span class=hljs-number >1</span>][<span class=hljs-number >1</span>] == <span class=hljs-number >1</span>
