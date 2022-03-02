@@ -176,3 +176,27 @@ function (YOLO)
     YOLO + 1
 end
 ```
+
+### Conversions and promotions
+Credit to `Miha Zgubič`
+```julia-repl
+julia> append!([1, 2, 3], "4")
+4-element Vector{Int64}:
+  1
+  2
+  3
+ 52
+```
+Explanation: `convert` is called implicitly to make `"4"` into `Char`, and since `Int('4') == 52`, you get the result above.
+
+You can get similar results with 
+```julia
+push!([1, 2, 3], '4') 
+
+x = [1, 2, 3]; 
+x[3] = '4'; 
+x
+
+copyto!([1,2,3], "456")
+```
+Credit to `Michael Abott` for those.
