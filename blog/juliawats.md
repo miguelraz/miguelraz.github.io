@@ -18,7 +18,19 @@ true
 ``` 
 
 ### RNG
-- RNG seed set by `@testset`
+- RNG seed set by `@testset`: (Credit to Michael Abbott)
+
+```julia-repl
+julia> @testset begin
+         x = rand()
+         @testset for i in 1:10
+           y = rand()
+           @test x == y
+         end
+       end;
+Test Summary: | Pass  Total  Time
+test set      |   10     10  0.0s
+```
 
 ### Parsing is hard
 - Operator precedene with ranges: (Credit to Oscar Smith)
