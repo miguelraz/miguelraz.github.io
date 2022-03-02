@@ -2,7 +2,15 @@
 </span>true
 
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > all([] .≈ [<span class=hljs-number >42</span>])
-</span>true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code></p> </ul> <h3 id=parsing_is_hard ><a href="#parsing_is_hard" class=header-anchor >Parsing is hard</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > -<span class=hljs-number >5</span>:<span class=hljs-number >5</span> .+ <span class=hljs-number >.5</span>
+</span>true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code>: &#40;Credit to Michael Abbott&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > <span class=hljs-meta >@testset</span> <span class=hljs-keyword >begin</span>
+         x = rand()
+         <span class=hljs-meta >@testset</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>
+           y = rand()
+           <span class=hljs-meta >@test</span> x == y
+         <span class=hljs-keyword >end</span>
+       <span class=hljs-keyword >end</span>;
+</span>Test Summary: | Pass  Total  Time
+test set      |   10     10  0.0s</code></pre> <h3 id=parsing_is_hard ><a href="#parsing_is_hard" class=header-anchor >Parsing is hard</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class=hljs-meta >julia&gt;</span><span class=language-julia > -<span class=hljs-number >5</span>:<span class=hljs-number >5</span> .+ <span class=hljs-number >.5</span>
 </span>-5.0:1.0:5.0
 
 <span class=hljs-meta >julia&gt;</span><span class=language-julia > (-<span class=hljs-number >5</span>:<span class=hljs-number >5</span>) .+ <span class=hljs-number >.5</span>
