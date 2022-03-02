@@ -48,7 +48,9 @@ julia> 2e
 julia> 2e+4
 20000.0
 
-julia> 2e+5
+julia> 2e+5 # This should be 20001.0, and yet...
+200000.0
+
 ```
 
 - Shadowing: Courtesy of [Kristoffer Carlsson](https://github.com/JuliaLang/julia/issues/15483)
