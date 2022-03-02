@@ -152,6 +152,28 @@ julia> :im(1 - im)
 -1
 ```
 
+Lowering is hard, credit to `Jonnie Diegelman`:
+```julia-repl
+julia> nums = zeros(Int, 10);
+
+julia> for nums[rand(1:10)] in 1:20
+       end
+
+julia> nums
+10-element Vector{Int64}:
+ 12
+ 16
+  7
+ 20
+ 19
+ 18
+ 15
+  0
+ 13
+ 17
+```
+(Python suffers from something [similar](https://twitter.com/nedbat/status/1498426481906786305?s=20&t=1fmfRPR3rpzGVp2y4_vMoQ)).
+Explanation: As `Jabon Nissen` pointed out, "It's because for i in 1:20 lowers to for i = 1:20 in Julia. Here, it's nums[rand(1:10)] = 1:20"
 
 ### Equality is hard
 - `isequal` vs `egal` vs `==` vs `===`
