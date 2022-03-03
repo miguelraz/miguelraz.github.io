@@ -99,6 +99,16 @@ false
 julia> :2 === 2
 true
 ```
+Credit to `Jakob Nybo Nissen`:
+```julia-repl
+julia> :1234567890123456789 == 1234567890123456789
+true
+
+julia> :12345678901234567890 == 12345678901234567890
+false
+```
+See also [this issue](https://github.com/JuliaLang/julia/issues/43054).
+
 As a corollary, a Pythonista stumper:
 ```julia-repl
 julia> arr1 = reshape(1.0:4.0, 2, 2)
