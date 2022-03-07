@@ -6,7 +6,7 @@
 @def published = "26 February 2021"
 
 
-Hola, me dedico al software libre y este es un pequeño post para poder acuñar una palabra que me falta en el diario. Puedes[ser mi sponsor en GitHub](https://github.com/sponsors/miguelraz/) para que escriba más cosas como esta y contribuya al software libre y traducciones en español.
+Hola, me dedico al software libre y este es un pequeño post para poder acuñar una palabra que me falta en el diario. Puedes [ser mi sponsor en GitHub](https://github.com/sponsors/miguelraz/) para que escriba más cosas como esta y contribuya al software libre y traducciones en español.
 
 ### Órdenes de magnitud
 

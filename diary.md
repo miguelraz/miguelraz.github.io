@@ -5,6 +5,41 @@
 
 # Virtual diary for progress on all fronts
 
+### 04/02/2022
+
+427. I found these `cargo shortcuts` [useful]() from the Cargo book:
+```
+rr = "run --release"
+ti = "test -- --ignored"
+tq = "test -- --test --quiet --test-threads 8"
+tt = "test -- --test-threads 8 --test"
+```
+These cut down on the crate testing time.
+
+428. BQN lists are written with the ligature character:
+```
+    +‿´‿∘‿×
+⟨ + ´ ∘ × ⟩
+
+    +‿´‿∘‿×  ≡  ⟨+,´,∘,×⟩
+1
+```
+
+429. BQN exported names use `⇐`.
+
+430. Trainsssssssss.
+
+### 03/02/2022
+426. `scanl` in Julia is `accumulate`. To solve this [Increasing Array](https://cses.fi/problemset/task/1094/) problem I would write
+```julia-repl
+xs = [1,3,5,1,7]
+sol(xs) = accumulate(max, xs) - xs |> sum
+```
+and in BQN
+```
+Sol ← +´∘(⌈`-⊢) # Credit to Asher Mancinelli
+```
+
 ### 22/02/2022
 425. [Bodo Scholz](https://www.youtube.com/watch?v=RrCuUqKQhrw) Tensor comprehensions in SaC.
 

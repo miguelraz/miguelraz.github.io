@@ -1,10 +1,15 @@
 @def title = "🚧 WIP 🚧 A most refined collection of Julia WATs "
 
-This talk is inspired by the classic [Wat](https://www.destroyallsoftware.com/talks/wat) talk by Gary Bernhardt, applied to Julia.
+> This talk is inspired by the classic [Wat](https://www.destroyallsoftware.com/talks/wat) talk by Gary Bernhardt, applied to Julia.
 
-Huge thanks to Mason Protter, most of these are his.
+Huge thanks to Mason Protter, many of the inital specimens are his.
+
+Why collect a huge array of scary footguns? [Others have ranted](https://viralinstruction.com/posts/badjulia/) before on all the things that [are bad about Julia](https://www.youtube.com/watch?v=TPuJsgyu87U&t=28s), profusely! Enthusiastically! I think there's good value in knowing precisely why [you should hate your tools](https://www.hillelwayne.com/hate-your-tools/). I'm clearly in the "Julia will take over the world camp", and that effusiveness can work great for some projects, but it's good to understand the limitations of the tools we use. There's well known effective ways to come across in a reasoned manner when pitching Julia for a particular use case, but being able to specify *many* of these limitations and the pain points they inflict will generally show that you're willing to take criticism in a healthy manner.
+
+As always, if you want to support me writing more of these Julia horror stories, please consider [sponsoring me on GitHub](https://github.com/sponsors/miguelraz/).
 
 ### Empty collections and truthiness
+`TODO`
 - and, or on empty collections
 
 ### Broadcasting is hard
@@ -40,6 +45,15 @@ julia> -5:5 .+ .5
 
 julia> (-5:5) .+ .5
 -4.5:1.0:5.5
+```
+- Another few examples from [Bogumił Kamiński's Blog "Confused by Julia"](https://bkamins.github.io/julialang/2022/03/04/wat.html) (which I will include for the completeness of this list, but leave you to visit his blog for the explainers)
+```julia-repl
+julia> :a => x -> x => :b
+:a => var"#1#2"()
+```
+```julia-repl
+julia> 1 == 3 & 1 == 1
+true
 ```
 - `var"N+1"` and other sneaky shenanigans like stealing the pipe operator with an even uglier syntax 
 ```julia-repl
@@ -232,3 +246,27 @@ x
 copyto!([1,2,3], "456")
 ```
 Credit to `Michael Abott` for those.
+
+### Strings are hard
+Credit to `Vasily Pisarev`.
+```julia-repl
+julia> countlines("""
+       Mary had a little lamb,
+          Its fleece was white as snow,
+       And every where that Mary went
+          The lamb was sure to go
+       """)
+ERROR: SystemError: opening file "Mary had a little lamb,\n   Its fleece was white as snow,\nAnd every where that Mary went\n   The lamb was sure to go\n": No such file or directory
+```
+
+### Types are hard
+```julia-repl
+julia> threetuple = (3, 3.0, 3f0)
+(3, 3.0, 3.0f0)
+
+julia> threetuple isa NTuple
+false
+
+julia> threetuple isa NTuple{3,Number}
+true
+```
