@@ -5,6 +5,14 @@
 
 # Virtual diary for progress on all fronts
 
+### 15/02/2022
+
+432. [PartialExecuter.jl](https://twitter.com/carlo_piovesan/status/1501949845795323910) Will interpret code and then kill it as an LLVM pass. VERY juicy Julia opportunities per method tables :D
+
+### 14/02/2022
+
+431. [Break Dancing: Low overhead, ARchiteture nuetral software branch tracing](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/5aea197bdfb8a67288cf9801c7317bad920c2e2d.pdf)
+
 ### 04/02/2022
 
 427. I found these `cargo shortcuts` [useful]() from the Cargo book:

@@ -131,7 +131,7 @@ As stated in the page, [general array notation is a thorny problem](https://aplw
   5. "Ok, to make it tacit I had to use those ⊣ ⊢ thingies." (I go and review the [modifiers diagrams docs](https://mlochbaum.github.io/BQN/doc/primitive.html#modifiers))
   6. (After much plugging away at the REPL) ... "Dammit, I forgot I can use the `Explain` button!"
   7. (Fiddle around some more) "OK, I think I got it" and write ```Sol ← +´∘(⌈`-⊢)```
-- The next big step up in BQN skills is [identifying function trains](https://mlochbaum.github.io/BQN/doc/train.html), which took me a bit of spelunking about in the manual before finding it. For example, going from the first line to the second
+- The next big step up in BQN skills is [identifying function trains](https://mlochbaum.github.io/BQN/doc/train.html), which took me a bit of spelunking about in the manual before finding it. For example, going from the first line to the second in this snippet 👇🏻 
 ```
 "whatsin" {(𝕨∊𝕩)/𝕨} "intersect"
 "whatsin" (∊/⊣) "intersect"
@@ -139,7 +139,6 @@ As stated in the page, [general array notation is a thorny problem](https://aplw
 proficiently will really up your game in code-golfing powers, should you be interested in that. This [APL Wiki page](https://aplwiki.com/wiki/Tacit_programming#Trains) and the [Trainspotting](https://xpqz.github.io/learnapl/tacit.html) links and [videos at the end](https://www.youtube.com/watch?v=Enlh5qwwDuY?t=440) are also useful resources.
 - `TODO` Benchmarking:
 - `TODO` Generating random arrays:
-
 
 ### Interesting resources
 For those that *truly* want to stare into the abyss and have it stare right back at them, there's some ~university level courses that are written in APL/BQN/J.

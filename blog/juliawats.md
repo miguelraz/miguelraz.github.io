@@ -77,6 +77,8 @@ julia> 2e+4
 julia> 2e+5 # This should be 20001.0, and yet...
 200000.0
 
+julia> 2e + 5 # note the spacing
+200001.0
 ```
 
 - Shadowing: Courtesy of [Kristoffer Carlsson](https://github.com/JuliaLang/julia/issues/15483)
@@ -148,7 +150,7 @@ julia> arr2 .= arr1[:, 1:2]
  2.0  4.0
 ```
 - Callable ints by `Alexander Plavin`: [link here](https://julialang.slack.com/archives/C67TK21LJ/p1643312895067919)
-```
+```julia-repl
 julia> (1)(2)
 2
 
@@ -196,8 +198,28 @@ julia> nums
  13
  17
 ```
-(Python suffers from something [similar](https://twitter.com/nedbat/status/1498426481906786305?s=20&t=1fmfRPR3rpzGVp2y4_vMoQ)).
+(Python suffers from [something](https://twitter.com/jonniedie/status/1503881984514400261?s=20&t=3GH8TA-92Kr_eDyGepIsaA) [similar](https://twitter.com/nedbat/status/1498426481906786305?s=20&t=1fmfRPR3rpzGVp2y4_vMoQ)).
 Explanation: As `Jabon Nissen` pointed out, "It's because for i in 1:20 lowers to for i = 1:20 in Julia. Here, it's nums[rand(1:10)] = 1:20"
+This is another one [for the road](https://twitter.com/jonniedie/status/1503881984514400261)
+```julia-repl
+julia> nums = [1, 3, 5, 7, 9];
+julia> gen = (n for n in nums if n in nums);
+julia> collect(gen)
+5-element Vector{Int64}:
+ 1
+ 3
+ 5
+ 7
+ 9
+
+julia> nums = [1, 3, 5, 7, 9];
+julia> gen = (n for n in nums if n in nums);
+julia> nums = [1, 2, 3, 4];
+julia> collect(gen)
+2-element Vector{Int64}:
+ 1
+ 3
+```
 
 ### Equality is hard
 - `isequal` vs `egal` vs `==` vs `===`
@@ -217,8 +239,8 @@ true
 
 ### Closures and functions
 - What is this syntax?
-```julia
-function (YOLO)
+```julia-repl
+julia> function (YOLO)
     YOLO + 1
 end
 ```
