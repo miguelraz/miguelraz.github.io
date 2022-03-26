@@ -220,6 +220,21 @@ julia> collect(gen)
  1
  3
 ```
+Why does this happen: Jeff points out that the thing to iterate over is evaluated once; everything inside has to be evaluated for each iteration and so can change. However, a cleverly place `let` binding can avoid some of these headaches:
+```julia-repl
+
+julia> gen = let nums = 1:2:9
+           (n for n  in nums if n in nums)
+       end;
+julia> nums = 1:4;
+julia> collect(gen)
+5-element Vector{Int64}:
+ 1
+ 3
+ 5
+ 7
+ 9
+```
 
 ### Equality is hard
 - `isequal` vs `egal` vs `==` vs `===`
@@ -269,6 +284,19 @@ copyto!([1,2,3], "456")
 ```
 Credit to `Michael Abott` for those.
 
+Not that the general Julia idiom of `[x, y]` will try to promote to a common element type of possible, but only if it equals one of the input types. This is a constraint that homogenous array representation demands, but can lead to some interesting cases like: (Credit to `MIlan Bouchet-Valat`)
+```julia-repl
+julia> [BigInt[1], [1.0]]
+2-element Vector{Vector}:
+ BigInt[1]
+ [1.0]
+
+julia> [[1], [1.0]]
+2-element Vector{Vector{Float64}}:
+ [1.0]
+ [1.0]
+```
+
 ### Strings are hard
 Credit to `Vasily Pisarev`.
 ```julia-repl
@@ -292,3 +320,10 @@ false
 julia> threetuple isa NTuple{3,Number}
 true
 ```
+
+
+-----
+
+#### Credits
+- Mark Kittisopikul
+- 

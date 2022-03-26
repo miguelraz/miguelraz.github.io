@@ -5,7 +5,73 @@
 
 # Virtual diary for progress on all fronts
 
+
+### 24/02/2022
+
+434. A neat `chunks` example:
+```
+    pub fn of_rna(&self, rna: &str) -> Option<Vec<&'a str>> {
+        rna.as_bytes()
+            .chunks(3)
+            .map(str::from_utf8)
+            .map(|seq| self.name_for(seq.unwrap()))
+            .take_while(|&codon| codon != Some(STOP))
+            .collect::<Option<Vec<&'a str>>()
+}   
+```
+
+435. `stack.pop().and_then()` is very useful.
+436. This was also a neat trick:
+```
+    for word in note.iter() {
+        *words.entry(word).or_insert(0) += 1;
+    }
+```
+mayo 1 -> julio 9 // slp
+11 de julio -> 13 de agosto // guanajuato
+437. Another useful pattern to create a `HashSet`:
+```
+pub fn is_pangram(sentence: &str) -> bool {
+    let all:  HashSet<char> = HashSet::from_iter("abcdefghijklmnopqrstuvwxyz".chars());
+    let used: HashSet<char> = HashSet::from_iter(sentence.to_lowercase().chars());
+    all.is_subset(&used)
+}
+```
+438. This is just neat syntactic sugar:
+```
+//impl<T: PartialEq + Add<Output = T> + Sub + PartialOrd + Default> Triangle<T> {
+impl<T> Triangle<T> 
+    where T: PartialEq + Add + Sub + PartialOrd + Default {
+```
+439. This is a useful pattern:
+```
+    arr.iter()
+    .fold(HashMap::new(), |mut counts, word| {
+    ...
+    })
+```
+
+
+
+### 23/02/2022
+
+433. Brushing up on some Rust via exercism and `hansrodtang` has some nifty code for an `isogram`:
+```
+use std::collections::HashSet;
+pub fn check(candidate: &str) -> bool {
+    let mut set = HashSet::new();
+    candidate
+    .to_lowercase()
+    .chars()
+    .filter(|c| c.is_alphabetic())
+    .all(|c| set.insert(c))
+}
+```
+
 ### 15/02/2022
+
+https://julialang.org/blog/2022/02/10years/
+  * [x] https://xkcd.com/1053/
 
 432. [PartialExecuter.jl](https://twitter.com/carlo_piovesan/status/1501949845795323910) Will interpret code and then kill it as an LLVM pass. VERY juicy Julia opportunities per method tables :D
 
