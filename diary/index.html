@@ -1,4 +1,30 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=15022022 ><a href="#15022022" class=header-anchor >15/02/2022</a></h3> <ol start=432 > <li><p><a href="https://twitter.com/carlo_piovesan/status/1501949845795323910">PartialExecuter.jl</a> Will interpret code and then kill it as an LLVM pass. VERY juicy Julia opportunities per method tables :D</p> </ol> <h3 id=14022022 ><a href="#14022022" class=header-anchor >14/02/2022</a></h3> <ol start=431 > <li><p><a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/5aea197bdfb8a67288cf9801c7317bad920c2e2d.pdf">Break Dancing: Low overhead, ARchiteture nuetral software branch tracing</a></p> </ol> <h3 id=04022022 ><a href="#04022022" class=header-anchor >04/02/2022</a></h3> <ol start=427 > <li><p>I found these <code>cargo shortcuts</code> <a href="">useful</a> from the Cargo book:</p> </ol> <pre><code class="julia hljs">rr = <span class=hljs-string >&quot;run --release&quot;</span>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=24022022 ><a href="#24022022" class=header-anchor >24/02/2022</a></h3> <ol start=434 > <li><p>A neat <code>chunks</code> example:</p> </ol> <pre><code class="julia hljs">pub fn of_rna(&amp;self, rna: &amp;str) -&gt; Option&lt;Vec&lt;&amp;&#x27;a str&gt;&gt; {
+        rna.as_bytes()
+            .chunks(<span class=hljs-number >3</span>)
+            .map(str::from_utf8)
+            .map(|seq| self.name_for(seq.unwrap()))
+            .take_while(|&amp;codon| codon != <span class=hljs-built_in >Some</span>(STOP))
+            .collect::&lt;Option&lt;Vec&lt;&amp;&#x27;a str&gt;&gt;()
+}</code></pre> <ol start=435 > <li><p><code>stack.pop&#40;&#41;.and_then&#40;&#41;</code> is very useful.</p> <li><p>This was also a neat trick:</p> </ol> <pre><code class="julia hljs"><span class=hljs-keyword >for</span> word <span class=hljs-keyword >in</span> note.iter() {
+        *words.entry(word).or_insert(<span class=hljs-number >0</span>) += <span class=hljs-number >1</span>;
+    }</code></pre> <p>mayo 1 -&gt; julio 9 // slp 11 de julio -&gt; 13 de agosto // guanajuato</p> <ol start=437 > <li><p>Another useful pattern to create a <code>HashSet</code>:</p> </ol> <pre><code class="julia hljs">pub fn is_pangram(sentence: &amp;str) -&gt; bool {
+    <span class=hljs-keyword >let</span> all:  HashSet&lt;char&gt; = HashSet::from_iter(<span class=hljs-string >&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>.chars());
+    <span class=hljs-keyword >let</span> used: HashSet&lt;char&gt; = HashSet::from_iter(sentence.to_lowercase().chars());
+    all.is_subset(&amp;used)
+}</code></pre> <ol start=438 > <li><p>This is just neat syntactic sugar:</p> </ol> <pre><code class="julia hljs">//impl&lt;T: PartialEq + Add&lt;Output = T&gt; + Sub + PartialOrd + Default&gt; Triangle&lt;T&gt; {
+impl&lt;T&gt; Triangle&lt;T&gt; 
+    <span class=hljs-keyword >where</span> T: PartialEq + Add + Sub + PartialOrd + Default {</code></pre> <ol start=439 > <li><p>This is a useful pattern:</p> </ol> <pre><code class="julia hljs">arr.iter()
+    .fold(HashMap::new(), |mut counts, word| {
+    ...
+    })</code></pre> <h3 id=23022022 ><a href="#23022022" class=header-anchor >23/02/2022</a></h3> <ol start=433 > <li><p>Brushing up on some Rust via exercism and <code>hansrodtang</code> has some nifty code for an <code>isogram</code>:</p> </ol> <pre><code class="julia hljs">use std::collections::HashSet;
+pub fn check(candidate: &amp;str) -&gt; bool {
+    <span class=hljs-keyword >let</span> mut set = HashSet::new();
+    candidate
+    .to_lowercase()
+    .chars()
+    .filter(|c| c.is_alphabetic())
+    .all(|c| set.insert(c))
+}</code></pre> <h3 id=15022022 ><a href="#15022022" class=header-anchor >15/02/2022</a></h3> <p>https://julialang.org/blog/2022/02/10years/</p> <ul> <li><p>&#91;x&#93; https://xkcd.com/1053/</p> </ul> <ol start=432 > <li><p><a href="https://twitter.com/carlo_piovesan/status/1501949845795323910">PartialExecuter.jl</a> Will interpret code and then kill it as an LLVM pass. VERY juicy Julia opportunities per method tables :D</p> </ol> <h3 id=14022022 ><a href="#14022022" class=header-anchor >14/02/2022</a></h3> <ol start=431 > <li><p><a href="https://storage.googleapis.com/pub-tools-public-publication-data/pdf/5aea197bdfb8a67288cf9801c7317bad920c2e2d.pdf">Break Dancing: Low overhead, ARchiteture nuetral software branch tracing</a></p> </ol> <h3 id=04022022 ><a href="#04022022" class=header-anchor >04/02/2022</a></h3> <ol start=427 > <li><p>I found these <code>cargo shortcuts</code> <a href="">useful</a> from the Cargo book:</p> </ol> <pre><code class="julia hljs">rr = <span class=hljs-string >&quot;run --release&quot;</span>
 ti = <span class=hljs-string >&quot;test -- --ignored&quot;</span>
 tq = <span class=hljs-string >&quot;test -- --test --quiet --test-threads 8&quot;</span>
 tt = <span class=hljs-string >&quot;test -- --test-threads 8 --test&quot;</span></code></pre> <p>These cut down on the crate testing time.</p> <ol start=428 > <li><p>BQN lists are written with the ligature character:</p> </ol> <pre><code class="julia hljs">+‿´‿∘‿×
@@ -3611,7 +3637,7 @@ pub fn total() -&gt; u64 {
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: March 16, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: March 26, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
