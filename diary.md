@@ -5,6 +5,14 @@
 
 # Virtual diary for progress on all fronts
 
+### 25/02/2022
+
+438. When setting up `rust.code-workspaces`, you can ignore them if you do `git config --global core.excludesFile ~/.gitignore` and then add
+```
+*.code-workspace
+```
+to the file
+
 
 ### 24/02/2022
 
@@ -27,8 +35,6 @@
         *words.entry(word).or_insert(0) += 1;
     }
 ```
-mayo 1 -> julio 9 // slp
-11 de julio -> 13 de agosto // guanajuato
 437. Another useful pattern to create a `HashSet`:
 ```
 pub fn is_pangram(sentence: &str) -> bool {
