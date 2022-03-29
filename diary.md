@@ -5,6 +5,19 @@
 
 # Virtual diary for progress on all fronts
 
+### 29/02/2022
+
+439. `std::ops::Add` is the trait, `std::ops::Add::add` is the operation. Thus, this snippet
+```
+    let mut sum = a
+        .array_chunks::<4>()
+        .map(|&a| f32x4::from_array(a))
+        .zip(b.array_chunks::<4>().map(|&b| f32x4::from_array(b)))
+        .map(|(a, b)| a * b)
+        .fold(f32x4::splat(0.0), std::ops::Add::add) // Note it's not `std::ops::Add`
+        .reduce_sum();
+```
+
 ### 25/02/2022
 
 438. When setting up `rust.code-workspaces`, you can ignore them if you do `git config --global core.excludesFile ~/.gitignore` and then add
