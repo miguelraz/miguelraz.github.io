@@ -5,9 +5,564 @@
 
 # Virtual diary for progress on all fronts
 
+### 07/04/2022
+
+545. Not all `extern "C"` functions need to be `#[no_mangle]`.
+546. You need to tell the Rust compiler about which `mod` files you are importing, as well as the imports at the root of the crate:
+```rust
+use input::get_name;
+use output::{goodbye, hello};
+mod input;
+mod output;
+```
+547. Absolute paths in the current crate need `crate`, which means the root of the current crate. `crate::treats::Treat` is doable but verbose and `Treat` can work if used within the same module. If defined one "module up", use `super::Treat`
+548. When refactoring, it can get annoying to do that many changes, so you combine both:
+```rust
+use crate::Treats::Treat;
+```
+549. You don't need to import `DayKind` to store a `DayKind` var - Rust only requires importing it if used by name.
+550. Rust Path Aliases can be done with `pub use crate::day_kind::DayKind` at the top of the file. This allows really nested mods to just work like `forest::enter()` after `pub use the::secret::entrance::to::the::forest::enter;`    .
+551. `pub` is a module level distinction, not a crate-level distinction. If you write `pub(crate)` then you can make it so that other crates don't see it as public but all those inside your own crate do.
+552. Upward visibility rules for modules:
+- Code within a module inherits the visibility rules from the module above itself
+
+553. Important to use the `criterion::black_box` so that Rust doesn't optimize the code away!
+554. `#[repr(C)]` lays out types as a C/C++ compiler would. `#[repr(transparent)]` is applicable to types with a single field only. Useful with `newtype` to guarantee same layout.
+555. `#[repr(packed)]` will layout a struct literally like how you wrote it out which is useful in low mem scenarios: embedded, sending bandwidth, etc. (with penalties for unaligned accesses, obvi.)
+556. `#[repr(align(n))]` is useful for avoiding `false sharing`.
+557. Consider that instead of fully generic code you only write non-generic outer functions and then generic helper inner functions.
+558. To be a `trait object` you must have a trait implementation and its vtable. Not all traits are `object-safe` - none of the trait's methods can be generic or use the `Self` type, can't have any static methods (no `&Self`).
+559. `Orphan Rule`: You can implement a trait for a type only if the trait *or* the type is local to your crate - this respects the property of `coherence` (one and only one implementation can be called by the compiler). BUT! Caveats:
+- Only the crate that defines a trait is allowed to write a blanked implementation like `impl<T> MyTrait for T where T: ...`
+- `#[fundamental]` can be pirated by everyone: `&`, `&mut`, `Box`: Allows `IntoIterator for &MyType`.
+- `Covered Implementations` didn't get this. Local types go first in type parameter: `ForeignTrait<LocalType, T> for ForeignType`.
+560. If keys in a `HashMap` must implement `Hash + Eq`, those are the `trait bounds`. `String: Clone` is also a trait bound (though always true) and `where io::Error: From<MyError<T>>;` too.
+561. Instead of `HashMap<K, V, S>` where the keys need a generic `T` and values are `usize` and you write
+```rust
+where T: Hash + Eq, S: BuildHasher + Default
+```
+you can do
+```rust
+where HashMap<T, usize, S>: FromIterator
+```
+562. Higher ranked lifetime: `F: for<'a> Fn(&'a T) -> &'a U`.
+563. Some traits tell you you can use functions:
+```
+Hash -> hash
+Clone -> clone
+Debug -> fmt
+```
+etc. But some don't have an associated methods or types and are known as `marker traits`: `Send, Sync, Copy, Sized, Unpin`. All except `Copy` here are `autotraits`: compiler auto implements them for types unless something borks.
+564. Some types don't have a name you can type into code, but they exist and called `existential types`. Caller only (almost only) rely on the return type that implements those traits and nothing else. They also provide `zero-cost type erasure`.
+565. These are the same:
+```rust
+fn foo(s: impl ToString) == fn foo<S: ToString>(s: S)
+```
+566. Remember the [Rust API guidelines](https://rust-lang.github.io/api-guidelines/). 
+567. 99% of all times your types should be `Debug, Clone, Send, Sync, Default` and if not, document why.
+- Then consider `PartialEq, ParialOrd, Hash, Eq, Ord` and a `serde Serialize/Deserialize` conditional feature
+568. Prefer blanket implementations like `&T where T: Trait`, `&mut T where T: Trait`, `Box<T> where T: Trait`.
+569. Wrapper types like `Deref` and `AsRef` feel like magic.
+570. `frobnicate(s: impl AsRef<str>) -> impl AsRef<str>` can take both a `String` and an `&str`, or dispatch to not monomorphize loads and do `frobnicate(s: &dyn AsRef<str>)`.
+571. Sometimes, starting from concrete nd going to generic args is not necessarily backwards compatible: `fn foo(v: &Vec<usize>) `  to `fn foo(v: impl AsRef<[usize]>)` because compiler can't necessarily deduce return type of `foo(&iter.collect())`.
+572. Use `#[doc(alias = "...")]` to make types and methods discoverable under other names.
+573. If your function takes in 3 booleans, your user might screw up the arg orders vs if you require explicit structs to be passed.
+574. `std::marker::PhantomData<Stage>` is metadata that is eliminated at compile time o.0. Use it to encode illegal states as `unrepresentable`:
+```rust
+struct Grounded;
+struct Launched;
+
+struct Rocket<Stage = Grounded> {
+    stage: std::marker::PhantomData<Stage>,
+}
+
+impl Default for Rocket<Grounded> {}
+impl Rocket<Grounded> {
+    pub fn launch(self) -> Rocket<Launched> {}
+}
+
+impl Rocket<Launched> {
+    pub fn accelerate(&mut self) {}
+    pub fn decelerate(&mut self) {}
+}
+
+impl<Stage> Rocket<Stage> {
+    pub fn color(&self) -> Color {}
+    pub fn weight(&self) -> Kilograms {}
+}
+```
+"If your function ignores a pointer arg unless a given Boolean is true, just combine the two args". You can make an enum that stands for `false` and no ptr and one variant for `true` that holds a ptr.
+575. Consider adding `#[must_use]`.
+576. `pub(crate)` and `pub(in path)` both work! The fewer public types, the more dev freedom!
+577. Use `#[non_exhaustive]` to prohibit users from using implicit constructors.
+578. `Sealed traits` can be used only and not implemented by other crates.
+
+
+
+
+### 06/02/2022
+
+508. `format!()` returns a `String`, and is useful in `match` arms that return a `String::from("...")`.
+509. `eprintln!` prints to `STDERR`, and doesn't interfere with printing to `STDOUT`.
+510. `fgets` is used to read data from a file: `if (fgets(line, 100, stdin) == NULL) {}`.
+511. Refactor like a boss:
+- Start a lib crate: `cargo new --lib calculate`
+- replace 1 function in C with the same signature as that in Rust:
+```
+int solve(char *line, int *solution)
+->
+fn solve(line: *const c_char, solution: *mut c_int) -> c_int
+```
+512. Export the C types from `libc::{c_char, c_int}` and add `libc` to your crates.
+513. To get Rust to be called from C we need:
+- Compile our crate as a dynamic library that the C linker understands
+- add the new dylib to the linker search path
+- mark the Rust `solve` so that the Rust compiler knows to compile it with C calling conventions
+- recompile the C program using `solve` from the Rust dylib
+514. Cargo workspaces: sometimes, you need to go to your `$root/Cargo.toml` and add your project name under `[workspaces]` so that `cargo build` is happy.
+515. To create a dylib with Rust, just do 
+```toml
+[lib]
+crate-type = "[cdylib]"
+```
+516. We need to let the linker know that the Rust binary inside `target/` is available as `target/debug/libcalculate.so`:
+```
+ln -s $(pwd)/target/debug/libcalculate.so /lib/libcalculate.so
+```
+517. Remember to keep forward declarations like
+```
+int solve(char *line, int *solution);
+```
+so that the C compiler can defer compilation.
+518. Now we can compile and link vs `libcalculate` with `-lcalculate`. 
+```
+gcc main.c -o bin -lcalculate
+```
+This fails! We need to add a `#[no_mangle]` and `pub extern "C"` to our `solve(...)` in Rust.
+519. We only need to rebuild `cargo build`, there's no need to recompile the C code because it's a *dynamic library*, neat! The library is loaded by the OS every time we run `calculator`.
+520. `CStr` is borrowed memory from C. To validate that you are not reallocating a string, check
+```
+println!("r_str.as_ptr(): {:p}, line: {:p}", r_str.as_ptr(), line);
+```
+Which means we can avoid reallocating any buffers/vecs in C when manipulated inside Rust.
+521. Move your business logic to standalone Rust functions to get the type safety benefits/reusability. Setup the big functions to bridge as needed and then factor out into Rust business logic so you don't need to keep touching the big C functions.
+522. `VecDeque` will give you LIFO ordering with `push_front` and `pop_front` methods.
+523. Because `push` only accepts `i32`, `match.other.parse()` doesn't need turbofish as compiler can reason it out.
+524. *Highly*  recommended to provide a `Display` implementation for error types.
+525. `&str` usage avoids reallocation :D.
+526. To find executables, do:
+```
+find objs -executable -type f
+```
+527. You have to sometimes generate metadata for stuff like types called `ngx_***`. Since you don't always get to write the C binding, you can use tools, like the `build script`.
+528. You need `use std::io::Write;` to use `file.write_all(...)`.
+529. To run a command with a certain env var, do `env GREET_LANG="es" cargo run`.
+530. `match langugae.as_ref()` is useful to stay with `&str`s.
+531. Ughhhhhhh Rust stringy metaprogramminggggggg
+```rust
+let rust_code = format!("fn greet() {{
+    println!(\"{}\"); }}", greeting);
+```
+532. Genius idea: leverage build scripts AND `bindgen` and have your C API written out for you :D. You can include it under `Cargo.toml/[build-dependencies]` as `bindgen = "0.56.0"`.
+533. You need One Big Header file that contains all the other ones, sorta like `wrapper.h`
+```
+#include <ngx_config.h>
+#include <ngx_core.h>
+#include <ngx_http.h>
+```
+and then a Rust `build.rs`:
+```rust
+fn main() {
+    let nginx_dir = "nginx-1.19.3";
+    let bindings = bindgen::builder()
+        .header("wrapper.h")
+        .whitelist_type("ngx_.*")
+        //...
+        .clang_args(vec![
+            format!("-I{}/src/core", nginx_dir),
+            format!("-I{}/src/event", nginx_dir),
+        //...
+        ])
+        .generate()
+        .unwrap();
+        
+        bindings.write_to_file("nginx.rs").unwrap();
+}
+```
+534. The `nginx.rs` file is 30k long, but you want to place it in the `out directory`, which you can know where it is via env vars set by cargo, or via
+```rust
+let out_dir = std::env::var("OUT_DIR").unwrap();
+
+bindings
+    .write_to_file(format!("{}/nginx.rs", out_dir))
+    .expect("unable to write bindings");
+```
+535. `include!("filename.rs")` works like the C/C++ `#include <vector>`
+536. `env!("OUT_DIR")` can check env vars ar compile time, errs if not provided.
+537. `concat!(env!("OUT_DIR"), "/nginx.rs")` to join the paths at compile time.
+538. Your scripts will probs have `include!(concat!(env!("OUT_DIR"), "/nginx.rs"));`
+539. `let request = &*r;`. Is called `reborrowing` which converts a pointer to a Rust reference. You need to check that
+- the pointer is non-null
+- the pointee is a valid instance of the type
+- once it's a ref it sticks to borrowchk rules
+540. Strategy for buffer reuses: 
+- Check that everything is non-null
+- `let body_bytes = std::offset_from(start) as usize`
+- `let body_bytes = std::slice::from_raw_parts(start, len);`
+541. You can have many `&str` made from substrings of `String`, since `&str` is just a pointer and a length (read-only, view).
+542. `end.offset_from(start) as usize` needs a cast because `start` can be greater than `end`.
+543. Pull from local creates with
+```
+[dependencies]
+calculate = {path = "../calculate"}
+```
+544. Rust to Rust dylibs need `rlib` in addition to `cdylib`.
+
+
+
+
+
+### 04/04/2022
+
+502. `usize` is in hexadecimal.
+503. The function type of `fn noop() {}` is `*const fn() -> ()`, aka `"a const pointer to a function that takes no args and returns unit"`. `unit` is Rust's `"nothingness"`.
+504. If you are in the middle of a call stack and can't unwinde, you can do `nonlocal control transfer`, which can be done via `setjmp` and `longjmp`. `setjmp` sends a label/marker location and `longjmp` jumps back to a previously marked location.
+505. `Intrinsic functions` are functions made available by the compiler, not by the PL.
+506. How to treat
+```rust
+const JMP_BUF_WIDTH: usize = mem::size_of::<usize>() * 8;
+type jmp_buf = [i8; JMP_BUF_WIDTH];
+static mut RETURN_HERE: jmp_buf = [0; JMP_BUF_WIDTH];
+```
+`RETURN_HERE` as a pointer?
+```rust
+unsafe { &RETURN_HERE as *const i8 as *mut i8}
+```
+- read only ref to global `RETURN_HERE`
+- convert that ref to `*const i8` 
+- convert that to `*mut i8` (which makes it mutable for r/w)
+- accessing a global var is unsafe, so wrap it all in unsafe
+507. There's mutable pointers `*mut` and immutable pointers `*const`.
+  
+### 03/04/2022
+
+473. For file handling, check out `OpenOptions`:
+```rust
+let fs = OpenOptions::new()
+            .read(true)
+            .write(true) // is overridden by append
+            .create(true)
+            .append(true)
+            .open(path)?;
+```
+Then you can
+```rust
+let hello = PathBuf::from("/tmp/hello.txt");
+hello.extension();
+```
+474. Creating a `lib` crate allows you to create different binary executables from the same `lib.rs` without reinventing it.
+475. `[[bin]]` in your `Cargo.toml` allows you to specify multiple binary targets
+476. `USAGE` can be setup to conditionally compile on different targets:
+```rust
+use libactionkv::ActionKV;
+
+#[cfg(target_os = "windows")]
+const USAGE: &str = "
+Usage:
+    akv_mem.exe FILE get KEY
+    akv_mem.exe FILE delete KEY
+...
+"
+
+#[cfg(not(target_os = "windows"))]
+const USAGE: &str ="
+Usage:
+    akv_mem FILE get KEY
+    akv_mem FILE delete KEY
+...
+"
+```
+477. `debug_asssert_eq!(data.len(), data_len as usize);` these are disabled during `--release` builds, but enabled during debug builds.
+
+478. Indexing notation is supported via the `Index` trait.
+479. Trait objects appear in 3 forms: `&dyn Trait`, `&mut dyn Trait`, `Box<dyn Trait>`. `Box<dyn Trait>` is owned, the other 2 are not. Trait objects add polymorphism - they use less disk space for some small runtime overhead.
+480. Dynamic traits look a bit like this:
+```rust
+fn main() {
+    let mut it = Thing::Sword;
+    let d = Dwarf {};
+    let e = Elf {};
+    let h = Human {};
+
+    let party: Vec<&dyn Enchanter> = vec![&e, &h, &d];
+    let spellcaster = party.choose(&mut rand::thread_rng()).unwrap();
+
+    spellcaster.enchant(&mut it);
+}
+```
+481. Trait objects are a form of `type erasure` - compiler does not have access to the original type during the call to `enchant()`. Trait are mostly used for
+     - heterogenous collection
+     - returning a value (functions can return multiple concrete types with trait objects)
+     - supporting dynamic dispatch
+482. `?` is syntactic sugar for `try!`: `Ok(value) => value`, `Err(err) =>` returns early and attempts to convert `err` to error type defined in the calling function.
+483. Remember the `newtype` pattern for aliasing without extra overhead: 
+```rust
+#[derive(Debug)]
+struct MacAddress([u8; 6]);
+```
+484. If your PL is expression based, control flow structures also return values. This is a good tool for implementing state machines:
+```rust
+enum HttpState {
+    Connect, 
+    Request, 
+    Response,
+}
+
+loop {
+    state = match state {
+        HttpState::Connect if !socket.is_active() => {...; HttpState::Request}
+        HttpState::Request if socket.may_send() => {...; HttpState::Response;}
+        HttpState::Response if socket.can_recv() => {...; HttpState::Response}
+        HttpState::Response if !socket.may_recv() => {...; break;}
+        _ => state,
+    }
+}
+```
+485. `struct Clock;` is a `Zero Sized Type` and does not occupy any memory in the resulting application and is purely a compile-time construct.
+486. Anon funcs in Rust can be seen as `let add = |a, b| {a + b};`. Anon funcs can't be defined in global scope.
+487. To spawn a thread, use `std::thread::spawn()`. It takes no args, and thus you see this syntax: `thread::spawn(|| {...})`. If you want to use vars in the parent scope, that's called a capture. If you want to move ownership, you need to specify it with `thread::spawn(move || {...})`. You *NEED* `move` if you want to use capture variables.
+488. Guidelines for using captures:
+     - reduce friction at compile time, use `Copy`
+     - Values starting from outer scopes may need `static` lifetimes
+     - Spawned subthreads can outlive their parents -> that's why you need to `move` ownership to subthreads.
+489. To regain mutable access on each iteration, don't do this:
+```rust
+for handle in &handlers {
+    handle.join();
+}
+// but rather this
+while let Some(handle) = handlers.pop() {
+    handle.join();
+}
+```
+because it gains mutable access on each iteration, until the `handlers` vector is empty - but removing the ampersand also works :
+```rust
+for handle in handlers {
+    handle.join();
+}
+```
+490. When doing a yield
+```rust
+while start.elapsed() < pause {
+    thread::yield_now();
+}
+```
+`thread::yield_now()` is a signal to the OS that the current thread should be unscheduled. Bad: You don't know if you actually wait for 20ms. An alternative: bypass the OS and go through to CPU directly via `std::sync::atomic::spin_loop_hint().spin_loop_hint()` turns off functionality and saves power usage. Bad: your cpu might not have that capability.
+491.   To get rid of the shared variable here:
+```rust
+let handle = thread::spawn(|| {
+    let start = time::Instant::now();
+    let duration = time::Duration::from_millis(20); // THIS DOESN'T NEED EVERY THREAD TO BE CREATED
+    while start.elapse() < pause {
+        thread::yield_now();
+    }
+})
+```
+where you can instead use the `move`
+```rust
+use std::{thread, time};
+
+fn main() {
+    let pause = time::Duration::from_millis(20);
+    let handle1 = thread::spawn(move || {
+        thread::sleep(pause);
+    });
+    let handle2 = thread::spawn(move || {
+        thread::sleep(pause);
+    });
+
+}
+```
+
+492.   Closures and funcs are different. Closures are anon structs that implement `std::ops::FnOnce` trait and maybe `std::ops::Fn` and `std::ops::FnMut`. Those structs are invisible from source code but contain the variables of the closure inside of them
+493. Instead of the `for byte in input.bytes() {let step = match byte {}; steps.push(step);}`, try `input.bytes().map(|byte| {}).collect();`.
+494. Translating into Rayon (where a sequence of `Forward(isize) {TurnLeft|TurnRight} == Vec<Operation>` is collected):
+```rust
+use rayon::prelude::*;
+
+fn parse(input:&str) -> Vec<Operation> {
+    input
+        .as_bytes()
+        .par_iter()
+        .map(|byte| match byte {
+            b'0' => Home,
+            b'1'..=b'9' => {
+                let distance = (byte - 0x30) as isize;
+                Forward(distance * (HEIGHT/10))
+            }
+            b'a' | b'b' | b'c' => TurnLeft,
+            b'd' | b'e' | b'f' => TurnRight,
+            _ => Noop(*byte),
+        }).collect()
+}
+```
+495. But what happens when you don't have a tidy iteration you can throw Rayon at? Consider a thread pool and a task queue.
+```rust
+
+```
+496. `rustup target list` gives you a list of targets that Rust can compile to.
+497. `#[repr(u8)]` Instructs the compiler to use a single byte to represent the values.
+498. `kill -l` to list all signals supported by the OS. `SIGSTOP` and then `SIGCONT` can be used to stop and resume a running program!
+499. To make a global in Rust, do:
+```rust
+static mut SHUT_DOWN: bool = false; // to change do: unsafe {SHUT_DOWN = true;}
+```
+500. To register a signal handler:
+```rust
+use libc::{SIGTERM, SIGUSR1};
+//...
+fn main () {
+    register_signal_handlers(); // Must be done early
+}
+//...
+fn register_signal_handlers() {
+    unsafe {
+        libc::signal(SIGTERM, handle_sigterm as usize); // fn must be passed as func pointer to C
+        libc::signal(SIGUSR1, handle_sigterm as usize);
+    }
+}
+#[allow(dead_code)]
+fn handle_sigterm(_signal: i32) {
+    register_signal_handlers(); // again early, try not to miss any
+    println!("SIGTERM!");
+    unsafe { SHUT_DOWN = true; }
+}
+```
+501. `static` appears in a single location in memory. `const` can be duplicated in locations where they are accessed. 502. 
+
+
+### 02/04/2022
+1.   The big 4:
+     - use refs
+     - clone the values
+     - reduce the need for long lifetimes
+     - clever type wrappers
+2.   `Clone` lets you `.clone()`, `Copy` is implicit and lets you copy instead of move (must be on primitive types).
+3.   `Rc<T>` is very useful when cloning would be very expensive.
+4.   `Rc<T>` does not allow mutation, `Rc<RefCell<T>>` does.
+5.   In multithreaded code, `Rc<T>` -> `Arc<T>` and `Rc<RefCell<T>>` -> `Arc<Mutex<T>>`.
+6.   `println!("{:032b}", x);` left pad x with 32 0s
+7.   Rust numbers have methods like `1.2_f32.ceil()`.
+8.   `Cow` means Copy on Write and are useful when someone gives you a buffer.
+9.   `*mut T` and `*const T` are basically the same. `&mut T` and `&T` compile down to pointers.
+10.  If you want to accept both `&str` and `String`, you can try
+```rust
+fn is_strong<T: AsRef<str>>(password: T) -> bool {
+    password.as_ref().len() > 5 {...}
+}
+```
+1.   Dynamically sized types (DSTs) don't change sizes, but are assigned a size at runtime (like slices `[T]`).
+2.   `while let Ok(_) {...}` loop until `f.read_exact(&mut buffer)` returns an `Err`.
+3.   For commandline args use `std::env::args()` with `nth()`.
+4.   `expect("foo")` is a nicer version of `unwrap()`.
+5.   instead of 
+```rust
+pub fn hamming0(a: &str, b: &str) -> i32 {
+    a.bytes()
+    .zip(b.bytes())
+    .map(|(a, b)| a != b)
+    .fold(0, |acc, i| { acc + i as i32})
+}
+```
+I can do
+```rust
+pub fn hamming0(a: &str, b: &str) -> i32 {
+    zip(a, b)
+        .filter(|(a, b)| a != b)
+        .count()
+}
+```
+and with `usize` instead of `i32` you can also get some speedups.
+
+### 01/04/2022
+
+1.   Ryan James Spencer kindly shared his article about [Magnifying glasses for Rust](https://www.justanotherdot.com/posts/magnifying-glasses-for-rust-assembly.html).
+
+2.   Instead of stringly typed data, go for `enums`.
+3.   `traits` are close to interfaces/contracts/type classes. 
+```
+impl trait Read {
+    fn read(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String> // You need a func signature
+}
+
+impl Read for File {}
+``` 
+1.   `//!` is used  to document the thing that was just read by tehe compiler.
+2.   `cargo doc --no-deps` can speed up doc generation by quite a while.
+3.   There's a difference between a variable's `lifetime` and its `scope`. A variable can be dropped after it is consumed by a function
+and not used, but then Rust can refuse to compile if you do try to use it.
+1.   If I define functions like `fn foo(x: i32) -> Foo`, then I can `let a = 3; let a = foo(a);` and have the ownership passed because of the return type.
+
+### 31/02/2022
+1.   If I want to filter all BinaryBuilder platforms to only Linux, I can do
+```julia
+filter!(Sys.islinux(), supported_platforms())
+```
+instead of the `platforms = [ ... ]` dance.
+1.   When using `rust.godbolt.com`, remember that 
+```
+use std::simd::*;
+```
+Is what let's your code compile and that you don't need a `main()`, just `pub fn` and you're on your merry way.
+1.   Finally, here's the `dot_product_scalar_0` in [Rust Godbolt](https://rust.godbolt.org/z/q3f933T68), with a sweet view and `llvm-mca` to boot.
+Here's the [SIMD Rust godbolt comparisons](https://rust.godbolt.org/z/jnbjxToE5) and the Rust snippet that worked
+```
+#![feature(portable_simd)]
+#![feature(array_chunks)]
+use std::simd::*;
+
+// A lot of knowledgeable use of SIMD comes from knowing specific instructions that are
+// available - let's try to use the `mul_add` instruction, which is the fused-multiply-add we were looking for.
+#[target_feature(enable="sse")]
+pub unsafe fn dot_prod_simd_2(a: &[f32], b: &[f32]) -> f32 {
+    assert_eq!(a.len(), b.len());
+    // TODO handle remainder when a.len() % 4 != 0
+    let mut res = f32x4::splat(0.0);
+    a.array_chunks::<4>()
+        .map(|&a| f32x4::from_array(a))
+        .zip(b.array_chunks::<4>().map(|&b| f32x4::from_array(b)))
+        .for_each(|(a, b)| {
+            res = a.mul_add(b, res);
+        });
+    res.reduce_sum()
+}
+```
+Notice the `#[target_feature(enable="avx2")]`, the `pub unsafe`
+
+1.   `fn dead_end() -> !{}` the `!` is for funcs that crash and is known as the `Never` type.
+
+
+### 30/02/2022
+1.   `All of Rust operators are defined within traits`. Ach so...
+- variables are lowercase
+- Single uppercase letters denote generic type variables
+- Terms beginning with uppercase (`Add`) denote traits or concrete types, like `String/Duration`
+- Labels `'a` are lifetime parameters
+
+1.   `String` is to `Vec<u8>` as `str` is to `[u8]`.
+2.   Array sizes are known at compile time `[T; 4]` - just a homogenous container. 
+Slices don't have a known size at compile time `[T]`, so they have are usually used as `&[T]`, and are dynamically sized (but don't contract or expand at runtime!).
+1.   The term `view` comes from databases where a read-only view is way faster without needing to copy. However, since Rust wants to know sizes of everything in your program, but slices don't know that, you need a `&` reference.
+Vectors though, those are growable!
+1.   You can ref a whole tuple:
+```
+    for &(i, line) in x.iter() { ... }
+```
+1.   `rustup doc` opens up the stdlib docs.
+
 ### 29/02/2022
 
-439. `std::ops::Add` is the trait, `std::ops::Add::add` is the operation. Thus, this snippet
+1.   `std::ops::Add` is the trait, `std::ops::Add::add` is the operation. Thus, this snippet
 ```
     let mut sum = a
         .array_chunks::<4>()
@@ -152,7 +707,7 @@ export Observable, Observable, lift, map_once, to_value, on, onany, @lift, off, 
 - look at tests to see the typical idioms
 - look at documentation
 
-425. wtf is this syntax yo
+1.   wtf is this syntax yo
 ```julia
 function updater(i, f::Flatten)
     function (val)
@@ -168,10 +723,10 @@ end
 ```
 
 ### 02/02/2022
-422. `content` is useful for not indexing into the `contents(f[1,1])` figure in Makie.
+1.   `content` is useful for not indexing into the `contents(f[1,1])` figure in Makie.
 
 ### 30/01/2022
-421. Pluto autoreload trick:
+1.   Pluto autoreload trick:
 ```julia-repl
 using Pluton: run
 run(; auto_relaod_from_file=true);
@@ -179,19 +734,19 @@ run(; auto_relaod_from_file=true);
 
 
 ### 28/01/2022
-419. To change the Julia prompt:
+1.   To change the Julia prompt:
 ```
 Base.active_repl.interface.modes[1].prompt = "julia 😷>"
 ```
 credit to `rickhg12hs`.
 
-420. Damn, today was really cool. Sounds like Nautilus.jl project has some real legs. I got toggle buttons working but there's still so much to build.
+1.   Damn, today was really cool. Sounds like Nautilus.jl project has some real legs. I got toggle buttons working but there's still so much to build.
 Also, I blocked twitter and social media on my phone. Time to hunker down. Also this number is a good sign. I've started to do a small number of *impossible* things
 before breakfast... I kinda like this streak.
-421. Joined Lemmster's TLA+ workshop last minute. Maybe I should try it out for realsies sometime.
+1.   Joined Lemmster's TLA+ workshop last minute. Maybe I should try it out for realsies sometime.
 
 ### 25/01/2022
-418. Time to actually learn the freakin' commands to the Julia REPL:
+1.   Time to actually learn the freakin' commands to the Julia REPL:
 - exit with `^d`
 - Move to beginnign with `^A`, `^E` move to end
 - `^R` is reverse search and `^S` is forward search
@@ -203,11 +758,11 @@ before breakfast... I kinda like this streak.
 - `^W` delete word up to nearest whitespace, `meta-d` delete next work, `meta-backspace`
 
 ### 24/01/2022
-416. Jeebus I spent way too much time on Franklin blog today. 
-417. This [DataFrames.jl](https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf) worksheet is super userful.
+1.   Jeebus I spent way too much time on Franklin blog today. 
+2.   This [DataFrames.jl](https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf) worksheet is super userful.
 
 ### 23/01/2022
-415. [Why meshgrid is inefficient](https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli=1) and what the Julia anternative is: 2D array copmrehension
+1.   [Why meshgrid is inefficient](https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli=1) and what the Julia anternative is: 2D array copmrehension
 ```julia
 inflate(f, xs, ys) = [f(x,y) for x in xs, y in ys]
 
@@ -224,7 +779,7 @@ end
 ```
 
 ### 21/01/2022
-414. GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:
+1.   GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:
 - scale the intro video and poster video
 - concat them
 - encode to final product
@@ -233,7 +788,7 @@ When we can do instead
 - concat the poster video and the intro video on each invocation
 - encode the final product.
 
-415. Tips for job interviews:
+1.   Tips for job interviews:
 > When was the lat time you promoted someone on your team?
 > Why did the last person leave?
 > How do you nurture the wellbeing of people under a challenging environemnt?
@@ -243,33 +798,33 @@ When we can do instead
 
 
 ### 20/01/2022
-413. Got this oneliner for downloading from `JuliaCon talk title urllink.mp4`:
+1.   Got this oneliner for downloading from `JuliaCon talk title urllink.mp4`:
 ```
 miguelraz@cyclops ~/J/src> bat posters.csv | awk '{print $NF}' | rg "mp4" |xargs  wget -v
 ```
 And it would be parallel with a `xargs -n 1 -P 8 filename` to download with 8 cores simultaneously.
 
-414. Rescued the `ffmpeg` script for processing JuliaCon videos. Should shape into a nice package. Need to recruit CI wizards + a cron job so that it can be kicked on demand for uploads.
+1.   Rescued the `ffmpeg` script for processing JuliaCon videos. Should shape into a nice package. Need to recruit CI wizards + a cron job so that it can be kicked on demand for uploads.
 
 ### 18/01/2022
-412. Let's help Simeon out with that globals PR. Maybe also the freakin' blog post. And then the LLVM13->LLVM14 upgrade.
+1.   Let's help Simeon out with that globals PR. Maybe also the freakin' blog post. And then the LLVM13->LLVM14 upgrade.
 
 ### 15/01/2022
-411. FUTHARK BABY! Futhark is a Haskell-like, ML, pure functional language that is super parallel, compiles to GPUs and has a REPL! [It's just amazing](https://futhark-book.readthedocs.io/en/latest/random-sampling.html)
+1.   FUTHARK BABY! Futhark is a Haskell-like, ML, pure functional language that is super parallel, compiles to GPUs and has a REPL! [It's just amazing](https://futhark-book.readthedocs.io/en/latest/random-sampling.html)
 - OK Futhark is also in that Midsommar movie. Weird.
 
 ### 03/01/2022
-407. Limited Direct Execution - setup all the stuff for a program, run it's `main()`, free mem and process from task list. But how do you know it didn't do bad stuff, and how can you time share with that? The OS has facilities that can limit the running programs, otherwise it would be just another library.
-408. To go from `user` mode to `kernel` mode you need to use a `system call`, which looks like a normal C function. These functions use a `trap` instruction,and when done a `return from trap` instruction (while de escalating kernel privileges).
+1.   Limited Direct Execution - setup all the stuff for a program, run it's `main()`, free mem and process from task list. But how do you know it didn't do bad stuff, and how can you time share with that? The OS has facilities that can limit the running programs, otherwise it would be just another library.
+2.   To go from `user` mode to `kernel` mode you need to use a `system call`, which looks like a normal C function. These functions use a `trap` instruction,and when done a `return from trap` instruction (while de escalating kernel privileges).
 A bit of state from program counters, flags, registers and trap will be pushed into a per-process `kernel stack`, and popped when execution resumes. 
 To know which code to run, the kernel sets up a `trap table` at boot time, which has code for when a keyboard interrupt or disk interrupt is sent, etc.
 System calls must be made via a service number to increase security.
 Also, regaining control of the CPU by the OS is tricky if there was a process running on it. You can cooperate and trust the process will make system calls eventually (and then do your OS things) or take over. You can use a `timer interrupt` that will disrupt the machine every few milliseconds and the OS interrupt handler takes over. This timer can also be TURNED_OFF! OS can also decide to switch... which is called a `context switch.`
-409. To context switch, save a few registers, pop a few registers, ^-_-^.
-410. Remember about `setting core affinity` - if you want to measure context switching timings, make sure it isn't switching across threads.
+1.   To context switch, save a few registers, pop a few registers, ^-_-^.
+2.   Remember about `setting core affinity` - if you want to measure context switching timings, make sure it isn't switching across threads.
 
 ### 02/01/2022
-400. Process API:
+1.   Process API:
 * Create - 
 * Destroy
 * Wait
@@ -277,7 +832,7 @@ Also, regaining control of the CPU by the OS is tricky if there was a process ru
 * Status
 Process states: * Running, Ready, Blocked (or zombie, to check that children exited succesfully by the parent)
 The Process List/task list will have a struct to keep track of all the running programs in the system. Also called a Process Control Block or process descriptor. (It's just a `struct`).
- 401. `./run-process.py` was a trip:
+ 1.   `./run-process.py` was a trip:
  ```
  -intro (master)> ./process-run.py -l 3:0,5:100,5:100,5:100 -S SWITCH_ON_END -I IO_RUN_LATER -c -p -L 5
 Time        PID: 0        PID: 1        PID: 2        PID: 3           CPU           IOs
@@ -322,9 +877,9 @@ Stats: Total Time 36
 Stats: CPU Busy 21 (58.33%)
 Stats: IO Busy  15 (41.67%)
  ```
-402. `wait` waits on a PID, `fork` makes a copy except for the PID, `exec` runs a different program than the calling program. There are several variatns of `exec`.
-403. Colorful man pages with: `export MANPAGER="less -R --use-color -Dd+r -Du+b"`
-404. If you want to use `exec`, you hand craft a vector for 
+1.   `wait` waits on a PID, `fork` makes a copy except for the PID, `exec` runs a different program than the calling program. There are several variatns of `exec`.
+2.   Colorful man pages with: `export MANPAGER="less -R --use-color -Dd+r -Du+b"`
+3.   If you want to use `exec`, you hand craft a vector for 
 ```
 char *myargs[3];
 myargs[0] = strdup("wc");
@@ -334,8 +889,8 @@ execvp(myargs[0], myargs);
 printf("This never gets printed");
 ```
 This literally transforms your program into the new one you are calling. Succesful calls to `exec` never return o.0.
-405. Huh, `killall` seems like a useful thing to know...
-406. List available `man` pages with `man -f ls`
+1.   Huh, `killall` seems like a useful thing to know...
+2.   List available `man` pages with `man -f ls`
 ### 01/01/2022
 
 - OK so the reason  this is exists `p->x++;` is because the precedence here is so annoying:`(*p).x++`. Thank the lord for [Learn-C online](https://www.learn-c.org/en/Dynamic_allocation)
@@ -359,16 +914,16 @@ then you've typecasted it.
 
 ### 13/12/2021
 
-393. Found thise great code review checklists:
+1.   Found thise great code review checklists:
 - [michaelgreiler.com](https://www.michaelagreiler.com/wp-content/uploads/2020/05/Code-Review-Checklist-Michaela-Greiler.pdf)
 - C++20 before [and after ranges](https://mariusbancila.ro/blog/2019/01/20/cpp-code-samples-before-and-after-ranges/)
 - University of Champagna Illinois Systems C [programming book course](https://raw.githubusercontent.com/illinois-cs241/coursebook/pdf_deploy/main.pdf)
 - TODO An introduction to [libuv](https://nikhilm.github.io/uvbook/threads.html)
 - TODO [libuv advanced tutorial](https://unixism.net/loti/ref-liburing/advanced_usage.html)
 
-394. CLANGD IS NOT INCLUDED IN A CLANG INSTALLATION. Just install the VSCode IDE thing for [christ sake's](https://clangd.llvm.org/installation)
+1.   CLANGD IS NOT INCLUDED IN A CLANG INSTALLATION. Just install the VSCode IDE thing for [christ sake's](https://clangd.llvm.org/installation)
 
-395. Holy crap - [modules in cpp20](https://itnext.io/c-20-modules-complete-guide-ae741ddbae3d) can help cut down bloat size IMMENSELY: this is like 5 orders of magnitude for a "hello world" program.
+2.   Holy crap - [modules in cpp20](https://itnext.io/c-20-modules-complete-guide-ae741ddbae3d) can help cut down bloat size IMMENSELY: this is like 5 orders of magnitude for a "hello world" program.
 - To compare this: write the "hello world with 'import <iostream>' and '#include <iostream>' directives swapped out, compile with:
 > clang++ -std=c++20 -stdlib=libc++ -E hello_world.cc | wc -c # Here the -E makes clang only spit out the preprocessor stuff.
 > 1956614
@@ -379,7 +934,7 @@ vs
 
 ### 30/11/2021
 
-392. [New PATCH 1.7!](https://julialang.org/blog/2021/11/julia-1.7-highlights/) and contained this lil' nugget:
+1.   [New PATCH 1.7!](https://julialang.org/blog/2021/11/julia-1.7-highlights/) and contained this lil' nugget:
 ```julia
 myreal((; re)::Complex) = re
 myreal(2 + 3im) == 2
@@ -387,20 +942,20 @@ myreal(2 + 3im) == 2
 
 ### 25/11/2021
 
-390. Jean Yang kindly suggested [Write you a Scheme in 48 hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/First_Steps) as a stream with a timer, it sounds RAD!
-391. [This Haskell setup video](https://www.youtube.com/watch?v=5p2Aq3bRuL0) looks fantastic by using
+1.   Jean Yang kindly suggested [Write you a Scheme in 48 hours](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/First_Steps) as a stream with a timer, it sounds RAD!
+2.   [This Haskell setup video](https://www.youtube.com/watch?v=5p2Aq3bRuL0) looks fantastic by using
 - ghcid (reloading REPL)
 - hlint (suggests better patterns and helps explore stdlib)
 - don't mess with cabal/stack when starting
 
 ### 22/11/2021
 
-389. TODO: Make a BinaryBuilder.jl recipe for [CReduce](https://github.com/maleadt/creduce_julia), get some fuzzing going in Julia.
+1.   TODO: Make a BinaryBuilder.jl recipe for [CReduce](https://github.com/maleadt/creduce_julia), get some fuzzing going in Julia.
 
 ### 29/10/2021
 
-387. In [LLVM speak](https://www.cs.cornell.edu/%7Easampson/blog/llvm.html),Modules > Functions > BasicBlock > Instruction, and everything inherits from the `Value` class.
-388. Useful snippet:
+1.   In [LLVM speak](https://www.cs.cornell.edu/%7Easampson/blog/llvm.html),Modules > Functions > BasicBlock > Instruction, and everything inherits from the `Value` class.
+2.   Useful snippet:
 ```cpp
 for (auto& B : F) {
   for (auto& I : B) {
@@ -432,23 +987,23 @@ for (auto& B : F) {
 
 ### 23/10/2021
 
-377. When reading LLVM source code, I need to find the name of many things (like using your IDE for tooltip hovering/documentation). `ctags` can help with that. 
+1.   When reading LLVM source code, I need to find the name of many things (like using your IDE for tooltip hovering/documentation). `ctags` can help with that. 
 - Go into the `llvm` src dir, run `ctags -e -R .` and a `TAGS` file will be made.
 - I keep a terminal tab open in the `llvm` src dir, and then do `vim -t LLVM_READNONE` to have Vim open up where `LLVM_READNONE` is defined.
 - That way, I don't need to fish everywhere for what symbols/functions mean
 
 ### 22/10/2021
 
-376. Phew, moving out was a hassle.
+1.   Phew, moving out was a hassle.
 - `llvm-config` is very useful for knowing if your LLVM build was built with `shared libs`, `run time type info`, `split debug` and all that stuff.
 
 ### 23/09/2021
 
-375. Downloaded a code with CVS today. 
+1.   Downloaded a code with CVS today. 
 
 ### 19/09/2021
 
-374. Fortran `coarrays` use `tile_indices`, `this_image()`, `num_images()` and are run with `cafrun -n 4 ./test`. 
+1.   Fortran `coarrays` use `tile_indices`, `this_image()`, `num_images()` and are run with `cafrun -n 4 ./test`. 
 - `gather(size(ids))[*]` and `real, allocatable :: gather(:)[:]` with `[*]` means a coarray.
 - coarrays are synced with `sync all`.
 - `real, codimension[*] :: a` == `real :: a[*]`, a coarray scalar.
@@ -460,7 +1015,7 @@ for (auto& B : F) {
 - This is a remote copy: `h(ime)[left] = h(ils)`
 ### 18/09/2021
 
-373. FORTRAN learnigns:
+1.   FORTRAN learnigns:
 -`&` is used for line breaks
 - `parameter` is for constants
 - functions and subroutines are procedures - subroutines are with `call add(a, 3)`, modify args in place, functions can only return 1 value
@@ -603,40 +1158,40 @@ end function reverse
 
 ### 01/09/2021
 
-372. TODO [Visualize the Julia repo with this tool](https://discourse.julialang.org/t/this-tool-for-understanding-repos-is-brilliant/67226/5)
+1.   TODO [Visualize the Julia repo with this tool](https://discourse.julialang.org/t/this-tool-for-understanding-repos-is-brilliant/67226/5)
 
 ### 27/08/2021
-371. Writing a cover letter... godspeed to me.
+1.   Writing a cover letter... godspeed to me.
 
 ### 16/08/2021
 
 Link dump time!
-366. Linux [perf guide](https://twitter.com/derKha/status/1426195407395299329).
-367. [Go fix some DiffEq compile times yo](https://discourse.julialang.org/t/22-seconds-to-3-and-now-more-lets-fix-all-of-the-differentialequations-jl-universe-compile-times/66313)
-368. [Semver autodetection in Rust](https://github.com/rust-lang/rust-semverver)
-369. [Plz someone help out Keno with Cxx.jl](https://compiler-research.org/assets/presentations/K_Fischer_Cxx_jl.pdf)
-370. [Amos Rust futures post](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
+1.   Linux [perf guide](https://twitter.com/derKha/status/1426195407395299329).
+2.   [Go fix some DiffEq compile times yo](https://discourse.julialang.org/t/22-seconds-to-3-and-now-more-lets-fix-all-of-the-differentialequations-jl-universe-compile-times/66313)
+3.   [Semver autodetection in Rust](https://github.com/rust-lang/rust-semverver)
+4.   [Plz someone help out Keno with Cxx.jl](https://compiler-research.org/assets/presentations/K_Fischer_Cxx_jl.pdf)
+5.   [Amos Rust futures post](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
 
 ### 11/08/2021
 
-363. Jon Sterling writes about a metalanguage for `multi phase modularity` [here](https://twitter.com/jonmsterling/status/1423655072303489024).
-364. Consider using `TimeWarrior`[linked here](https://timewarrior.net/docs/what/).
-365. Dr. Devon Price [has an amazing article criticizing the biological understanding of mental health:](https://devonprice.medium.com/no-mental-illness-isnt-caused-by-chemicals-in-the-brain-1b01d6808871).
+1.   Jon Sterling writes about a metalanguage for `multi phase modularity` [here](https://twitter.com/jonmsterling/status/1423655072303489024).
+2.   Consider using `TimeWarrior`[linked here](https://timewarrior.net/docs/what/).
+3.   Dr. Devon Price [has an amazing article criticizing the biological understanding of mental health:](https://devonprice.medium.com/no-mental-illness-isnt-caused-by-chemicals-in-the-brain-1b01d6808871).
 
 ### 04/08/2021
 
-360. Parallel Julia priorites from the State of Julia 2021 talk:
+1.   Parallel Julia priorites from the State of Julia 2021 talk:
 
-| Features/Correctness | Performance |
-|---|---|
-| Thread safety: Distributed | Optimize scheduler |
-| thread safety: package loading | Parallel mark/sweep |
-| Memory model | Type inference of `fetch(::Task)` |
-| Finalizer thread | Better for loop and reduce |
-| Interactive threads | BLAS integration |
-| GC state transitions in codegen | TAPIR Integration|
+| Features/Correctness            | Performance                       |
+| ------------------------------- | --------------------------------- |
+| Thread safety: Distributed      | Optimize scheduler                |
+| thread safety: package loading  | Parallel mark/sweep               |
+| Memory model                    | Type inference of `fetch(::Task)` |
+| Finalizer thread                | Better for loop and reduce        |
+| Interactive threads             | BLAS integration                  |
+| GC state transitions in codegen | TAPIR Integration                 |
 
-361. Compiler priorities from State of Julia 2021:
+1.   Compiler priorities from State of Julia 2021:
 
 Latency related:
 
@@ -658,20 +1213,20 @@ GC performance work
 
 Compiler extensibility
 
-362. `ghostscript` can be used for batch pdf processing.
+1.   `ghostscript` can be used for batch pdf processing.
  
 
 ### 03/08/2021
 
-359. All the JuliaCon posters are uploaded! 🎉 I heard a lot of interesting proposals from people from NZ, photolithography people and many others... posters are fun! Life's lookin' good!
+1.   All the JuliaCon posters are uploaded! 🎉 I heard a lot of interesting proposals from people from NZ, photolithography people and many others... posters are fun! Life's lookin' good!
 
 ### 02/08/2021
 
-343. Extract 20 seconds without re-encoding:
+1.   Extract 20 seconds without re-encoding:
 ```bash
 ffmpeg -ss 00:01:30.000 -i YOUR_VIDEO.mp4 -t 00:00:20.000 -c copy YOUR_EXTRACTED_VIDEO.mp4
 ```
-344. Tuning options in ffmpeg:
+1.   Tuning options in ffmpeg:
 ```
 film – use for high quality movie content;
 animation – good for cartoons;
@@ -683,39 +1238,39 @@ ssim – only used for codec development;
 Example: 
 ffmpeg -i your_video.mov -c:v h264 -crf 23 -tune film your_output.mp4
 ```
-345. You can use 2 pass encoding for targeting a specific output file size, but not care so much about output quality from frame to frame.
-346. `For an output that is roughly 'visually lossless' but not technically and waaaay less file size, just use -crf 17 or 18`.
-347. You can also constrain the maximum bitrate (useful for streaming!)
+1.   You can use 2 pass encoding for targeting a specific output file size, but not care so much about output quality from frame to frame.
+2.   `For an output that is roughly 'visually lossless' but not technically and waaaay less file size, just use -crf 17 or 18`.
+3.   You can also constrain the maximum bitrate (useful for streaming!)
 ```
 ffmpet -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M output.mp4
 ```
-348. Recommend adding a `faststart` flag to your video so that it begins playing faster (recommended by YouTube).
+1.   Recommend adding a `faststart` flag to your video so that it begins playing faster (recommended by YouTube).
 ```
 ffmpeg -i input.mp4 -c:v h264 -crf 23 -maxrate 1M -bufsize 2M -movflags +faststart output.mp4
 ```
-349. If you want to produce 1080p and above, h265 offers great savings in bitrates/file size (ntoe: needs to be built with `--enable-gpl --enable-libx265`).
+1.   If you want to produce 1080p and above, h265 offers great savings in bitrates/file size (ntoe: needs to be built with `--enable-gpl --enable-libx265`).
 ```
 ffmpeg -i input -c:v libx265 -crf 28 -c:a aac -b:a 128k output.mp4
 ```
-350. h266 video codec: 
+1.   h266 video codec: 
 - with h265, to transmite a 90min UHD file, it needs about 10 gigabytes of data
 - with h266, you need only about 5 gigabytes.
 Can deal with 4k/8k and 360 degree video!
 
-351. VP8 videos: Supposed to be web standard.
-352. OF COURSE Google made vp9 in direct competition of h265, you need `libvpx-vp9`.
-353. OH LORD Youtube recommends it's own [ffmpeg settings!!!](https://developers.google.com/media/vp9/settings/vod)
-354. AV1 video - SD and HD under bandwidth constrained networks.
-355. Netflix codedc is SVT-AV1 and they [have blog posts explaining it](https://netflixtechblog.com/svt-av1-an-open-source-av1-encoder-and-decoder-ad295d9b5ca2), as well as github repos!
-356. AV1AN exists becuase AV1/VP9/VP8 are not easily multithreaded ... 😕 
-357. RTMP is for "Real time Messaging Protocol" and is the de facto standard for all live videos in FB, Insta, YT, Twitch, Twitter, Periscope etc. Streaming pre recorded video to live can be done in at least 2 ways:
+1.   VP8 videos: Supposed to be web standard.
+2.   OF COURSE Google made vp9 in direct competition of h265, you need `libvpx-vp9`.
+3.   OH LORD Youtube recommends it's own [ffmpeg settings!!!](https://developers.google.com/media/vp9/settings/vod)
+4.   AV1 video - SD and HD under bandwidth constrained networks.
+5.   Netflix codedc is SVT-AV1 and they [have blog posts explaining it](https://netflixtechblog.com/svt-av1-an-open-source-av1-encoder-and-decoder-ad295d9b5ca2), as well as github repos!
+6.   AV1AN exists becuase AV1/VP9/VP8 are not easily multithreaded ... 😕 
+7.   RTMP is for "Real time Messaging Protocol" and is the de facto standard for all live videos in FB, Insta, YT, Twitch, Twitter, Periscope etc. Streaming pre recorded video to live can be done in at least 2 ways:
 - take input file "as is" and convert in real time to FLV (and stream it live via:)
 ```
 -f flv rtmp://a.rtmp.youtube.com/live2/[YOUR_STREAM_KEY]
 #: this will instruct FFMPEG to output everything into the required FLV format to the YouTube RTMP server
 ```
 
-358. PRE PROCESS FILES IN BATCH: pg 113/122
+1.   PRE PROCESS FILES IN BATCH: pg 113/122
 ```
 for i in *.mov; do ffmpeg -i "$i" -c:v libx264 -profile:v high -level:v 4.1 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -r 25 -g 50 -keyint_min 50 -sc_threshold 0 -c:a aac -b:a 128k -ac 2 -ar 44100 "${i%.*}.mp4"; done
 ```
@@ -724,11 +1279,11 @@ for i in *.mov; do ffmpeg -i "$i" -c:v libx264 -profile:v high -level:v 4.1 -pre
 
 ### 31/07/2021
 
-340. `tmux` can be used to keep persistent sessions on `ssh`, so `mosh` is not necessarily needed.
+1.   `tmux` can be used to keep persistent sessions on `ssh`, so `mosh` is not necessarily needed.
 The way to do this (Credit to Danny Sharp) is do the ssh inside a tmux session and then
 `tmux ls` to see which sessions you have made and then `tmux attach-session -t 3` to connect to session 3.
 This is a smart way of checking in on long running compute jobs.
-341. From `FFMPEG Zero to Hero`:
+1.   From `FFMPEG Zero to Hero`:
 ```
 BITRATE: Bitrate or data rate is the amount of data per
 second in the encoded video file, usually expressed in kilobits per second (kbps)
@@ -740,46 +1295,46 @@ in the range of 3.000 - 6.000 kbps, while a 4k video can reach
 a bitrate value up to 51.000 kbps.  A non-compressed video format,
 such as the Apple ProRes format in 4K resolution, can reach a bitrate of 253.900 kbps and higher. 
 ```
-342. FFMPEG can read and write to basically any format under the sun, and has been designed by the MPEG:
+1.   FFMPEG can read and write to basically any format under the sun, and has been designed by the MPEG:
 `Moving Pictures Expert Group`.
 
 ### 29/07/2021
-334. To run code with the interpreter, use `julia --compile=no`.
-335. [Buffy](https://github.com/openjournals/buffy) for JOSS submissions.
-336. [Crafting Interpreters](https://craftinginterpreters.com/) for speeding up the Debugger and such.
-337. [Advance bash scripting guide](https://tldp.org/LDP/abs/html/)
-338. [Proceedings Bot](https://discourse.julialang.org/t/juliacon-2021-proceedings/55354)
-339. [Toby Driscoll online book](https://tobydriscoll.net/fnc-julia/linsys/efficiency.html)
+1.   To run code with the interpreter, use `julia --compile=no`.
+2.   [Buffy](https://github.com/openjournals/buffy) for JOSS submissions.
+3.   [Crafting Interpreters](https://craftinginterpreters.com/) for speeding up the Debugger and such.
+4.   [Advance bash scripting guide](https://tldp.org/LDP/abs/html/)
+5.   [Proceedings Bot](https://discourse.julialang.org/t/juliacon-2021-proceedings/55354)
+6.   [Toby Driscoll online book](https://tobydriscoll.net/fnc-julia/linsys/efficiency.html)
 
 ### 28/07/2021
-333. Link dump:
+1.   Link dump:
 https://lazy.codes/posts/awesome-unstable-rust-features/
 https://github.com/koalaman/shellcheck
 https://github.com/Apress/beginning-cpp20/blob/main/Exercises/Modules/Chapter%2002/Soln2_01A.cpp
 https://rustc-dev-guide.rust-lang.org/
 
 ### 21/07/2021
-331. To clean up a video with ffmpeg, do:
+1.   To clean up a video with ffmpeg, do:
 ```
 ffmpeg -i elrodtest.mov -af "highpass=f=300, lowpass=f=3000, afftdn" -c:v copy passeselrod.mov
 ```
 This applies a FFT filter, with a highpass and lowpass of 300Hz and 3000Hz
-332. This is an awesome thread on [LLVM resources](https://twitter.com/matt_dz/status/1417857422559952897)
+1.   This is an awesome thread on [LLVM resources](https://twitter.com/matt_dz/status/1417857422559952897)
 And WOW is [this super list thorough LLVM Program Analysis resources](https://gist.github.com/MattPD/00573ee14bf85ccac6bed3c0678ddbef#introduction)
 
 ### 20/07/2021
 
-327. [sortperm is sorta slow](https://github.com/JuliaLang/julia/issues/939) - up for grabs!
-328. [Setup donation links to JuliaCon](https://twitter.com/Anno0770/status/1414009622583783432)
-329. [Submit to the procceedings...](https://proceedings.juliacon.org)
-330. FFMPEG is HUGE ! Here's what I needed to concat 2 videos together:
+1.   [sortperm is sorta slow](https://github.com/JuliaLang/julia/issues/939) - up for grabs!
+2.   [Setup donation links to JuliaCon](https://twitter.com/Anno0770/status/1414009622583783432)
+3.   [Submit to the procceedings...](https://proceedings.juliacon.org)
+4.   FFMPEG is HUGE ! Here's what I needed to concat 2 videos together:
 ```bash
 ffmpeg -i "concat:input1.ts|input2.ts" -c copy output.ts
 ```
 Now I need to apply that to every `*.mov/mp4/mkv` video in the folder and then I have a lot of processed videos. Perhaps I should also dump that info into a CSV file...
 
 ### 14/07/2021
-325. Federico Simonetta [asks](https://julialang.slack.com/archives/C67910KEH/p1626281444356200):
+1.   Federico Simonetta [asks](https://julialang.slack.com/archives/C67910KEH/p1626281444356200):
 ```
 Dummy question: if I have T=Vector{Int32}, I can get the inner type using eltype. How can I get the outer type? (i.e. Vector so that I can create a new Vector but using a different inner type?)
 ```
@@ -798,7 +1353,7 @@ can be used, instead of `SciMLBase.parameterless_type(T)`.
 
 Matt Bauman is convinced it's a footgun, and we should just stick to using `similar(x, AnotherType)` instead.
 
-326. Conor Hoekstra nerdsniped me into learning some APL - here's my attempt for printing 'Even' or 'Odd' depending on a summation
+1.   Conor Hoekstra nerdsniped me into learning some APL - here's my attempt for printing 'Even' or 'Odd' depending on a summation
 ```
       EvenOrOdd←{(1+2|(+/⍵))⌷ 'Even' 'Odd'}
       EvenOrOdd 1
@@ -812,7 +1367,7 @@ Matt Bauman is convinced it's a footgun, and we should just stick to using `simi
 ```
 There's oodles more to learn [here](https://problems.tryapl.org/) and [here](https://tryapl.org/#).
 
-326. Right, the [Chen Long](https://www.math.uci.edu/~chenlong/lectures.html) courses exist. And the Barba CFD Python course. And the Leveque book... sigh.
+1.   Right, the [Chen Long](https://www.math.uci.edu/~chenlong/lectures.html) courses exist. And the Barba CFD Python course. And the Leveque book... sigh.
 
 
 ### 09/07/2021
@@ -844,7 +1399,7 @@ Depends on what subgenres you like! Besides the Jordan Peele horror you mentione
 - ... I need to start a workout diary.
 
 ### 27/06/2021
-323. [Loop invariants](https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf) have 3 steps:
+1.   [Loop invariants](https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf) have 3 steps:
 - you have a loop with `E` a loop guard and body `S`
 ```
 while E:
@@ -858,38 +1413,38 @@ while E:
     - "For arrays L and I, L[i] and R[j] hold the smallest elements not in S (target vector)"
 
 ### 26/06/2021
-322. TLA+ Loop invariants here we go...
+1.   TLA+ Loop invariants here we go...
 
 
 ### 25/06/2021
-317. [Leiserson course]() is level 1, [Design and analysis of algorithms is level 2](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html), Jelani course is level 3.
-318. [Nancy Lynch distributed algorithms course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm)
-319. Ooooh [Self adjusting binary search trees](https://dl.acm.org/doi/10.1145/3828.3835)
-320. [MITOCW: Matrix Methods in Data Analysis, Signal Processing and Machine Learning](https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/index.htm)
-321. [Doom config by Fausto Marques](https://www.reddit.com/r/DoomEmacs/comments/o0gqoi/any_julia_users_here_to_help_a_n00b/) for julia... should read it sometime...
+1.   [Leiserson course]() is level 1, [Design and analysis of algorithms is level 2](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html), Jelani course is level 3.
+2.   [Nancy Lynch distributed algorithms course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm)
+3.   Ooooh [Self adjusting binary search trees](https://dl.acm.org/doi/10.1145/3828.3835)
+4.   [MITOCW: Matrix Methods in Data Analysis, Signal Processing and Machine Learning](https://ocw.mit.edu/courses/mathematics/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/index.htm)
+5.   [Doom config by Fausto Marques](https://www.reddit.com/r/DoomEmacs/comments/o0gqoi/any_julia_users_here_to_help_a_n00b/) for julia... should read it sometime...
 
 ### 24/06/2021
-314. Asesorias online de la fac...
-315. LLVM has options to investigate base language code coverage with `llvm-profdata` and `llvm-cov` tooling.
-316. Reading atomic habits - this blog works well as a braindump, but it would be a good idea to include reflections and reviews on proposed monthly and weekly goals on maths, physics, computing projects, physical activity and life.
+1.   Asesorias online de la fac...
+2.   LLVM has options to investigate base language code coverage with `llvm-profdata` and `llvm-cov` tooling.
+3.   Reading atomic habits - this blog works well as a braindump, but it would be a good idea to include reflections and reviews on proposed monthly and weekly goals on maths, physics, computing projects, physical activity and life.
 
 ### 23/06/2021
-311. God I want [to tkae the Algorithm Engineering 2021](https://people.csail.mit.edu/jshun/6886-s21/) course so bad... or at least translate it.
-312. Mosè posted about [Reproducible build academic guidelines](https://reproducible-builds.org/docs/).
-313. [RISC V course!](https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110x)
+1.   God I want [to tkae the Algorithm Engineering 2021](https://people.csail.mit.edu/jshun/6886-s21/) course so bad... or at least translate it.
+2.   Mosè posted about [Reproducible build academic guidelines](https://reproducible-builds.org/docs/).
+3.   [RISC V course!](https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110x)
 
 ### 22/06/2021
 
-306. Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.
-307. Julia 1.7 has implicit multiplication of radicals! `xSQ3y` works! Also `(; a, b) = x` can destructure `x`.
-308. [MPI Formal TLA+ spec!](http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf) + [formal lab link](http://formalverification.cs.utah.edu/mpitla/)
-309. [Practical Specification course!](https://web.cecs.pdx.edu/~apt/cs510spec/).
-310. Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.
+1.   Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.
+2.   Julia 1.7 has implicit multiplication of radicals! `xSQ3y` works! Also `(; a, b) = x` can destructure `x`.
+3.   [MPI Formal TLA+ spec!](http://formalverification.cs.utah.edu/mpitla/MPI_semantics_v0.8.2.pdf) + [formal lab link](http://formalverification.cs.utah.edu/mpitla/)
+4.   [Practical Specification course!](https://web.cecs.pdx.edu/~apt/cs510spec/).
+5.   Safety - something bad never happens. Liveness - something initiated/enabled eventually terminates.
 
 
 ### 21/06/2021
 
-302. [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/): `esc` means "treat this variable like a variable the user has written themselves." AKA interpolating within the macro only gives you variables local to the macro's module, escaping treats it as a user variable.
+1.   [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/): `esc` means "treat this variable like a variable the user has written themselves." AKA interpolating within the macro only gives you variables local to the macro's module, escaping treats it as a user variable.
 - Before writing a macro for an expression, try to understand it first with `Meta.@dump`.
 - A good check for correct escaping is passing in local variables.
 ```julia
@@ -919,7 +1474,7 @@ julia> Main.m.@fill(rand(3), 5)
  [0.07225330666900165, 0.22506420288160234, 0.225626098738561]
  [0.5753508713492259, 0.37821541454348995, 0.3146472409806831]
 ```
-303. `Dr. Takafumi Arakaki` has some good recommendations on globals - mark them inside functions!
+1.   `Dr. Takafumi Arakaki` has some good recommendations on globals - mark them inside functions!
 ```julia
 julia> global a = 1;
 
@@ -933,7 +1488,7 @@ julia> good()
 julia> bad()
 ERROR: UndefVarError: a not defined
 ```
-304. Try to also avoid this idiom:
+1.   Try to also avoid this idiom:
 ```julia
 function consumer()
     id = threadid()
@@ -956,31 +1511,31 @@ catch err
     rethrow()
 end
 ```
-305. Neat trick - don't use `while true` loops in the beginning 😅 . Use `for _ in 1:10_000` to check if the threads are even alive.
+1.   Neat trick - don't use `while true` loops in the beginning 😅 . Use `for _ in 1:10_000` to check if the threads are even alive.
 
 
 ### 20/06/2021
 
-281. I read [Lamports Logical Clocks](https://lamport.azurewebsites.net/pubs/time-clocks.pdf) paper today. I learned a couple of things.
+1.   I read [Lamports Logical Clocks](https://lamport.azurewebsites.net/pubs/time-clocks.pdf) paper today. I learned a couple of things.
 - To totally order all events in a distributed system, you only need each process to keep a counter of its own events, and send events with its own timestamp. If you get a timestamp equal or higher than your own, then you bump your up to that amount.
 - However, these total orderings can be "unsynched" from the real world - if you include some small perturbations in your timestamps, you can, within bounded time (and quite fast) always synchronize your system.
-282. Now reading [Paxos Paper](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf).
+1.   Now reading [Paxos Paper](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf).
 - To coordinate proposals of a value, it's good to keep a threshold counter and reject proposals which are inferior to that.
 - [Fischer, Lynch, and Patterson]() implies that " a reliable algoritm for eledcting a proposer must use either randomness or real time -- for example, by using timeouts."
-283. `CHOOSE` is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write `x' = CHOOSE i \in 1..9 : TRUE`, just use `x' \in 1..99`. Use `CHOOSE` only when there's exactly 1 `v` in `S` satisfying formula `P`, like in the definition of `Maximum(s)`
+1.   `CHOOSE` is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write `x' = CHOOSE i \in 1..9 : TRUE`, just use `x' \in 1..99`. Use `CHOOSE` only when there's exactly 1 `v` in `S` satisfying formula `P`, like in the definition of `Maximum(s)`
 ```
 Maximum(S) == IF S = {} THEN -1
               ELSE CHOOSE x \in S : \A m \in S : x \geq m
 ```
-284. The `ASSUME` statement is made for assumptions about the constants
-285. `SUBSET Acceptor` == `PowerSetOf(Acceptor)`.
-286. `EXCEPT` can be chained!
+1.   The `ASSUME` statement is made for assumptions about the constants
+2.   `SUBSET Acceptor` == `PowerSetOf(Acceptor)`.
+3.   `EXCEPT` can be chained!
 ```
        /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal,
                                    ![m.ins][acc].bal  = m.bal,
                                    ![m.ins][acc].val  = m.val]
 ```
-287. This is also legit:
+1.   This is also legit:
 ```
 Phase1b(acc) ==  
   \E m \in msgs : 
@@ -996,28 +1551,28 @@ Phase1b(acc) ==
     /\ UNCHANGED rmState
 
 ```
-288. Elements of a `Symmetry Set` may not appear in a `CHOOSE`.
-289. `ASSUME` must be a constant formula.
-290. Specs hold as undefined all values of all variables not used at all times. It's best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly.   
-291. Steps that leave are variable values unchanged are called `stuttering steps`. Including stuttering steps helps us say what a system *may* do, but now we want to specify what a system *must* do.
-292. A finite sequence is another name for `tuple`.
-292. [Alternating Bit](https://lamport.azurewebsites.net/video/ABSpec.tla) protocol: Let's say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart `Fred, Mary, Mary, Ted, Ted, Ted, Ann` from `Fred, Mary, Ted, Ann`. You could timestamp it, but let's not. It's easiest to just append a bit that flips after every message. Appending a bit can be done with
+1.   Elements of a `Symmetry Set` may not appear in a `CHOOSE`.
+2.   `ASSUME` must be a constant formula.
+3.   Specs hold as undefined all values of all variables not used at all times. It's best not to think of specs as programs which describe the correct behaviour of the system. The describe a universe in which the system and its environment are behaving correctly.   
+4.   Steps that leave are variable values unchanged are called `stuttering steps`. Including stuttering steps helps us say what a system *may* do, but now we want to specify what a system *must* do.
+5.   A finite sequence is another name for `tuple`.
+6.   [Alternating Bit](https://lamport.azurewebsites.net/video/ABSpec.tla) protocol: Let's say you have users A and B. If A sends to B 4 strings, how can B detect if A sent repeated strings multiple times? There is no way to tell apart `Fred, Mary, Mary, Ted, Ted, Ted, Ann` from `Fred, Mary, Ted, Ann`. You could timestamp it, but let's not. It's easiest to just append a bit that flips after every message. Appending a bit can be done with
 ```
 TypeOK == /\ Data \X {0, 1} \* where \X is the cartesian product
 ```
-293. To talk about `may/must`, we will talk about liveness and Safety properties.
+1.   To talk about `may/must`, we will talk about liveness and Safety properties.
 - `Safety Formula`: Asserts what may happen. Any behavior that violates it does so at some point. Nothing past that point makes nay difference.
 - `🔷 Liveness / eventually Formula`: Asserts only what must happen. A behavior can *not* violate it at any point. Only liveness property sequential programs must satisfy is `🔷Terminated`
 - Weak fairness of Action A: if A ever remains continuously enabled, then A step must eventually occur. Equivalent - A cannot remain enabled forever without another A step occurring. It's written as `WF_vars(A)`
   - A spec with liveness is writeen as `Init [][Next]_vars /\ Fairness`
   - Have TLC check the liveness property by clicking on the `Properties` part of the toolbox and then `\A v \in Data \X {0,1} : (AVar = v) ~> (BVar = v)`.
-294. Now on to the full [AB Protocol](https://lamport.azurewebsites.net/video/AB.tla)
-295. `Strong Fairness` of action A asserts of a behavior: 
+1.   Now on to the full [AB Protocol](https://lamport.azurewebsites.net/video/AB.tla)
+2.   `Strong Fairness` of action A asserts of a behavior: 
     - If A is ever `repeatedly enabled`, then an A step must eventually occur.
     - Equivalently: A cannot be repeatedly enabled forever without another A step occurring.
     - Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.
-296. What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there's no hard real time requirements.
-297. Recursive declarations must be prepended with `RECURSIVE`
+3.   What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there's no hard real time requirements.
+4.   Recursive declarations must be prepended with `RECURSIVE`
 ```
 RECURSIVE RemoveX(_)
 RemoveX(seq) == IF seq = << >>
@@ -1026,30 +1581,30 @@ RemoveX(seq) == IF seq = << >>
                      THEN RemoveX(Tail(seq))
                      ELSE <<Head(seq)>> \o RemoveX(Tail(seq))
 ```
-298. The Temporal Substitution law: can't do the basic maths trick have to had the 🔲 
+1.   The Temporal Substitution law: can't do the basic maths trick have to had the 🔲 
 ```
 THEOREM 🔲 (v = e) => (f = (f WITH v <- e))
 ```
-299. When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential "Bad" string, and TLC will yell at formulas like `"Bad" = 0`. Instead, we can call the constant `Bad` a model value.
-300. When trying to specify the liveness of the spec, it's good to try and attach metadata for what actually happened, but don't append `TRUE/FALSE` to your messages - separate another Sequence as `<<TRUE,FALSE,TRUE...>>` to keep track of the *real* and *imaginary* parts of the spec.
-301. Refinement mappings help make implementations easier.
+1.   When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential "Bad" string, and TLC will yell at formulas like `"Bad" = 0`. Instead, we can call the constant `Bad` a model value.
+2.   When trying to specify the liveness of the spec, it's good to try and attach metadata for what actually happened, but don't append `TRUE/FALSE` to your messages - separate another Sequence as `<<TRUE,FALSE,TRUE...>>` to keep track of the *real* and *imaginary* parts of the spec.
+3.   Refinement mappings help make implementations easier.
 
 ### 19/06/2021
 
-267. In TLA+, every value is a set: 42 is a set, "abc" is a set.
-268. This represents 
+1.   In TLA+, every value is a set: 42 is a set, "abc" is a set.
+2.   This represents 
 ```
 TCTypeOK ==
     rmState \in [RM -> {"working", "prepared", "committeed", "aborted"}]
 TCInit == rmState = [r \in RM |-> "working"] (* this means the array with index set RM such that every element rm of RM is mapped to "working"*)
 ```
-269. Terminology
-| Programming | Math|
-|---|---|
-| array | function |
-|index set | domain |
-|f[e] | f(e) |
-270. Remember notation for updating a record: 
+1.   Terminology
+| Programming | Math     |
+| ----------- | -------- |
+| array       | function |
+| index set   | domain   |
+| f[e]        | f(e)     |
+1.   Remember notation for updating a record: 
 ```
 Prepare(r) == /\ rmState[r] = "working"
               /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
@@ -1061,27 +1616,27 @@ Decide(r)  == \/ /\ rmState[r] = "prepared"
                  /\ notCommitted
                  /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
 ```
-271. Ah! Draw the state machine and then figure out the actions that transition to each state!
-272. If you see the Coverage of actions and some of the actions were never taken `Count == 0`, it usually means there's an error in the spec.
-273. End of line `\* comment syntax`
-274. This record is actually a function, whose domain is `{"prof", "name"} such that f["prof"] = "Fred" and f["num"] = 42`. `f.prof === f["prof"]`
+1.   Ah! Draw the state machine and then figure out the actions that transition to each state!
+2.   If you see the Coverage of actions and some of the actions were never taken `Count == 0`, it usually means there's an error in the spec.
+3.   End of line `\* comment syntax`
+4.   This record is actually a function, whose domain is `{"prof", "name"} such that f["prof"] = "Fred" and f["num"] = 42`. `f.prof === f["prof"]`
 ```
 [prof |-> "Fred", num |-> 42]
 ```
-275. Abbreviate `[f EXCEPT !["prof"] = "Red"` as `[f EXCEPT !.prof = "Red"}]`
-276. `UNCHANGED <<rmState, tmSTate, msgs>>` is an ordered triple. It's equivalent to 
+1.   Abbreviate `[f EXCEPT !["prof"] = "Red"` as `[f EXCEPT !.prof = "Red"}]`
+2.   `UNCHANGED <<rmState, tmSTate, msgs>>` is an ordered triple. It's equivalent to 
 ```
 ... /\ rmState' = rmState
     /\ tmState' = tmState
     /\ msgs' = msgs
 ```
-277. Conditions which have no primes' are calle *enabling conditions*, and  in an Action Formula should go at the beginning, like so.
+1.   Conditions which have no primes' are calle *enabling conditions*, and  in an Action Formula should go at the beginning, like so.
 ```
 TMRcvPrepared(r) == /\ tmState = "init"
                     /\ [type |-> "Prepared", rm |-> r] \in msgs
 ```
-278. Update the CommunityModules.jar... or else get hit by a bug..
-279. `Symmetry sets`: if "r1"↔ "r3" in all states of behavior `b` allowed by `TwoPhase` produces a behaviour `b\_{1,3}` allowed by `TwoPhase`, TLC does not have to check `b\_{1,3}` if it has checked `b`. Becuase `RM = {"r1", "r2", "r3"}`, We say that RM is a `symmetry set` of `TwoPhase`. To exploit this, replace
+1.   Update the CommunityModules.jar... or else get hit by a bug..
+2.   `Symmetry sets`: if "r1"↔ "r3" in all states of behavior `b` allowed by `TwoPhase` produces a behaviour `b\_{1,3}` allowed by `TwoPhase`, TLC does not have to check `b\_{1,3}` if it has checked `b`. Becuase `RM = {"r1", "r2", "r3"}`, We say that RM is a `symmetry set` of `TwoPhase`. To exploit this, replace
 ``` 
 RM <- {"r1", "r2", "r3"}
 ```
@@ -1090,14 +1645,14 @@ with
 RM <- {r1, r2, r3}
 ```
 select `Set of model values/Symmetry Set` just below it.
-280. So it turns out that TwoPhase Commit can break if the TM fails. If you try to "just" engineer it with a second TM, they can cannibalize messages if TM1 pauses and TM2 takes over and sends an abort signal.
+1.   So it turns out that TwoPhase Commit can break if the TM fails. If you try to "just" engineer it with a second TM, they can cannibalize messages if TM1 pauses and TM2 takes over and sends an abort signal.
 
 
 
 ### 18/06/2021
 
-256. A `behaviour` of a system is a sequence of states. A `state machine` is described by all its possible initial states and a next state relation. A `state` is an assignment of values to variables. The part of the program that controls what action is executed next is called the `control state`.
-257. A new TLA+ spec...
+1.   A `behaviour` of a system is a sequence of states. A `state machine` is described by all its possible initial states and a next state relation. A `state` is an assignment of values to variables. The part of the program that controls what action is executed next is called the `control state`.
+2.   A new TLA+ spec...
 ```
 ------------------------------- MODULE simple -------------------------------
 EXTENDS Integers
@@ -1122,58 +1677,58 @@ Next == Pick \/ Add1
 \* Created Fri Jun 18 20:50:35 CDT 2021 by mrg
 
 ```
-258. To produce the PDF, type `Ctrl + Alt + P`.
-259. DON'T use Tabs (config in Preferences), F3/F4 to jump back and forth, F5 to see all defs, F6 for all uses of word under cursor, F10 is jump to PlusCal unfolded def, Oooh boxed comments are neat with `Ctrl+O + Ctrl+B` and friends, don't shade PlusCal code, regen pdf on save, `Ctrl+TAB` to swap between tabs, `Ctrl+Alt` to swap between subtabs
-260. [Hillel's super cool tricks for TLA+](https://twitter.com/hillelogram/status/1406081888498892807)
-261. This formula `FillSmall == small' = 3` is WRONG. It's true for some steps and false for others. It is NOT an assignment. The `big` must remain unchanged! If you don't you are coding, if you do keep it same, you are doing math. eg:
+1.   To produce the PDF, type `Ctrl + Alt + P`.
+2.   DON'T use Tabs (config in Preferences), F3/F4 to jump back and forth, F5 to see all defs, F6 for all uses of word under cursor, F10 is jump to PlusCal unfolded def, Oooh boxed comments are neat with `Ctrl+O + Ctrl+B` and friends, don't shade PlusCal code, regen pdf on save, `Ctrl+TAB` to swap between tabs, `Ctrl+Alt` to swap between subtabs
+3.   [Hillel's super cool tricks for TLA+](https://twitter.com/hillelogram/status/1406081888498892807)
+4.   This formula `FillSmall == small' = 3` is WRONG. It's true for some steps and false for others. It is NOT an assignment. The `big` must remain unchanged! If you don't you are coding, if you do keep it same, you are doing math. eg:
 ```
 FillSmall == /\ small' = 3
              /\ big' = big
 ```
-262. Remember you can add `TypeOK` as an invariant and `big # 4` too!
-263. `big + small =< 5` , not `big + small <= 5` 🙁 
-264. Equality is commutative! `0 = small === small' = 0`
-265. Use a ' expression only in `v' = ...` and `v' \in ...`
+1.   Remember you can add `TypeOK` as an invariant and `big # 4` too!
+2.   `big + small =< 5` , not `big + small <= 5` 🙁 
+3.   Equality is commutative! `0 = small === small' = 0`
+4.   Use a ' expression only in `v' = ...` and `v' \in ...`
 
 ### 17/06/2021
 
-247. [io_uring tutorial here](https://unixism.net/loti/async_intro.html), with a [chatbot example here](https://github.com/robn/yoctochat)
-248. [6 ways to make async Rust easier](https://carllerche.com/2021/06/17/six-ways-to-make-async-rust-easier/)
-249. Triage: `filter(func)` makes `func` a `Fix1`.
-250. Lazy iterators have uppercase names!
-251. GC is broken in multithreading - if thread 1 is allocating a bunch of garbage, and thread 2 isn't, then thread 1 can trigger a dozen collections, making thread 2 think its few objects are very old, and thus don't need to be collected.
-252. Lean4: `return` at the end will hurt type inference.
-253. `fpcontract` is a type of `fastmath flag`. If you use LLVMCall, you can use specific ones. Here's a specific issue for [automatic FMA](https://github.com/JuliaLang/julia/issues/40139).
-254. Turns out [folds are universal](https://www.cs.nott.ac.uk/~pszgmh/fold.pdf) - 
-255. PROJECT IDEA: [Feynman Diagrams???](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf)
+1.   [io_uring tutorial here](https://unixism.net/loti/async_intro.html), with a [chatbot example here](https://github.com/robn/yoctochat)
+2.   [6 ways to make async Rust easier](https://carllerche.com/2021/06/17/six-ways-to-make-async-rust-easier/)
+3.   Triage: `filter(func)` makes `func` a `Fix1`.
+4.   Lazy iterators have uppercase names!
+5.   GC is broken in multithreading - if thread 1 is allocating a bunch of garbage, and thread 2 isn't, then thread 1 can trigger a dozen collections, making thread 2 think its few objects are very old, and thus don't need to be collected.
+6.   Lean4: `return` at the end will hurt type inference.
+7.   `fpcontract` is a type of `fastmath flag`. If you use LLVMCall, you can use specific ones. Here's a specific issue for [automatic FMA](https://github.com/JuliaLang/julia/issues/40139).
+8.   Turns out [folds are universal](https://www.cs.nott.ac.uk/~pszgmh/fold.pdf) - 
+9.   PROJECT IDEA: [Feynman Diagrams???](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf)
 
 ### 16/06/2021
 
-230. [Travis Downs recommends this x86 link dump](https://stackoverflow.com/tags/x86/info) - it's great! OMG it's way too much...
-231. `git format-patch -1 --pretty=fuller 3a38e874d70b` to format patches for the linux kernel.
-232. `git send-email mypatch.patch` to send patches, `git format-patch` to make it.
-233. `cregit, bison, flex, cscope` are useful tools for navigating kernel source code.
-234. `git log -2 Makefile` shows the last 2 commits that went into `Makefile`.
-235. `git log -2 --author=Linus` checks for the last 2 commits by Linus o.0
-236. You can comput in subtype expressions! Thanks to `Dr. Bauman` for this gem.
+1.   [Travis Downs recommends this x86 link dump](https://stackoverflow.com/tags/x86/info) - it's great! OMG it's way too much...
+2.   `git format-patch -1 --pretty=fuller 3a38e874d70b` to format patches for the linux kernel.
+3.   `git send-email mypatch.patch` to send patches, `git format-patch` to make it.
+4.   `cregit, bison, flex, cscope` are useful tools for navigating kernel source code.
+5.   `git log -2 Makefile` shows the last 2 commits that went into `Makefile`.
+6.   `git log -2 --author=Linus` checks for the last 2 commits by Linus o.0
+7.   You can comput in subtype expressions! Thanks to `Dr. Bauman` for this gem.
 ```julia
 struct MyArrayWrapper{A} <: supertype(A)
     data::A
 end
 ```
-237. `make core` will maek the core tests in Julia.
-238. `JULIA_LLVM_ARGS=-timepasses ./julia` To time all passes! Cool Stuff I learned from `Jameson Nash`. 
-239. `cat Make.user` to get 
-240. `cp -a v1.7/ v1.8/` to copy over all files
-241. Disabling DWARF with `./julia -g0` will make your code go *slightly faster* because you don't emit as much DWARF stuff - Probs worth looking into disabling it more.
-242. User vs System time: User land vs Kernel land timings  
-243. Profiler tricks:
+1.   `make core` will maek the core tests in Julia.
+2.   `JULIA_LLVM_ARGS=-timepasses ./julia` To time all passes! Cool Stuff I learned from `Jameson Nash`. 
+3.   `cat Make.user` to get 
+4.   `cp -a v1.7/ v1.8/` to copy over all files
+5.   Disabling DWARF with `./julia -g0` will make your code go *slightly faster* because you don't emit as much DWARF stuff - Probs worth looking into disabling it more.
+6.   User vs System time: User land vs Kernel land timings  
+7.   Profiler tricks:
 ```julia
 Profile.print(C = true, nosiefloor = 1, mincount = 10)
 ```
-244. `e->Lunions = oldLunions;` is copying by value (which means a stack of 100 int32s is being copied on all that)
-245. Charpov sent me `homework1` and friends - MPI assignment is Homework 5.
-246. TLA+ Link dump
+1.   `e->Lunions = oldLunions;` is copying by value (which means a stack of 100 int32s is being copied on all that)
+2.   Charpov sent me `homework1` and friends - MPI assignment is Homework 5.
+3.   TLA+ Link dump
 - [mpmc.c Lemmy tutorial](https://www.youtube.com/watch?v=wjsI0lTSjIo) [with C code](https://github.com/lemmy/BlockingQueue/blob/master/impl/producer_consumer.c), [java example](https://www.cs.unh.edu/~charpov/programming-tlabuffer.html)
 - [PlusCal course](https://weblog.cs.uiowa.edu/cs5620f15/Homework)
 - [cheat sheet](https://d3s.mff.cuni.cz/f/teaching/nswi101/pluscal.pdf)
@@ -1189,35 +1744,35 @@ Profile.print(C = true, nosiefloor = 1, mincount = 10)
 
 ### 15/06/2021
 
-206. Discovered [upgrep](https://github.com/Genivia/ugrep), which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive `ugrep -Q 'foo'` mode. The debranching algo is [exposed in this talk](https://www.youtube.com/watch?v=kA7qZgmfwD8).
-207. Rediscovered [Calculus made easy](https://calculusmadeeasy.org/) and [AoPS boards](https://artofproblemsolving.com/school).
-208. Never a bad time to remember the [CFDPython](https://github.com/miguelraz/CFDPython) exists.
-209. Found the books `More/Surprises in Theoretical Physics by Rudolf Peierls`.
-210. Also found [Fundamentals of Numerical Computing](https://github.com/tobydriscoll/fnc-extras) by Toby Driscoll and [Exploring ODEs](http://people.maths.ox.ac.uk/trefethen/Exploring.pdf)
-211. PROJECT IDEA: Scrape [uops.info](https://uops.info/xml.html) with `TableScraper.jl`.
-212. PROJECT IDEA: CourseTemplates.jl based on [Computational Thinking from MIT](https://github.com/mitmath/18S191) which is [very pretty](https://computationalthinking.mit.edu/Spring21/semesters/).
-213. Remember the Intel OPtimization manuals come with [attached example codes](https://github.com/intel/optimization-manual/tree/2a7418eb5b6d750437c51542aec276a4d688fcba/common)
-214. PROJECT IDEA: Port [GW Open Data Workshop](https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome) too.
-215. [Read George's grad guide](https://github.com/gwisk/gradguide).
-216. Julius' post on [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/) is great.
-217. PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS + TextUserInterfaces.jl maybe?. YES. YES!
-218. PROJECT IDEA: Open Data structures in Julia with the MIT course template.
-219. Look into [DIANA](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf) and Julian ports of it ([paper is here](https://core.ac.uk/download/pdf/25359736.pdf), [code is here](https://github.com/apik/diana)).
+1.   Discovered [upgrep](https://github.com/Genivia/ugrep), which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive `ugrep -Q 'foo'` mode. The debranching algo is [exposed in this talk](https://www.youtube.com/watch?v=kA7qZgmfwD8).
+2.   Rediscovered [Calculus made easy](https://calculusmadeeasy.org/) and [AoPS boards](https://artofproblemsolving.com/school).
+3.   Never a bad time to remember the [CFDPython](https://github.com/miguelraz/CFDPython) exists.
+4.   Found the books `More/Surprises in Theoretical Physics by Rudolf Peierls`.
+5.   Also found [Fundamentals of Numerical Computing](https://github.com/tobydriscoll/fnc-extras) by Toby Driscoll and [Exploring ODEs](http://people.maths.ox.ac.uk/trefethen/Exploring.pdf)
+6.   PROJECT IDEA: Scrape [uops.info](https://uops.info/xml.html) with `TableScraper.jl`.
+7.   PROJECT IDEA: CourseTemplates.jl based on [Computational Thinking from MIT](https://github.com/mitmath/18S191) which is [very pretty](https://computationalthinking.mit.edu/Spring21/semesters/).
+8.   Remember the Intel OPtimization manuals come with [attached example codes](https://github.com/intel/optimization-manual/tree/2a7418eb5b6d750437c51542aec276a4d688fcba/common)
+9.   PROJECT IDEA: Port [GW Open Data Workshop](https://gw-odw.thinkific.com/courses/take/gw-open-data-workshop-4/texts/24465187-welcome) too.
+10.  [Read George's grad guide](https://github.com/gwisk/gradguide).
+11.  Julius' post on [Julia macros for beginners](https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/) is great.
+12.  PROJECT IDEA: REPL Based PlutoUI.jl. WITH VIM BINDINGS + TextUserInterfaces.jl maybe?. YES. YES!
+13.  PROJECT IDEA: Open Data structures in Julia with the MIT course template.
+14.  Look into [DIANA](https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf) and Julian ports of it ([paper is here](https://core.ac.uk/download/pdf/25359736.pdf), [code is here](https://github.com/apik/diana)).
     - [FeynCalc](https://github.com/FeynCalc/feyncalc) in Mathematica is an interesting contender: [3.4 seconds](https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar) to calculate the Higgs decaying into a fermion-antifermion pair.
-220. Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink's elbow. Twist off the bottom of the elbow. If there's no much when you take off the cap, it's likely there's no blockage at the elbow. Next, scrape the circumferences of the sink's drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don't forget to wrench up the bottom of the elbow again.
-221. PROJECT IDEA: LLVMPassAnalyzer.jl with [Text User Interfaces.jl](https://github.com/ronisbr/TextUserInterfaces.jl) as the backend. Or maybe [TerminalUserInterfaces.jl](https://github.com/kdheepak/TerminalUserInterfaces.jl)
-222. Lean: `import Leanpkg; #eval Leanpkg.leanVersionString`, commetns are with `--`, arrays `#[1,2,3][1] == 1`, functions don't need spaces so `gcd 1 10 == 1`, Lists are `[1,2,3]`, 
+15.  Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink's elbow. Twist off the bottom of the elbow. If there's no much when you take off the cap, it's likely there's no blockage at the elbow. Next, scrape the circumferences of the sink's drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don't forget to wrench up the bottom of the elbow again.
+16.  PROJECT IDEA: LLVMPassAnalyzer.jl with [Text User Interfaces.jl](https://github.com/ronisbr/TextUserInterfaces.jl) as the backend. Or maybe [TerminalUserInterfaces.jl](https://github.com/kdheepak/TerminalUserInterfaces.jl)
+17.  Lean: `import Leanpkg; #eval Leanpkg.leanVersionString`, commetns are with `--`, arrays `#[1,2,3][1] == 1`, functions don't need spaces so `gcd 1 10 == 1`, Lists are `[1,2,3]`, 
 ```
 structure Array (a : Type u) where
     data : List a
 ```
-223. `eval List.map (fun x => x + 1) [1, 2, 3]` and `#eval List.map (fun (x,y) => x + y) [(1,2), (3,4)] == [3,7]`
-224. There's [Lean for hackers](https://agentultra.github.io/lean-for-hackers/), and you can run your file with `lean --run leanpkg.lean`.
-225. [Functional Algorithms Verified!](https://functional-algorithms-verified.org/functional_algorithms_verified.pdf) sounds awesome, but not in Lean4 
-226. [Logical Verification in Lean](https://lean-forward.github.io/logical-verification/2020/index.html)
-227. [Temporal Logic slides and exams](https://www.dc.fi.udc.es/~cabalar/vv/index.html)
-228. [LTL Model checking course](https://www.youtube.com/watch?v=qDyJ9H6r0YA) and book `Principles of MOdel Checking - J P Katoen`
-229. [Lean 4 course by Seb. Ullrich](https://github.com/IPDSnelting/tba-2021) is THE source and [Lean for hackers](https://github.com/agentultra/lean-for-hackers/blob/master/index.md) looks like a good hello world post.
+1.   `eval List.map (fun x => x + 1) [1, 2, 3]` and `#eval List.map (fun (x,y) => x + y) [(1,2), (3,4)] == [3,7]`
+2.   There's [Lean for hackers](https://agentultra.github.io/lean-for-hackers/), and you can run your file with `lean --run leanpkg.lean`.
+3.   [Functional Algorithms Verified!](https://functional-algorithms-verified.org/functional_algorithms_verified.pdf) sounds awesome, but not in Lean4 
+4.   [Logical Verification in Lean](https://lean-forward.github.io/logical-verification/2020/index.html)
+5.   [Temporal Logic slides and exams](https://www.dc.fi.udc.es/~cabalar/vv/index.html)
+6.   [LTL Model checking course](https://www.youtube.com/watch?v=qDyJ9H6r0YA) and book `Principles of MOdel Checking - J P Katoen`
+7.   [Lean 4 course by Seb. Ullrich](https://github.com/IPDSnelting/tba-2021) is THE source and [Lean for hackers](https://github.com/agentultra/lean-for-hackers/blob/master/index.md) looks like a good hello world post.
 - Bonus [advent of lean4](https://github.com/rwbarton/advent-of-lean-4)
 - PROJECT IDEA: [Linear Temporal Logic in Lean4](https://github.com/GaloisInc/lean-protocol-support/blob/cabfa3abedbdd6fdca6e2da6fbbf91a13ed48dda/galois/temporal/temporal.lean)
 - [All the adhd feels today](https://twitter.com/visakanv/status/1405252979301634049)
@@ -1225,16 +1780,16 @@ structure Array (a : Type u) where
 
 ### 11/06/2021
 
-196. `MXCSR`: Multimedia eXtension Control and Store Registers - can be accessed with `vldmxcsr, vstmxcsr`
-197.  The amazing `Jubilee` shares another nugget:
+1.   `MXCSR`: Multimedia eXtension Control and Store Registers - can be accessed with `vldmxcsr, vstmxcsr`
+2.    The amazing `Jubilee` shares another nugget:
 > So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions.
 > it's literally UB.
 > To touch it. At all.
 > Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it's UB.
-198. When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use `vzeroupper` before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.
-199. MASM calling convention: pass first 4 float args in xmm0:3.
-200. Leaf functions in assembly don't need a prolog or epilog, non-leaf functions *must*: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.
-201. In C++, you can align xmm values with
+1.   When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use `vzeroupper` before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.
+2.   MASM calling convention: pass first 4 float args in xmm0:3.
+3.   Leaf functions in assembly don't need a prolog or epilog, non-leaf functions *must*: save and restore volatile registers, initialize stack frame pointer, allocate local storage space on the stack, call other functions.
+4.   In C++, you can align xmm values with
 ```cpp
 struct XmmVal {
 public:
@@ -1252,25 +1807,25 @@ void AvxPackedMathF64 {
     alignas(16) XmmVal c[8];
 }
 ```
-202. To get those xmm's into vector registers:
+1.   To get those xmm's into vector registers:
 ```
 ; Load packed SPFP values
     vmovaps xmm0, xmmword ptr [rcx] ;xmm0 = a
     vmovaps xmm1, xmmword ptr [rdx] ;xmm1 = b
 ```
 So, note you load the entire `xmm` register with `xmmword ptr [foo]`.
-203. Super cool trick to check 16 byte alignment (no perf penalty)
+1.   Super cool trick to check 16 byte alignment (no perf penalty)
 ```
 test rcx, ofh ; jump if x not aligned to 16 byte boundary
 jnz Done
 ```
-204. Macros avoid overehad of a function call.
-205. Want to transpose a matrix? Use a bunch of `vunpcklps`, `vunpckhps`, `vmovlhps`, `vmovhlps`.
+1.   Macros avoid overehad of a function call.
+2.   Want to transpose a matrix? Use a bunch of `vunpcklps`, `vunpckhps`, `vmovlhps`, `vmovhlps`.
 
 
 ### 10/06/2021
 
-175. Assembly! 
+1.   Assembly! 
 *    rax - temporary register; when we call a syscal, rax must contain syscall number
 *    rdi - used to pass 1st argument to functions
 *    rsi - ptr  to pass 2nd argument to functions
@@ -1283,10 +1838,10 @@ size_t sys_write(unsigned int fd, const char* buf, size_t count);
 * `buf` - points to char array, can store content from file pointed at by fd
 * `count` - specifies number of bytes to be written from the file into the char array
 
-176. Little-endian - smallest byte as smallest address. Derp.
-177. `data, bss, text` - initialized consts/dadta, non initialized vars, code section in asm.
-178. registers: rax:rdx, bp sp si di, r8:r15
-179. There's several types of initialzied data `db` (declare bytes), `dw` (declare words), etc.
+1.   Little-endian - smallest byte as smallest address. Derp.
+2.   `data, bss, text` - initialized consts/dadta, non initialized vars, code section in asm.
+3.   registers: rax:rdx, bp sp si di, r8:r15
+4.   There's several types of initialzied data `db` (declare bytes), `dw` (declare words), etc.
 There's also `RESB, RESW` as reserved bytes, reserved words, etc. `INCBIN` is for external binary files, `EQU` for defining constants:
 ```
 one equ 1
@@ -1305,7 +1860,7 @@ Attempt:
     jne .exit
     jmp .right ; HOT DAMN FIRST TRY YO
 ```
-180. Only 6 args can be pass via registers, the rest are passed on the stack:
+1.   Only 6 args can be pass via registers, the rest are passed on the stack:
 *    rdi - first argument
 *    rsi - second argument
 *    rdx - third argument
@@ -1323,7 +1878,7 @@ The first six are pass in the registers, and the 7th arg you have to pop from th
 In MASM, you get 4 registers for calling convention and the rest are in 8 byte incremetns from the RSP.
 ALSO: After you are finished being called, you have to restor registers `rbp, rbx, r12:r15`
 
-181. You can write nicer headers
+1.   You can write nicer headers
 ```
 section .data
 		SYS_WRITE equ 1
@@ -1334,8 +1889,8 @@ section .data
 		NEW_LINE   db 0xa
 		WRONG_ARGC db "Must be two command line argument", 0xa
 ```
-182. `$, $$` return the position in memory of string where `$` is defined, and position in memory of current section start, resp.
-183. Why the instruction `mov rdi, $ + 15`? You need to use the `objdump` util, and look at the line after `calculateStrLength`
+1.   `$, $$` return the position in memory of string where `$` is defined, and position in memory of current section start, resp.
+2.   Why the instruction `mov rdi, $ + 15`? You need to use the `objdump` util, and look at the line after `calculateStrLength`
 ```
 objdump -D reverse
 
@@ -1355,13 +1910,13 @@ Disassembly of section .text:
   4000d0:	48 31 ff             	xor    %rdi,%rdi
   4000d3:	eb 0e                	jmp    4000e3 <reverseStr>
 ```
-184. To checkif a string is set:
+1.   To checkif a string is set:
 ```
     test rax, rax               ; check if name is provided 
     jne .copy_name
 ```
 
-185. Assembly has macros! These are single line
+1.   Assembly has macros! These are single line
 ```
 %define argc rsp + 8
 %define cliArg1 rsp + 24
@@ -1373,13 +1928,13 @@ These are multi line
           mov ebp,esp
 %endmacro
 ```
-186. Don't forget the `.period` when you `call .function`, AND in the function section titles:
+1.   Don't forget the `.period` when you `call .function`, AND in the function section titles:
 ```
 .returnTrue
     mov eax, 1
     ret
 ```
-187. THERE'S STRUCTS in ASSEMBLY?
+1.   THERE'S STRUCTS in ASSEMBLY?
 ```
 struc person
    name: resb 10
@@ -1396,8 +1951,8 @@ section .text
 _start:
     mov rax, [p + person.name]
 ```
-187. [Call C from assembly, assembly from C](https://0xax.github.io/asm_7/)
-188. x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7
+1.   [Call C from assembly, assembly from C](https://0xax.github.io/asm_7/)
+2.   x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7
 - `fld dword [x] ` pushes x to this stack.
 - `fldpi` loads pi, lol.
 ```
@@ -1431,24 +1986,24 @@ _start:
 		syscall
 ```
 You have data in `radius` and `result`. `fld qword [radius]` stores radius in ST0, and again in ST1. `fmul` then multiplies both and puts it in ST0. Load pi with `fldpi`, multiply, and store that result with `fstp qword [result]`. C calling convention: pass floats to system through `xmm` registers, so you have to declare how many you are using - do that with `mov rax, 0`, `movq xmm0, [result]`, `call printResult`, then exit.
-189. [GREAT ASSEMBLY TUTORIAL](https://cs.lmu.edu/~ray/notes/nasmtutorial/)
-190. `shl` must use register `cl` to make the shifts.
-191. `sar` shift arithmetic right because it carries over the bit, like in arithmetic, ha.
-192. `cdq` -> "convert dobule word to quadword": Dividend in EAX must be sign extended to 64bits.
-193. Do integer conversions with `movsx`, "move integer with sign extension" and `movzxd` "move unsigned integer with sign extension double word"
-194. `@F` is a forward jump, `@B` backwards jump
+1.   [GREAT ASSEMBLY TUTORIAL](https://cs.lmu.edu/~ray/notes/nasmtutorial/)
+2.   `shl` must use register `cl` to make the shifts.
+3.   `sar` shift arithmetic right because it carries over the bit, like in arithmetic, ha.
+4.   `cdq` -> "convert dobule word to quadword": Dividend in EAX must be sign extended to 64bits.
+5.   Do integer conversions with `movsx`, "move integer with sign extension" and `movzxd` "move unsigned integer with sign extension double word"
+6.   `@F` is a forward jump, `@B` backwards jump
     
 ### 09/06/2021
 
-166. [Parallel Computing course](https://wgtm21.netlify.app/parallel_julia/) by WestGrid Canada + HPC.
-167. [vcpkg](https://vcpkg.io/en/getting-started.html) sounds like a decent package manager for Cpp.
-169. LLVM Tips and tricks: 
+1.   [Parallel Computing course](https://wgtm21.netlify.app/parallel_julia/) by WestGrid Canada + HPC.
+2.   [vcpkg](https://vcpkg.io/en/getting-started.html) sounds like a decent package manager for Cpp.
+3.   LLVM Tips and tricks: 
     - Use Ninja and tons of flags to speedup compilation: don't build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info,
     -
 170.[oh shit git](https://ohshitgit.com/) seems neat!
-171. To see what is actually printed after macro replacements, use `clang -E foo.c`.
-172. `LLVM Bugpoint` does case test reduction
-173. You can unit test the optimizer o.0
+1.   To see what is actually printed after macro replacements, use `clang -E foo.c`.
+2.   `LLVM Bugpoint` does case test reduction
+3.   You can unit test the optimizer o.0
 ```llvm
 ; RUN: opt < %s -constprop -S | FileCheck %s
 define i32 @test() {
@@ -1458,11 +2013,11 @@ define i32 @test() {
   ; CHECK: ret i32 9
 }
 ```
-174. [Best Tutorial for x86](https://github.com/0xAX/asm) I could find, and free! Now I gotta write syscalls snippets for the bloat...
+1.   [Best Tutorial for x86](https://github.com/0xAX/asm) I could find, and free! Now I gotta write syscalls snippets for the bloat...
 
 ### 08/06/2021
 
-164. Lord help me my `Learn LLVM 12` book is here and I'm learning C++ to be an uber Julia hacker. Taking the `C++ Beyond the Basics ` course by Kate Gregory I learned
+1.   Lord help me my `Learn LLVM 12` book is here and I'm learning C++ to be an uber Julia hacker. Taking the `C++ Beyond the Basics ` course by Kate Gregory I learned
 - `inst const zero = 0` tells the comp `zero` can't change.
 - `int taxes(int const total)` tells the copmiler `total` can't change within the lifetime of this function
 - `int GetName() const;` const modify the class its in.
@@ -1584,7 +2139,7 @@ struct Buffer {
 - add `override` after virtual ops, type your enmus, default value inits structs `int value = 5`, 
 
 
-165. Rust tips: Finally found a decent SIMD tutorial for Rust! I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:
+1.   Rust tips: Finally found a decent SIMD tutorial for Rust! I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:
 ```rust
 pub fn dotp(x: &[f32], y: &[f32], z: &mut [f32]) {
     let n = 1024; // or let n = x.len();
@@ -1597,15 +2152,15 @@ pub fn dotp(x: &[f32], y: &[f32], z: &mut [f32]) {
 that exploits the `x.len()` to pass that info to LLVM for more optims.
 ### 05/06/2021
 
-162. [Introduction to Undefined Behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) and a blog post by [John Regehr](https://blog.regehr.org/archives/213) - time to grok some of this nonsense.
+1.   [Introduction to Undefined Behaviour](https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html) and a blog post by [John Regehr](https://blog.regehr.org/archives/213) - time to grok some of this nonsense.
 - `for(int i = 0; i <= N; i++) {...}` if overflow is UB, then the compiler can assume the loop stops in at most `N+1` iterations (because if  `N == INT_MAX`, the loop may be infinite!)
 - Oh damn, the first post is by Chris Lattner, author of LLVM o.0
 
-163. `@agustinc3301` kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It's free and quick! You verify your account after signing up and then add the link to your Franklin footer in `_layout/foot.html` and `page_foot.html` (I think.). That did it! Now I can see redditors accessing the `Julia To Rust` post  🔎 
+1.   `@agustinc3301` kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It's free and quick! You verify your account after signing up and then add the link to your Franklin footer in `_layout/foot.html` and `page_foot.html` (I think.). That did it! Now I can see redditors accessing the `Julia To Rust` post  🔎 
 
 
 ### 04/06/2021
-159. `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:
+1.   `Jubilee` recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:
 ```rust
     let mut i = 0;
     while i < N {
@@ -1631,8 +2186,8 @@ Can be converted to
         mag[i + 1] = dmags[1];
     }
 ```
-160. To run `cargo watch` on a non-standard file, use ` cargo watch -c -x "run --examples dot_product"`. Credit to `Lokathor`.
-161. Finally got the code working for the `dot_product.rs`! in the end, it wasn't so scary:
+1.   To run `cargo watch` on a non-standard file, use ` cargo watch -c -x "run --examples dot_product"`. Credit to `Lokathor`.
+2.   Finally got the code working for the `dot_product.rs`! in the end, it wasn't so scary:
 ```rust
 #![feature(array_chunks)] // gotta have this
 fn dot(a: &[f32], b: &[f32]) -> f32 {
@@ -1647,18 +2202,18 @@ fn dot(a: &[f32], b: &[f32]) -> f32 {
 
 ### 03/06/2021
 
-155. Rust syntax for updating structs with `..other_struct` is very neat.
-156. `if let Some(word) = ... {}`
-157. `while let Some(Some(word)) = ... {}`
-158. `cargo watch -c` is very useful for seeing how you're code is going! Credit to `Lokathor` for the `-c` flag.
+1.   Rust syntax for updating structs with `..other_struct` is very neat.
+2.   `if let Some(word) = ... {}`
+3.   `while let Some(Some(word)) = ... {}`
+4.   `cargo watch -c` is very useful for seeing how you're code is going! Credit to `Lokathor` for the `-c` flag.
 
 ### 31/05/2021
-152. `make -C debug` julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.
-153. LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn't screw up.
-154. `git add -u` 
+1.   `make -C debug` julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.
+2.   LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn't screw up.
+3.   `git add -u` 
 
 ### 30/05/2021
-151. Finally got the hang of the Rust `dbg!` macro:
+1.   Finally got the hang of the Rust `dbg!` macro:
 ```rust
 let a = 2;
 let b = dbg!(a * 2) + 1;
@@ -1669,7 +2224,7 @@ Very useful for the competitive problems debugging!
 
 ### 27/05/2021
 
-145. Finally got around to the `nucleotide` in Rust exercism. My solution was a bit C-ish, this is neater: (Credits to `azymohliad`, but with no `Err`)
+1.   Finally got around to the `nucleotide` in Rust exercism. My solution was a bit C-ish, this is neater: (Credits to `azymohliad`, but with no `Err`)
 ```rust
 fn count(c:char, dna: &str) -> usize {
     dna.chars().filter(|&x| x == c).count()
@@ -1686,9 +2241,9 @@ let mut counts: HashMap<char, usize> = ['A', 'C', 'T', 'G'].iter().map(|n| (*n, 
 ```
 Probs worth using `HashMap::with_capacity(4)` since I know there's only `ACTG` as keys.
 
-147. Rust: `use enum::*;`, and then you don't need to `enum::foo` all over your match arms!
+1.   Rust: `use enum::*;`, and then you don't need to `enum::foo` all over your match arms!
 
-148. I learned about the `slice.windows(2)` function in the `sublist` exercise, [link here](https://doc.rust-lang.org/std/primitive.slice.html#method.windows)
+2.   I learned about the `slice.windows(2)` function in the `sublist` exercise, [link here](https://doc.rust-lang.org/std/primitive.slice.html#method.windows)
 ```rust
 let slice = ['r', 'u', 's', 't'];
 let mut iter = slice.windows(2);
@@ -1698,13 +2253,13 @@ assert_eq!(iter.next().unwrap(), &['s', 't']);
 assert!(iter.next().is_none());
 ```
 
-149. Difference between `show` and `print`: `print` uses quotes around the string, `show` doesn't, and this 
+1.   Difference between `show` and `print`: `print` uses quotes around the string, `show` doesn't, and this 
 
-150. Rust: `map.entry(letter).or_insert(0)) += 1`
+2.   Rust: `map.entry(letter).or_insert(0)) += 1`
 
 ### 26/05/2021
 
-144. FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK!
+1.   FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK!
 - I had to disable the `stdfaxh.h` whatever
 - This was the final command:
 ```bash
@@ -1741,25 +2296,25 @@ IntegerAddSub_:
 
 ### 24/05/2021
 
-138. Made a 3D print of dispatch with my sister. It was an awesome birthday.
+1.   Made a 3D print of dispatch with my sister. It was an awesome birthday.
 
-139. Got DoctorDocstrings.jl Poster and Rubin.jl Lightning talk accepted to JuliaCon! Now to work on those asap...
+2.   Got DoctorDocstrings.jl Poster and Rubin.jl Lightning talk accepted to JuliaCon! Now to work on those asap...
 
-140. Got the Kusswurm `Modern x86 Assembly Language Programming` and Min-Yih Hsu `LLVM Techniques` books in the mail now...
+3.   Got the Kusswurm `Modern x86 Assembly Language Programming` and Min-Yih Hsu `LLVM Techniques` books in the mail now...
 
-141. Should write down the Next steps for MMTK - a written down goal is usually an easier one. 
+4.   Should write down the Next steps for MMTK - a written down goal is usually an easier one. 
 
-142.  🚀 💃 To setup emojis, we can insert with `SPC i e`, but the line editor gets a bit funky...?
+5.    🚀 💃 To setup emojis, we can insert with `SPC i e`, but the line editor gets a bit funky...?
 
-143. Found this incredibly useful [Doom emacs tips](https://gist.github.com/hjertnes/9e14416e8962ff5f03c6b9871945b165), and [this vim guide](https://gist.github.com/dmsul/8bb08c686b70d5a68da0e2cb81cd857f)
+6.   Found this incredibly useful [Doom emacs tips](https://gist.github.com/hjertnes/9e14416e8962ff5f03c6b9871945b165), and [this vim guide](https://gist.github.com/dmsul/8bb08c686b70d5a68da0e2cb81cd857f)
 
 ### 21/05/2021
 
-137. Finally remembered to setup `mu`. Let's [see if I can finally do it...](https://www.sastibe.de/2021/01/setting-up-emacs-as-mail-client/)
+1.   Finally remembered to setup `mu`. Let's [see if I can finally do it...](https://www.sastibe.de/2021/01/setting-up-emacs-as-mail-client/)
 
 ### 18/05/2021
 
-135. Vim tricks from Emacs doom! RTFM to change the font to Julia mono!
+1.   Vim tricks from Emacs doom! RTFM to change the font to Julia mono!
 - `cc` in vim mode will let you change the whole line! 
 - `C` changes to the end of the line!
 - `*` to highlight all copies of the word under the cursor
@@ -1770,7 +2325,7 @@ IntegerAddSub_:
 - *Marks*: `ma` sets a mark
 - `'` and `''` to set a mark and jump back and forth between them
 
-136. Kevin Bonham is helping me figure out the Emacs tabbing situation:
+1.   Kevin Bonham is helping me figure out the Emacs tabbing situation:
 ```
 *Me*
 Alright, I'm tired of never knowing how to work buffers or tabs or windows inside my doom emacs.
