@@ -1,10 +1,751 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=29022022 ><a href="#29022022" class=header-anchor >29/02/2022</a></h3> <ol start=439 > <li><p><code>std::ops::Add</code> is the trait, <code>std::ops::Add::add</code> is the operation. Thus, this snippet</p> </ol> <pre><code class="julia hljs"><span class=hljs-keyword >let</span> mut sum = a
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>The Grind</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=virtual_diary_for_progress_on_all_fronts ><a href="#virtual_diary_for_progress_on_all_fronts" class=header-anchor >Virtual diary for progress on all fronts</a></h1> <h3 id=07042022 ><a href="#07042022" class=header-anchor >07/04/2022</a></h3> <ol start=545 > <li><p>Not all <code>extern &quot;C&quot;</code> functions need to be <code>#&#91;no_mangle&#93;</code>.</p> <li><p>You need to tell the Rust compiler about which <code>mod</code> files you are importing, as well as the imports at the root of the crate:</p> </ol> <pre><code class="rust hljs"><span class=hljs-keyword >use</span> input::get_name;
+<span class=hljs-keyword >use</span> output::{goodbye, hello};
+<span class=hljs-keyword >mod</span> input;
+<span class=hljs-keyword >mod</span> output;</code></pre> <ol start=547 > <li><p>Absolute paths in the current crate need <code>crate</code>, which means the root of the current crate. <code>crate::treats::Treat</code> is doable but verbose and <code>Treat</code> can work if used within the same module. If defined one &quot;module up&quot;, use <code>super::Treat</code></p> <li><p>When refactoring, it can get annoying to do that many changes, so you combine both:</p> </ol> <pre><code class="rust hljs"><span class=hljs-keyword >use</span> crate::Treats::Treat;</code></pre>
+<ol start=549 >
+<li><p>You don&#39;t need to import <code>DayKind</code> to store a <code>DayKind</code> var - Rust only requires importing it if used by name.</p>
+
+<li><p>Rust Path Aliases can be done with <code>pub use crate::day_kind::DayKind</code> at the top of the file. This allows really nested mods to just work like <code>forest::enter&#40;&#41;</code> after <code>pub use the::secret::entrance::to::the::forest::enter;</code>    .</p>
+
+<li><p><code>pub</code> is a module level distinction, not a crate-level distinction. If you write <code>pub&#40;crate&#41;</code> then you can make it so that other crates don&#39;t see it as public but all those inside your own crate do.</p>
+
+<li><p>Upward visibility rules for modules:</p>
+
+</ol>
+<ul>
+<li><p>Code within a module inherits the visibility rules from the module above itself</p>
+
+</ul>
+<ol start=553 >
+<li><p>Important to use the <code>criterion::black_box</code> so that Rust doesn&#39;t optimize the code away&#33;</p>
+
+<li><p><code>#&#91;repr&#40;C&#41;&#93;</code> lays out types as a C/C&#43;&#43; compiler would. <code>#&#91;repr&#40;transparent&#41;&#93;</code> is applicable to types with a single field only. Useful with <code>newtype</code> to guarantee same layout.</p>
+
+<li><p><code>#&#91;repr&#40;packed&#41;&#93;</code> will layout a struct literally like how you wrote it out which is useful in low mem scenarios: embedded, sending bandwidth, etc. &#40;with penalties for unaligned accesses, obvi.&#41;</p>
+
+<li><p><code>#&#91;repr&#40;align&#40;n&#41;&#41;&#93;</code> is useful for avoiding <code>false sharing</code>.</p>
+
+<li><p>Consider that instead of fully generic code you only write non-generic outer functions and then generic helper inner functions.</p>
+
+<li><p>To be a <code>trait object</code> you must have a trait implementation and its vtable. Not all traits are <code>object-safe</code> - none of the trait&#39;s methods can be generic or use the <code>Self</code> type, can&#39;t have any static methods &#40;no <code>&amp;Self</code>&#41;.</p>
+
+<li><p><code>Orphan Rule</code>: You can implement a trait for a type only if the trait <em>or</em> the type is local to your crate - this respects the property of <code>coherence</code> &#40;one and only one implementation can be called by the compiler&#41;. BUT&#33; Caveats:</p>
+
+</ol>
+<ul>
+<li><p>Only the crate that defines a trait is allowed to write a blanked implementation like <code>impl&lt;T&gt; MyTrait for T where T: ...</code></p>
+
+<li><p><code>#&#91;fundamental&#93;</code> can be pirated by everyone: <code>&amp;</code>, <code>&amp;mut</code>, <code>Box</code>: Allows <code>IntoIterator for &amp;MyType</code>.</p>
+
+<li><p><code>Covered Implementations</code> didn&#39;t get this. Local types go first in type parameter: <code>ForeignTrait&lt;LocalType, T&gt; for ForeignType</code>.</p>
+
+</ul>
+<ol start=560 >
+<li><p>If keys in a <code>HashMap</code> must implement <code>Hash &#43; Eq</code>, those are the <code>trait bounds</code>. <code>String: Clone</code> is also a trait bound &#40;though always true&#41; and <code>where io::Error: From&lt;MyError&lt;T&gt;&gt;;</code> too.</p>
+
+<li><p>Instead of <code>HashMap&lt;K, V, S&gt;</code> where the keys need a generic <code>T</code> and values are <code>usize</code> and you write</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >where</span> T: Hash + <span class=hljs-built_in >Eq</span>, S: BuildHasher + <span class=hljs-built_in >Default</span></code></pre>
+<p>you can do</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >where</span> HashMap&lt;T, <span class=hljs-type >usize</span>, S&gt;: FromIterator</code></pre>
+<ol start=562 >
+<li><p>Higher ranked lifetime: <code>F: for&lt;&#39;a&gt; Fn&#40;&amp;&#39;a T&#41; -&gt; &amp;&#39;a U</code>.</p>
+
+<li><p>Some traits tell you you can use functions:</p>
+
+</ol>
+<pre><code class="julia hljs">Hash -&gt; hash
+Clone -&gt; clone
+Debug -&gt; fmt</code></pre>
+<p>etc. But some don&#39;t have an associated methods or types and are known as <code>marker traits</code>: <code>Send, Sync, Copy, Sized, Unpin</code>. All except <code>Copy</code> here are <code>autotraits</code>: compiler auto implements them for types unless something borks.</p>
+<ol start=564 >
+<li><p>Some types don&#39;t have a name you can type into code, but they exist and called <code>existential types</code>. Caller only &#40;almost only&#41; rely on the return type that implements those traits and nothing else. They also provide <code>zero-cost type erasure</code>.</p>
+
+<li><p>These are the same:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">foo</span>(s: <span class=hljs-keyword >impl</span> <span class="hljs-title class_">ToString</span>) == <span class=hljs-keyword >fn</span> <span class="hljs-title function_">foo</span>&lt;S: <span class=hljs-built_in >ToString</span>&gt;(s: S)</code></pre>
+<ol start=566 >
+<li><p>Remember the <a href="https://rust-lang.github.io/api-guidelines/">Rust API guidelines</a>. </p>
+
+<li><p>99&#37; of all times your types should be <code>Debug, Clone, Send, Sync, Default</code> and if not, document why.</p>
+
+</ol>
+<ul>
+<li><p>Then consider <code>PartialEq, ParialOrd, Hash, Eq, Ord</code> and a <code>serde Serialize/Deserialize</code> conditional feature</p>
+
+</ul>
+<ol start=568 >
+<li><p>Prefer blanket implementations like <code>&amp;T where T: Trait</code>, <code>&amp;mut T where T: Trait</code>, <code>Box&lt;T&gt; where T: Trait</code>.</p>
+
+<li><p>Wrapper types like <code>Deref</code> and <code>AsRef</code> feel like magic.</p>
+
+<li><p><code>frobnicate&#40;s: impl AsRef&lt;str&gt;&#41; -&gt; impl AsRef&lt;str&gt;</code> can take both a <code>String</code> and an <code>&amp;str</code>, or dispatch to not monomorphize loads and do <code>frobnicate&#40;s: &amp;dyn AsRef&lt;str&gt;&#41;</code>.</p>
+
+<li><p>Sometimes, starting from concrete nd going to generic args is not necessarily backwards compatible: <code>fn foo&#40;v: &amp;Vec&lt;usize&gt;&#41;</code>  to <code>fn foo&#40;v: impl AsRef&lt;&#91;usize&#93;&gt;&#41;</code> because compiler can&#39;t necessarily deduce return type of <code>foo&#40;&amp;iter.collect&#40;&#41;&#41;</code>.</p>
+
+<li><p>Use <code>#&#91;doc&#40;alias &#61; &quot;...&quot;&#41;&#93;</code> to make types and methods discoverable under other names.</p>
+
+<li><p>If your function takes in 3 booleans, your user might screw up the arg orders vs if you require explicit structs to be passed.</p>
+
+<li><p><code>std::marker::PhantomData&lt;Stage&gt;</code> is metadata that is eliminated at compile time o.0. Use it to encode illegal states as <code>unrepresentable</code>:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >struct</span> <span class="hljs-title class_">Grounded</span>;
+<span class=hljs-keyword >struct</span> <span class="hljs-title class_">Launched</span>;
+
+<span class=hljs-keyword >struct</span> <span class="hljs-title class_">Rocket</span>&lt;Stage = Grounded&gt; {
+    stage: std::marker::PhantomData&lt;Stage&gt;,
+}
+
+<span class=hljs-keyword >impl</span> <span class="hljs-title class_">Default</span> <span class=hljs-keyword >for</span> <span class="hljs-title class_">Rocket</span>&lt;Grounded&gt; {}
+<span class=hljs-keyword >impl</span> <span class="hljs-title class_">Rocket</span>&lt;Grounded&gt; {
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">launch</span>(<span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> Rocket&lt;Launched&gt; {}
+}
+
+<span class=hljs-keyword >impl</span> <span class="hljs-title class_">Rocket</span>&lt;Launched&gt; {
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">accelerate</span>(&amp;<span class=hljs-keyword >mut</span> <span class=hljs-keyword >self</span>) {}
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">decelerate</span>(&amp;<span class=hljs-keyword >mut</span> <span class=hljs-keyword >self</span>) {}
+}
+
+<span class=hljs-keyword >impl</span>&lt;Stage&gt; Rocket&lt;Stage&gt; {
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">color</span>(&amp;<span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> Color {}
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">weight</span>(&amp;<span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> Kilograms {}
+}</code></pre>
+<p>&quot;If your function ignores a pointer arg unless a given Boolean is true, just combine the two args&quot;. You can make an enum that stands for <code>false</code> and no ptr and one variant for <code>true</code> that holds a ptr.</p>
+<ol start=575 >
+<li><p>Consider adding <code>#&#91;must_use&#93;</code>.</p>
+
+<li><p><code>pub&#40;crate&#41;</code> and <code>pub&#40;in path&#41;</code> both work&#33; The fewer public types, the more dev freedom&#33;</p>
+
+<li><p>Use <code>#&#91;non_exhaustive&#93;</code> to prohibit users from using implicit constructors.</p>
+
+<li><p><code>Sealed traits</code> can be used only and not implemented by other crates.</p>
+
+</ol>
+<h3 id=06022022 ><a href="#06022022" class=header-anchor >06/02/2022</a></h3>
+<ol start=508 >
+<li><p><code>format&#33;&#40;&#41;</code> returns a <code>String</code>, and is useful in <code>match</code> arms that return a <code>String::from&#40;&quot;...&quot;&#41;</code>.</p>
+
+<li><p><code>eprintln&#33;</code> prints to <code>STDERR</code>, and doesn&#39;t interfere with printing to <code>STDOUT</code>.</p>
+
+<li><p><code>fgets</code> is used to read data from a file: <code>if &#40;fgets&#40;line, 100, stdin&#41; &#61;&#61; NULL&#41; &#123;&#125;</code>.</p>
+
+<li><p>Refactor like a boss:</p>
+
+</ol>
+<ul>
+<li><p>Start a lib crate: <code>cargo new --lib calculate</code></p>
+
+<li><p>replace 1 function in C with the same signature as that in Rust:</p>
+
+</ul>
+<pre><code class="julia hljs">int solve(char *line, int *solution)
+-&gt;
+fn solve(line: *<span class=hljs-keyword >const</span> c_char, solution: *mut c_int) -&gt; c_int</code></pre>
+<ol start=512 >
+<li><p>Export the C types from <code>libc::&#123;c_char, c_int&#125;</code> and add <code>libc</code> to your crates.</p>
+
+<li><p>To get Rust to be called from C we need:</p>
+
+</ol>
+<ul>
+<li><p>Compile our crate as a dynamic library that the C linker understands</p>
+
+<li><p>add the new dylib to the linker search path</p>
+
+<li><p>mark the Rust <code>solve</code> so that the Rust compiler knows to compile it with C calling conventions</p>
+
+<li><p>recompile the C program using <code>solve</code> from the Rust dylib</p>
+
+</ul>
+<ol start=514 >
+<li><p>Cargo workspaces: sometimes, you need to go to your <code>&#36;root/Cargo.toml</code> and add your project name under <code>&#91;workspaces&#93;</code> so that <code>cargo build</code> is happy.</p>
+
+<li><p>To create a dylib with Rust, just do </p>
+
+</ol>
+<pre><code class="toml hljs"><span class=hljs-section >[lib]</span>
+<span class=hljs-attr >crate-type</span> = <span class=hljs-string >&quot;[cdylib]&quot;</span></code></pre>
+<ol start=516 >
+<li><p>We need to let the linker know that the Rust binary inside <code>target/</code> is available as <code>target/debug/libcalculate.so</code>:</p>
+
+</ol>
+<pre><code class="julia hljs">ln -s $(pwd)/target/debug/libcalculate.so /lib/libcalculate.so</code></pre>
+<ol start=517 >
+<li><p>Remember to keep forward declarations like</p>
+
+</ol>
+<pre><code class="julia hljs">int solve(char *line, int *solution);</code></pre>
+<p>so that the C compiler can defer compilation.</p>
+<ol start=518 >
+<li><p>Now we can compile and link vs <code>libcalculate</code> with <code>-lcalculate</code>. </p>
+
+</ol>
+<pre><code class="julia hljs">gcc main.c -o bin -lcalculate</code></pre>
+<p>This fails&#33; We need to add a <code>#&#91;no_mangle&#93;</code> and <code>pub extern &quot;C&quot;</code> to our <code>solve&#40;...&#41;</code> in Rust.</p>
+<ol start=519 >
+<li><p>We only need to rebuild <code>cargo build</code>, there&#39;s no need to recompile the C code because it&#39;s a <em>dynamic library</em>, neat&#33; The library is loaded by the OS every time we run <code>calculator</code>.</p>
+
+<li><p><code>CStr</code> is borrowed memory from C. To validate that you are not reallocating a string, check</p>
+
+</ol>
+<pre><code class="julia hljs">println!(<span class=hljs-string >&quot;r_str.as_ptr(): {:p}, line: {:p}&quot;</span>, r_str.as_ptr(), line);</code></pre>
+<p>Which means we can avoid reallocating any buffers/vecs in C when manipulated inside Rust.</p>
+<ol start=521 >
+<li><p>Move your business logic to standalone Rust functions to get the type safety benefits/reusability. Setup the big functions to bridge as needed and then factor out into Rust business logic so you don&#39;t need to keep touching the big C functions.</p>
+
+<li><p><code>VecDeque</code> will give you LIFO ordering with <code>push_front</code> and <code>pop_front</code> methods.</p>
+
+<li><p>Because <code>push</code> only accepts <code>i32</code>, <code>match.other.parse&#40;&#41;</code> doesn&#39;t need turbofish as compiler can reason it out.</p>
+
+<li><p><em>Highly</em>  recommended to provide a <code>Display</code> implementation for error types.</p>
+
+<li><p><code>&amp;str</code> usage avoids reallocation :D.</p>
+
+<li><p>To find executables, do:</p>
+
+</ol>
+<pre><code class="julia hljs">find objs -executable -type f</code></pre>
+<ol start=527 >
+<li><p>You have to sometimes generate metadata for stuff like types called <code>ngx_***</code>. Since you don&#39;t always get to write the C binding, you can use tools, like the <code>build script</code>.</p>
+
+<li><p>You need <code>use std::io::Write;</code> to use <code>file.write_all&#40;...&#41;</code>.</p>
+
+<li><p>To run a command with a certain env var, do <code>env GREET_LANG&#61;&quot;es&quot; cargo run</code>.</p>
+
+<li><p><code>match langugae.as_ref&#40;&#41;</code> is useful to stay with <code>&amp;str</code>s.</p>
+
+<li><p>Ughhhhhhh Rust stringy metaprogramminggggggg</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-variable >rust_code</span> = <span class=hljs-built_in >format!</span>(<span class=hljs-string >&quot;fn greet() {{
+    println!(\&quot;{}\&quot;); }}&quot;</span>, greeting);</code></pre>
+<ol start=532 >
+<li><p>Genius idea: leverage build scripts AND <code>bindgen</code> and have your C API written out for you :D. You can include it under <code>Cargo.toml/&#91;build-dependencies&#93;</code> as <code>bindgen &#61; &quot;0.56.0&quot;</code>.</p>
+
+<li><p>You need One Big Header file that contains all the other ones, sorta like <code>wrapper.h</code></p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-comment >#include &lt;ngx_config.h&gt;</span>
+<span class=hljs-comment >#include &lt;ngx_core.h&gt;</span>
+<span class=hljs-comment >#include &lt;ngx_http.h&gt;</span></code></pre>
+<p>and then a Rust <code>build.rs</code>:</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">main</span>() {
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >nginx_dir</span> = <span class=hljs-string >&quot;nginx-1.19.3&quot;</span>;
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >bindings</span> = bindgen::<span class="hljs-title function_ invoke__">builder</span>()
+        .<span class="hljs-title function_ invoke__">header</span>(<span class=hljs-string >&quot;wrapper.h&quot;</span>)
+        .<span class="hljs-title function_ invoke__">whitelist_type</span>(<span class=hljs-string >&quot;ngx_.*&quot;</span>)
+        <span class=hljs-comment >//...</span>
+        .<span class="hljs-title function_ invoke__">clang_args</span>(<span class=hljs-built_in >vec!</span>[
+            <span class=hljs-built_in >format!</span>(<span class=hljs-string >&quot;-I{}/src/core&quot;</span>, nginx_dir),
+            <span class=hljs-built_in >format!</span>(<span class=hljs-string >&quot;-I{}/src/event&quot;</span>, nginx_dir),
+        <span class=hljs-comment >//...</span>
+        ])
+        .<span class="hljs-title function_ invoke__">generate</span>()
+        .<span class="hljs-title function_ invoke__">unwrap</span>();
+        
+        bindings.<span class="hljs-title function_ invoke__">write_to_file</span>(<span class=hljs-string >&quot;nginx.rs&quot;</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+}</code></pre>
+<ol start=534 >
+<li><p>The <code>nginx.rs</code> file is 30k long, but you want to place it in the <code>out directory</code>, which you can know where it is via env vars set by cargo, or via</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-variable >out_dir</span> = std::env::<span class="hljs-title function_ invoke__">var</span>(<span class=hljs-string >&quot;OUT_DIR&quot;</span>).<span class="hljs-title function_ invoke__">unwrap</span>();
+
+bindings
+    .<span class="hljs-title function_ invoke__">write_to_file</span>(<span class=hljs-built_in >format!</span>(<span class=hljs-string >&quot;{}/nginx.rs&quot;</span>, out_dir))
+    .<span class="hljs-title function_ invoke__">expect</span>(<span class=hljs-string >&quot;unable to write bindings&quot;</span>);</code></pre>
+<ol start=535 >
+<li><p><code>include&#33;&#40;&quot;filename.rs&quot;&#41;</code> works like the C/C&#43;&#43; <code>#include &lt;vector&gt;</code></p>
+
+<li><p><code>env&#33;&#40;&quot;OUT_DIR&quot;&#41;</code> can check env vars ar compile time, errs if not provided.</p>
+
+<li><p><code>concat&#33;&#40;env&#33;&#40;&quot;OUT_DIR&quot;&#41;, &quot;/nginx.rs&quot;&#41;</code> to join the paths at compile time.</p>
+
+<li><p>Your scripts will probs have <code>include&#33;&#40;concat&#33;&#40;env&#33;&#40;&quot;OUT_DIR&quot;&#41;, &quot;/nginx.rs&quot;&#41;&#41;;</code></p>
+
+<li><p><code>let request &#61; &amp;*r;</code>. Is called <code>reborrowing</code> which converts a pointer to a Rust reference. You need to check that</p>
+
+</ol>
+<ul>
+<li><p>the pointer is non-null</p>
+
+<li><p>the pointee is a valid instance of the type</p>
+
+<li><p>once it&#39;s a ref it sticks to borrowchk rules</p>
+
+</ul>
+<ol start=540 >
+<li><p>Strategy for buffer reuses: </p>
+
+</ol>
+<ul>
+<li><p>Check that everything is non-null</p>
+
+<li><p><code>let body_bytes &#61; std::offset_from&#40;start&#41; as usize</code></p>
+
+<li><p><code>let body_bytes &#61; std::slice::from_raw_parts&#40;start, len&#41;;</code></p>
+
+</ul>
+<ol start=541 >
+<li><p>You can have many <code>&amp;str</code> made from substrings of <code>String</code>, since <code>&amp;str</code> is just a pointer and a length &#40;read-only, view&#41;.</p>
+
+<li><p><code>end.offset_from&#40;start&#41; as usize</code> needs a cast because <code>start</code> can be greater than <code>end</code>.</p>
+
+<li><p>Pull from local creates with</p>
+
+</ol>
+<pre><code class="julia hljs">[dependencies]
+calculate = {path = <span class=hljs-string >&quot;../calculate&quot;</span>}</code></pre>
+<ol start=544 >
+<li><p>Rust to Rust dylibs need <code>rlib</code> in addition to <code>cdylib</code>.</p>
+
+</ol>
+<h3 id=04042022 ><a href="#04042022" class=header-anchor >04/04/2022</a></h3>
+<ol start=502 >
+<li><p><code>usize</code> is in hexadecimal.</p>
+
+<li><p>The function type of <code>fn noop&#40;&#41; &#123;&#125;</code> is <code>*const fn&#40;&#41; -&gt; &#40;&#41;</code>, aka <code>&quot;a const pointer to a function that takes no args and returns unit&quot;</code>. <code>unit</code> is Rust&#39;s <code>&quot;nothingness&quot;</code>.</p>
+
+<li><p>If you are in the middle of a call stack and can&#39;t unwinde, you can do <code>nonlocal control transfer</code>, which can be done via <code>setjmp</code> and <code>longjmp</code>. <code>setjmp</code> sends a label/marker location and <code>longjmp</code> jumps back to a previously marked location.</p>
+
+<li><p><code>Intrinsic functions</code> are functions made available by the compiler, not by the PL.</p>
+
+<li><p>How to treat</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >const</span> JMP_BUF_WIDTH: <span class=hljs-type >usize</span> = mem::size_of::&lt;<span class=hljs-type >usize</span>&gt;() * <span class=hljs-number >8</span>;
+<span class=hljs-keyword >type</span> <span class="hljs-title class_">jmp_buf</span> = [<span class=hljs-type >i8</span>; JMP_BUF_WIDTH];
+<span class=hljs-keyword >static</span> <span class=hljs-keyword >mut</span> RETURN_HERE: jmp_buf = [<span class=hljs-number >0</span>; JMP_BUF_WIDTH];</code></pre>
+<p><code>RETURN_HERE</code> as a pointer?</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >unsafe</span> { &amp;RETURN_HERE <span class=hljs-keyword >as</span> *<span class=hljs-keyword >const</span> <span class=hljs-type >i8</span> <span class=hljs-keyword >as</span> *<span class=hljs-keyword >mut</span> <span class=hljs-type >i8</span>}</code></pre>
+<ul>
+<li><p>read only ref to global <code>RETURN_HERE</code></p>
+
+<li><p>convert that ref to <code>*const i8</code> </p>
+
+<li><p>convert that to <code>*mut i8</code> &#40;which makes it mutable for r/w&#41;</p>
+
+<li><p>accessing a global var is unsafe, so wrap it all in unsafe</p>
+
+</ul>
+<ol start=507 >
+<li><p>There&#39;s mutable pointers <code>*mut</code> and immutable pointers <code>*const</code>.</p>
+
+</ol>
+<h3 id=03042022 ><a href="#03042022" class=header-anchor >03/04/2022</a></h3>
+<ol start=473 >
+<li><p>For file handling, check out <code>OpenOptions</code>:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-variable >fs</span> = OpenOptions::<span class="hljs-title function_ invoke__">new</span>()
+            .<span class="hljs-title function_ invoke__">read</span>(<span class=hljs-literal >true</span>)
+            .<span class="hljs-title function_ invoke__">write</span>(<span class=hljs-literal >true</span>) <span class=hljs-comment >// is overridden by append</span>
+            .<span class="hljs-title function_ invoke__">create</span>(<span class=hljs-literal >true</span>)
+            .<span class="hljs-title function_ invoke__">append</span>(<span class=hljs-literal >true</span>)
+            .<span class="hljs-title function_ invoke__">open</span>(path)?;</code></pre>
+<p>Then you can</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-variable >hello</span> = PathBuf::<span class="hljs-title function_ invoke__">from</span>(<span class=hljs-string >&quot;/tmp/hello.txt&quot;</span>);
+hello.<span class="hljs-title function_ invoke__">extension</span>();</code></pre>
+<ol start=474 >
+<li><p>Creating a <code>lib</code> crate allows you to create different binary executables from the same <code>lib.rs</code> without reinventing it.</p>
+
+<li><p><code>&#91;&#91;bin&#93;&#93;</code> in your <code>Cargo.toml</code> allows you to specify multiple binary targets</p>
+
+<li><p><code>USAGE</code> can be setup to conditionally compile on different targets:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >use</span> libactionkv::ActionKV;
+
+<span class=hljs-meta >#[cfg(target_os = <span class=hljs-string >&quot;windows&quot;</span>)]</span>
+<span class=hljs-keyword >const</span> USAGE: &amp;<span class=hljs-type >str</span> = <span class=hljs-string >&quot;
+Usage:
+    akv_mem.exe FILE get KEY
+    akv_mem.exe FILE delete KEY
+...
+&quot;</span>
+
+<span class=hljs-meta >#[cfg(not(target_os = <span class=hljs-string >&quot;windows&quot;</span>))]</span>
+<span class=hljs-keyword >const</span> USAGE: &amp;<span class=hljs-type >str</span> =<span class=hljs-string >&quot;
+Usage:
+    akv_mem FILE get KEY
+    akv_mem FILE delete KEY
+...
+&quot;</span></code></pre>
+<ol start=477 >
+<li><p><code>debug_asssert_eq&#33;&#40;data.len&#40;&#41;, data_len as usize&#41;;</code> these are disabled during <code>--release</code> builds, but enabled during debug builds.</p>
+
+<li><p>Indexing notation is supported via the <code>Index</code> trait.</p>
+
+<li><p>Trait objects appear in 3 forms: <code>&amp;dyn Trait</code>, <code>&amp;mut dyn Trait</code>, <code>Box&lt;dyn Trait&gt;</code>. <code>Box&lt;dyn Trait&gt;</code> is owned, the other 2 are not. Trait objects add polymorphism - they use less disk space for some small runtime overhead.</p>
+
+<li><p>Dynamic traits look a bit like this:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">main</span>() {
+    <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >it</span> = Thing::Sword;
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >d</span> = Dwarf {};
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >e</span> = Elf {};
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >h</span> = Human {};
+
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >party</span>: <span class=hljs-type >Vec</span>&lt;&amp;<span class=hljs-keyword >dyn</span> Enchanter&gt; = <span class=hljs-built_in >vec!</span>[&amp;e, &amp;h, &amp;d];
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >spellcaster</span> = party.<span class="hljs-title function_ invoke__">choose</span>(&amp;<span class=hljs-keyword >mut</span> rand::<span class="hljs-title function_ invoke__">thread_rng</span>()).<span class="hljs-title function_ invoke__">unwrap</span>();
+
+    spellcaster.<span class="hljs-title function_ invoke__">enchant</span>(&amp;<span class=hljs-keyword >mut</span> it);
+}</code></pre>
+<ol start=481 >
+<li><p>Trait objects are a form of <code>type erasure</code> - compiler does not have access to the original type during the call to <code>enchant&#40;&#41;</code>. Trait are mostly used for</p>
+<ul>
+<li><p>heterogenous collection</p>
+
+<li><p>returning a value &#40;functions can return multiple concrete types with trait objects&#41;</p>
+
+<li><p>supporting dynamic dispatch</p>
+
+</ul>
+
+<li><p><code>?</code> is syntactic sugar for <code>try&#33;</code>: <code>Ok&#40;value&#41; &#61;&gt; value</code>, <code>Err&#40;err&#41; &#61;&gt;</code> returns early and attempts to convert <code>err</code> to error type defined in the calling function.</p>
+
+<li><p>Remember the <code>newtype</code> pattern for aliasing without extra overhead: </p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-meta >#[derive(Debug)]</span>
+<span class=hljs-keyword >struct</span> <span class="hljs-title class_">MacAddress</span>([<span class=hljs-type >u8</span>; <span class=hljs-number >6</span>]);</code></pre>
+<ol start=484 >
+<li><p>If your PL is expression based, control flow structures also return values. This is a good tool for implementing state machines:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >enum</span> <span class="hljs-title class_">HttpState</span> {
+    Connect, 
+    Request, 
+    Response,
+}
+
+<span class=hljs-keyword >loop</span> {
+    state = <span class=hljs-keyword >match</span> state {
+        HttpState::Connect <span class=hljs-keyword >if</span> !socket.<span class="hljs-title function_ invoke__">is_active</span>() =&gt; {...; HttpState::Request}
+        HttpState::Request <span class=hljs-keyword >if</span> socket.<span class="hljs-title function_ invoke__">may_send</span>() =&gt; {...; HttpState::Response;}
+        HttpState::Response <span class=hljs-keyword >if</span> socket.<span class="hljs-title function_ invoke__">can_recv</span>() =&gt; {...; HttpState::Response}
+        HttpState::Response <span class=hljs-keyword >if</span> !socket.<span class="hljs-title function_ invoke__">may_recv</span>() =&gt; {...; <span class=hljs-keyword >break</span>;}
+        _ =&gt; state,
+    }
+}</code></pre>
+<ol start=485 >
+<li><p><code>struct Clock;</code> is a <code>Zero Sized Type</code> and does not occupy any memory in the resulting application and is purely a compile-time construct.</p>
+
+<li><p>Anon funcs in Rust can be seen as <code>let add &#61; |a, b| &#123;a &#43; b&#125;;</code>. Anon funcs can&#39;t be defined in global scope.</p>
+
+<li><p>To spawn a thread, use <code>std::thread::spawn&#40;&#41;</code>. It takes no args, and thus you see this syntax: <code>thread::spawn&#40;|| &#123;...&#125;&#41;</code>. If you want to use vars in the parent scope, that&#39;s called a capture. If you want to move ownership, you need to specify it with <code>thread::spawn&#40;move || &#123;...&#125;&#41;</code>. You <em>NEED</em> <code>move</code> if you want to use capture variables.</p>
+
+<li><p>Guidelines for using captures:</p>
+<ul>
+<li><p>reduce friction at compile time, use <code>Copy</code></p>
+
+<li><p>Values starting from outer scopes may need <code>static</code> lifetimes</p>
+
+<li><p>Spawned subthreads can outlive their parents -&gt; that&#39;s why you need to <code>move</code> ownership to subthreads.</p>
+
+</ul>
+
+<li><p>To regain mutable access on each iteration, don&#39;t do this:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >for</span> <span class=hljs-variable >handle</span> <span class=hljs-keyword >in</span> &amp;handlers {
+    handle.<span class="hljs-title function_ invoke__">join</span>();
+}
+<span class=hljs-comment >// but rather this</span>
+<span class=hljs-keyword >while</span> <span class=hljs-keyword >let</span> <span class=hljs-variable >Some</span>(handle) = handlers.<span class="hljs-title function_ invoke__">pop</span>() {
+    handle.<span class="hljs-title function_ invoke__">join</span>();
+}</code></pre>
+<p>because it gains mutable access on each iteration, until the <code>handlers</code> vector is empty - but removing the ampersand also works :</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >for</span> <span class=hljs-variable >handle</span> <span class=hljs-keyword >in</span> handlers {
+    handle.<span class="hljs-title function_ invoke__">join</span>();
+}</code></pre>
+<ol start=490 >
+<li><p>When doing a yield</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >while</span> start.<span class="hljs-title function_ invoke__">elapsed</span>() &lt; pause {
+    thread::<span class="hljs-title function_ invoke__">yield_now</span>();
+}</code></pre>
+<p><code>thread::yield_now&#40;&#41;</code> is a signal to the OS that the current thread should be unscheduled. Bad: You don&#39;t know if you actually wait for 20ms. An alternative: bypass the OS and go through to CPU directly via <code>std::sync::atomic::spin_loop_hint&#40;&#41;.spin_loop_hint&#40;&#41;</code> turns off functionality and saves power usage. Bad: your cpu might not have that capability.</p>
+<ol start=491 >
+<li><p>To get rid of the shared variable here:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-variable >handle</span> = thread::<span class="hljs-title function_ invoke__">spawn</span>(|| {
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >start</span> = time::Instant::<span class="hljs-title function_ invoke__">now</span>();
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >duration</span> = time::Duration::<span class="hljs-title function_ invoke__">from_millis</span>(<span class=hljs-number >20</span>); <span class=hljs-comment >// THIS DOESN&#x27;T NEED EVERY THREAD TO BE CREATED</span>
+    <span class=hljs-keyword >while</span> start.<span class="hljs-title function_ invoke__">elapse</span>() &lt; pause {
+        thread::<span class="hljs-title function_ invoke__">yield_now</span>();
+    }
+})</code></pre>
+<p>where you can instead use the <code>move</code></p>
+<pre><code class="rust hljs"><span class=hljs-keyword >use</span> std::{thread, time};
+
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">main</span>() {
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >pause</span> = time::Duration::<span class="hljs-title function_ invoke__">from_millis</span>(<span class=hljs-number >20</span>);
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >handle1</span> = thread::<span class="hljs-title function_ invoke__">spawn</span>(<span class=hljs-keyword >move</span> || {
+        thread::<span class="hljs-title function_ invoke__">sleep</span>(pause);
+    });
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >handle2</span> = thread::<span class="hljs-title function_ invoke__">spawn</span>(<span class=hljs-keyword >move</span> || {
+        thread::<span class="hljs-title function_ invoke__">sleep</span>(pause);
+    });
+
+}</code></pre>
+<ol start=492 >
+<li><p>Closures and funcs are different. Closures are anon structs that implement <code>std::ops::FnOnce</code> trait and maybe <code>std::ops::Fn</code> and <code>std::ops::FnMut</code>. Those structs are invisible from source code but contain the variables of the closure inside of them</p>
+
+<li><p>Instead of the <code>for byte in input.bytes&#40;&#41; &#123;let step &#61; match byte &#123;&#125;; steps.push&#40;step&#41;;&#125;</code>, try <code>input.bytes&#40;&#41;.map&#40;|byte| &#123;&#125;&#41;.collect&#40;&#41;;</code>.</p>
+
+<li><p>Translating into Rayon &#40;where a sequence of <code>Forward&#40;isize&#41; &#123;TurnLeft|TurnRight&#125; &#61;&#61; Vec&lt;Operation&gt;</code> is collected&#41;:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >use</span> rayon::prelude::*;
+
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">parse</span>(input:&amp;<span class=hljs-type >str</span>) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >Vec</span>&lt;Operation&gt; {
+    input
+        .<span class="hljs-title function_ invoke__">as_bytes</span>()
+        .<span class="hljs-title function_ invoke__">par_iter</span>()
+        .<span class="hljs-title function_ invoke__">map</span>(|byte| <span class=hljs-keyword >match</span> byte {
+            <span class=hljs-string >b&#x27;0&#x27;</span> =&gt; Home,
+            <span class=hljs-string >b&#x27;1&#x27;</span>..=<span class=hljs-string >b&#x27;9&#x27;</span> =&gt; {
+                <span class=hljs-keyword >let</span> <span class=hljs-variable >distance</span> = (byte - <span class=hljs-number >0x30</span>) <span class=hljs-keyword >as</span> <span class=hljs-type >isize</span>;
+                <span class="hljs-title function_ invoke__">Forward</span>(distance * (HEIGHT/<span class=hljs-number >10</span>))
+            }
+            <span class=hljs-string >b&#x27;a&#x27;</span> | <span class=hljs-string >b&#x27;b&#x27;</span> | <span class=hljs-string >b&#x27;c&#x27;</span> =&gt; TurnLeft,
+            <span class=hljs-string >b&#x27;d&#x27;</span> | <span class=hljs-string >b&#x27;e&#x27;</span> | <span class=hljs-string >b&#x27;f&#x27;</span> =&gt; TurnRight,
+            _ =&gt; <span class="hljs-title function_ invoke__">Noop</span>(*byte),
+        }).<span class="hljs-title function_ invoke__">collect</span>()
+}</code></pre>
+<ol start=495 >
+<li><p>But what happens when you don&#39;t have a tidy iteration you can throw Rayon at? Consider a thread pool and a task queue.</p>
+
+</ol>
+
+<ol start=496 >
+<li><p><code>rustup target list</code> gives you a list of targets that Rust can compile to.</p>
+
+<li><p><code>#&#91;repr&#40;u8&#41;&#93;</code> Instructs the compiler to use a single byte to represent the values.</p>
+
+<li><p><code>kill -l</code> to list all signals supported by the OS. <code>SIGSTOP</code> and then <code>SIGCONT</code> can be used to stop and resume a running program&#33;</p>
+
+<li><p>To make a global in Rust, do:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >static</span> <span class=hljs-keyword >mut</span> SHUT_DOWN: <span class=hljs-type >bool</span> = <span class=hljs-literal >false</span>; <span class=hljs-comment >// to change do: unsafe {SHUT_DOWN = true;}</span></code></pre>
+<ol start=500 >
+<li><p>To register a signal handler:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >use</span> libc::{SIGTERM, SIGUSR1};
+<span class=hljs-comment >//...</span>
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">main</span> () {
+    <span class="hljs-title function_ invoke__">register_signal_handlers</span>(); <span class=hljs-comment >// Must be done early</span>
+}
+<span class=hljs-comment >//...</span>
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">register_signal_handlers</span>() {
+    <span class=hljs-keyword >unsafe</span> {
+        libc::<span class="hljs-title function_ invoke__">signal</span>(SIGTERM, handle_sigterm <span class=hljs-keyword >as</span> <span class=hljs-type >usize</span>); <span class=hljs-comment >// fn must be passed as func pointer to C</span>
+        libc::<span class="hljs-title function_ invoke__">signal</span>(SIGUSR1, handle_sigterm <span class=hljs-keyword >as</span> <span class=hljs-type >usize</span>);
+    }
+}
+<span class=hljs-meta >#[allow(dead_code)]</span>
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">handle_sigterm</span>(_signal: <span class=hljs-type >i32</span>) {
+    <span class="hljs-title function_ invoke__">register_signal_handlers</span>(); <span class=hljs-comment >// again early, try not to miss any</span>
+    <span class=hljs-built_in >println!</span>(<span class=hljs-string >&quot;SIGTERM!&quot;</span>);
+    <span class=hljs-keyword >unsafe</span> { SHUT_DOWN = <span class=hljs-literal >true</span>; }
+}</code></pre>
+<ol start=501 >
+<li><p><code>static</code> appears in a single location in memory. <code>const</code> can be duplicated in locations where they are accessed. 502. </p>
+
+</ol>
+<h3 id=02042022 ><a href="#02042022" class=header-anchor >02/04/2022</a></h3>
+<ol>
+<li><p>The big 4:</p>
+<ul>
+<li><p>use refs</p>
+
+<li><p>clone the values</p>
+
+<li><p>reduce the need for long lifetimes</p>
+
+<li><p>clever type wrappers</p>
+
+</ul>
+
+<li><p><code>Clone</code> lets you <code>.clone&#40;&#41;</code>, <code>Copy</code> is implicit and lets you copy instead of move &#40;must be on primitive types&#41;.</p>
+
+<li><p><code>Rc&lt;T&gt;</code> is very useful when cloning would be very expensive.</p>
+
+<li><p><code>Rc&lt;T&gt;</code> does not allow mutation, <code>Rc&lt;RefCell&lt;T&gt;&gt;</code> does.</p>
+
+<li><p>In multithreaded code, <code>Rc&lt;T&gt;</code> -&gt; <code>Arc&lt;T&gt;</code> and <code>Rc&lt;RefCell&lt;T&gt;&gt;</code> -&gt; <code>Arc&lt;Mutex&lt;T&gt;&gt;</code>.</p>
+
+<li><p><code>println&#33;&#40;&quot;&#123;:032b&#125;&quot;, x&#41;;</code> left pad x with 32 0s</p>
+
+<li><p>Rust numbers have methods like <code>1.2_f32.ceil&#40;&#41;</code>.</p>
+
+<li><p><code>Cow</code> means Copy on Write and are useful when someone gives you a buffer.</p>
+
+<li><p><code>*mut T</code> and <code>*const T</code> are basically the same. <code>&amp;mut T</code> and <code>&amp;T</code> compile down to pointers.</p>
+
+<li><p>If you want to accept both <code>&amp;str</code> and <code>String</code>, you can try</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">is_strong</span>&lt;T: <span class=hljs-built_in >AsRef</span>&lt;<span class=hljs-type >str</span>&gt;&gt;(password: T) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >bool</span> {
+    password.<span class="hljs-title function_ invoke__">as_ref</span>().<span class="hljs-title function_ invoke__">len</span>() &gt; <span class=hljs-number >5</span> {...}
+}</code></pre>
+<ol>
+<li><p>Dynamically sized types &#40;DSTs&#41; don&#39;t change sizes, but are assigned a size at runtime &#40;like slices <code>&#91;T&#93;</code>&#41;.</p>
+
+<li><p><code>while let Ok&#40;_&#41; &#123;...&#125;</code> loop until <code>f.read_exact&#40;&amp;mut buffer&#41;</code> returns an <code>Err</code>.</p>
+
+<li><p>For commandline args use <code>std::env::args&#40;&#41;</code> with <code>nth&#40;&#41;</code>.</p>
+
+<li><p><code>expect&#40;&quot;foo&quot;&#41;</code> is a nicer version of <code>unwrap&#40;&#41;</code>.</p>
+
+<li><p>instead of </p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">hamming0</span>(a: &amp;<span class=hljs-type >str</span>, b: &amp;<span class=hljs-type >str</span>) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >i32</span> {
+    a.<span class="hljs-title function_ invoke__">bytes</span>()
+    .<span class="hljs-title function_ invoke__">zip</span>(b.<span class="hljs-title function_ invoke__">bytes</span>())
+    .<span class="hljs-title function_ invoke__">map</span>(|(a, b)| a != b)
+    .<span class="hljs-title function_ invoke__">fold</span>(<span class=hljs-number >0</span>, |acc, i| { acc + i <span class=hljs-keyword >as</span> <span class=hljs-type >i32</span>})
+}</code></pre>
+<p>I can do</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">hamming0</span>(a: &amp;<span class=hljs-type >str</span>, b: &amp;<span class=hljs-type >str</span>) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >i32</span> {
+    <span class="hljs-title function_ invoke__">zip</span>(a, b)
+        .<span class="hljs-title function_ invoke__">filter</span>(|(a, b)| a != b)
+        .<span class="hljs-title function_ invoke__">count</span>()
+}</code></pre>
+<p>and with <code>usize</code> instead of <code>i32</code> you can also get some speedups.</p>
+<h3 id=01042022 ><a href="#01042022" class=header-anchor >01/04/2022</a></h3>
+<ol>
+<li><p>Ryan James Spencer kindly shared his article about <a href="https://www.justanotherdot.com/posts/magnifying-glasses-for-rust-assembly.html">Magnifying glasses for Rust</a>.</p>
+
+<li><p>Instead of stringly typed data, go for <code>enums</code>.</p>
+
+<li><p><code>traits</code> are close to interfaces/contracts/type classes. </p>
+
+</ol>
+<pre><code class="julia hljs">impl trait Read {
+    fn read(self: &amp;Self, save_to: &amp;mut Vec&lt;u8&gt;) -&gt; Result&lt;usize, <span class=hljs-built_in >String</span>&gt; // You need a func signature
+}
+
+impl Read <span class=hljs-keyword >for</span> File {}</code></pre>
+<ol>
+<li><p><code>//&#33;</code> is used  to document the thing that was just read by tehe compiler.</p>
+
+<li><p><code>cargo doc --no-deps</code> can speed up doc generation by quite a while.</p>
+
+<li><p>There&#39;s a difference between a variable&#39;s <code>lifetime</code> and its <code>scope</code>. A variable can be dropped after it is consumed by a function</p>
+
+</ol>
+<p>and not used, but then Rust can refuse to compile if you do try to use it.</p>
+<ol>
+<li><p>If I define functions like <code>fn foo&#40;x: i32&#41; -&gt; Foo</code>, then I can <code>let a &#61; 3; let a &#61; foo&#40;a&#41;;</code> and have the ownership passed because of the return type.</p>
+
+</ol>
+<h3 id=31022022 ><a href="#31022022" class=header-anchor >31/02/2022</a></h3>
+<ol>
+<li><p>If I want to filter all BinaryBuilder platforms to only Linux, I can do</p>
+
+</ol>
+<pre><code class="julia hljs">filter!(Sys.islinux(), supported_platforms())</code></pre>
+<p>instead of the <code>platforms &#61; &#91; ... &#93;</code> dance.</p>
+<ol>
+<li><p>When using <code>rust.godbolt.com</code>, remember that </p>
+
+</ol>
+<pre><code class="julia hljs">use std::simd::*;</code></pre>
+<p>Is what let&#39;s your code compile and that you don&#39;t need a <code>main&#40;&#41;</code>, just <code>pub fn</code> and you&#39;re on your merry way.</p>
+<ol>
+<li><p>Finally, here&#39;s the <code>dot_product_scalar_0</code> in <a href="https://rust.godbolt.org/z/q3f933T68">Rust Godbolt</a>, with a sweet view and <code>llvm-mca</code> to boot.</p>
+
+</ol>
+<p>Here&#39;s the <a href="https://rust.godbolt.org/z/jnbjxToE5">SIMD Rust godbolt comparisons</a> and the Rust snippet that worked</p>
+<pre><code class="julia hljs"><span class=hljs-comment >#![feature(portable_simd)]</span>
+<span class=hljs-comment >#![feature(array_chunks)]</span>
+use std::simd::*;
+
+// A lot of knowledgeable use of SIMD comes from knowing specific instructions that are
+// available - <span class=hljs-keyword >let</span>&#x27;s <span class=hljs-keyword >try</span> to use the <span class=hljs-string >`mul_add`</span> instruction, which is the fused-multiply-add we were looking <span class=hljs-keyword >for</span>.
+<span class=hljs-comment >#[target_feature(enable=&quot;sse&quot;)]</span>
+pub unsafe fn dot_prod_simd_2(a: &amp;[f32], b: &amp;[f32]) -&gt; f32 {
+    assert_eq!(a.len(), b.len());
+    // TODO handle remainder when a.len() % <span class=hljs-number >4</span> != <span class=hljs-number >0</span>
+    <span class=hljs-keyword >let</span> mut res = f32x4::splat(<span class=hljs-number >0.0</span>);
+    a.array_chunks::&lt;<span class=hljs-number >4</span>&gt;()
+        .map(|&amp;a| f32x4::from_array(a))
+        .zip(b.array_chunks::&lt;<span class=hljs-number >4</span>&gt;().map(|&amp;b| f32x4::from_array(b)))
+        .for_each(|(a, b)| {
+            res = a.mul_add(b, res);
+        });
+    res.reduce_sum()
+}</code></pre>
+<p>Notice the <code>#&#91;target_feature&#40;enable&#61;&quot;avx2&quot;&#41;&#93;</code>, the <code>pub unsafe</code></p>
+<ol>
+<li><p><code>fn dead_end&#40;&#41; -&gt; &#33;&#123;&#125;</code> the <code>&#33;</code> is for funcs that crash and is known as the <code>Never</code> type.</p>
+
+</ol>
+<h3 id=30022022 ><a href="#30022022" class=header-anchor >30/02/2022</a></h3>
+<ol>
+<li><p><code>All of Rust operators are defined within traits</code>. Ach so...</p>
+
+</ol>
+<ul>
+<li><p>variables are lowercase</p>
+
+<li><p>Single uppercase letters denote generic type variables</p>
+
+<li><p>Terms beginning with uppercase &#40;<code>Add</code>&#41; denote traits or concrete types, like <code>String/Duration</code></p>
+
+<li><p>Labels <code>&#39;a</code> are lifetime parameters</p>
+
+</ul>
+<ol>
+<li><p><code>String</code> is to <code>Vec&lt;u8&gt;</code> as <code>str</code> is to <code>&#91;u8&#93;</code>.</p>
+
+<li><p>Array sizes are known at compile time <code>&#91;T; 4&#93;</code> - just a homogenous container. </p>
+
+</ol>
+<p>Slices don&#39;t have a known size at compile time <code>&#91;T&#93;</code>, so they have are usually used as <code>&amp;&#91;T&#93;</code>, and are dynamically sized &#40;but don&#39;t contract or expand at runtime&#33;&#41;.</p>
+<ol>
+<li><p>The term <code>view</code> comes from databases where a read-only view is way faster without needing to copy. However, since Rust wants to know sizes of everything in your program, but slices don&#39;t know that, you need a <code>&amp;</code> reference.</p>
+
+</ol>
+<p>Vectors though, those are growable&#33;</p>
+<ol>
+<li><p>You can ref a whole tuple:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-keyword >for</span> &amp;(i, line) <span class=hljs-keyword >in</span> x.iter() { ... }</code></pre>
+<ol>
+<li><p><code>rustup doc</code> opens up the stdlib docs.</p>
+
+</ol>
+<h3 id=29022022 ><a href="#29022022" class=header-anchor >29/02/2022</a></h3>
+<ol>
+<li><p><code>std::ops::Add</code> is the trait, <code>std::ops::Add::add</code> is the operation. Thus, this snippet</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-keyword >let</span> mut sum = a
         .array_chunks::&lt;<span class=hljs-number >4</span>&gt;()
         .map(|&amp;a| f32x4::from_array(a))
         .zip(b.array_chunks::&lt;<span class=hljs-number >4</span>&gt;().map(|&amp;b| f32x4::from_array(b)))
         .map(|(a, b)| a * b)
         .fold(f32x4::splat(<span class=hljs-number >0.0</span>), std::ops::Add::add) // Note it&#x27;s not <span class=hljs-string >`std::ops::Add`</span>
-        .reduce_sum();</code></pre> <h3 id=25022022 ><a href="#25022022" class=header-anchor >25/02/2022</a></h3> <ol start=438 > <li><p>When setting up <code>rust.code-workspaces</code>, you can ignore them if you do <code>git config --global core.excludesFile ~/.gitignore</code> and then add</p> </ol> <pre><code class="julia hljs">*.code-workspace</code></pre>
+        .reduce_sum();</code></pre>
+<h3 id=25022022 ><a href="#25022022" class=header-anchor >25/02/2022</a></h3>
+<ol start=438 >
+<li><p>When setting up <code>rust.code-workspaces</code>, you can ignore them if you do <code>git config --global core.excludesFile ~/.gitignore</code> and then add</p>
+
+</ol>
+<pre><code class="julia hljs">*.code-workspace</code></pre>
 <p>to the file</p>
 <h3 id=24022022 ><a href="#24022022" class=header-anchor >24/02/2022</a></h3>
 <ol start=434 >
@@ -151,7 +892,7 @@ sol(xs) = accumulate(max, xs) - xs |&gt; sum</code></pre>
 <li><p>look at documentation</p>
 
 </ul>
-<ol start=425 >
+<ol>
 <li><p>wtf is this syntax yo</p>
 
 </ol>
@@ -165,35 +906,35 @@ sol(xs) = accumulate(max, xs) - xs |&gt; sum</code></pre>
     YOLO + <span class=hljs-number >1</span>
 <span class=hljs-keyword >end</span></code></pre>
 <h3 id=02022022 ><a href="#02022022" class=header-anchor >02/02/2022</a></h3>
-<ol start=422 >
+<ol>
 <li><p><code>content</code> is useful for not indexing into the <code>contents&#40;f&#91;1,1&#93;&#41;</code> figure in Makie.</p>
 
 </ol>
 <h3 id=30012022 ><a href="#30012022" class=header-anchor >30/01/2022</a></h3>
-<ol start=421 >
+<ol>
 <li><p>Pluto autoreload trick:</p>
 
 </ol>
 <pre><code class="julia-repl hljs">using Pluton: run
 run(; auto_relaod_from_file=true);</code></pre>
 <h3 id=28012022 ><a href="#28012022" class=header-anchor >28/01/2022</a></h3>
-<ol start=419 >
+<ol>
 <li><p>To change the Julia prompt:</p>
 
 </ol>
 <pre><code class="julia hljs">Base.active_repl.interface.modes[<span class=hljs-number >1</span>].prompt = <span class=hljs-string >&quot;julia 😷&gt;&quot;</span></code></pre>
 <p>credit to <code>rickhg12hs</code>.</p>
-<ol start=420 >
+<ol>
 <li><p>Damn, today was really cool. Sounds like Nautilus.jl project has some real legs. I got toggle buttons working but there&#39;s still so much to build.</p>
 
 </ol>
 <p>Also, I blocked twitter and social media on my phone. Time to hunker down. Also this number is a good sign. I&#39;ve started to do a small number of <em>impossible</em> things before breakfast... I kinda like this streak.</p>
-<ol start=421 >
+<ol>
 <li><p>Joined Lemmster&#39;s TLA&#43; workshop last minute. Maybe I should try it out for realsies sometime.</p>
 
 </ol>
 <h3 id=25012022 ><a href="#25012022" class=header-anchor >25/01/2022</a></h3>
-<ol start=418 >
+<ol>
 <li><p>Time to actually learn the freakin&#39; commands to the Julia REPL:</p>
 
 </ol>
@@ -218,14 +959,14 @@ run(; auto_relaod_from_file=true);</code></pre>
 
 </ul>
 <h3 id=24012022 ><a href="#24012022" class=header-anchor >24/01/2022</a></h3>
-<ol start=416 >
+<ol>
 <li><p>Jeebus I spent way too much time on Franklin blog today. </p>
 
 <li><p>This <a href="https://www.ahsmart.com/assets/pages/data-wrangling-with-data-frames-jl-cheat-sheet/DataFramesCheatSheet_v1.x_rev1.pdf">DataFrames.jl</a> worksheet is super userful.</p>
 
 </ol>
 <h3 id=23012022 ><a href="#23012022" class=header-anchor >23/01/2022</a></h3>
-<ol start=415 >
+<ol>
 <li><p><a href="https://groups.google.com/g/julia-users/c/83Pfg9HGhGQ/m/9G_0wi-GBQAJ?pli&#61;1">Why meshgrid is inefficient</a> and what the Julia anternative is: 2D array copmrehension</p>
 
 </ol>
@@ -242,7 +983,7 @@ inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
     sin(x) + <span class=hljs-number >2</span> * y^<span class=hljs-number >2</span> / cos(x,y)
 <span class=hljs-keyword >end</span></code></pre>
 <h3 id=21012022 ><a href="#21012022" class=header-anchor >21/01/2022</a></h3>
-<ol start=414 >
+<ol>
 <li><p>GPU call with Julian. We can optimize the ffmpeg pipeline to reduce the critical path. We were doing:</p>
 
 </ol>
@@ -263,7 +1004,7 @@ inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
 <li><p>encode the final product.</p>
 
 </ul>
-<ol start=415 >
+<ol>
 <li><p>Tips for job interviews:</p>
 
 </ol>
@@ -271,23 +1012,23 @@ inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
 <p>When was the lat time you promoted someone on your team? Why did the last person leave? How do you nurture the wellbeing of people under a challenging environemnt? When was the last time you supported a direct report&#39;s growth, even if it meant leaving the company? Can I speak to some latino/women who have held this role before?</p>
 </blockquote>
 <h3 id=20012022 ><a href="#20012022" class=header-anchor >20/01/2022</a></h3>
-<ol start=413 >
+<ol>
 <li><p>Got this oneliner for downloading from <code>JuliaCon talk title urllink.mp4</code>:</p>
 
 </ol>
 <pre><code class="julia hljs">miguelraz<span class=hljs-meta >@cyclops</span> ~/J/src&gt; bat posters.csv | awk &#x27;{print $NF}&#x27; | rg <span class=hljs-string >&quot;mp4&quot;</span> |xargs  wget -v</code></pre>
 <p>And it would be parallel with a <code>xargs -n 1 -P 8 filename</code> to download with 8 cores simultaneously.</p>
-<ol start=414 >
+<ol>
 <li><p>Rescued the <code>ffmpeg</code> script for processing JuliaCon videos. Should shape into a nice package. Need to recruit CI wizards &#43; a cron job so that it can be kicked on demand for uploads.</p>
 
 </ol>
 <h3 id=18012022 ><a href="#18012022" class=header-anchor >18/01/2022</a></h3>
-<ol start=412 >
+<ol>
 <li><p>Let&#39;s help Simeon out with that globals PR. Maybe also the freakin&#39; blog post. And then the LLVM13-&gt;LLVM14 upgrade.</p>
 
 </ol>
 <h3 id=15012022 ><a href="#15012022" class=header-anchor >15/01/2022</a></h3>
-<ol start=411 >
+<ol>
 <li><p>FUTHARK BABY&#33; Futhark is a Haskell-like, ML, pure functional language that is super parallel, compiles to GPUs and has a REPL&#33; <a href="https://futhark-book.readthedocs.io/en/latest/random-sampling.html">It&#39;s just amazing</a></p>
 
 </ol>
@@ -296,21 +1037,21 @@ inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
 
 </ul>
 <h3 id=03012022 ><a href="#03012022" class=header-anchor >03/01/2022</a></h3>
-<ol start=407 >
+<ol>
 <li><p>Limited Direct Execution - setup all the stuff for a program, run it&#39;s <code>main&#40;&#41;</code>, free mem and process from task list. But how do you know it didn&#39;t do bad stuff, and how can you time share with that? The OS has facilities that can limit the running programs, otherwise it would be just another library.</p>
 
 <li><p>To go from <code>user</code> mode to <code>kernel</code> mode you need to use a <code>system call</code>, which looks like a normal C function. These functions use a <code>trap</code> instruction,and when done a <code>return from trap</code> instruction &#40;while de escalating kernel privileges&#41;.</p>
 
 </ol>
 <p>A bit of state from program counters, flags, registers and trap will be pushed into a per-process <code>kernel stack</code>, and popped when execution resumes.  To know which code to run, the kernel sets up a <code>trap table</code> at boot time, which has code for when a keyboard interrupt or disk interrupt is sent, etc. System calls must be made via a service number to increase security. Also, regaining control of the CPU by the OS is tricky if there was a process running on it. You can cooperate and trust the process will make system calls eventually &#40;and then do your OS things&#41; or take over. You can use a <code>timer interrupt</code> that will disrupt the machine every few milliseconds and the OS interrupt handler takes over. This timer can also be TURNED_OFF&#33; OS can also decide to switch... which is called a <code>context switch.</code></p>
-<ol start=409 >
+<ol>
 <li><p>To context switch, save a few registers, pop a few registers, ^-_-^.</p>
 
 <li><p>Remember about <code>setting core affinity</code> - if you want to measure context switching timings, make sure it isn&#39;t switching across threads.</p>
 
 </ol>
 <h3 id=02012022 ><a href="#02012022" class=header-anchor >02/01/2022</a></h3>
-<ol start=400 >
+<ol>
 <li><p>Process API:</p>
 
 </ol>
@@ -327,7 +1068,7 @@ inflate(xs, ys) <span class=hljs-keyword >do</span> x, y
 
 </ul>
 <p>Process states: * Running, Ready, Blocked &#40;or zombie, to check that children exited succesfully by the parent&#41; The Process List/task list will have a struct to keep track of all the running programs in the system. Also called a Process Control Block or process descriptor. &#40;It&#39;s just a <code>struct</code>&#41;.</p>
-<ol start=401 >
+<ol>
 <li><p><code>./run-process.py</code> was a trip:</p>
 
 </ol>
@@ -373,7 +1114,7 @@ Time        PID: <span class=hljs-number >0</span>        PID: <span class=hljs-
 Stats: Total Time <span class=hljs-number >36</span>
 Stats: CPU Busy <span class=hljs-number >21</span> (<span class=hljs-number >58.33</span>%)
 Stats: <span class=hljs-built_in >IO</span> Busy  <span class=hljs-number >15</span> (<span class=hljs-number >41.67</span>%)</code></pre>
-<ol start=402 >
+<ol>
 <li><p><code>wait</code> waits on a PID, <code>fork</code> makes a copy except for the PID, <code>exec</code> runs a different program than the calling program. There are several variatns of <code>exec</code>.</p>
 
 <li><p>Colorful man pages with: <code>export MANPAGER&#61;&quot;less -R --use-color -Dd&#43;r -Du&#43;b&quot;</code></p>
@@ -388,7 +1129,7 @@ myargs[<span class=hljs-number >2</span>] = NULL; // marks <span class=hljs-keyw
 execvp(myargs[<span class=hljs-number >0</span>], myargs);
 printf(<span class=hljs-string >&quot;This never gets printed&quot;</span>);</code></pre>
 <p>This literally transforms your program into the new one you are calling. Succesful calls to <code>exec</code> never return o.0.</p>
-<ol start=405 >
+<ol>
 <li><p>Huh, <code>killall</code> seems like a useful thing to know...</p>
 
 <li><p>List available <code>man</code> pages with <code>man -f ls</code></p>
@@ -428,7 +1169,7 @@ printf(<span class=hljs-string >&quot;This never gets printed&quot;</span>);</co
 
 </ul>
 <h3 id=13122021 ><a href="#13122021" class=header-anchor >13/12/2021</a></h3>
-<ol start=393 >
+<ol>
 <li><p>Found thise great code review checklists:</p>
 
 </ol>
@@ -444,7 +1185,7 @@ printf(<span class=hljs-string >&quot;This never gets printed&quot;</span>);</co
 <li><p>TODO <a href="https://unixism.net/loti/ref-liburing/advanced_usage.html">libuv advanced tutorial</a></p>
 
 </ul>
-<ol start=394 >
+<ol>
 <li><p>CLANGD IS NOT INCLUDED IN A CLANG INSTALLATION. Just install the VSCode IDE thing for <a href="https://clangd.llvm.org/installation">christ sake&#39;s</a></p>
 
 <li><p>Holy crap - <a href="https://itnext.io/c-20-modules-complete-guide-ae741ddbae3d">modules in cpp20</a> can help cut down bloat size IMMENSELY: this is like 5 orders of magnitude for a &quot;hello world&quot; program.</p>
@@ -462,14 +1203,14 @@ printf(<span class=hljs-string >&quot;This never gets printed&quot;</span>);</co
 <p>clang&#43;&#43; -std&#61;c&#43;&#43;20 -stdlib&#61;libc&#43;&#43; -fmodules -fbuiltin-module-map -E hello<em>modular</em>world.cc | wc -c 239</p>
 </blockquote>
 <h3 id=30112021 ><a href="#30112021" class=header-anchor >30/11/2021</a></h3>
-<ol start=392 >
+<ol>
 <li><p><a href="https://julialang.org/blog/2021/11/julia-1.7-highlights/">New PATCH 1.7&#33;</a> and contained this lil&#39; nugget:</p>
 
 </ol>
 <pre><code class="julia hljs">myreal((; re)::<span class=hljs-built_in >Complex</span>) = re
 myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><span class=hljs-literal >im</span>) == <span class=hljs-number >2</span></code></pre>
 <h3 id=25112021 ><a href="#25112021" class=header-anchor >25/11/2021</a></h3>
-<ol start=390 >
+<ol>
 <li><p>Jean Yang kindly suggested <a href="https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/First_Steps">Write you a Scheme in 48 hours</a> as a stream with a timer, it sounds RAD&#33;</p>
 
 <li><p><a href="https://www.youtube.com/watch?v&#61;5p2Aq3bRuL0">This Haskell setup video</a> looks fantastic by using</p>
@@ -484,12 +1225,12 @@ myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><spa
 
 </ul>
 <h3 id=22112021 ><a href="#22112021" class=header-anchor >22/11/2021</a></h3>
-<ol start=389 >
+<ol>
 <li><p>TODO: Make a BinaryBuilder.jl recipe for <a href="https://github.com/maleadt/creduce_julia">CReduce</a>, get some fuzzing going in Julia.</p>
 
 </ol>
 <h3 id=29102021 ><a href="#29102021" class=header-anchor >29/10/2021</a></h3>
-<ol start=387 >
+<ol>
 <li><p>In <a href="https://www.cs.cornell.edu/&#37;7Easampson/blog/llvm.html">LLVM speak</a>,Modules &gt; Functions &gt; BasicBlock &gt; Instruction, and everything inherits from the <code>Value</code> class.</p>
 
 <li><p>Useful snippet:</p>
@@ -525,7 +1266,7 @@ myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><spa
 
 </ul>
 <h3 id=23102021 ><a href="#23102021" class=header-anchor >23/10/2021</a></h3>
-<ol start=377 >
+<ol>
 <li><p>When reading LLVM source code, I need to find the name of many things &#40;like using your IDE for tooltip hovering/documentation&#41;. <code>ctags</code> can help with that. </p>
 
 </ol>
@@ -538,7 +1279,7 @@ myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><spa
 
 </ul>
 <h3 id=22102021 ><a href="#22102021" class=header-anchor >22/10/2021</a></h3>
-<ol start=376 >
+<ol>
 <li><p>Phew, moving out was a hassle.</p>
 
 </ol>
@@ -547,12 +1288,12 @@ myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><spa
 
 </ul>
 <h3 id=23092021 ><a href="#23092021" class=header-anchor >23/09/2021</a></h3>
-<ol start=375 >
+<ol>
 <li><p>Downloaded a code with CVS today. </p>
 
 </ol>
 <h3 id=19092021 ><a href="#19092021" class=header-anchor >19/09/2021</a></h3>
-<ol start=374 >
+<ol>
 <li><p>Fortran <code>coarrays</code> use <code>tile_indices</code>, <code>this_image&#40;&#41;</code>, <code>num_images&#40;&#41;</code> and are run with <code>cafrun -n 4 ./test</code>. </p>
 
 </ol>
@@ -577,7 +1318,7 @@ myreal(<span class=hljs-number >2</span> + <span class=hljs-number >3</span><spa
 
 </ul>
 <h3 id=18092021 ><a href="#18092021" class=header-anchor >18/09/2021</a></h3>
-<ol start=373 >
+<ol>
 <li><p>FORTRAN learnigns:</p>
 
 </ol>
@@ -763,18 +1504,18 @@ a = [a, <span class=hljs-number >2</span>* a] <span class=hljs-comment >! a = [1
 
 </ul>
 <h3 id=01092021 ><a href="#01092021" class=header-anchor >01/09/2021</a></h3>
-<ol start=372 >
+<ol>
 <li><p>TODO <a href="https://discourse.julialang.org/t/this-tool-for-understanding-repos-is-brilliant/67226/5">Visualize the Julia repo with this tool</a></p>
 
 </ol>
 <h3 id=27082021 ><a href="#27082021" class=header-anchor >27/08/2021</a></h3>
-<ol start=371 >
+<ol>
 <li><p>Writing a cover letter... godspeed to me.</p>
 
 </ol>
 <h3 id=16082021 ><a href="#16082021" class=header-anchor >16/08/2021</a></h3>
 <p>Link dump time&#33;</p>
-<ol start=366 >
+<ol>
 <li><p>Linux <a href="https://twitter.com/derKha/status/1426195407395299329">perf guide</a>.</p>
 
 <li><p><a href="https://discourse.julialang.org/t/22-seconds-to-3-and-now-more-lets-fix-all-of-the-differentialequations-jl-universe-compile-times/66313">Go fix some DiffEq compile times yo</a></p>
@@ -787,7 +1528,7 @@ a = [a, <span class=hljs-number >2</span>* a] <span class=hljs-comment >! a = [1
 
 </ol>
 <h3 id=11082021 ><a href="#11082021" class=header-anchor >11/08/2021</a></h3>
-<ol start=363 >
+<ol>
 <li><p>Jon Sterling writes about a metalanguage for <code>multi phase modularity</code> <a href="https://twitter.com/jonmsterling/status/1423655072303489024">here</a>.</p>
 
 <li><p>Consider using <code>TimeWarrior</code><a href="https://timewarrior.net/docs/what/">linked here</a>.</p>
@@ -796,12 +1537,12 @@ a = [a, <span class=hljs-number >2</span>* a] <span class=hljs-comment >! a = [1
 
 </ol>
 <h3 id=04082021 ><a href="#04082021" class=header-anchor >04/08/2021</a></h3>
-<ol start=360 >
+<ol>
 <li><p>Parallel Julia priorites from the State of Julia 2021 talk:</p>
 
 </ol>
 <table><tr><th align=right >Features/Correctness<th align=right >Performance<tr><td align=right >Thread safety: Distributed<td align=right >Optimize scheduler<tr><td align=right >thread safety: package loading<td align=right >Parallel mark/sweep<tr><td align=right >Memory model<td align=right >Type inference of <code>fetch&#40;::Task&#41;</code><tr><td align=right >Finalizer thread<td align=right >Better for loop and reduce<tr><td align=right >Interactive threads<td align=right >BLAS integration<tr><td align=right >GC state transitions in codegen<td align=right >TAPIR Integration</table>
-<ol start=361 >
+<ol>
 <li><p>Compiler priorities from State of Julia 2021:</p>
 
 </ol>
@@ -830,22 +1571,22 @@ a = [a, <span class=hljs-number >2</span>* a] <span class=hljs-comment >! a = [1
 <p>Array optimizations</p>
 <p>GC performance work</p>
 <p>Compiler extensibility</p>
-<ol start=362 >
+<ol>
 <li><p><code>ghostscript</code> can be used for batch pdf processing.</p>
 
 </ol>
 <h3 id=03082021 ><a href="#03082021" class=header-anchor >03/08/2021</a></h3>
-<ol start=359 >
+<ol>
 <li><p>All the JuliaCon posters are uploaded&#33; 🎉 I heard a lot of interesting proposals from people from NZ, photolithography people and many others... posters are fun&#33; Life&#39;s lookin&#39; good&#33;</p>
 
 </ol>
 <h3 id=02082021 ><a href="#02082021" class=header-anchor >02/08/2021</a></h3>
-<ol start=343 >
+<ol>
 <li><p>Extract 20 seconds without re-encoding:</p>
 
 </ol>
 <pre><code class="bash hljs">ffmpeg -ss 00:01:30.000 -i YOUR_VIDEO.mp4 -t 00:00:20.000 -c copy YOUR_EXTRACTED_VIDEO.mp4</code></pre>
-<ol start=344 >
+<ol>
 <li><p>Tuning options in ffmpeg:</p>
 
 </ol>
@@ -858,7 +1599,7 @@ psnr – only used <span class=hljs-keyword >for</span> codec development;
 ssim – only used <span class=hljs-keyword >for</span> codec development;
 Example: 
 ffmpeg -i your_video.mov -c:v h264 -crf <span class=hljs-number >23</span> -tune film your_output.mp4</code></pre>
-<ol start=345 >
+<ol>
 <li><p>You can use 2 pass encoding for targeting a specific output file size, but not care so much about output quality from frame to frame.</p>
 
 <li><p><code>For an output that is roughly &#39;visually lossless&#39; but not technically and waaaay less file size, just use -crf 17 or 18</code>.</p>
@@ -867,17 +1608,17 @@ ffmpeg -i your_video.mov -c:v h264 -crf <span class=hljs-number >23</span> -tune
 
 </ol>
 <pre><code class="julia hljs">ffmpet -i input.mp4 -c:v h264 -crf <span class=hljs-number >23</span> -maxrate <span class=hljs-number >1</span>M -bufsize <span class=hljs-number >2</span>M output.mp4</code></pre>
-<ol start=348 >
+<ol>
 <li><p>Recommend adding a <code>faststart</code> flag to your video so that it begins playing faster &#40;recommended by YouTube&#41;.</p>
 
 </ol>
 <pre><code class="julia hljs">ffmpeg -i input.mp4 -c:v h264 -crf <span class=hljs-number >23</span> -maxrate <span class=hljs-number >1</span>M -bufsize <span class=hljs-number >2</span>M -movflags +faststart output.mp4</code></pre>
-<ol start=349 >
+<ol>
 <li><p>If you want to produce 1080p and above, h265 offers great savings in bitrates/file size &#40;ntoe: needs to be built with <code>--enable-gpl --enable-libx265</code>&#41;.</p>
 
 </ol>
 <pre><code class="julia hljs">ffmpeg -i input -c:v libx265 -crf <span class=hljs-number >28</span> -c:a aac -b:a <span class=hljs-number >128</span>k output.mp4</code></pre>
-<ol start=350 >
+<ol>
 <li><p>h266 video codec: </p>
 
 </ol>
@@ -888,7 +1629,7 @@ ffmpeg -i your_video.mov -c:v h264 -crf <span class=hljs-number >23</span> -tune
 
 </ul>
 <p>Can deal with 4k/8k and 360 degree video&#33;</p>
-<ol start=351 >
+<ol>
 <li><p>VP8 videos: Supposed to be web standard.</p>
 
 <li><p>OF COURSE Google made vp9 in direct competition of h265, you need <code>libvpx-vp9</code>.</p>
@@ -910,19 +1651,19 @@ ffmpeg -i your_video.mov -c:v h264 -crf <span class=hljs-number >23</span> -tune
 </ul>
 <pre><code class="julia hljs">-f flv rtmp://a.rtmp.youtube.com/live2/[YOUR_STREAM_KEY]
 <span class=hljs-comment >#: this will instruct FFMPEG to output everything into the required FLV format to the YouTube RTMP server</span></code></pre>
-<ol start=358 >
+<ol>
 <li><p>PRE PROCESS FILES IN BATCH: pg 113/122</p>
 
 </ol>
 <pre><code class="julia hljs"><span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> *.mov; <span class=hljs-keyword >do</span> ffmpeg -i <span class=hljs-string >&quot;<span class=hljs-variable >$i</span>&quot;</span> -c:v libx264 -profile:v high -level:v <span class=hljs-number >4.1</span> -preset veryfast -b:v <span class=hljs-number >3000</span>k -maxrate <span class=hljs-number >3000</span>k -bufsize <span class=hljs-number >6000</span>k -pix_fmt yuv420p -r <span class=hljs-number >25</span> -g <span class=hljs-number >50</span> -keyint_min <span class=hljs-number >50</span> -sc_threshold <span class=hljs-number >0</span> -c:a aac -b:a <span class=hljs-number >128</span>k -ac <span class=hljs-number >2</span> -ar <span class=hljs-number >44100</span> <span class=hljs-string >&quot;${i%.*}.mp4&quot;</span>; done</code></pre>
 <p>&quot;The above example script will pre-process every .movfile contained in the directory, in line with the YouTube&#39;s requirements for streaming a Full-HD 1080p at 25FPS.&quot;</p>
 <h3 id=31072021 ><a href="#31072021" class=header-anchor >31/07/2021</a></h3>
-<ol start=340 >
+<ol>
 <li><p><code>tmux</code> can be used to keep persistent sessions on <code>ssh</code>, so <code>mosh</code> is not necessarily needed.</p>
 
 </ol>
 <p>The way to do this &#40;Credit to Danny Sharp&#41; is do the ssh inside a tmux session and then <code>tmux ls</code> to see which sessions you have made and then <code>tmux attach-session -t 3</code> to connect to session 3. This is a smart way of checking in on long running compute jobs.</p>
-<ol start=341 >
+<ol>
 <li><p>From <code>FFMPEG Zero to Hero</code>:</p>
 
 </ol>
@@ -935,13 +1676,13 @@ second. A typical compressed h264 video <span class=hljs-keyword >in</span> Full
 <span class=hljs-keyword >in</span> the range of <span class=hljs-number >3.000</span> - <span class=hljs-number >6.000</span> kbps, <span class=hljs-keyword >while</span> a <span class=hljs-number >4</span>k video can reach
 a bitrate value up to <span class=hljs-number >51.000</span> kbps.  A non-compressed video format,
 such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=hljs-number >4</span>K resolution, can reach a bitrate of <span class=hljs-number >253.900</span> kbps and higher.</code></pre>
-<ol start=342 >
+<ol>
 <li><p>FFMPEG can read and write to basically any format under the sun, and has been designed by the MPEG:</p>
 
 </ol>
 <p><code>Moving Pictures Expert Group</code>.</p>
 <h3 id=29072021 ><a href="#29072021" class=header-anchor >29/07/2021</a></h3>
-<ol start=334 >
+<ol>
 <li><p>To run code with the interpreter, use <code>julia --compile&#61;no</code>.</p>
 
 <li><p><a href="https://github.com/openjournals/buffy">Buffy</a> for JOSS submissions.</p>
@@ -956,25 +1697,25 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ol>
 <h3 id=28072021 ><a href="#28072021" class=header-anchor >28/07/2021</a></h3>
-<ol start=333 >
+<ol>
 <li><p>Link dump:</p>
 
 </ol>
 <p>https://lazy.codes/posts/awesome-unstable-rust-features/ https://github.com/koalaman/shellcheck https://github.com/Apress/beginning-cpp20/blob/main/Exercises/Modules/Chapter&#37;2002/Soln2_01A.cpp https://rustc-dev-guide.rust-lang.org/</p>
 <h3 id=21072021 ><a href="#21072021" class=header-anchor >21/07/2021</a></h3>
-<ol start=331 >
+<ol>
 <li><p>To clean up a video with ffmpeg, do:</p>
 
 </ol>
 <pre><code class="julia hljs">ffmpeg -i elrodtest.mov -af <span class=hljs-string >&quot;highpass=f=300, lowpass=f=3000, afftdn&quot;</span> -c:v copy passeselrod.mov</code></pre>
 <p>This applies a FFT filter, with a highpass and lowpass of 300Hz and 3000Hz</p>
-<ol start=332 >
+<ol>
 <li><p>This is an awesome thread on <a href="https://twitter.com/matt_dz/status/1417857422559952897">LLVM resources</a></p>
 
 </ol>
 <p>And WOW is <a href="https://gist.github.com/MattPD/00573ee14bf85ccac6bed3c0678ddbef#introduction">this super list thorough LLVM Program Analysis resources</a></p>
 <h3 id=20072021 ><a href="#20072021" class=header-anchor >20/07/2021</a></h3>
-<ol start=327 >
+<ol>
 <li><p><a href="https://github.com/JuliaLang/julia/issues/939">sortperm is sorta slow</a> - up for grabs&#33;</p>
 
 <li><p><a href="https://twitter.com/Anno0770/status/1414009622583783432">Setup donation links to JuliaCon</a></p>
@@ -987,7 +1728,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 <pre><code class="bash hljs">ffmpeg -i <span class=hljs-string >&quot;concat:input1.ts|input2.ts&quot;</span> -c copy output.ts</code></pre>
 <p>Now I need to apply that to every <code>*.mov/mp4/mkv</code> video in the folder and then I have a lot of processed videos. Perhaps I should also dump that info into a CSV file...</p>
 <h3 id=14072021 ><a href="#14072021" class=header-anchor >14/07/2021</a></h3>
-<ol start=325 >
+<ol>
 <li><p>Federico Simonetta <a href="https://julialang.slack.com/archives/C67910KEH/p1626281444356200">asks</a>:</p>
 
 </ol>
@@ -999,7 +1740,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 <pre><code class="julia hljs">Base.<span class=hljs-meta >@pure</span> __parameterless_type(T) = Base.typename(T).wrapper</code></pre>
 <p>can be used, instead of <code>SciMLBase.parameterless_type&#40;T&#41;</code>.</p>
 <p>Matt Bauman is convinced it&#39;s a footgun, and we should just stick to using <code>similar&#40;x, AnotherType&#41;</code> instead.</p>
-<ol start=326 >
+<ol>
 <li><p>Conor Hoekstra nerdsniped me into learning some APL - here&#39;s my attempt for printing &#39;Even&#39; or &#39;Odd&#39; depending on a summation</p>
 
 </ol>
@@ -1013,7 +1754,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 │Even│
 └────┘</code></pre>
 <p>There&#39;s oodles more to learn <a href="https://problems.tryapl.org/">here</a> and <a href="https://tryapl.org/#">here</a>.</p>
-<ol start=326 >
+<ol>
 <li><p>Right, the <a href="https://www.math.uci.edu/~chenlong/lectures.html">Chen Long</a> courses exist. And the Barba CFD Python course. And the Leveque book... sigh.</p>
 
 </ol>
@@ -1059,7 +1800,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ul>
 <h3 id=27062021 ><a href="#27062021" class=header-anchor >27/06/2021</a></h3>
-<ol start=323 >
+<ol>
 <li><p><a href="https://www.cs.toronto.edu/~ylzhang/csc236/files/lec08-loop-invariant.pdf">Loop invariants</a> have 3 steps:</p>
 
 </ol>
@@ -1088,12 +1829,12 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ul>
 <h3 id=26062021 ><a href="#26062021" class=header-anchor >26/06/2021</a></h3>
-<ol start=322 >
+<ol>
 <li><p>TLA&#43; Loop invariants here we go...</p>
 
 </ol>
 <h3 id=25062021 ><a href="#25062021" class=header-anchor >25/06/2021</a></h3>
-<ol start=317 >
+<ol>
 <li><p><a href="">Leiserson course</a> is level 1, <a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/index.html">Design and analysis of algorithms is level 2</a>, Jelani course is level 3.</p>
 
 <li><p><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-852j-distributed-algorithms-fall-2009/index.htm">Nancy Lynch distributed algorithms course</a></p>
@@ -1106,7 +1847,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ol>
 <h3 id=24062021 ><a href="#24062021" class=header-anchor >24/06/2021</a></h3>
-<ol start=314 >
+<ol>
 <li><p>Asesorias online de la fac...</p>
 
 <li><p>LLVM has options to investigate base language code coverage with <code>llvm-profdata</code> and <code>llvm-cov</code> tooling.</p>
@@ -1115,7 +1856,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ol>
 <h3 id=23062021 ><a href="#23062021" class=header-anchor >23/06/2021</a></h3>
-<ol start=311 >
+<ol>
 <li><p>God I want <a href="https://people.csail.mit.edu/jshun/6886-s21/">to tkae the Algorithm Engineering 2021</a> course so bad... or at least translate it.</p>
 
 <li><p>Mosè posted about <a href="https://reproducible-builds.org/docs/">Reproducible build academic guidelines</a>.</p>
@@ -1124,7 +1865,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ol>
 <h3 id=22062021 ><a href="#22062021" class=header-anchor >22/06/2021</a></h3>
-<ol start=306 >
+<ol>
 <li><p>Viendo el tutorial de Ploomber de Eduardo Blancas - Deberías cachear el pipeline de datos de tal manera que si afectas un nodo del DAG computacional, el resto no necesiten recalcularse. Technically same mechanism as cached parallel tests.</p>
 
 <li><p>Julia 1.7 has implicit multiplication of radicals&#33; <code>xSQ3y</code> works&#33; Also <code>&#40;; a, b&#41; &#61; x</code> can destructure <code>x</code>.</p>
@@ -1137,7 +1878,7 @@ such as the Apple ProRes format <span class=hljs-keyword >in</span> <span class=
 
 </ol>
 <h3 id=21062021 ><a href="#21062021" class=header-anchor >21/06/2021</a></h3>
-<ol start=302 >
+<ol>
 <li><p><a href="https://jkrumbiegel.com/pages/2021-06-07-macros-for-beginners/">Julia macros for beginners</a>: <code>esc</code> means &quot;treat this variable like a variable the user has written themselves.&quot; AKA interpolating within the macro only gives you variables local to the macro&#39;s module, escaping treats it as a user variable.</p>
 
 </ol>
@@ -1172,7 +1913,7 @@ julia&gt; Main.m.<span class=hljs-meta >@fill</span>(rand(<span class=hljs-numbe
  [<span class=hljs-number >0.31575252460961667</span>, <span class=hljs-number >0.30058298960206287</span>, <span class=hljs-number >0.2873940760156002</span>]
  [<span class=hljs-number >0.07225330666900165</span>, <span class=hljs-number >0.22506420288160234</span>, <span class=hljs-number >0.225626098738561</span>]
  [<span class=hljs-number >0.5753508713492259</span>, <span class=hljs-number >0.37821541454348995</span>, <span class=hljs-number >0.3146472409806831</span>]</code></pre>
-<ol start=303 >
+<ol>
 <li><p><code>Dr. Takafumi Arakaki</code> has some good recommendations on globals - mark them inside functions&#33;</p>
 
 </ol>
@@ -1187,7 +1928,7 @@ julia&gt; good()
 
 julia&gt; bad()
 ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pre>
-<ol start=304 >
+<ol>
 <li><p>Try to also avoid this idiom:</p>
 
 </ol>
@@ -1207,12 +1948,12 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
     <span class=hljs-meta >@error</span> <span class=hljs-string >&quot;Unexpected error from a producer&quot;</span> exception = (err, catch_backtrace())
     rethrow()
 <span class=hljs-keyword >end</span></code></pre>
-<ol start=305 >
+<ol>
 <li><p>Neat trick - don&#39;t use <code>while true</code> loops in the beginning 😅 . Use <code>for _ in 1:10_000</code> to check if the threads are even alive.</p>
 
 </ol>
 <h3 id=20062021 ><a href="#20062021" class=header-anchor >20/06/2021</a></h3>
-<ol start=281 >
+<ol>
 <li><p>I read <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Lamports Logical Clocks</a> paper today. I learned a couple of things.</p>
 
 </ol>
@@ -1222,7 +1963,7 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
 <li><p>However, these total orderings can be &quot;unsynched&quot; from the real world - if you include some small perturbations in your timestamps, you can, within bounded time &#40;and quite fast&#41; always synchronize your system.</p>
 
 </ul>
-<ol start=282 >
+<ol>
 <li><p>Now reading <a href="https://lamport.azurewebsites.net/pubs/paxos-simple.pdf">Paxos Paper</a>.</p>
 
 </ol>
@@ -1232,13 +1973,13 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
 <li><p><a href="">Fischer, Lynch, and Patterson</a> implies that &quot; a reliable algoritm for eledcting a proposer must use either randomness or real time – for example, by using timeouts.&quot;</p>
 
 </ul>
-<ol start=283 >
+<ol>
 <li><p><code>CHOOSE</code> is nondeterministic - if it chose 38 today, it will choose that again next week. You never need to write <code>x&#39; &#61; CHOOSE i \in 1..9 : TRUE</code>, just use <code>x&#39; \in 1..99</code>. Use <code>CHOOSE</code> only when there&#39;s exactly 1 <code>v</code> in <code>S</code> satisfying formula <code>P</code>, like in the definition of <code>Maximum&#40;s&#41;</code></p>
 
 </ol>
 <pre><code class="julia hljs">Maximum(S) == IF S = {} THEN -<span class=hljs-number >1</span>
               ELSE CHOOSE x \<span class=hljs-keyword >in</span> S : \A m \<span class=hljs-keyword >in</span> S : x \geq m</code></pre>
-<ol start=284 >
+<ol>
 <li><p>The <code>ASSUME</code> statement is made for assumptions about the constants</p>
 
 <li><p><code>SUBSET Acceptor</code> &#61;&#61; <code>PowerSetOf&#40;Acceptor&#41;</code>.</p>
@@ -1249,7 +1990,7 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
 <pre><code class="julia hljs">/\ aState&#x27; = [aState EXCEPT ![m.ins][acc].mbal = m.bal,
                                    ![m.ins][acc].bal  = m.bal,
                                    ![m.ins][acc].val  = m.val]</code></pre>
-<ol start=287 >
+<ol>
 <li><p>This is also legit:</p>
 
 </ol>
@@ -1265,7 +2006,7 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
              val  |-&gt; aState[m.ins][acc].val,
              acc  |-&gt; acc])
     /\ UNCHANGED rmState</code></pre>
-<ol start=288 >
+<ol>
 <li><p>Elements of a <code>Symmetry Set</code> may not appear in a <code>CHOOSE</code>.</p>
 
 <li><p><code>ASSUME</code> must be a constant formula.</p>
@@ -1280,7 +2021,7 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
 
 </ol>
 <pre><code class="julia hljs">TypeOK == /\ Data \X {<span class=hljs-number >0</span>, <span class=hljs-number >1</span>} \* <span class=hljs-keyword >where</span> \X is the cartesian product</code></pre>
-<ol start=293 >
+<ol>
 <li><p>To talk about <code>may/must</code>, we will talk about liveness and Safety properties.</p>
 
 </ol>
@@ -1298,16 +2039,19 @@ ERROR: <span class=hljs-built_in >UndefVarError</span>: a not defined</code></pr
 </ul>
 
 </ul>
-<ol start=294 >
+<ol>
 <li><p>Now on to the full <a href="https://lamport.azurewebsites.net/video/AB.tla">AB Protocol</a></p>
 
 <li><p><code>Strong Fairness</code> of action A asserts of a behavior: </p>
+<ul>
+<li><p>If A is ever <code>repeatedly enabled</code>, then an A step must eventually occur.</p>
 
-</ol>
-<p>- If A is ever <code>repeatedly enabled</code>, then an A step must eventually occur.
-- Equivalently: A cannot be repeatedly enabled forever without another A step occurring.
-- Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.</p>
-<ol start=296 >
+<li><p>Equivalently: A cannot be repeatedly enabled forever without another A step occurring.</p>
+
+<li><p>Weak fairness gives you the possibility of your enabling condition being flip-flopped forever. Strong fairness guarantees if you are enabled repeatedly, A must occurr.</p>
+
+</ul>
+
 <li><p>What good is liveness? What is the good in knowing that something eventually happens in 10^6 years? This is good if there&#39;s no hard real time requirements.</p>
 
 <li><p>Recursive declarations must be prepended with <code>RECURSIVE</code></p>
@@ -1319,12 +2063,12 @@ RemoveX(seq) == IF seq = &lt;&lt; &gt;&gt;
                 ELSE IF Head(seq) = <span class=hljs-string >&quot;X&quot;</span>
                      THEN RemoveX(Tail(seq))
                      ELSE &lt;&lt;Head(seq)&gt;&gt; \o RemoveX(Tail(seq))</code></pre>
-<ol start=298 >
+<ol>
 <li><p>The Temporal Substitution law: can&#39;t do the basic maths trick have to had the 🔲 </p>
 
 </ol>
 <pre><code class="julia hljs">THEOREM 🔲 (v = e) =&gt; (f = (f WITH v &lt;- e))</code></pre>
-<ol start=299 >
+<ol>
 <li><p>When in AB2, we add the possibility for messages to be corrupted. If that happens, we will need to compare messages to a potential &quot;Bad&quot; string, and TLC will yell at formulas like <code>&quot;Bad&quot; &#61; 0</code>. Instead, we can call the constant <code>Bad</code> a model value.</p>
 
 <li><p>When trying to specify the liveness of the spec, it&#39;s good to try and attach metadata for what actually happened, but don&#39;t append <code>TRUE/FALSE</code> to your messages - separate another Sequence as <code>&lt;&lt;TRUE,FALSE,TRUE...&gt;&gt;</code> to keep track of the <em>real</em> and <em>imaginary</em> parts of the spec.</p>
@@ -1333,7 +2077,7 @@ RemoveX(seq) == IF seq = &lt;&lt; &gt;&gt;
 
 </ol>
 <h3 id=19062021 ><a href="#19062021" class=header-anchor >19/06/2021</a></h3>
-<ol start=267 >
+<ol>
 <li><p>In TLA&#43;, every value is a set: 42 is a set, &quot;abc&quot; is a set.</p>
 
 <li><p>This represents </p>
@@ -1342,12 +2086,12 @@ RemoveX(seq) == IF seq = &lt;&lt; &gt;&gt;
 <pre><code class="julia hljs">TCTypeOK ==
     rmState \<span class=hljs-keyword >in</span> [RM -&gt; {<span class=hljs-string >&quot;working&quot;</span>, <span class=hljs-string >&quot;prepared&quot;</span>, <span class=hljs-string >&quot;committeed&quot;</span>, <span class=hljs-string >&quot;aborted&quot;</span>}]
 TCInit == rmState = [r \<span class=hljs-keyword >in</span> RM |-&gt; <span class=hljs-string >&quot;working&quot;</span>] (* this means the array with index set RM such that every element rm of RM is mapped to <span class=hljs-string >&quot;working&quot;</span>*)</code></pre>
-<ol start=269 >
+<ol>
 <li><p>Terminology</p>
 
 </ol>
 <table><tr><th align=right >Programming<th align=right >Math<tr><td align=right >array<td align=right >function<tr><td align=right >index set<td align=right >domain<tr><td align=right >f&#91;e&#93;<td align=right >f&#40;e&#41;</table>
-<ol start=270 >
+<ol>
 <li><p>Remember notation for updating a record: </p>
 
 </ol>
@@ -1360,7 +2104,7 @@ Decide(r)  == \/ /\ rmState[r] = <span class=hljs-string >&quot;prepared&quot;</
               \/ /\ rmState[r] \<span class=hljs-keyword >in</span> {<span class=hljs-string >&quot;working&quot;</span>, <span class=hljs-string >&quot;prepared&quot;</span>}
                  /\ notCommitted
                  /\ rmState&#x27; = [rmState EXCEPT ![r] = <span class=hljs-string >&quot;aborted&quot;</span>]</code></pre>
-<ol start=271 >
+<ol>
 <li><p>Ah&#33; Draw the state machine and then figure out the actions that transition to each state&#33;</p>
 
 <li><p>If you see the Coverage of actions and some of the actions were never taken <code>Count &#61;&#61; 0</code>, it usually means there&#39;s an error in the spec.</p>
@@ -1371,7 +2115,7 @@ Decide(r)  == \/ /\ rmState[r] = <span class=hljs-string >&quot;prepared&quot;</
 
 </ol>
 <pre><code class="julia hljs">[prof |-&gt; <span class=hljs-string >&quot;Fred&quot;</span>, num |-&gt; <span class=hljs-number >42</span>]</code></pre>
-<ol start=275 >
+<ol>
 <li><p>Abbreviate <code>&#91;f EXCEPT &#33;&#91;&quot;prof&quot;&#93; &#61; &quot;Red&quot;</code> as <code>&#91;f EXCEPT &#33;.prof &#61; &quot;Red&quot;&#125;&#93;</code></p>
 
 <li><p><code>UNCHANGED &lt;&lt;rmState, tmSTate, msgs&gt;&gt;</code> is an ordered triple. It&#39;s equivalent to </p>
@@ -1380,13 +2124,13 @@ Decide(r)  == \/ /\ rmState[r] = <span class=hljs-string >&quot;prepared&quot;</
 <pre><code class="julia hljs">... /\ rmState&#x27; = rmState
     /\ tmState&#x27; = tmState
     /\ msgs&#x27; = msgs</code></pre>
-<ol start=277 >
+<ol>
 <li><p>Conditions which have no primes&#39; are calle <em>enabling conditions</em>, and  in an Action Formula should go at the beginning, like so.</p>
 
 </ol>
 <pre><code class="julia hljs">TMRcvPrepared(r) == /\ tmState = <span class=hljs-string >&quot;init&quot;</span>
                     /\ [type |-&gt; <span class=hljs-string >&quot;Prepared&quot;</span>, rm |-&gt; r] \<span class=hljs-keyword >in</span> msgs</code></pre>
-<ol start=278 >
+<ol>
 <li><p>Update the CommunityModules.jar... or else get hit by a bug..</p>
 
 <li><p><code>Symmetry sets</code>: if &quot;r1&quot;↔ &quot;r3&quot; in all states of behavior <code>b</code> allowed by <code>TwoPhase</code> produces a behaviour <code>b\_&#123;1,3&#125;</code> allowed by <code>TwoPhase</code>, TLC does not have to check <code>b\_&#123;1,3&#125;</code> if it has checked <code>b</code>. Becuase <code>RM &#61; &#123;&quot;r1&quot;, &quot;r2&quot;, &quot;r3&quot;&#125;</code>, We say that RM is a <code>symmetry set</code> of <code>TwoPhase</code>. To exploit this, replace</p>
@@ -1396,12 +2140,12 @@ Decide(r)  == \/ /\ rmState[r] = <span class=hljs-string >&quot;prepared&quot;</
 <p>with </p>
 <pre><code class="julia hljs">RM &lt;- {r1, r2, r3}</code></pre>
 <p>select <code>Set of model values/Symmetry Set</code> just below it.</p>
-<ol start=280 >
+<ol>
 <li><p>So it turns out that TwoPhase Commit can break if the TM fails. If you try to &quot;just&quot; engineer it with a second TM, they can cannibalize messages if TM1 pauses and TM2 takes over and sends an abort signal.</p>
 
 </ol>
 <h3 id=18062021 ><a href="#18062021" class=header-anchor >18/06/2021</a></h3>
-<ol start=256 >
+<ol>
 <li><p>A <code>behaviour</code> of a system is a sequence of states. A <code>state machine</code> is described by all its possible initial states and a next state relation. A <code>state</code> is an assignment of values to variables. The part of the program that controls what action is executed next is called the <code>control state</code>.</p>
 
 <li><p>A new TLA&#43; spec...</p>
@@ -1428,7 +2172,7 @@ Next == Pick \/ Add1
 \* Modification History
 \* Last modified Fri Jun <span class=hljs-number >18</span> <span class=hljs-number >20</span>:<span class=hljs-number >58</span>:<span class=hljs-number >16</span> CDT <span class=hljs-number >2021</span> by mrg
 \* Created Fri Jun <span class=hljs-number >18</span> <span class=hljs-number >20</span>:<span class=hljs-number >50</span>:<span class=hljs-number >35</span> CDT <span class=hljs-number >2021</span> by mrg</code></pre>
-<ol start=258 >
+<ol>
 <li><p>To produce the PDF, type <code>Ctrl &#43; Alt &#43; P</code>.</p>
 
 <li><p>DON&#39;T use Tabs &#40;config in Preferences&#41;, F3/F4 to jump back and forth, F5 to see all defs, F6 for all uses of word under cursor, F10 is jump to PlusCal unfolded def, Oooh boxed comments are neat with <code>Ctrl&#43;O &#43; Ctrl&#43;B</code> and friends, don&#39;t shade PlusCal code, regen pdf on save, <code>Ctrl&#43;TAB</code> to swap between tabs, <code>Ctrl&#43;Alt</code> to swap between subtabs</p>
@@ -1440,7 +2184,7 @@ Next == Pick \/ Add1
 </ol>
 <pre><code class="julia hljs">FillSmall == /\ small&#x27; = <span class=hljs-number >3</span>
              /\ big&#x27; = big</code></pre>
-<ol start=262 >
+<ol>
 <li><p>Remember you can add <code>TypeOK</code> as an invariant and <code>big # 4</code> too&#33;</p>
 
 <li><p><code>big &#43; small &#61;&lt; 5</code> , not <code>big &#43; small &lt;&#61; 5</code> 🙁 </p>
@@ -1451,7 +2195,7 @@ Next == Pick \/ Add1
 
 </ol>
 <h3 id=17062021 ><a href="#17062021" class=header-anchor >17/06/2021</a></h3>
-<ol start=247 >
+<ol>
 <li><p><a href="https://unixism.net/loti/async_intro.html">io_uring tutorial here</a>, with a <a href="https://github.com/robn/yoctochat">chatbot example here</a></p>
 
 <li><p><a href="https://carllerche.com/2021/06/17/six-ways-to-make-async-rust-easier/">6 ways to make async Rust easier</a></p>
@@ -1472,7 +2216,7 @@ Next == Pick \/ Add1
 
 </ol>
 <h3 id=16062021 ><a href="#16062021" class=header-anchor >16/06/2021</a></h3>
-<ol start=230 >
+<ol>
 <li><p><a href="https://stackoverflow.com/tags/x86/info">Travis Downs recommends this x86 link dump</a> - it&#39;s great&#33; OMG it&#39;s way too much...</p>
 
 <li><p><code>git format-patch -1 --pretty&#61;fuller 3a38e874d70b</code> to format patches for the linux kernel.</p>
@@ -1491,7 +2235,7 @@ Next == Pick \/ Add1
 <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> MyArrayWrapper{A} &lt;: supertype(A)
     data::A
 <span class=hljs-keyword >end</span></code></pre>
-<ol start=237 >
+<ol>
 <li><p><code>make core</code> will maek the core tests in Julia.</p>
 
 <li><p><code>JULIA_LLVM_ARGS&#61;-timepasses ./julia</code> To time all passes&#33; Cool Stuff I learned from <code>Jameson Nash</code>. </p>
@@ -1508,7 +2252,7 @@ Next == Pick \/ Add1
 
 </ol>
 <pre><code class="julia hljs">Profile.print(C = <span class=hljs-literal >true</span>, nosiefloor = <span class=hljs-number >1</span>, mincount = <span class=hljs-number >10</span>)</code></pre>
-<ol start=244 >
+<ol>
 <li><p><code>e-&gt;Lunions &#61; oldLunions;</code> is copying by value &#40;which means a stack of 100 int32s is being copied on all that&#41;</p>
 
 <li><p>Charpov sent me <code>homework1</code> and friends - MPI assignment is Homework 5.</p>
@@ -1539,7 +2283,7 @@ Next == Pick \/ Add1
 
 </ul>
 <h3 id=15062021 ><a href="#15062021" class=header-anchor >15/06/2021</a></h3>
-<ol start=206 >
+<ol>
 <li><p>Discovered <a href="https://github.com/Genivia/ugrep">upgrep</a>, which is a very optimized grep built in Cpp. Of note are the lockless work stealing scheduler and SIMD debranchification approach. It has a very, very pretty interactive <code>ugrep -Q &#39;foo&#39;</code> mode. The debranching algo is <a href="https://www.youtube.com/watch?v&#61;kA7qZgmfwD8">exposed in this talk</a>.</p>
 
 <li><p>Rediscovered <a href="https://calculusmadeeasy.org/">Calculus made easy</a> and <a href="https://artofproblemsolving.com/school">AoPS boards</a>.</p>
@@ -1567,10 +2311,11 @@ Next == Pick \/ Add1
 <li><p>PROJECT IDEA: Open Data structures in Julia with the MIT course template.</p>
 
 <li><p>Look into <a href="https://www-zeuthen.desy.de/theory/capp2005/Course/czakon/capp05.pdf">DIANA</a> and Julian ports of it &#40;<a href="https://core.ac.uk/download/pdf/25359736.pdf">paper is here</a>, <a href="https://github.com/apik/diana">code is here</a>&#41;.</p>
+<ul>
+<li><p><a href="https://github.com/FeynCalc/feyncalc">FeynCalc</a> in Mathematica is an interesting contender: <a href="https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar">3.4 seconds</a> to calculate the Higgs decaying into a fermion-antifermion pair.</p>
 
-</ol>
-<p>- &#91;FeynCalc&#93;&#40;https://github.com/FeynCalc/feyncalc&#41; in Mathematica is an interesting contender: &#91;3.4 seconds&#93;&#40;https://feyncalc.github.io/FeynCalcExamplesMD/EW/Tree/H-FFbar&#41; to calculate the Higgs decaying into a fermion-antifermion pair.</p>
-<ol start=220 >
+</ul>
+
 <li><p>Learned how to fix a sink today: Need a stillson wrench, a bucket and a metal coat hanger. Put the bucket under the sink&#39;s elbow. Twist off the bottom of the elbow. If there&#39;s no much when you take off the cap, it&#39;s likely there&#39;s no blockage at the elbow. Next, scrape the circumferences of the sink&#39;s drain with the wire hanger, letting off a bit of water to rinse the muck. Repeat until clean, don&#39;t forget to wrench up the bottom of the elbow again.</p>
 
 <li><p>PROJECT IDEA: LLVMPassAnalyzer.jl with <a href="https://github.com/ronisbr/TextUserInterfaces.jl">Text User Interfaces.jl</a> as the backend. Or maybe <a href="https://github.com/kdheepak/TerminalUserInterfaces.jl">TerminalUserInterfaces.jl</a></p>
@@ -1580,7 +2325,7 @@ Next == Pick \/ Add1
 </ol>
 <pre><code class="julia hljs">structure <span class=hljs-built_in >Array</span> (a : <span class=hljs-built_in >Type</span> u) <span class=hljs-keyword >where</span>
     data : List a</code></pre>
-<ol start=223 >
+<ol>
 <li><p><code>eval List.map &#40;fun x &#61;&gt; x &#43; 1&#41; &#91;1, 2, 3&#93;</code> and <code>#eval List.map &#40;fun &#40;x,y&#41; &#61;&gt; x &#43; y&#41; &#91;&#40;1,2&#41;, &#40;3,4&#41;&#93; &#61;&#61; &#91;3,7&#93;</code></p>
 
 <li><p>There&#39;s <a href="https://agentultra.github.io/lean-for-hackers/">Lean for hackers</a>, and you can run your file with <code>lean --run leanpkg.lean</code>.</p>
@@ -1605,7 +2350,7 @@ Next == Pick \/ Add1
 
 </ul>
 <h3 id=11062021 ><a href="#11062021" class=header-anchor >11/06/2021</a></h3>
-<ol start=196 >
+<ol>
 <li><p><code>MXCSR</code>: Multimedia eXtension Control and Store Registers - can be accessed with <code>vldmxcsr, vstmxcsr</code></p>
 
 <li><p>The amazing <code>Jubilee</code> shares another nugget:</p>
@@ -1614,7 +2359,7 @@ Next == Pick \/ Add1
 <blockquote>
 <p>So like... the problem with those is that access to the MXCSR bit field actually can break LLVM compilation assumptions. it&#39;s literally UB. To touch it. At all. Now, it so happens that LLVM may not break your code if you actually do it, and LLVM is slowly growing the capability to handle altering MXCSR in a principled manner, but anyone touching it is doing so at their own risk, aware that it&#39;s UB.</p>
 </blockquote>
-<ol start=198 >
+<ol>
 <li><p>When going form AVX to SSE instructions, there may be a performacne penalty due to keeping the upper 128 bits of YMM registers intact - use <code>vzeroupper</code> before that to avoid all perf penalties. Also, AVX allows unaligned accesses with a perf cost, but keeping alignment will increase perf.</p>
 
 <li><p>MASM calling convention: pass first 4 float args in xmm0:3.</p>
@@ -1639,7 +2384,7 @@ Next == Pick \/ Add1
     <span class=hljs-built_in >alignas</span>(<span class=hljs-number >16</span>) XmmVal b;
     <span class=hljs-built_in >alignas</span>(<span class=hljs-number >16</span>) XmmVal c[<span class=hljs-number >8</span>];
 }</code></pre>
-<ol start=202 >
+<ol>
 <li><p>To get those xmm&#39;s into vector registers:</p>
 
 </ol>
@@ -1647,20 +2392,20 @@ Next == Pick \/ Add1
     vmovaps xmm0, xmmword ptr [rcx] ;xmm0 = a
     vmovaps xmm1, xmmword ptr [rdx] ;xmm1 = b</code></pre>
 <p>So, note you load the entire <code>xmm</code> register with <code>xmmword ptr &#91;foo&#93;</code>.</p>
-<ol start=203 >
+<ol>
 <li><p>Super cool trick to check 16 byte alignment &#40;no perf penalty&#41;</p>
 
 </ol>
 <pre><code class="julia hljs">test rcx, ofh ; jump <span class=hljs-keyword >if</span> x not aligned to <span class=hljs-number >16</span> byte boundary
 jnz Done</code></pre>
-<ol start=204 >
+<ol>
 <li><p>Macros avoid overehad of a function call.</p>
 
 <li><p>Want to transpose a matrix? Use a bunch of <code>vunpcklps</code>, <code>vunpckhps</code>, <code>vmovlhps</code>, <code>vmovhlps</code>.</p>
 
 </ol>
 <h3 id=10062021 ><a href="#10062021" class=header-anchor >10/06/2021</a></h3>
-<ol start=175 >
+<ol>
 <li><p>Assembly&#33; </p>
 
 </ol>
@@ -1684,7 +2429,7 @@ jnz Done</code></pre>
 <li><p><code>count</code> - specifies number of bytes to be written from the file into the char array</p>
 
 </ul>
-<ol start=176 >
+<ol>
 <li><p>Little-endian - smallest byte as smallest address. Derp.</p>
 
 <li><p><code>data, bss, text</code> - initialized consts/dadta, non initialized vars, code section in asm.</p>
@@ -1706,7 +2451,7 @@ jnz Done</code></pre>
 <pre><code class="julia hljs">cmp rax, <span class=hljs-number >50</span>
     jne .exit
     jmp .right ; HOT DAMN FIRST TRY YO</code></pre>
-<ol start=180 >
+<ol>
 <li><p>Only 6 args can be pass via registers, the rest are passed on the stack:</p>
 
 </ol>
@@ -1730,7 +2475,7 @@ jnz Done</code></pre>
     <span class=hljs-keyword >return</span> (a1 + a2 - a3 - a4 + a5 - a6) * a7;
 }</code></pre>
 <p>The first six are pass in the registers, and the 7th arg you have to pop from the stack: <code>push arg/ pop arg</code>. In MASM, you get 4 registers for calling convention and the rest are in 8 byte incremetns from the RSP. ALSO: After you are finished being called, you have to restor registers <code>rbp, rbx, r12:r15</code></p>
-<ol start=181 >
+<ol>
 <li><p>You can write nicer headers</p>
 
 </ol>
@@ -1742,7 +2487,7 @@ jnz Done</code></pre>
     
 		NEW_LINE   db <span class=hljs-number >0xa</span>
 		WRONG_ARGC db <span class=hljs-string >&quot;Must be two command line argument&quot;</span>, <span class=hljs-number >0xa</span></code></pre>
-<ol start=182 >
+<ol>
 <li><p><code>&#36;, &#36;&#36;</code> return the position in memory of string where <code>&#36;</code> is defined, and position in memory of current section start, resp.</p>
 
 <li><p>Why the instruction <code>mov rdi, &#36; &#43; 15</code>? You need to use the <code>objdump</code> util, and look at the line after <code>calculateStrLength</code></p>
@@ -1765,13 +2510,13 @@ Disassembly of section .text:
   <span class=hljs-number >4000</span>cd:	<span class=hljs-number >48</span> <span class=hljs-number >31</span> c0             	xor    %rax,%rax
   <span class=hljs-number >4000</span>d0:	<span class=hljs-number >48</span> <span class=hljs-number >31</span> ff             	xor    %rdi,%rdi
   <span class=hljs-number >4000</span>d3:	eb <span class=hljs-number >0</span>e                	jmp    <span class=hljs-number >4000e3</span> &lt;reverseStr&gt;</code></pre>
-<ol start=184 >
+<ol>
 <li><p>To checkif a string is set:</p>
 
 </ol>
 <pre><code class="julia hljs">test rax, rax               ; check <span class=hljs-keyword >if</span> name is provided 
     jne .copy_name</code></pre>
-<ol start=185 >
+<ol>
 <li><p>Assembly has macros&#33; These are single line</p>
 
 </ol>
@@ -1782,14 +2527,14 @@ Disassembly of section .text:
           push ebp
           mov ebp,esp
 %endmacro</code></pre>
-<ol start=186 >
+<ol>
 <li><p>Don&#39;t forget the <code>.period</code> when you <code>call .function</code>, AND in the function section titles:</p>
 
 </ol>
 <pre><code class="julia hljs">.returnTrue
     mov eax, <span class=hljs-number >1</span>
     ret</code></pre>
-<ol start=187 >
+<ol>
 <li><p>THERE&#39;S STRUCTS in ASSEMBLY?</p>
 
 </ol>
@@ -1807,7 +2552,7 @@ section .data
 section .text
 _start:
     mov rax, [p + person.name]</code></pre>
-<ol start=187 >
+<ol>
 <li><p><a href="https://0xax.github.io/asm_7/">Call C from assembly, assembly from C</a></p>
 
 <li><p>x86 has 8 registers for floats, they are 10 bytes each, labeled from ST0:ST7</p>
@@ -1848,7 +2593,7 @@ _start:
 		mov rdi, EXIT_CODE
 		syscall</code></pre>
 <p>You have data in <code>radius</code> and <code>result</code>. <code>fld qword &#91;radius&#93;</code> stores radius in ST0, and again in ST1. <code>fmul</code> then multiplies both and puts it in ST0. Load pi with <code>fldpi</code>, multiply, and store that result with <code>fstp qword &#91;result&#93;</code>. C calling convention: pass floats to system through <code>xmm</code> registers, so you have to declare how many you are using - do that with <code>mov rax, 0</code>, <code>movq xmm0, &#91;result&#93;</code>, <code>call printResult</code>, then exit.</p>
-<ol start=189 >
+<ol>
 <li><p><a href="https://cs.lmu.edu/~ray/notes/nasmtutorial/">GREAT ASSEMBLY TUTORIAL</a></p>
 
 <li><p><code>shl</code> must use register <code>cl</code> to make the shifts.</p>
@@ -1863,18 +2608,21 @@ _start:
 
 </ol>
 <h3 id=09062021 ><a href="#09062021" class=header-anchor >09/06/2021</a></h3>
-<ol start=166 >
+<ol>
 <li><p><a href="https://wgtm21.netlify.app/parallel_julia/">Parallel Computing course</a> by WestGrid Canada &#43; HPC.</p>
 
 <li><p><a href="https://vcpkg.io/en/getting-started.html">vcpkg</a> sounds like a decent package manager for Cpp.</p>
 
 <li><p>LLVM Tips and tricks: </p>
+<ul>
+<li><p>Use Ninja and tons of flags to speedup compilation: don&#39;t build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info,</p>
+
+<li>
+</ul>
 
 </ol>
-<p>- Use Ninja and tons of flags to speedup compilation: don&#39;t build all backends, use the new pass manager, only target host architecture, optimized tablegen, release with debug info,
--</p>
 <p>170.<a href="https://ohshitgit.com/">oh shit git</a> seems neat&#33;</p>
-<ol start=171 >
+<ol>
 <li><p>To see what is actually printed after macro replacements, use <code>clang -E foo.c</code>.</p>
 
 <li><p><code>LLVM Bugpoint</code> does case test reduction</p>
@@ -1889,12 +2637,12 @@ _start:
   <span class=hljs-comment >; CHECK: @test()</span>
   <span class=hljs-comment >; CHECK: ret i32 9</span>
 }</code></pre>
-<ol start=174 >
+<ol>
 <li><p><a href="https://github.com/0xAX/asm">Best Tutorial for x86</a> I could find, and free&#33; Now I gotta write syscalls snippets for the bloat...</p>
 
 </ol>
 <h3 id=08062021 ><a href="#08062021" class=header-anchor >08/06/2021</a></h3>
-<ol start=164 >
+<ol>
 <li><p>Lord help me my <code>Learn LLVM 12</code> book is here and I&#39;m learning C&#43;&#43; to be an uber Julia hacker. Taking the <code>C&#43;&#43; Beyond the Basics</code> course by Kate Gregory I learned</p>
 
 </ol>
@@ -2050,7 +2798,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 <li><p>add <code>override</code> after virtual ops, type your enmus, default value inits structs <code>int value &#61; 5</code>, </p>
 
 </ul>
-<ol start=165 >
+<ol>
 <li><p>Rust tips: Finally found a decent SIMD tutorial for Rust&#33; I learned that ISCP is a C SIMD dialect to get super optimal performance. Instead of their Hello world, we can try doing something like this:</p>
 
 </ol>
@@ -2063,7 +2811,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 }</code></pre>
 <p>that exploits the <code>x.len&#40;&#41;</code> to pass that info to LLVM for more optims.</p>
 <h3 id=05062021 ><a href="#05062021" class=header-anchor >05/06/2021</a></h3>
-<ol start=162 >
+<ol>
 <li><p><a href="https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html">Introduction to Undefined Behaviour</a> and a blog post by <a href="https://blog.regehr.org/archives/213">John Regehr</a> - time to grok some of this nonsense.</p>
 
 </ol>
@@ -2073,12 +2821,12 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 <li><p>Oh damn, the first post is by Chris Lattner, author of LLVM o.0</p>
 
 </ul>
-<ol start=163 >
+<ol>
 <li><p><code>@agustinc3301</code> kindly helped me setup Cloudflare analytics on my Franklin.jl blog. It&#39;s free and quick&#33; You verify your account after signing up and then add the link to your Franklin footer in <code>_layout/foot.html</code> and <code>page_foot.html</code> &#40;I think.&#41;. That did it&#33; Now I can see redditors accessing the <code>Julia To Rust</code> post  🔎 </p>
 
 </ol>
 <h3 id=04062021 ><a href="#04062021" class=header-anchor >04/06/2021</a></h3>
-<ol start=159 >
+<ol>
 <li><p><code>Jubilee</code> recommends capturing mutation to smaller scopes in Rust instead of the C-ish idiom of mutation everywhere:</p>
 
 </ol>
@@ -2103,7 +2851,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
         mag[i] = dmags[<span class=hljs-number >0</span>];
         mag[i + <span class=hljs-number >1</span>] = dmags[<span class=hljs-number >1</span>];
     }</code></pre>
-<ol start=160 >
+<ol>
 <li><p>To run <code>cargo watch</code> on a non-standard file, use <code>cargo watch -c -x &quot;run --examples dot_product&quot;</code>. Credit to <code>Lokathor</code>.</p>
 
 <li><p>Finally got the code working for the <code>dot_product.rs</code>&#33; in the end, it wasn&#39;t so scary:</p>
@@ -2118,7 +2866,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
     .<span class="hljs-title function_ invoke__">sum</span>()
 }</code></pre>
 <h3 id=03062021 ><a href="#03062021" class=header-anchor >03/06/2021</a></h3>
-<ol start=155 >
+<ol>
 <li><p>Rust syntax for updating structs with <code>..other_struct</code> is very neat.</p>
 
 <li><p><code>if let Some&#40;word&#41; &#61; ... &#123;&#125;</code></p>
@@ -2129,7 +2877,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 
 </ol>
 <h3 id=31052021 ><a href="#31052021" class=header-anchor >31/05/2021</a></h3>
-<ol start=152 >
+<ol>
 <li><p><code>make -C debug</code> julia builds are much faster to build because you are not optimizing anymore - hat tip to Jameson Nash for that.</p>
 
 <li><p>LLVM trap is what calls unreachable - tells the runtime that this should never happen. Basically checking that codegen didn&#39;t screw up.</p>
@@ -2138,7 +2886,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 
 </ol>
 <h3 id=30052021 ><a href="#30052021" class=header-anchor >30/05/2021</a></h3>
-<ol start=151 >
+<ol>
 <li><p>Finally got the hang of the Rust <code>dbg&#33;</code> macro:</p>
 
 </ol>
@@ -2148,7 +2896,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 <span class=hljs-built_in >assert_eq!</span>(b, <span class=hljs-number >5</span>);</code></pre>
 <p>Very useful for the competitive problems debugging&#33;</p>
 <h3 id=27052021 ><a href="#27052021" class=header-anchor >27/05/2021</a></h3>
-<ol start=145 >
+<ol>
 <li><p>Finally got around to the <code>nucleotide</code> in Rust exercism. My solution was a bit C-ish, this is neater: &#40;Credits to <code>azymohliad</code>, but with no <code>Err</code>&#41;</p>
 
 </ol>
@@ -2162,7 +2910,7 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 <p>Another clever initialization trick by <code>jtmueller</code>:</p>
 <pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >counts</span>: HashMap&lt;<span class=hljs-type >char</span>, <span class=hljs-type >usize</span>&gt; = [<span class=hljs-string >&#x27;A&#x27;</span>, <span class=hljs-string >&#x27;C&#x27;</span>, <span class=hljs-string >&#x27;T&#x27;</span>, <span class=hljs-string >&#x27;G&#x27;</span>].<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">map</span>(|n| (*n, <span class=hljs-number >0</span>)).<span class="hljs-title function_ invoke__">collect</span>();</code></pre>
 <p>Probs worth using <code>HashMap::with_capacity&#40;4&#41;</code> since I know there&#39;s only <code>ACTG</code> as keys.</p>
-<ol start=147 >
+<ol>
 <li><p>Rust: <code>use enum::*;</code>, and then you don&#39;t need to <code>enum::foo</code> all over your match arms&#33;</p>
 
 <li><p>I learned about the <code>slice.windows&#40;2&#41;</code> function in the <code>sublist</code> exercise, <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.windows">link here</a></p>
@@ -2174,14 +2922,14 @@ v4.<span class=hljs-built_in >erase</span>(endv4, <span class=hljs-built_in >end
 <span class=hljs-built_in >assert_eq!</span>(iter.<span class="hljs-title function_ invoke__">next</span>().<span class="hljs-title function_ invoke__">unwrap</span>(), &amp;[<span class=hljs-string >&#x27;u&#x27;</span>, <span class=hljs-string >&#x27;s&#x27;</span>]);
 <span class=hljs-built_in >assert_eq!</span>(iter.<span class="hljs-title function_ invoke__">next</span>().<span class="hljs-title function_ invoke__">unwrap</span>(), &amp;[<span class=hljs-string >&#x27;s&#x27;</span>, <span class=hljs-string >&#x27;t&#x27;</span>]);
 <span class=hljs-built_in >assert!</span>(iter.<span class="hljs-title function_ invoke__">next</span>().<span class="hljs-title function_ invoke__">is_none</span>());</code></pre>
-<ol start=149 >
+<ol>
 <li><p>Difference between <code>show</code> and <code>print</code>: <code>print</code> uses quotes around the string, <code>show</code> doesn&#39;t, and this </p>
 
 <li><p>Rust: <code>map.entry&#40;letter&#41;.or_insert&#40;0&#41;&#41; &#43;&#61; 1</code></p>
 
 </ol>
 <h3 id=26052021 ><a href="#26052021" class=header-anchor >26/05/2021</a></h3>
-<ol start=144 >
+<ol>
 <li><p>FINALLY GOT THE ASSEMBLY HELLO WORLD TO WORK&#33;</p>
 
 </ol>
@@ -2225,7 +2973,7 @@ IntegerAddSub_:
 
 </ul>
 <h3 id=24052021 ><a href="#24052021" class=header-anchor >24/05/2021</a></h3>
-<ol start=138 >
+<ol>
 <li><p>Made a 3D print of dispatch with my sister. It was an awesome birthday.</p>
 
 <li><p>Got DoctorDocstrings.jl Poster and Rubin.jl Lightning talk accepted to JuliaCon&#33; Now to work on those asap...</p>
@@ -2240,12 +2988,12 @@ IntegerAddSub_:
 
 </ol>
 <h3 id=21052021 ><a href="#21052021" class=header-anchor >21/05/2021</a></h3>
-<ol start=137 >
+<ol>
 <li><p>Finally remembered to setup <code>mu</code>. Let&#39;s <a href="https://www.sastibe.de/2021/01/setting-up-emacs-as-mail-client/">see if I can finally do it...</a></p>
 
 </ol>
 <h3 id=18052021 ><a href="#18052021" class=header-anchor >18/05/2021</a></h3>
-<ol start=135 >
+<ol>
 <li><p>Vim tricks from Emacs doom&#33; RTFM to change the font to Julia mono&#33;</p>
 
 </ol>
@@ -2269,7 +3017,7 @@ IntegerAddSub_:
 <li><p><code>&#39;</code> and <code>&#39;&#39;</code> to set a mark and jump back and forth between them</p>
 
 </ul>
-<ol start=136 >
+<ol>
 <li><p>Kevin Bonham is helping me figure out the Emacs tabbing situation:</p>
 
 </ol>
@@ -3719,7 +4467,7 @@ pub fn total() -&gt; u64 {
 <p>Today I got my website setup&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: March 29, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 08, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
