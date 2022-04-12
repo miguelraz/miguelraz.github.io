@@ -4465,9 +4465,386 @@ pub fn total() -&gt; u64 {
 <p>Credit to Wow-BOB-Wow.</p>
 <h3 id=27102020 ><a href="#27102020" class=header-anchor >27/10/2020</a></h3>
 <p>Today I got my website setup&#33;</p>
+<hr />
+<h3 id=04082022 ><a href="#04082022" class=header-anchor >04/08/2022</a></h3>
+<ol start=579 >
+<li><p>Today I restart this diary but going the other way...fuck Markdown auto formatting.</p>
+
+<li><p>Some attributes are unsafe o.0.</p>
+
+<li><p>Your error types should implement the <code>std::error:Error</code> trait, <code>Display/Debug</code></p>
+
+<li><p>Type-erased errors often compose nicely.</p>
+
+<li><p>If your error is <code>Box&lt;dyn Error &#43; Send &#43; Sync &#39;static&gt;</code> then you can <code>Downcast</code> it: you can take an err of one type and cast it to a more specific type when calling: you can use <code>Error::downcast_ref</code> on an <code>std::io::Error</code> to get a <code>std::io::ErrorKind::WouldBlock</code>, but <code>downcast_ref</code> requires its arg to be <code>&#39;static</code>.</p>
+
+<li><p>You can only obtain <code>&#33;</code> &#40;the Never type&#41; by infinte looping or panicking or very special occasions, and the compiler can actually optimize your code based on that, since it knows that branch never returns. If you write a func that returns <code>Result&lt;T, &#33;&gt;</code>, you can&#39;t return an <code>Err</code>.</p>
+
+<li><p><code>?</code> does unwrap or early return.</p>
+
+<li><p>&quot;Implement <code>From</code>, use <code>Into</code> in bounds.&quot; Since there is a blanket impl for getting an <code>Into</code> from anything that uses <code>From</code>.</p>
+
+<li><p>An early return here would be bad because it may skip the cleanup:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">do_the_thing</span>() <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >Result</span>&lt;(), Error&gt; {
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >thing</span> = Thing::<span class="hljs-title function_ invoke__">setup</span>()?
+    <span class=hljs-comment >// .. code that uses thing and ?</span>
+    thing.<span class="hljs-title function_ invoke__">cleanup</span>();
+    <span class="hljs-title function_ invoke__">OK</span>(())
+}
+<span class=hljs-comment >// vs</span>
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">do_the_thing</span>() <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >Result</span>&lt;(), Error&gt; {
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >thing</span> = Thing::<span class="hljs-title function_ invoke__">setup</span>()?
+    <span class=hljs-keyword >let</span> <span class=hljs-variable >r</span> = <span class=hljs-keyword >try</span> {
+    <span class=hljs-comment >// .. code that uses thing and ?</span>
+    };
+    thing.<span class="hljs-title function_ invoke__">cleanup</span>();
+    r</code></pre>
+<ol start=588 >
+<li><p>Just because it has <code>&#33;</code> at the func name doesn&#39;t mean it&#39;s a declarative macro, like <code>macro_rules&#33;</code> and <code>format_args&#33;</code> - just means that some source code will be replaced/changed at compile time.</p>
+
+<li><p>Declarative macros always generate valid Rust as output.</p>
+
+<li><p><code>:ident</code>, <code>:ty</code>, <code>:tt</code> are known as <code>fragment types</code>.</p>
+
+<li><p>Macro variable identifiers existing in their own namespace &#61;&gt; no name clashes &#61;&gt; <code>hygienic</code>. Doesn&#39;t happen for Types, Modules and Functions within the call site &#40;so that you can define them inside the macro and use them outside&#41;.</p>
+
+<li><p>Avoid <code>::std</code> paths so that macros can be used on <code>no_std</code> crates.</p>
+
+<li><p>You can escape/share identifiers with <code>&#36;foo:ident</code>&#33;</p>
+
+<li><p>Macros must respect import order - even in <code>lib.rs</code> so <code>mod foo; mod bar;</code> will let macros from <code>foo</code> be used in <code>bar</code>, and not vice versa.</p>
+
+<li><p>In procedural macros you can affect <em>how</em> the parsed code is generated, and aren&#39;t required to be hygienic.</p>
+
+</ol>
+<ul>
+<li><p>function-like macros need <code>Span::call_site</code> and <code>Span::mixed_site</code></p>
+
+<li><p>attribute macros are like <code>#&#91;test&#93;</code></p>
+
+<li><p><code>#&#91;derive&#93;</code> macros add to, don&#39;t replace token trees that come after them.</p>
+
+<li><p>consider using the <code>syn</code> crate for macros, and using it in debug mode, and turning off features.</p>
+
+<li><p>compile time pure computations sound like something good that a function-like macro can do.</p>
+
+<li><p>testing configs and middleware like logging/tracing can be a good place for attribute macros</p>
+
+</ul>
+<ol start=596 >
+<li><p><code>TokenStream</code> implements <code>Display</code>, which is handy for debugging&#33;</p>
+
+<li><p>To propagate user errors like <code>u31</code> as a type, consider the <code>compiler_error&#33;</code> macro.</p>
+
+<li><p>Async interfaces are mthods that return a <code>Poll</code>, as defined here:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >enum</span> <span class="hljs-title class_">Poll</span>&lt;T&gt; {
+    <span class="hljs-title function_ invoke__">Ready</span>(T),
+    Pending
+}</code></pre>
+<ol start=597 >
+<li><p>Polling is standardized via the <code>Future</code> trait:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >trait</span> <span class="hljs-title class_">Future</span> {
+    <span class=hljs-keyword >type</span> <span class="hljs-title class_">Output</span>;
+    <span class=hljs-keyword >fn</span> <span class="hljs-title function_">poll</span>(&amp;<span class=hljs-keyword >mut</span> <span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> Poll&lt;<span class=hljs-keyword >Self</span>::Output&gt;;
+}</code></pre>
+<p>types that implement this trait are called <code>futures</code> &#40;or <em>promises</em> in other langs&#41;.</p>
+<ol start=598 >
+<li><p>Don&#39;t poll futures after they have return a <code>Poll:Ready</code>, or they panic. If it&#39;s safe to do, it&#39;s called a <code>fused future</code>.</p>
+
+<li><p><code>Receiver</code> and <code>Iterator</code> look very similar, in some sense - they might be fused in the future&#33; &#40;async iterators are called <code>streams</code>&#41;.</p>
+
+<li><p><code>Generators</code> are chunks of code with some extra compiler generated bits that enable it to stop/<code>yield</code> its execution midway and resume later from the yieldpoint. Not yet in stable Rust but used internally.</p>
+
+<li><p>Generators need to store a bunch of internal state to be able to resume - if your app spends too much time in <code>memcpy</code>, perhaps its the generators. Rust checks that references across these internal states obey the ownership system.</p>
+
+<li><p>What happens when code isnide an <code>async</code> block takes a ref to a local var? The point is that the polling can give you <code>self-referential</code> data which holds both the data and the refs to that data, but the polling has moved it&#33; To solve this conundrum, you use <code>Pin</code>, a wrapper type that prevents the underlying type from being &#40;safely&#41; moved and <code>Unpin</code> is a marker trait that the implementing type <em>can</em> be removed safely from a <code>Pin</code>.</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-comment >// What you get from using Pin to implement Future</span>
+<span class=hljs-keyword >trait</span> <span class="hljs-title class_">Future</span> {
+    <span class=hljs-keyword >type</span> <span class="hljs-title class_">Output</span>;
+    <span class=hljs-keyword >fn</span> <span class="hljs-title function_">poll</span>(<span class=hljs-keyword >self</span>: Pin&lt;&amp;<span class=hljs-keyword >mut</span> <span class=hljs-keyword >self</span>&gt;) <span class=hljs-punctuation >-&gt;</span> Poll&lt;<span class=hljs-keyword >Self</span>::Output&gt;;
+}</code></pre>
+<p>This means that &quot;once you have the value behind a <code>Pin</code>, that value will never move again.&quot;</p>
+<ol start=603 >
+<li><p>Notice the implementation of Pin:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >struct</span> <span class="hljs-title class_">Pin</span>&lt;P&gt; {pointer: P}
+<span class=hljs-keyword >impl</span>&lt;P&gt; Pin&lt;P&gt; <span class=hljs-keyword >where</span> P: Deref {
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >unsafe</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">new_unchecked</span>(pointer: P) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-keyword >Self</span>;
+}
+<span class=hljs-keyword >impl</span>&lt;<span class=hljs-symbol >&#x27;a</span>, T&gt; Pin&lt;&amp;<span class=hljs-symbol >&#x27;a</span> <span class=hljs-keyword >mut</span> T&gt; {
+    <span class=hljs-keyword >pub</span> <span class=hljs-keyword >unsafe</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">get_unchecked_mut</span>(<span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> &amp;<span class=hljs-symbol >&#x27;a</span> <span class=hljs-keyword >mut</span> T;
+}
+<span class=hljs-keyword >impl</span>&lt;P&gt; Deref <span class=hljs-keyword >for</span> <span class="hljs-title class_">Pin</span>&lt;P&gt; <span class=hljs-keyword >where</span> P: Deref {
+    <span class=hljs-keyword >type</span> <span class="hljs-title class_">Target</span> = P::Target;
+    <span class=hljs-keyword >fn</span> <span class="hljs-title function_">deref</span>(&amp;<span class=hljs-keyword >self</span>) <span class=hljs-punctuation >-&gt;</span> &amp;<span class=hljs-keyword >Self</span>::Target;
+}</code></pre>
+<ul>
+<li><p>we hold a <em>pointer type</em>: <code>Pin&lt;Box&lt;MyType&gt;&gt;</code>/<code>Pin&lt;Rc&lt;MyType&gt;&gt;</code> and not <code>Pin&lt;MyType&gt;</code></p>
+
+<li><p>the constructor is unsafe&#33; and the <code>get</code> method is unchecked - so that any moving is your responsibility</p>
+
+<li><p><code>Pin::set</code> can drop a value in place and store a new value - and yet fulfill the contract that the old value was never accessed outside of a <code>Pin</code> after it was placed there&#33;</p>
+
+</ul>
+<ol start=604 >
+<li><p>Git saves files more like this:</p>
+
+</ol>
+<pre><code class="julia hljs">V1    V2 V3 V4 V5
+File A   A1 A1 A2 A2
+File B   B  B  B1 B2
+File C   C1 C2 C2 C3</code></pre>
+<p>and <code>vcs</code> does it more on a &quot;delta based&quot; version:</p>
+<pre><code class="julia hljs">V1   V2 V3 V4 V5
+Fila A  Δ<span class=hljs-number >1</span> -&gt; Δ<span class=hljs-number >2</span>
+File B  -&gt; -&gt; Δ<span class=hljs-number >1</span> Δ<span class=hljs-number >2</span>
+File C  -&gt; Δ<span class=hljs-number >1</span> -&gt; Δ<span class=hljs-number >3</span></code></pre>
+<p>and 99&#37; of stuff can be done locally - you don&#39;t need a central server to answer you.</p>
+<ol start=605 >
+<li><p>Because Git checksums all file stores and is referred to by the checksum, you can&#39;t just swap files without detection.</p>
+
+<li><p>Git has 3 stages &#40;<em>IMPORTANT</em>&#41;:</p>
+
+</ol>
+<ul>
+<li><p><em>modified</em> -&gt; the working tree: single checkout of one version of the project. Files pulled from compressed database.</p>
+
+<li><p><em>staged</em>   -&gt; the staging area: a file of what goes into the next commit &#40;or <code>git index</code>&#41;.</p>
+
+<li><p><em>committed</em>-&gt; the .git directory &#40;repository&#41;: where Git stores metadata and object database for the project &#40;Most important part, this is what you clone form other repos&#41;.</p>
+
+</ul>
+<ol start=607 >
+<li><p>Basic configs, in ascending priority level:</p>
+
+</ol>
+<p>- <code>&#91;path&#93;/etc/gitconfig</code> - applied to all usrs on system and their repos.
+- <code>~/.gitconfig</code> or <code>~/.config/git/config</code> - applied to you as user
+- <code>.git/config</code> for single repo</p>
+<ol start=608 >
+<li><p>Set <code>main</code> as the default branch name:</p>
+
+</ol>
+<pre><code class="bash hljs">git config --global init.defaultBranch main</code></pre>
+<ol start=609 >
+<li><p><code>git help &lt;verb&gt;</code> is a canonical way to get help, <code>git add -h</code> is an abbreviated way to get help/show flags.</p>
+
+<li><p>If anyone has any clone of your repo, they have the entire history of it, and can restore it if needed.</p>
+
+<li><p>Untracked files are files that weren&#39;t in the last snapshot.</p>
+
+<li><p>Once you stage it, it gets committed.</p>
+
+<li><p>Use <code>git status -s &#40;or --short&#41;</code> to get a nice summary of where you are.</p>
+
+<li><p><code>.gitignore</code> can respect glob patters and ignores <code>#</code> lines</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-comment ># ignroes all .a files</span>
+*.a 
+
+<span class=hljs-comment >#but do track lib.a</span>
+!lib.a
+
+<span class=hljs-comment >#ignore all files in any dir named build</span>
+build/
+
+ignore all .pdf files <span class=hljs-keyword >in</span> the doc/ dir and its subdirs
+doc/**/*.pdf</code></pre>
+<ol start=615 >
+<li><p><code>git diff --staged</code> and <code>git diff --cached</code> are synonyms.</p>
+
+<li><p><code>git difftool --tool&#61;vimdiff</code> looks cool.</p>
+
+<li><p>Can declare inline commit message with <code>git commit -m</code>, and <code>git commit -am</code> will skip the need to stage the file and <em>then</em> committing.</p>
+
+<li><p><code>git rm -f README</code> requires extra args to prevent misuse. To remove a file from staging area, do <code>git rm --cached README</code>.</p>
+
+<li><p><code>git mv README.md README</code> can save you some commands.</p>
+
+<li><p><code>git log --stat</code> is neat, <code>git log --compact-summary</code> is neat,</p>
+
+<li><p><code>git log --pretty-format: &#37;h &#37;s --graph</code> is super neat, add it as a command.</p>
+
+<li><p>Limit log out put with <code>-2</code> but also with <code>--since</code> and <code>--until</code>: <code>git log --since&#61;2.weeks</code>. Combine with <code>--author&#61;&quot;John Smit&quot;</code> and you have a rat&#33;</p>
+
+<li><p><code>git log -S function name</code> is known as the <code>pickaxe option</code>: Takes a string and only shows the commits that altered the count of the string.</p>
+
+<li><p><code>git log -- path/to/file</code> gives you history</p>
+
+<li><p><code>git log --no-merges</code> can help reduce noise&#33;</p>
+
+<li><p>Committed to early? try <code>git commit --amend</code> literally overwrites the previous commit with a new one. Only do it for local changes, and not those that have been pushed.</p>
+
+<li><p><strong>UNSTAGE A FILE</strong>:<code>git reset HEAD &lt;FILE&gt;</code> to unstage a file</p>
+
+<li><p><strong>UNMODIFY A MODIFIED FILE</strong>: <code>git checkout -- &lt;FILE&gt;</code>. &#40;Dangerous - any local chanes are gone.&#41;</p>
+
+<li><p>The previous 2 can be done with <code>git restore</code>:</p>
+
+</ol>
+<pre><code class="bash hljs">git restore --staged &lt;FILE&gt; <span class=hljs-comment ># unstages a file</span>
+git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file</span></code></pre>
+<ol start=630 >
+<li><p><code>git fetch &lt;remote&gt;</code> goes out and copies all the data from that remote project.</p>
+
+<li><p>Fast forward if possible, else create a merge commit: <code>git config --global pull.rebase &quot;false&quot;</code> vs you want to rebase while pulling: <code>git config --global pull.rebase &quot;true&quot;</code>.</p>
+
+<li><p><code>git push &lt;remote&gt; &lt;branch&gt;</code>.</p>
+
+<li><p><code>git remote show origin</code> shows you all the branches you have made to the repo and their current status &#40;up to date, fast-forwardble, local out of date&#41;</p>
+
+<li><p><code>git remote set-url remote-name new-url</code></p>
+
+<li><p>List tags: <code>git tag</code>, and <code>git tag -l &quot;v1.8.5*&quot;</code> will glob accordingly</p>
+
+<li><p>Annotated tags have a bunch of metadata and can be signed and verified - make one with <code>git tag -a v1.4 -m &quot;My version 1.4&quot;</code>, and then you can do <code>git show v1.4</code></p>
+
+<li><p>Git tags can be added after the fact: just do <code>git log --pretty&#61;oneline</code> and then <code>git tag -a v1.2 asdfbd</code>.</p>
+
+<li><p>Git doesn&#39;t push tags by default, you need to <code>git push origin &lt;tagname&gt;</code>, or <code>git push origin --tags</code>. To delete a tag locally use <code>git tag -d &lt;tagname&gt;</code> and remotely do <code>git push origin --delete &lt;tagname&gt;</code>.</p>
+
+<li><p>Setup aliases with <code>git config --global alias.co checkout</code></p>
+
+<li><p><code>git log --oneline --decorate --all --graph</code> is cooool and <code>git config --global alias.gg &#39;log --oneline --decorate --graph&#39;</code> is very neat for a <code>git gg</code>.</p>
+
+</ol>
+<h3 id=10042022 ><a href="#10042022" class=header-anchor >10/04/2022</a></h3>
+<ol start=641 >
+<li><p>A commit in Github is </p>
+
+</ol>
+<ul>
+<li><p>a size</p>
+
+<li><p>a hash</p>
+
+<li><p>a tree</p>
+
+<li><p>an author</p>
+
+<li><p>a committer</p>
+
+</ul>
+<p>pointing to a <code>tree</code> which is</p>
+<ul>
+<li><p>a size</p>
+
+<li><p>a blob per file</p>
+
+<li><p>pointing to each blob</p>
+
+</ul>
+<p>and each <code>blob</code> contains</p>
+<ul>
+<li><p>a hash</p>
+
+<li><p>its size</p>
+
+</ul>
+<p>Each commit pointing to its tree/snapshot but the parent commit is pointing to another commit&#39;s hash.</p>
+<ol start=642 >
+<li><p>A <code>git branch</code> is a movable pointer to one of these commits.</p>
+
+<li><p>To know what branch you&#39;re currently on, git keeps a special pointer called <code>HEAD</code>.</p>
+
+<li><p>If you want to know to which branch the pointers are pointing to, use <code>--decorate</code></p>
+
+<li><p>Some commits from a diff branch may be hidden - use <code>git log &lt;branch&gt;</code> or <code>git log --all</code> to show them all.</p>
+
+<li><p>Switching branches <em>changes files</em> in your working directory.</p>
+
+<li><p><code>git log --oneline --decorate --graph --all</code> goes from bottom to top.</p>
+
+<li><p><code>git checkout -b &lt;newbranchname&gt;</code> and <code>git switch -c &lt;new-branch&gt;</code> are identical. <code>git switch testing-branch</code> also works.</p>
+
+<li><p>When there&#39;s no divergent work to merge together, it&#39;s called a <code>fast-forward</code>.</p>
+
+<li><p>Merge commits have 3 parents - can you have N parents?</p>
+
+<li><p><code>git checkout master</code> -&gt; <code>git merge iss53</code> ☑ </p>
+
+<li><p><code>git mergetool</code> 👀 is setup with <code>git config --global merge.tool nvimdiff</code>.</p>
+
+</ol>
+<h3 id=11042022 ><a href="#11042022" class=header-anchor >11/04/2022</a></h3>
+<ol start=653 >
+<li><p>Rested.</p>
+
+</ol>
+<h3 id=12042022 ><a href="#12042022" class=header-anchor >12/04/2022</a></h3>
+<ol start=654 >
+<li><p>Just don&#39;t rename branches that are not local to you. CI can also break from a <code>master</code> rename, but if you must, use <code>bit branch --move master main</code> the <code>git push origin --delete master</code>.</p>
+
+<li><p><a href="https://github.com/googleprojectzero/weggli">Weggli</a> is a semantic search tool for C/C&#43;&#43;</p>
+
+<li><p>The point of <code>Pin</code> is to have target types that contain references to themselves and give the methods a guarantee a that the target type hasn&#39;t moved &#40;and that the internal self references remain valid&#41;.</p>
+
+<li><p><code>Unpin</code> is an auto-trait &#40;if all your struct fields are <code>Unpin</code>, your struct is also <code>Unpin</code>&#41;. Which means you kinda have to opt out of <code>Unpin</code>.</p>
+
+<li><p><code>pub unsafe fn foo&#40;...&#41; &#123;&#125;</code> is considered a mistake because it doesn&#39;t help you reduce the <code>footgun radius</code> lol. The first means <code>I swear X, Y, Z is upheld in this code</code>, and <code>unsafe &#123;...&#125;</code> means that all the unsafe contracts within the block are contained/upheld.</p>
+
+<li><p>Big things to do in unsafe blocks: deal with raw pointer types like <code>*const T</code> and <code>*mut T</code>.</p>
+
+<li><p>Types of unsafe:</p>
+
+</ol>
+<ul>
+<li><p>Non-Rust interfaces</p>
+
+<li><p>skip safety checks</p>
+
+<li><p>custom invariatns</p>
+
+</ul>
+<ol start=661 >
+<li><p><code>std::hint::unreachable_unchecked</code> is a common use of <code>unsafe</code>.</p>
+
+<li><p>You can do <code>std::ptr::&#123;read,write&#125;::&#123;unaligned,volatile&#125;</code> to use <code>odd pointers</code> - they don&#39;t meet Rust&#39;s assumptions of alignment or size.</p>
+
+<li><p><code>Send/Sync</code> means that a type is safe to send / share across threads, respectively.</p>
+
+<li><p>It is commone to forget to add bounds to generic parameters for unsafe impls of Send and Sync: <code>unsafe impl&lt;T: Send&gt; Send for MyUnsafeType&lt;T&gt; &#123;&#125;</code>.</p>
+
+<li><p><code>unsafe</code> is for memory unsafety, not per se for business logic.</p>
+
+<li><p>There&#39;s 3 big types of <code>UNDEFINED BEHAVIOR</code> manifestations:</p>
+
+</ol>
+<ul>
+<li><p>not at all &#40;can change with diff compilers/hardware/surrounding code change&#41;</p>
+
+<li><p>visible errors &#40;at least you can debug something&#41;</p>
+
+<li><p>invisible corruption &#40;god help you&#41;</p>
+
+</ul>
+<ol start=667 >
+<li><p><a href="https://www.ralfj.de/blog/2020/12/14/provenance.html">We need Better Language Specs</a> by Ralf Jung - a Rust PL researcher.</p>
+
+<li><p><code>Validity</code>: rules for what values a given type can inhabit</p>
+
+</ol>
+<ul>
+<li><p>Ref types can never dangle, must always be aligned, must always point to a valid value of their target type, shared and an exclusive ref can&#39;t coexist simultaneously, etc</p>
+
+</ul>
+<ol start=669 >
+<li><p>Niche optimization: Since a reference can never be all zeros, an <code>Option&lt;&amp;T&gt;</code> can use all zeros to represent <code>None</code> and avoid the extra byte and allocation. Also applies to <code>Option&lt;Option&lt;bool&gt;&gt;</code></p>
+
+</ol>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 08, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 12, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
