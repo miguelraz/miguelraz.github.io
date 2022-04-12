@@ -3640,3 +3640,243 @@ Credit to Wow-BOB-Wow.
 ### 27/10/2020
 
 Today I got my website setup!
+
+
+
+----
+### 04/08/2022
+
+579. Today I restart this diary but going the other way...fuck Markdown auto formatting.
+580. Some attributes are unsafe o.0.
+581. Your error types should implement the `std::error:Error` trait, `Display/Debug`
+582. Type-erased errors often compose nicely.
+583. If your error is `Box<dyn Error + Send + Sync 'static>` then you can `Downcast` it: you can take an err of one type and cast it to a more specific type when calling: you can use `Error::downcast_ref` on an `std::io::Error` to get a `std::io::ErrorKind::WouldBlock`, but `downcast_ref` requires its arg to be `'static`.
+584. You can only obtain `!` (the Never type) by infinte looping or panicking or very special occasions, and the compiler can actually optimize your code based on that, since it knows that branch never returns. If you write a func that returns `Result<T, !>`, you can't return an `Err`.
+585. `?` does unwrap or early return.
+586. "Implement `From`, use `Into` in bounds." Since there is a blanket impl for getting an `Into` from anything that uses `From`.
+587. An early return here would be bad because it may skip the cleanup:
+```rust
+fn do_the_thing() -> Result<(), Error> {
+    let thing = Thing::setup()?
+    // .. code that uses thing and ?
+    thing.cleanup();
+    OK(())
+}
+// vs
+fn do_the_thing() -> Result<(), Error> {
+    let thing = Thing::setup()?
+    let r = try {
+    // .. code that uses thing and ?
+    };
+    thing.cleanup();
+    r
+```
+588. Just because it has `!` at the func name doesn't mean it's a declarative macro, like `macro_rules!` and `format_args!` - just means that some source code will be replaced/changed at compile time.
+589. Declarative macros always generate valid Rust as output.
+590. `:ident`, `:ty`, `:tt` are known as `fragment types`.
+591. Macro variable identifiers existing in their own namespace => no name clashes => `hygienic`. Doesn't happen for Types, Modules and Functions within the call site (so that you can define them inside the macro and use them outside).
+592. Avoid `::std` paths so that macros can be used on `no_std` crates.
+593. You can escape/share identifiers with `$foo:ident`!
+594. Macros must respect import order - even in `lib.rs` so `mod foo; mod bar;` will let macros from `foo` be used in `bar`, and not vice versa.
+595. In procedural macros you can affect *how* the parsed code is generated, and aren't required to be hygienic.
+- function-like macros need `Span::call_site` and `Span::mixed_site`
+- attribute macros are like `#[test]`
+- `#[derive]` macros add to, don't replace token trees that come after them.
+- consider using the `syn` crate for macros, and using it in debug mode, and turning off features.
+- compile time pure computations sound like something good that a function-like macro can do.
+- testing configs and middleware like logging/tracing can be a good place for attribute macros
+596. `TokenStream` implements `Display`, which is handy for debugging!
+597. To propagate user errors like `u31` as a type, consider the `compiler_error!` macro.
+596. Async interfaces are mthods that return a `Poll`, as defined here:
+```rust
+enum Poll<T> {
+    Ready(T),
+    Pending
+}
+```
+597. Polling is standardized via the `Future` trait:
+```rust
+trait Future {
+    type Output;
+    fn poll(&mut self) -> Poll<Self::Output>;
+}
+```
+types that implement this trait are called `futures` (or *promises* in other langs).
+598. Don't poll futures after they have return a `Poll:Ready`, or they panic. If it's safe to do, it's called a `fused future`.
+
+599. `Receiver` and `Iterator` look very similar, in some sense - they might be fused in the future! (async iterators are called `streams`).
+600. `Generators` are chunks of code with some extra compiler generated bits that enable it to stop/`yield` its execution midway and resume later from the yieldpoint. Not yet in stable Rust but used internally.
+601. Generators need to store a bunch of internal state to be able to resume - if your app spends too much time in `memcpy`, perhaps its the generators. Rust checks that references across these internal states obey the ownership system.
+602. What happens when code isnide an `async` block takes a ref to a local var? The point is that the polling can give you `self-referential` data which holds both the data and the refs to that data, but the polling has moved it! To solve this conundrum, you use `Pin`, a wrapper type that prevents the underlying type from being (safely) moved and `Unpin` is a marker trait that the implementing type *can* be removed safely from a `Pin`.
+```rust
+// What you get from using Pin to implement Future
+trait Future {
+    type Output;
+    fn poll(self: Pin<&mut self>) -> Poll<Self::Output>;
+}
+```
+This means that "once you have the value behind a `Pin`, that value will never move again."
+603. Notice the implementation of Pin:
+```rust
+struct Pin<P> {pointer: P}
+impl<P> Pin<P> where P: Deref {
+    pub unsafe fn new_unchecked(pointer: P) -> Self;
+}
+impl<'a, T> Pin<&'a mut T> {
+    pub unsafe fn get_unchecked_mut(self) -> &'a mut T;
+}
+impl<P> Deref for Pin<P> where P: Deref {
+    type Target = P::Target;
+    fn deref(&self) -> &Self::Target;
+}
+```
+- we hold a *pointer type*: `Pin<Box<MyType>>`/`Pin<Rc<MyType>>` and not `Pin<MyType>`
+- the constructor is unsafe! and the `get` method is unchecked - so that any moving is your responsibility
+- `Pin::set` can drop a value in place and store a new value - and yet fulfill the contract that the old value was never accessed outside of a `Pin` after it was placed there!
+
+604. Git saves files more like this:
+```
+   V1    V2 V3 V4 V5
+File A   A1 A1 A2 A2
+File B   B  B  B1 B2
+File C   C1 C2 C2 C3
+```
+and `vcs` does it more on a "delta based" version:
+```
+   V1   V2 V3 V4 V5
+Fila A  Δ1 -> Δ2
+File B  -> -> Δ1 Δ2
+File C  -> Δ1 -> Δ3
+```
+and 99% of stuff can be done locally - you don't need a central server to answer you.
+605. Because Git checksums all file stores and is referred to by the checksum, you can't just swap files without detection.
+606. Git has 3 stages (*IMPORTANT*):
+- *modified* -> the working tree: single checkout of one version of the project. Files pulled from compressed database.
+- *staged*   -> the staging area: a file of what goes into the next commit (or `git index`).
+- *committed*-> the .git directory (repository): where Git stores metadata and object database for the project (Most important part, this is what you clone form other repos).
+
+607. Basic configs, in ascending priority level:
+    - `[path]/etc/gitconfig` - applied to all usrs on system and their repos.
+    - `~/.gitconfig` or `~/.config/git/config` - applied to you as user
+    - `.git/config` for single repo
+
+608. Set `main` as the default branch name:
+```bash
+git config --global init.defaultBranch main
+```
+609. `git help <verb>` is a canonical way to get help, `git add -h` is an abbreviated way to get help/show flags.
+610. If anyone has any clone of your repo, they have the entire history of it, and can restore it if needed.
+611. Untracked files are files that weren't in the last snapshot.
+612. Once you stage it, it gets committed.
+613. Use `git status -s (or --short)` to get a nice summary of where you are.
+614. `.gitignore` can respect glob patters and ignores `#` lines
+```
+# ignroes all .a files
+*.a 
+
+#but do track lib.a
+!lib.a
+
+#ignore all files in any dir named build
+build/
+
+ignore all .pdf files in the doc/ dir and its subdirs
+doc/**/*.pdf
+```
+615. `git diff --staged` and `git diff --cached` are synonyms.
+616. `git difftool --tool=vimdiff` looks cool.
+617. Can declare inline commit message with `git commit -m`, and `git commit -am` will skip the need to stage the file and *then* committing.
+618. `git rm -f README` requires extra args to prevent misuse. To remove a file from staging area, do `git rm --cached README`.
+619. `git mv README.md README` can save you some commands.
+620. `git log --stat` is neat, `git log --compact-summary` is neat,
+621. `git log --pretty-format: %h %s --graph` is super neat, add it as a command.
+622. Limit log out put with `-2` but also with `--since` and `--until`: `git log --since=2.weeks`. Combine with `--author="John Smit"` and you have a rat!
+623. `git log -S function name` is known as the `pickaxe option`: Takes a string and only shows the commits that altered the count of the string.
+624. `git log -- path/to/file` gives you history
+625. `git log --no-merges` can help reduce noise!
+626. Committed to early? try `git commit --amend` literally overwrites the previous commit with a new one. Only do it for local changes, and not those that have been pushed.
+627. **UNSTAGE A FILE**:`git reset HEAD <FILE>` to unstage a file
+628. **UNMODIFY A MODIFIED FILE**: `git checkout -- <FILE>`. (Dangerous - any local chanes are gone.)
+629. The previous 2 can be done with `git restore`:
+```bash
+git restore --staged <FILE> # unstages a file
+git restore <FILE>          # unmodifies a file
+```
+630. `git fetch <remote>` goes out and copies all the data from that remote project.
+631. Fast forward if possible, else create a merge commit: `git config --global pull.rebase "false"` vs you want to rebase while pulling: `git config --global pull.rebase "true"`.
+632. `git push <remote> <branch>`.
+633. `git remote show origin` shows you all the branches you have made to the repo and their current status (up to date, fast-forwardble, local out of date)
+634. `git remote set-url remote-name new-url`
+635. List tags: `git tag`, and `git tag -l "v1.8.5*"` will glob accordingly
+636. Annotated tags have a bunch of metadata and can be signed and verified - make one with `git tag -a v1.4 -m "My version 1.4"`, and then you can do `git show v1.4`
+637. Git tags can be added after the fact: just do `git log --pretty=oneline` and then `git tag -a v1.2 asdfbd`.
+638. Git doesn't push tags by default, you need to `git push origin <tagname>`, or `git push origin --tags`. To delete a tag locally use `git tag -d <tagname>` and remotely do `git push origin --delete <tagname>`.
+639. Setup aliases with `git config --global alias.co checkout`
+640. `git log --oneline --decorate --all --graph` is cooool and `git config --global alias.gg 'log --oneline --decorate --graph'` is very neat for a `git gg`.
+
+### 10/04/2022
+
+641. A commit in Github is 
+- a size
+- a hash
+- a tree
+- an author
+- a committer
+pointing to a `tree` which is
+- a size
+- a blob per file
+- pointing to each blob
+and each `blob` contains
+- a hash
+- its size
+
+Each commit pointing to its tree/snapshot but the parent commit is pointing to another commit's hash.
+642. A `git branch` is a movable pointer to one of these commits.
+643. To know what branch you're currently on, git keeps a special pointer called `HEAD`.
+644. If you want to know to which branch the pointers are pointing to, use `--decorate`
+645. Some commits from a diff branch may be hidden - use `git log <branch>` or `git log --all` to show them all.
+646. Switching branches *changes files* in your working directory.
+647. `git log --oneline --decorate --graph --all` goes from bottom to top.
+648. `git checkout -b <newbranchname>` and `git switch -c <new-branch>` are identical. `git switch testing-branch` also works.
+649. When there's no divergent work to merge together, it's called a `fast-forward`.
+650. Merge commits have 3 parents - can you have N parents?
+651. `git checkout master` -> `git merge iss53` ☑ 
+652. `git mergetool` 👀 is setup with `git config --global merge.tool nvimdiff`.
+
+### 11/04/2022
+
+653. Rested.
+
+### 12/04/2022
+
+654. Just don't rename branches that are not local to you. CI can also break from a `master` rename, but if you must, use `bit branch --move master main` the `git push origin --delete master`.
+655. [Weggli](https://github.com/googleprojectzero/weggli) is a semantic search tool for C/C++
+656. The point of `Pin` is to have target types that contain references to themselves and give the methods a guarantee a that the target type hasn't moved (and that the internal self references remain valid).
+657. `Unpin` is an auto-trait (if all your struct fields are `Unpin`, your struct is also `Unpin`). Which means you kinda have to opt out of `Unpin`.
+658. `pub unsafe fn foo(...) {}` is considered a mistake because it doesn't help you reduce the `footgun radius` lol. The first means `I swear X, Y, Z is upheld in this code`, and `unsafe {...}` means that all the unsafe contracts within the block are contained/upheld.
+659. Big things to do in unsafe blocks: deal with raw pointer types like `*const T` and `*mut T`.
+660. Types of unsafe:
+- Non-Rust interfaces
+- skip safety checks
+- custom invariatns
+
+661. `std::hint::unreachable_unchecked` is a common use of `unsafe`.
+662. You can do `std::ptr::{read,write}::{unaligned,volatile}` to use `odd pointers` - they don't meet Rust's assumptions of alignment or size.
+663. `Send/Sync` means that a type is safe to send / share across threads, respectively.
+664. It is commone to forget to add bounds to generic parameters for unsafe impls of Send and Sync: `unsafe impl<T: Send> Send for MyUnsafeType<T> {}`.
+665. `unsafe` is for memory unsafety, not per se for business logic.
+666. There's 3 big types of `UNDEFINED BEHAVIOR` manifestations:
+- not at all (can change with diff compilers/hardware/surrounding code change)
+- visible errors (at least you can debug something)
+- invisible corruption (god help you)
+667. [We need Better Language Specs](https://www.ralfj.de/blog/2020/12/14/provenance.html) by Ralf Jung - a Rust PL researcher.
+668. `Validity`: rules for what values a given type can inhabit
+- Ref types can never dangle, must always be aligned, must always point to a valid value of their target type, shared and an exclusive ref can't coexist simultaneously, etc
+669. Niche optimization: Since a reference can never be all zeros, an `Option<&T>` can use all zeros to represent `None` and avoid the extra byte and allocation. Also applies to `Option<Option<bool>>`
+
+
+
+
+
+
+
