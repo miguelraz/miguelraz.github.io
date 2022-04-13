@@ -4841,10 +4841,89 @@ git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file<
 <ol start=669 >
 <li><p>Niche optimization: Since a reference can never be all zeros, an <code>Option&lt;&amp;T&gt;</code> can use all zeros to represent <code>None</code> and avoid the extra byte and allocation. Also applies to <code>Option&lt;Option&lt;bool&gt;&gt;</code></p>
 
+<li><p><code>MaybeUninit</code> memory is very useful in network buffers/hot loops: No point requiring a <code>&#91;0; 4096&#93;</code> if you&#39;re going to overwrite those values with 0 if you&#39;re going to overwrite them anyways with other values.</p>
+
+<li><p>If you are calling user code, you should assume it panics and handle accordingly.</p>
+
+<li><p>The <code>drop check</code>:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >x</span> = <span class=hljs-literal >true</span>;
+<span class=hljs-keyword >let</span> <span class=hljs-variable >foo</span> = <span class="hljs-title function_ invoke__">Foo</span>(&amp;<span class=hljs-keyword >mut</span> x);
+<span class=hljs-keyword >let</span> <span class=hljs-variable >x</span> = <span class=hljs-literal >false</span>;</code></pre>
+<p>If Foo implements <code>Drop</code>, then it may use a ref to <code>x</code>, and thus should not compile. If it doesn&#39;t implement <code>Drop</code>, all is good. BUT&#33;</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >fn</span> <span class="hljs-title function_">barify</span>&lt;<span class=hljs-symbol >&#x27;a</span>&gt;(_: &amp;<span class=hljs-symbol >&#x27;a</span> <span class=hljs-keyword >mut</span> <span class=hljs-type >i32</span>) <span class=hljs-punctuation >-&gt;</span> Bar&lt;Foo&lt;<span class=hljs-symbol >&#x27;a</span>&gt;&gt;{..}
+<span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >x</span> = <span class=hljs-literal >true</span>;
+<span class=hljs-keyword >let</span> <span class=hljs-variable >foo</span> = <span class="hljs-title function_ invoke__">Foo</span>(&amp;<span class=hljs-keyword >mut</span> x);
+<span class=hljs-keyword >let</span> <span class=hljs-variable >x</span> = <span class=hljs-literal >false</span>;</code></pre>
+<p>If <code>Foo</code> implements <code>Drop</code> but <code>Bar</code> does not, this code shouldn&#39;t compile. BUT&#33; If the ref <code>Bar</code> holds is indirect, like <code>PhantomData&lt;Foo&lt;&#39;a&gt;&gt;</code>, or <code>&amp;&#39;static Foo&lt;&#39;a&gt;</code>, then the drop is ok, because <code>Foo::drop</code> is never actually invoked, and the ref to <code>x</code> is never accessed. This whole logic is the <code>drop check</code>, and we really need it for dangling generic parameters like <code>unsafe impl&lt;#&#91;may_dangle&#93; T&gt; Drop for ...</code>.</p>
+<ol start=673 >
+<li><p>&quot;Since we do call <code>T::drop</code>, which may itself acces, say a reference to said <code>x</code>, Luckily, the fix is simple: we add a <code>PhantomData&lt;T&gt;</code> to tell the drop check that even though the <code>Box&lt;T&gt;</code> doesn&#39;t hold any <code>T</code>, and won&#39;t access <code>T</code> on drop, it does still own a <code>T</code> and will drop one when the <code>Box</code> is dropped.&quot;.</p>
+
+<li><p>Read the <a href="https://doc.rust-lang.org/nomicon/atomics.html">Rustonomicon</a>.</p>
+
+<li><p><code>Miri</code> is the &quot;mid-level intermediate representation interpreter&quot; - you can use it to catch a lot of Rust specific bugs. Use it as a test suite extender.</p>
+
+<li><p><code>cargo-expand</code> expands crate macros.</p>
+
+<li><p><code>cargo-hack</code> is useful to check for all combos of features.</p>
+
+<li><p><code>cargo-llvm-lines</code> tells you which Rust lines give you which LLVMIR.</p>
+
+<li><p><code>cargo-udeps</code> tells you about unused dependencies.</p>
+
+<li><p>Rust libs: </p>
+
+</ol>
+<ul>
+<li><p><code>bytes</code>: efficient byte subslices</p>
+
+<li><p><code>criterion</code></p>
+
+<li><p><code>cxx</code></p>
+
+<li><p><code>flune</code>: mpmc channel.</p>
+
+<li><p><code>hdrhistogram</code> fancy and compact representation of histograms</p>
+
+<li><p><code>itertools</code></p>
+
+<li><p><code>slab</code>: replaces <code>HashMap&lt;Token, T&gt;</code></p>
+
+<li><p><code>static_assertions</code></p>
+
+<li><p><code>structopt</code> - typed <code>clap</code> cli builder</p>
+
+<li><p><code>tracing</code></p>
+
+</ul>
+<ol start=681 >
+<li><p><code>rustup &#43;nightly miri</code> means that it will run MIRI and then revert back to previous settings. <code>cargo &#43;1.53.0 check</code> will run your code with Rust <code>1.53.0</code> and then revert back to default.</p>
+
+<li><p><code>cargo tree --invert rand</code> will tell you all the places where your crate depends on <code>rand</code> so that you can excise it as a dep.</p>
+
+<li><p><code>cargo timings test</code> is now stable 🎉 </p>
+
+<li><p><code>rustc -Ztime-passes</code> is for all the compilation passes&#33;</p>
+
+<li><p><code>cargo -Zprint-type-sizes</code> is a good combo with the <code>variant_size_differences</code> lint, which shows <code>enum</code> types where the variants have very different sizes.</p>
+
+<li><p><code>write&#33;&#40;&amp;mut s, &quot;&#123;&#125;&#43;1&#61;&#123;&#125;&quot;, x, x &#43; 1&#41;;</code> works to write into the String s&#33;</p>
+
+<li><p><code>iter::once</code> is useful to append to iterators with <code>Iterator::chain</code> and for avoiding allocations.</p>
+
+<li><p><code>BufReader/BufWriter</code> batch many small read/writes into one large buffer and can have good perf perks.</p>
+
+<li><p>If you feel like you need both <code>String/&amp;str</code>, consider a <code>Cow&lt;&#39;a, str&gt;</code> &#40;never take it as a func arg, but do offer it as a return type.&#41;</p>
+
+<li><p><code>Instant::elapsed</code> is clean&#33;</p>
+
+<li><p><code>Clone::clone_from</code> can save some allocations&#33;</p>
+
 </ol>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 12, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 13, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
