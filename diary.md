@@ -3873,6 +3873,52 @@ Each commit pointing to its tree/snapshot but the parent commit is pointing to a
 668. `Validity`: rules for what values a given type can inhabit
 - Ref types can never dangle, must always be aligned, must always point to a valid value of their target type, shared and an exclusive ref can't coexist simultaneously, etc
 669. Niche optimization: Since a reference can never be all zeros, an `Option<&T>` can use all zeros to represent `None` and avoid the extra byte and allocation. Also applies to `Option<Option<bool>>`
+670. `MaybeUninit` memory is very useful in network buffers/hot loops: No point requiring a `[0; 4096]` if you're going to overwrite those values with 0 if you're going to overwrite them anyways with other values.
+671. If you are calling user code, you should assume it panics and handle accordingly.
+672. The `drop check`:
+```rust
+let mut x = true;
+let foo = Foo(&mut x);
+let x = false;
+```
+If Foo implements `Drop`, then it may use a ref to `x`, and thus should not compile. If it doesn't implement `Drop`, all is good. BUT!
+```rust
+fn barify<'a>(_: &'a mut i32) -> Bar<Foo<'a>>{..}
+let mut x = true;
+let foo = Foo(&mut x);
+let x = false;
+```
+If `Foo` implements `Drop` but `Bar` does not, this code shouldn't compile. BUT! If the ref `Bar` holds is indirect, like `PhantomData<Foo<'a>>`, or `&'static Foo<'a>`, then the drop is ok, because `Foo::drop` is never actually invoked, and the ref to `x` is never accessed.
+This whole logic is the `drop check`, and we really need it for dangling generic parameters like `unsafe impl<#[may_dangle] T> Drop for ...`.
+673. "Since we do call `T::drop`, which may itself acces, say a reference to said `x`, Luckily, the fix is simple: we add a `PhantomData<T>` to tell the drop check that even though the `Box<T>` doesn't hold any `T`, and won't access `T` on drop, it does still own a `T` and will drop one when the `Box` is dropped.".
+674. Read the [Rustonomicon](https://doc.rust-lang.org/nomicon/atomics.html).
+675. `Miri` is the "mid-level intermediate representation interpreter" - you can use it to catch a lot of Rust specific bugs. Use it as a test suite extender.
+676. `cargo-expand` expands crate macros.
+677. `cargo-hack` is useful to check for all combos of features.
+678. `cargo-llvm-lines` tells you which Rust lines give you which LLVMIR.
+679. `cargo-udeps` tells you about unused dependencies.
+680. Rust libs: 
+- `bytes`: efficient byte subslices
+- `criterion`
+- `cxx`
+- `flune`: mpmc channel.
+- `hdrhistogram` fancy and compact representation of histograms
+- `itertools`
+- `slab`: replaces `HashMap<Token, T>`
+- `static_assertions`
+- `structopt` - typed `clap` cli builder
+- `tracing`
+681. `rustup +nightly miri` means that it will run MIRI and then revert back to previous settings. `cargo +1.53.0 check` will run your code with Rust `1.53.0` and then revert back to default.
+682. `cargo tree --invert rand` will tell you all the places where your crate depends on `rand` so that you can excise it as a dep.
+683. `cargo timings test` is now stable 🎉 
+684. `rustc -Ztime-passes` is for all the compilation passes!
+685. `cargo -Zprint-type-sizes` is a good combo with the `variant_size_differences` lint, which shows `enum` types where the variants have very different sizes.
+686. `write!(&mut s, "{}+1={}", x, x + 1);` works to write into the String s!
+687. `iter::once` is useful to append to iterators with `Iterator::chain` and for avoiding allocations.
+688. `BufReader/BufWriter` batch many small read/writes into one large buffer and can have good perf perks.
+689. If you feel like you need both `String/&str`, consider a `Cow<'a, str>` (never take it as a func arg, but do offer it as a return type.)
+690. `Instant::elapsed` is clean!
+691. `Clone::clone_from` can save some allocations!
 
 
 
