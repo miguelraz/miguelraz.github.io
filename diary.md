@@ -3919,7 +3919,38 @@ This whole logic is the `drop check`, and we really need it for dangling generic
 689. If you feel like you need both `String/&str`, consider a `Cow<'a, str>` (never take it as a func arg, but do offer it as a return type.)
 690. `Instant::elapsed` is clean!
 691. `Clone::clone_from` can save some allocations!
+692. Remote-tracking branches in git get moved whenever you do any network comms, to stay up to date with the remote repo (kinda like bookmarks). 
+693. `git push origin serverfix:awesomebranch` to push local `serverfix` to the `awesomebranch` on the remote.
+694. Set credentials with `git config --global credential.helper cache`.
+695. A `tracking branch/upstream branch` are local branches that have a direct relationship to a remote branch.
+696. `git checkout -b <branch> <remote>/<branch>` can be done with `git checkout --track origin/serverfix`, which can be done with `git checkout serverfix` if unique.
+697. `git branch -v` and `git branch -vv` tell you if your branch is ahead, behind, or both. Remember to do `git fetch -all; git branch -vv`.
+698. `git fetch` fetches all the changes but doesn't modify working directory - `git pull` does change working directory.
+699. 2 ways to integrate changes from one branch to another:
+- `rebase`: take a patch applied in Commit4 and reapply it to Commit3. Does linear work.
+- `merge`: joining 2 branches with equal history (fast forwarding...). Does O(1) work at the end of the branches.
+What differs here is the **history**! Not the contents!
+700. **Do not rebase commits that exist outside your repo and tha tpeople may have based work on!**
+701. Read about `Distributed Git` and `Public project over Email`
 
+### 14/04/2022
+702. Revisited the `leap year ` exercise in Rust. Instead of this crappy 1-liner
+```rust
+pub fn is_leap_year(year: u64) -> bool {
+    (year % 100 != 0 || year % 400 == 0) && year % 4 == 0
+}
+```
+You can use a neat `match`:
+```rust
+pub fn is_leap_year(year: u64) -> bool {
+    match (year % 400, year % 100, year % 4) {
+    (0, _, _) => true,
+    (_, 0, _) => false,
+    (_, _, 0) => true,
+    _ => false,
+    }
+}
+```
 
 
 
