@@ -4920,10 +4920,56 @@ git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file<
 
 <li><p><code>Clone::clone_from</code> can save some allocations&#33;</p>
 
+<li><p>Remote-tracking branches in git get moved whenever you do any network comms, to stay up to date with the remote repo &#40;kinda like bookmarks&#41;. </p>
+
+<li><p><code>git push origin serverfix:awesomebranch</code> to push local <code>serverfix</code> to the <code>awesomebranch</code> on the remote.</p>
+
+<li><p>Set credentials with <code>git config --global credential.helper cache</code>.</p>
+
+<li><p>A <code>tracking branch/upstream branch</code> are local branches that have a direct relationship to a remote branch.</p>
+
+<li><p><code>git checkout -b &lt;branch&gt; &lt;remote&gt;/&lt;branch&gt;</code> can be done with <code>git checkout --track origin/serverfix</code>, which can be done with <code>git checkout serverfix</code> if unique.</p>
+
+<li><p><code>git branch -v</code> and <code>git branch -vv</code> tell you if your branch is ahead, behind, or both. Remember to do <code>git fetch -all; git branch -vv</code>.</p>
+
+<li><p><code>git fetch</code> fetches all the changes but doesn&#39;t modify working directory - <code>git pull</code> does change working directory.</p>
+
+<li><p>2 ways to integrate changes from one branch to another:</p>
+
 </ol>
+<ul>
+<li><p><code>rebase</code>: take a patch applied in Commit4 and reapply it to Commit3. Does linear work.</p>
+
+<li><p><code>merge</code>: joining 2 branches with equal history &#40;fast forwarding...&#41;. Does O&#40;1&#41; work at the end of the branches.</p>
+
+</ul>
+<p>What differs here is the <strong>history</strong>&#33; Not the contents&#33;</p>
+<ol start=700 >
+<li><p><strong>Do not rebase commits that exist outside your repo and tha tpeople may have based work on&#33;</strong></p>
+
+<li><p>Read about <code>Distributed Git</code> and <code>Public project over Email</code></p>
+
+</ol>
+<h3 id=14042022 ><a href="#14042022" class=header-anchor >14/04/2022</a></h3>
+<ol start=702 >
+<li><p>Revisited the <code>leap year</code> exercise in Rust. Instead of this crappy 1-liner</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">is_leap_year</span>(year: <span class=hljs-type >u64</span>) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >bool</span> {
+    (year % <span class=hljs-number >100</span> != <span class=hljs-number >0</span> || year % <span class=hljs-number >400</span> == <span class=hljs-number >0</span>) &amp;&amp; year % <span class=hljs-number >4</span> == <span class=hljs-number >0</span>
+}</code></pre>
+<p>You can use a neat <code>match</code>:</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">is_leap_year</span>(year: <span class=hljs-type >u64</span>) <span class=hljs-punctuation >-&gt;</span> <span class=hljs-type >bool</span> {
+    <span class="hljs-title function_ invoke__">match</span> (year % <span class=hljs-number >400</span>, year % <span class=hljs-number >100</span>, year % <span class=hljs-number >4</span>) {
+    (<span class=hljs-number >0</span>, _, _) =&gt; <span class=hljs-literal >true</span>,
+    (_, <span class=hljs-number >0</span>, _) =&gt; <span class=hljs-literal >false</span>,
+    (_, _, <span class=hljs-number >0</span>) =&gt; <span class=hljs-literal >true</span>,
+    _ =&gt; <span class=hljs-literal >false</span>,
+    }
+}</code></pre>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 13, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 14, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
