@@ -26,7 +26,7 @@ If you like this topic, check out ["The Unreasonable effectiveness of Multiple D
 
 The **audience** of this post are programmers who like Python/C++/80s MIT Lisp courses
 who have heard of Julia but don't get what new things it brings to the table.
-If you want to dive deeper into emergent Julia features, check out [Lyndon White's](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/) 2 part posts.
+If you want to dive deeper into emergent Julia features, check out [Frame's](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/) 2 part posts.
 
 Sure, there's a fancy subtyping algorithm that Jeff Bezanson (Julia co-creator) pulled out of Turing-knows-where
 and that Swift re-adapted with some unholy [term rewriting](https://fullstackfeed.com/formalizing-swift-generics-as-a-term-rewriting-system/) shenanigans,
@@ -273,4 +273,4 @@ If you want to see more posts like this, consider chucking a buck or two on my [
 ----
 I created **Dispatch** by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
 
-Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Lyndon White for his blog posts diving into these similar materials.
+Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Frames for her blog posts diving into these similar materials.
