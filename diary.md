@@ -3951,7 +3951,26 @@ pub fn is_leap_year(year: u64) -> bool {
     }
 }
 ```
+703. I forgot to do `array[low] < key || array[hi] < key` in a binary search algorithm. I will try to do it tomorrow recursively.
 
+### 15/04/2022
+
+704. Rust: Instead of doing this:
+```rust
+for i in 0..v.len() {
+    w.push('-');
+}
+// try
+(0..v.len()).foreach(|_| w.push('-'));
+```
+
+705. A `move` in a thread will try to move a variable into a thread's own stack. This may work for a bit, but if you want other threads to reference that same variable, the Rust compiler must known that that thread outlives all the others (so that the reference is always valid.) A way to get around that is to use a `Rc`, which is allocated on the heap and deallocated when no more threads are referencing it.
+
+706. Unexpectedly useful list of "safer" C++ tooling [in the last slides of the Stanford CS110L](https://reberhardt.com/cs110l/spring-2021/slides/lecture-20.pdf) slides.
+
+### 30/04/2022
+
+707. Major unborking of my `nvim` was done by running `:UpdateRemotePlugins`.
 
 
 
