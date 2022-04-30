@@ -4967,9 +4967,36 @@ git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file<
     _ =&gt; <span class=hljs-literal >false</span>,
     }
 }</code></pre>
+<ol start=703 >
+<li><p>I forgot to do <code>array&#91;low&#93; &lt; key || array&#91;hi&#93; &lt; key</code> in a binary search algorithm. I will try to do it tomorrow recursively.</p>
+
+</ol>
+<h3 id=15042022 ><a href="#15042022" class=header-anchor >15/04/2022</a></h3>
+<ol start=704 >
+<li><p>Rust: Instead of doing this:</p>
+
+</ol>
+<pre><code class="rust hljs"><span class=hljs-keyword >for</span> <span class=hljs-variable >i</span> <span class=hljs-keyword >in</span> <span class=hljs-number >0</span>..v.<span class="hljs-title function_ invoke__">len</span>() {
+    w.<span class="hljs-title function_ invoke__">push</span>(<span class=hljs-string >&#x27;-&#x27;</span>);
+}
+<span class=hljs-comment >// try</span>
+(<span class=hljs-number >0</span>..v.<span class="hljs-title function_ invoke__">len</span>()).<span class="hljs-title function_ invoke__">foreach</span>(|_| w.<span class="hljs-title function_ invoke__">push</span>(<span class=hljs-string >&#x27;-&#x27;</span>));</code></pre>
+<ol start=705 >
+<li><p>A <code>move</code> in a thread will try to move a variable into a thread&#39;s own stack. This may work for a bit, but if you want other threads to reference that same variable, the Rust compiler must known that that thread outlives all the others &#40;so that the reference is always valid.&#41; A way to get around that is to use a <code>Rc</code>, which is allocated on the heap and deallocated when no more threads are referencing it.</p>
+
+<li><p>Unexpectedly useful list of &quot;safer&quot; C&#43;&#43; tooling <a href="https://reberhardt.com/cs110l/spring-2021/slides/lecture-20.pdf">in the last slides of the Stanford CS110L</a> slides.</p>
+
+</ol>
+<h3 id=30042022 ><a href="#30042022" class=header-anchor >30/04/2022</a></h3>
+<ol start=707 >
+<li><p>Major unborking of my <code>nvim</code> was done by running <code>:UpdateRemotePlugins</code>.</p>
+
+<li><p>OK, it turns out that some of my <code>&#96;</code> in the BQN article were erroring the site, which means the blogs after <code>FromJuliaToBQN</code> weren&#39;t showing up... inchresting&#33; The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don&#39;t.</p>
+
+</ol>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 29, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: April 30, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
