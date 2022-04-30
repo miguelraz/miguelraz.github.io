@@ -3972,6 +3972,8 @@ for i in 0..v.len() {
 
 707. Major unborking of my `nvim` was done by running `:UpdateRemotePlugins`.
 
+708. OK, it turns out that some of my `` ` `` in the BQN article were erroring the site, which means the blogs after `FromJuliaToBQN` weren't showing up... inchresting! The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don't.
+
 
 
 
