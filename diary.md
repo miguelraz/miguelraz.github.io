@@ -3974,6 +3974,23 @@ for i in 0..v.len() {
 
 708. OK, it turns out that some of my `` ` `` in the BQN article were erroring the site, which means the blogs after `FromJuliaToBQN` weren't showing up... inchresting! The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don't.
 
+### 22/02/2022
+
+709. Getting a long and random list of digits in Julia:
+```julia
+julia> using Folds
+
+julia> let s1 = string(BigFloat(π; precision = 2^20))[3:end],
+           s2 = string(BigFloat(ℯ; precision = 2^20))[3:end],
+           w = 4
+           Folds.findfirst(1:length(s1)-w; basesize = 10000) do i
+               SubString(s1, i, i + w) == SubString(s2, i, i + w)
+           end
+       end
+26548
+```
+710. Bindings in a `begin ... end` block are global, bindings in `let ... end` block are local
+
 
 
 
