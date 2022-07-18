@@ -5012,7 +5012,12 @@ julia&gt; <span class=hljs-keyword >let</span> s1 = string(<span class=hljs-buil
 <ol start=710 >
 <li><p>Bindings in a <code>begin ... end</code> block are global, bindings in <code>let ... end</code> block are local</p>
 
+<li><p><code>Apertium</code> is an <a href="https://www.apertium.org/index.eng.html#?dir&#61;eng-epo&amp;q&#61;">open source translation tool</a>, so now I can do this:</p>
+
 </ol>
+<pre><code class="julia hljs">mrg<span class=hljs-meta >@pop</span>-os ~&gt; echo <span class=hljs-string >&quot;This is a sentence&quot;</span> | apertium eng-spa
+Esto es una frase</code></pre>
+<p>Tools like <a href="ttps://github.com/crow-translate/crow-translate">Crow translate</a> also exist, which call out to the Google translate API, but I didn&#39;t get a proper install within 10 minutes so I&#39;ll just let it be.</p>
 <div class=page-foot >
   <div class=copyright >
     &copy; Miguel Raz Guzmán Macedo. Last modified: July 18, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.

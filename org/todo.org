@@ -2,8 +2,15 @@
 ** [ ] Fetch JuliaLang Youtube API keys and test an upload
 
 [[file:~/org-basics.org::*example one][example one]]
-** [X] Cita visa
+
 ** [ ] Just checking how to capture stuff
+** [ ]
 * Compasion
 *** La compasión TAMPOCO es perdón. Puedes ser empático y entender que tu pareja no tiene la intención de hacerte daño y, al mismo tiempo, validar tu propio dolor y responsabilizar al otro de lo que le toca. Una respuesta compasiva es:
 *** Entiendo que llegaste tarde por una razón válida y que no era tu intención lastimarme. Yo me siento triste porque siento que mi tiempo no fue tomado en cuenta. ¿Podemos platicar acerca de cómo ayudarme a sentirme importante y llegar a un acuerdo para atender esto de una forma diferente la próxima vez?
+
+* Blog
+** [ ] 10 Powerful 1 line changes in JuliaLang
+** [ ] Joyas de Julia
+** [ ] PrettyFloats.jl
+** [ ] Papers of Julia
