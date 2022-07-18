@@ -3990,6 +3990,12 @@ julia> let s1 = string(BigFloat(π; precision = 2^20))[3:end],
 26548
 ```
 710. Bindings in a `begin ... end` block are global, bindings in `let ... end` block are local
+711. `Apertium` is an [open source translation tool](https://www.apertium.org/index.eng.html#?dir=eng-epo&q=), so now I can do this:
+```
+mrg@pop-os ~> echo "This is a sentence" | apertium eng-spa
+Esto es una frase 
+```
+Tools like [Crow translate](ttps://github.com/crow-translate/crow-translate) also exist, which call out to the Google translate API, but I didn't get a proper install within 10 minutes so I'll just let it be.
 
 
 
