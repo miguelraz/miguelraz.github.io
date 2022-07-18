@@ -56,12 +56,6 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://miguelraz.github.io/decks/index.html</loc>
-    <lastmod>2022-07-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
     <loc>https://miguelraz.github.io/blog/drawyourrng/index.html</loc>
     <lastmod>2022-07-18</lastmod>
     <changefreq>monthly</changefreq>
