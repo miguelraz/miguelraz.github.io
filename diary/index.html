@@ -4994,9 +4994,28 @@ git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file<
 <li><p>OK, it turns out that some of my <code>&#96;</code> in the BQN article were erroring the site, which means the blogs after <code>FromJuliaToBQN</code> weren&#39;t showing up... inchresting&#33; The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don&#39;t.</p>
 
 </ol>
+<h3 id=22022022__2 ><a href="#22022022__2" class=header-anchor >22/02/2022</a></h3>
+<ol start=709 >
+<li><p>Getting a long and random list of digits in Julia:</p>
+
+</ol>
+<pre><code class="julia hljs">julia&gt; <span class=hljs-keyword >using</span> Folds
+
+julia&gt; <span class=hljs-keyword >let</span> s1 = string(<span class=hljs-built_in >BigFloat</span>(<span class=hljs-literal >π</span>; precision = <span class=hljs-number >2</span>^<span class=hljs-number >20</span>))[<span class=hljs-number >3</span>:<span class=hljs-keyword >end</span>],
+           s2 = string(<span class=hljs-built_in >BigFloat</span>(<span class=hljs-literal >ℯ</span>; precision = <span class=hljs-number >2</span>^<span class=hljs-number >20</span>))[<span class=hljs-number >3</span>:<span class=hljs-keyword >end</span>],
+           w = <span class=hljs-number >4</span>
+           Folds.findfirst(<span class=hljs-number >1</span>:length(s1)-w; basesize = <span class=hljs-number >10000</span>) <span class=hljs-keyword >do</span> i
+               <span class=hljs-built_in >SubString</span>(s1, i, i + w) == <span class=hljs-built_in >SubString</span>(s2, i, i + w)
+           <span class=hljs-keyword >end</span>
+       <span class=hljs-keyword >end</span>
+<span class=hljs-number >26548</span></code></pre>
+<ol start=710 >
+<li><p>Bindings in a <code>begin ... end</code> block are global, bindings in <code>let ... end</code> block are local</p>
+
+</ol>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: April 30, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: July 18, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>

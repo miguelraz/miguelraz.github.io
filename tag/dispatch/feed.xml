@@ -20,6 +20,21 @@
 
 <item>
     <title><![CDATA[Why Julia - Meet Dispatch]]></title>
+    <link>https://miguelraz.github.io/blog/template/index.html</link>
+    <guid></guid>
+    <description><![CDATA[This blog is a friendly introduction to multiple dispatch in Julia]]></description>    
+        
+    <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
+</item>
+
+<item>
+    <title><![CDATA[Why Julia - Meet Dispatch]]></title>
     <link>https://miguelraz.github.io/blog/dispatch/index.html</link>
     <guid></guid>
     <description><![CDATA[This blog is a friendly introduction to multiple dispatch in Julia]]></description>    
