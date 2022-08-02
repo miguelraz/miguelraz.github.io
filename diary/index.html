@@ -4994,7 +4994,7 @@ git restore &lt;FILE&gt;          <span class=hljs-comment ># unmodifies a file<
 <li><p>OK, it turns out that some of my <code>&#96;</code> in the BQN article were erroring the site, which means the blogs after <code>FromJuliaToBQN</code> weren&#39;t showing up... inchresting&#33; The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don&#39;t.</p>
 
 </ol>
-<h3 id=22022022__2 ><a href="#22022022__2" class=header-anchor >22/02/2022</a></h3>
+<h3 id=22062022 ><a href="#22062022" class=header-anchor >22/06/2022</a></h3>
 <ol start=709 >
 <li><p>Getting a long and random list of digits in Julia:</p>
 
@@ -5015,12 +5015,146 @@ julia&gt; <span class=hljs-keyword >let</span> s1 = string(<span class=hljs-buil
 <li><p><code>Apertium</code> is an <a href="https://www.apertium.org/index.eng.html#?dir&#61;eng-epo&amp;q&#61;">open source translation tool</a>, so now I can do this:</p>
 
 </ol>
-<pre><code class="julia hljs">mrg<span class=hljs-meta >@pop</span>-os ~&gt; echo <span class=hljs-string >&quot;This is a sentence&quot;</span> | apertium eng-spa
+<pre><code class="julia hljs"><span class=hljs-comment ># -u gets rid of * if it doesn&#x27;t understand the word</span>
+mrg<span class=hljs-meta >@pop</span>-os ~&gt; echo <span class=hljs-string >&quot;This is a sentence&quot;</span> | apertium -u eng-spa 
 Esto es una frase</code></pre>
 <p>Tools like <a href="ttps://github.com/crow-translate/crow-translate">Crow translate</a> also exist, which call out to the Google translate API, but I didn&#39;t get a proper install within 10 minutes so I&#39;ll just let it be.</p>
+<h3 id=23072022 ><a href="#23072022" class=header-anchor >23/07/2022</a></h3>
+<ol start=712 >
+<li><p>Redirecting an erroring makefile into a text file:</p>
+
+</ol>
+<pre><code class="bash hljs">make &amp;&gt; error.txt</code></pre>
+<p>will slurp both stdout and stderr into a text file.</p>
+<h3 id=27062022 ><a href="#27062022" class=header-anchor >27/06/2022</a></h3>
+<ol start=715 >
+<li><p>If you type <code>:map</code> in <code>vim</code>, you get a list of all the mappings&#33; Learned it from <a href="https://neovim.io/doc/user/usr_40.html">the neovim docs</a>.</p>
+
+<li><p><code>:imap</code>, <code>:nmap</code>, <code>:vmap</code> mean that your mapping/shortcut work in Insert mode, Normal mode, Visual mode.</p>
+
+<li><p>If you select</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-number >4</span>
+<span class=hljs-number >3</span>
+<span class=hljs-number >2</span>
+<span class=hljs-number >1</span></code></pre>
+<p>And then run <code>:&#33;sort</code>, Vim will run sort on your input&#33;</p>
+<h3 id=30072022 ><a href="#30072022" class=header-anchor >30/07/2022</a></h3>
+<ol start=718 >
+<li><p>This exists in Julia 1.8:</p>
+
+</ol>
+<pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-meta >@time_imports</span> <span class=hljs-keyword >using</span> CSV
+      <span class=hljs-number >0.2</span> ms    ┌ IteratorInterfaceExtensions
+</span>    414.0 ms  ┌ TableTraits
+    181.7 ms  ┌ SentinelArrays
+      0.9 ms    ┌ Zlib_jll
+      3.0 ms    ┌ TranscodingStreams
+    175.8 ms  ┌ CodecZlib
+      0.2 ms  ┌ DataValueInterfaces
+     18.6 ms  ┌ FilePathsBase
+     13.2 ms    ┌ InlineStrings
+      1.8 ms    ┌ DataAPI
+     93.8 ms  ┌ WeakRefStrings
+     21.1 ms  ┌ Tables
+     28.9 ms  ┌ PooledArrays
+   3369.7 ms  CSV</code></pre>
+<ol start=719 >
+<li><p>How to copy paste <a href="https://linuxhint.com/copy-paste-clipboard-tmux/">in tmux</a></p>
+
+</ol>
+<p>:</p>
+<pre><code class="julia hljs">Step <span class=hljs-number >1.</span> Press the ‘Prefix’ (‘Ctrl+b) and then press ‘[’ to enter the copy mode.
+
+Step <span class=hljs-number >2.</span> Using the arrow keys, locate the position to start copying from. Use the ‘Ctrl+spacebar’ to start copying.
+
+Step <span class=hljs-number >3.</span> Move with the arrow keys to the position of the text you want to copy to. When you have finished selecting the text, press ‘Alt+w’ or ‘Ctrl+w’ to copy the text to a Tmux Buffer.
+
+Step <span class=hljs-number >4.</span> Paste the text to a Tmux pane/window/session <span class=hljs-keyword >using</span> the Prefix (by default, it is ‘Ctrl+b’ ) followed by ‘]’.</code></pre>
+<ol start=720 >
+<li><p>This is what I use &#40;besides <code>apertium eng-spa</code>&#41; to get vim to translate a line for me and print it above with the <code>@q</code> macro:</p>
+
+</ol>
+<pre><code class="julia hljs"><span class=hljs-string >&quot; map leader to Space
+nnoremap &lt;SPACE&gt; &lt;Nop&gt;
+let mapleader = &quot;</span> <span class=hljs-string >&quot;
+:vmap &lt;leader&gt;t !apertium -u eng-spa&lt;CR&gt;
+let @q = &#x27;VypV t&#x27;</span></code></pre>
+<p>Hat tip to Jacob Zelko.</p>
+<h3 id=01082022 ><a href="#01082022" class=header-anchor >01/08/2022</a></h3>
+<ol start=721 >
+<li><p>Read: <a href="https://www.possiblerust.com/pattern/non-generic-inner-functions">Non-generic Inner functions</a></p>
+
+</ol>
+<p>This can help cut down on monomorphization time and not pollute the namespace with <code>inner</code>:</p>
+<pre><code class="rust hljs"><span class=hljs-comment >// Taken from https://steveklabnik.com/writing/are-out-parameters-idiomatic-in-rust</span>
+<span class=hljs-keyword >pub</span> <span class=hljs-keyword >fn</span> <span class="hljs-title function_">read_to_string</span>&lt;P: <span class=hljs-built_in >AsRef</span>&lt;Path&gt;&gt;(path: P) <span class=hljs-punctuation >-&gt;</span> io::<span class=hljs-type >Result</span>&lt;<span class=hljs-type >String</span>&gt; {
+    <span class=hljs-keyword >fn</span> <span class="hljs-title function_">inner</span>(path: &amp;Path) <span class=hljs-punctuation >-&gt;</span> io::<span class=hljs-type >Result</span>&lt;<span class=hljs-type >String</span>&gt; {
+        <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >file</span> = File::<span class="hljs-title function_ invoke__">open</span>(path)?;
+        <span class=hljs-keyword >let</span> <span class=hljs-keyword >mut </span><span class=hljs-variable >string</span> = <span class=hljs-type >String</span>::<span class="hljs-title function_ invoke__">with_capacity</span>(<span class="hljs-title function_ invoke__">initial_buffer_size</span>(&amp;file));
+        file.<span class="hljs-title function_ invoke__">read_to_string</span>(&amp;<span class=hljs-keyword >mut</span> string)?;
+        <span class="hljs-title function_ invoke__">Ok</span>(string)
+    }
+    <span class="hljs-title function_ invoke__">inner</span>(path.<span class="hljs-title function_ invoke__">as_ref</span>())
+}</code></pre>
+<ol start=722 >
+<li><p><a href="https://blog.mgattozzi.dev/orphan-rules/">Rust and it&#39;s Orphan Rules</a>: If you split your crate into several, it can be a hassle to work with implementing types which &quot;you own&quot; but are external to your crate separation. Sometimes using the <code>newtype</code> idiom helps, other times you have to bust out the <code>PhantomData</code>.</p>
+
+<li><p><a href="https://rust-lang.github.io/chalk/book/#chalk-works-by-converting-rust-goals-into-logical-inference-rules">Chalk</a> is the trait resolution system that rustc uses.</p>
+
+</ol>
+<pre><code class="julia hljs">To <span class=hljs-keyword >do</span> this, it takes as input key information about a Rust program, such as:
+
+    * For a given trait, what are its type parameters, <span class=hljs-keyword >where</span> clauses, and associated items
+    * For a given impl, what are the types that appear <span class=hljs-keyword >in</span> the impl header
+    * For a given <span class=hljs-keyword >struct</span>, what are the types of its fields</code></pre>
+<p>It lowers traits into <code>logical predicates</code>, then uses a <code>logic solver</code> to answer Yes/No.</p>
+<p>It even has a REPL&#33;</p>
+<pre><code class="julia hljs">$ cargo run
+?- load libstd.chalk
+?- Vec&lt;Box&lt;i32&gt;&gt;: Clone
+Unique; substitution [], lifetime constraints []</code></pre>
+<p>You can&#39;t quanitfy over traits, but you can over types and regions&#40;lifetimes&#41;: <code>forall&lt;T&gt; &#123;...&#125;</code>. Syntax: <code>consequence :- conditions</code>: <code>impl&lt;T: Clone&gt; Clone for Vec&lt;T&gt; &#123;&#125;</code> &#61;&gt; <code>forall&lt;T&gt; &#123; &#40;Vec&lt;T&gt;: Clone&#41; :- &#40;T: Clone&#41; &#125;</code></p>
+<p>This rule says <code>Vec&lt;T&gt;: Clone</code> is only satisfied if <code>T:Clone</code> is also provable.</p>
+<p>Coherence - two impls of the same trait can&#39;t coexist.</p>
+<ol start=724 >
+<li><p>The <a href="https://blog.mgattozzi.dev/package-managers-for-programmers/">difference between stack and cabal</a> is how they deal with package version resolution.</p>
+
+</ol>
+<ol start=725 >
+<li><p>Place marks with &#96;<code>&#123;lowercase_letter&#125;</code> and then you can jump to it with <code>&#96;&#123;lowercase_letter&#125;</code> or check them with <code>:marks</code>.</p>
+
+<li><p>Forem does automatic Search Engine Optimization - so it sounds like it&#39;s very profitable to post there, and it&#39;s FOSS anyways...</p>
+
+<li><p><a href="https://yakshav.es/asserting-static-properties/">Asserting Static properties in Rust</a>: Send, Sync, and object safety are the 3 big ones that may be implicitly derived but exporting them may silently break things.</p>
+
+</ol>
+<p>Try this for Send and Sync:</p>
+<pre><code class="rust hljs"><span class=hljs-keyword >struct</span> <span class="hljs-title class_">MyType</span> {
+  inner: <span class=hljs-type >i32</span>
+}
+
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">_assert_send</span>&lt;T: <span class=hljs-built_in >Send</span>&gt;() {}
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">_assert_sync</span>&lt;T: <span class=hljs-built_in >Sync</span>&gt;() {}
+
+<span class=hljs-keyword >fn</span> <span class="hljs-title function_">_assertions</span>() {
+    _assert_send::&lt;MyType&gt;();
+    _assert_sync::&lt;MyType&gt;();
+}</code></pre>
+<p>Ooooh - <code>_assert_send&lt;T: Senc&gt;&#40;&#41;&#123;&#125;</code>. is cool, as well as the <code>compile-fail</code> crate for proper integration into your test suite.</p>
+<ol start=728 >
+<li><p>Absolutely enraging trying to figure out a working rust-analyzer &#43; nvim combo.</p>
+
+<li><p>Incredibly useful <a href="https://lifetime-variance.sunshowers.io/ch01-02-formalizing-variance.html">Lifetime Variance Example</a> by <code>sunshowers</code>:</p>
+
+</ol>
+<pre><code class="julia hljs">&#x27;b: &#x27;a -&gt; T&lt;&#x27;b&gt;: T&lt;&#x27;a&gt;    <span class=hljs-comment ># Covariant     (Immutable data)</span>
+&#x27;b: &#x27;a -&gt; T&lt;&#x27;a&gt;: T&lt;&#x27;b&gt;    <span class=hljs-comment ># Contravariant (uncommon, shows up in params to fn pointers)</span>
+&#x27;b: &#x27;a -&gt; ???             <span class=hljs-comment ># Invariant (Inside a mutable context Cell/RefCell/Mutex or mulitple lifetimes conflict)</span></code></pre>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: July 19, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: August 02, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
