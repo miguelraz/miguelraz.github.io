@@ -3974,7 +3974,7 @@ for i in 0..v.len() {
 
 708. OK, it turns out that some of my `` ` `` in the BQN article were erroring the site, which means the blogs after `FromJuliaToBQN` weren't showing up... inchresting! The solution was to use double ticks and spaces in between the code snippets. Hat tip to Eris from the APL/BQN Discord. Triple ticks require a newline, doulbe ticks don't.
 
-### 22/02/2022
+### 22/06/2022
 
 709. Getting a long and random list of digits in Julia:
 ```julia
@@ -3992,12 +3992,158 @@ julia> let s1 = string(BigFloat(π; precision = 2^20))[3:end],
 710. Bindings in a `begin ... end` block are global, bindings in `let ... end` block are local
 711. `Apertium` is an [open source translation tool](https://www.apertium.org/index.eng.html#?dir=eng-epo&q=), so now I can do this:
 ```
-mrg@pop-os ~> echo "This is a sentence" | apertium eng-spa
+# -u gets rid of * if it doesn't understand the word
+mrg@pop-os ~> echo "This is a sentence" | apertium -u eng-spa 
 Esto es una frase 
 ```
 Tools like [Crow translate](ttps://github.com/crow-translate/crow-translate) also exist, which call out to the Google translate API, but I didn't get a proper install within 10 minutes so I'll just let it be.
 
+### 23/07/2022
 
+712. Redirecting an erroring makefile into a text file:
+```bash
+make &> error.txt
+```
+will slurp both stdout and stderr into a text file.
+
+
+### 27/06/2022
+
+715. If you type `:map` in `vim`, you get a list of all the mappings! Learned it from [the neovim docs](https://neovim.io/doc/user/usr_40.html).
+716. `:imap`, `:nmap`, `:vmap` mean that your mapping/shortcut work in Insert mode, Normal mode, Visual mode.
+717. If you select
+```
+4
+3
+2
+1
+```
+And then run `:!sort`, Vim will run sort on your input!
+
+### 30/07/2022
+
+718. This exists in Julia 1.8:
+
+```julia-repl
+julia> @time_imports using CSV
+      0.2 ms    ┌ IteratorInterfaceExtensions
+    414.0 ms  ┌ TableTraits
+    181.7 ms  ┌ SentinelArrays
+      0.9 ms    ┌ Zlib_jll
+      3.0 ms    ┌ TranscodingStreams
+    175.8 ms  ┌ CodecZlib
+      0.2 ms  ┌ DataValueInterfaces
+     18.6 ms  ┌ FilePathsBase
+     13.2 ms    ┌ InlineStrings
+      1.8 ms    ┌ DataAPI
+     93.8 ms  ┌ WeakRefStrings
+     21.1 ms  ┌ Tables
+     28.9 ms  ┌ PooledArrays
+   3369.7 ms  CSV
+```
+
+719. How to copy paste [in tmux](https://linuxhint.com/copy-paste-clipboard-tmux/)
+:
+```
+Step 1. Press the ‘Prefix’ (‘Ctrl+b) and then press ‘[’ to enter the copy mode.
+
+Step 2. Using the arrow keys, locate the position to start copying from. Use the ‘Ctrl+spacebar’ to start copying.
+
+Step 3. Move with the arrow keys to the position of the text you want to copy to. When you have finished selecting the text, press ‘Alt+w’ or ‘Ctrl+w’ to copy the text to a Tmux Buffer.
+
+Step 4. Paste the text to a Tmux pane/window/session using the Prefix (by default, it is ‘Ctrl+b’ ) followed by ‘]’.
+```
+
+720. This is what I use (besides `apertium eng-spa`) to get vim to translate a line for me and print it above with the `@q` macro:
+```
+" map leader to Space
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+:vmap <leader>t !apertium -u eng-spa<CR>
+let @q = 'VypV t'
+```
+Hat tip to Jacob Zelko.
+
+### 01/08/2022
+
+721. Read: [Non-generic Inner functions](https://www.possiblerust.com/pattern/non-generic-inner-functions)
+
+This can help cut down on monomorphization time and not pollute the namespace with `inner`:
+```rust
+// Taken from https://steveklabnik.com/writing/are-out-parameters-idiomatic-in-rust
+pub fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String> {
+    fn inner(path: &Path) -> io::Result<String> {
+        let mut file = File::open(path)?;
+        let mut string = String::with_capacity(initial_buffer_size(&file));
+        file.read_to_string(&mut string)?;
+        Ok(string)
+    }
+    inner(path.as_ref())
+}
+```
+
+722. [Rust and it's Orphan Rules](https://blog.mgattozzi.dev/orphan-rules/): If you split your crate into several, it can be a hassle to work with implementing types which "you own" but are external to your crate separation. Sometimes using the `newtype` idiom helps, other times you have to bust out the `PhantomData`.
+
+723. [Chalk](https://rust-lang.github.io/chalk/book/#chalk-works-by-converting-rust-goals-into-logical-inference-rules) is the trait resolution system that rustc uses.
+```
+To do this, it takes as input key information about a Rust program, such as:
+
+    * For a given trait, what are its type parameters, where clauses, and associated items
+    * For a given impl, what are the types that appear in the impl header
+    * For a given struct, what are the types of its fields
+
+```
+It lowers traits into `logical predicates`, then uses a `logic solver` to answer Yes/No.
+
+It even has a REPL!
+```
+$ cargo run
+?- load libstd.chalk
+?- Vec<Box<i32>>: Clone
+Unique; substitution [], lifetime constraints []
+```
+
+You can't quanitfy over traits, but you can over types and regions(lifetimes): `forall<T> {...}`.
+Syntax: `consequence :- conditions`:
+`impl<T: Clone> Clone for Vec<T> {}` => `forall<T> { (Vec<T>: Clone) :- (T: Clone) }`
+
+This rule says `Vec<T>: Clone` is only satisfied if `T:Clone` is also provable.
+
+Coherence - two impls of the same trait can't coexist.
+
+
+724. The [difference between stack and cabal](https://blog.mgattozzi.dev/package-managers-for-programmers/) is how they deal with package version resolution.
+
+
+725. Place marks with ```{lowercase_letter}`` and then you can jump to it with `` `{lowercase_letter}`` or check them with `:marks`.
+
+726. Forem does automatic Search Engine Optimization - so it sounds like it's very profitable to post there, and it's FOSS anyways...
+
+727. [Asserting Static properties in Rust](https://yakshav.es/asserting-static-properties/): Send, Sync, and object safety are the 3 big ones that may be implicitly derived but exporting them may silently break things.
+Try this for Send and Sync:
+```rust
+struct MyType {
+  inner: i32
+}
+
+fn _assert_send<T: Send>() {}
+fn _assert_sync<T: Sync>() {}
+
+fn _assertions() {
+    _assert_send::<MyType>();
+    _assert_sync::<MyType>();
+}
+```
+Ooooh - `_assert_send<T: Senc>(){}`. is cool, as well as the `compile-fail` crate for proper integration into your test suite.
+
+728. Absolutely enraging trying to figure out a working rust-analyzer + nvim combo.
+
+729. Incredibly useful [Lifetime Variance Example](https://lifetime-variance.sunshowers.io/ch01-02-formalizing-variance.html) by `sunshowers`:
+```
+'b: 'a -> T<'b>: T<'a>    # Covariant     (Immutable data)
+'b: 'a -> T<'a>: T<'b>    # Contravariant (uncommon, shows up in params to fn pointers)
+'b: 'a -> ???             # Invariant (Inside a mutable context Cell/RefCell/Mutex or mulitple lifetimes conflict)
+```
 
 
 
