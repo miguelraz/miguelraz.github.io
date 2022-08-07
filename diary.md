@@ -4244,13 +4244,13 @@ Best shot for me right now:
 
 ### 06/08/2022
 
-736. Setting up your C++20 environment is... still painful. Even with item `732` above, I needed help with all my VSCode and `C/C++` plugin configs. Recipe:
+736. Setting up your C++20 environment is... still painful. Even with item `732` above, I needed help with all my VSCode and `C/C++` plugin configs.
+Recipe:
 - Open `code` in the root folder
 - In the root folder, run `Configure Build Task` and add this in the `tasks.json` that pops up:
-```
+
+```json
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -4281,16 +4281,15 @@ Best shot for me right now:
         }
     ]
 }
+
 ```
-This was thanks to `Léo` in the `#includecpp` Discord Server. Thanks!
+
+This was thanks to `Léo` in the `includecpp` Discord Server. Thanks!
 
 And then you can do `Run Build Task`, select the above task, and it should run. The task:
-- runs on C++20
-- Uses address sanitizers and Undefined Behavior sanitizers
-- Uses debug symbols so you can run the debugger.
+runs on C++20, uses address sanitizers and Undefined Behavior sanitizers, uses debug symbols so you can run the debugger.
 
+### 07/08/2022
 
-
-
-
+737. 
 

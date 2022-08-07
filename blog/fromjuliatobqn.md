@@ -23,13 +23,14 @@ Alright, on with the blogpost.
 6. They use JuliaMono! 💝
 7. They're building a JIT!
 
-Name: funny bacon puns.
+Name: funny bacon puns. Also `"APL" .+ 1 == "BQM"`, but people noticed too late before the "bacon" puns began.
 *BQN vs APL*:
 
 ### Getting started
 
 - [BQN keyoard](https://mlochbaum.github.io/BQN/keymap.html)
 - Tutorial
+* Note: If you are going to try to use your terminal with the CQBN REPL (the fastest implementation), note that you will want to do `rlwrap -r BQN` to fire it up.
 
 Range:
 
@@ -48,7 +49,8 @@ Defining `Hi` function
 
 ### REPL Duel
 
-- Problems: `palindromes`, `count different words`,
+- Problems: `palindromes`, `count different words`, `Remove HTML Tags`
+
 
 ### Tutorial
 
@@ -110,6 +112,32 @@ Which took be a bit because `scanl` is called `accumulate` in Julia. Not too sha
 
 3. Maximum parenthesis depth
 
+
+4. Remove HTML Tags
+Problem spec:
+> Given the string "<div>Hello <b>CppNorth!</b></div>", remove the HTML tags (underne
+
+The following snippets are thanks to `dzaima` on the BQN Discord:
+```
+   )t:10000000 {𝕩/˜¬(≠`∨⊢)(𝕩='>')∨𝕩='<'} "<div>Hello <b>CppNorth!</b></div>"
+179.01ns
+```
+On a `make o3n-singeli` build (built for SIMD speedups):
+```
+   )t:10000000 ¬∘(≠`∨⊢)∘(=⟜'>'∨=⟜'<')⊸/ "<div>Hello <b>CppNorth!</b></div>"
+165.19ns
+```
+
+On a 100x longer input it rips at about 0.24ns/character (without a block):
+```
+   ≠a←∾100⥊<"<div>Hello <b>CppNorth!</b></div>"
+3300
+   )t:1000000 ¬∘(≠`∨⊢)∘(=⟜'>'∨=⟜'<')⊸/ a
+782.1ns
+```
+
+5. "LURD" robot
+
 ### What Julians can learn from BQN
 
 1. Broadcasting semantics, `Each ([¨](https://mlochbaum.github.io/BQN/doc/map.html))`, and Taking Arrays Seriously™
@@ -161,8 +189,35 @@ Sol ← +´∘(⌈`-⊢)
 
 proficiently will really up your game in code-golfing powers, should you be interested in that. This [APL Wiki page](https://aplwiki.com/wiki/Tacit_programming#Trains) and the [Trainspotting](https://xpqz.github.io/learnapl/tacit.html) links and [videos at the end](https://www.youtube.com/watch?v=Enlh5qwwDuY?t=440) are also useful resources.
 
+
+### Useful idioms
+
 - `TODO` Benchmarking:
+```
+)t:1000 3+3
+14.666 ns
+```
+How does one get a finer performance report though?
+`Dzaima` kindly posted:
+
+> [perf report](https://dzaima.github.io/paste/#0XZC/TsMwEIf3PMVJCIkuJn9Imw4duqTAzG6M67QRVRwcg9Q3AGbYqGAsEg/AwtJHyRP0EfDZriVYIuu@L3e/uzwj47NjAOhWrFtSnponHMF@87o9NZ/PKMnIcGwFzhraCHBC//Rx7XhMRo7XtMoT8JwXE14wpSLISTxEflPr6TRwHNA/bm0LSEmWoiLufACrzOuuZZovQVZWnxzkOPP9TJwF0wLl3VegMdJKqlvKE9/qpIQZnA8iSEhhw0hlJlGT73@YMDWCmBQ5ukzL9m@rAcJREa4S4H7z8uPOEgTxwFaXF1dewBdW7pmuZYOWO65emyy0UkKUxtLrVszBVNgasFY3C6u6vYXZTZiZJTYs@@fvmYWJzVppoXwehO9vFub2z0bqQ1R7sbDrLw#BQN) of that, with some comments - most of the time is in replicate (which is implemented with pdep & pext, i.e. SWAR; 8 bytes per iteration), followed by the ≠-scan, which is more SWAR, but it processes 64 items per iteration so it's fast
+
+To get that, you do
+```
+sudo perf record rlwrap ./BQN
+```
+type in your script and then
+```
+sudo perf report
+```
+
 - `TODO` Generating random arrays:
+If we need to repeat a string 100 times, we can use:
+```
+100⥊"<div>Hello <b>CppNorth!</b></div>"
+```
+That will give you the above string repeated 100 times.
+
 
 ### Interesting resources
 
