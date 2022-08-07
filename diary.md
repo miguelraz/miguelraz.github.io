@@ -4145,5 +4145,152 @@ Ooooh - `_assert_send<T: Senc>(){}`. is cool, as well as the `compile-fail` crat
 'b: 'a -> ???             # Invariant (Inside a mutable context Cell/RefCell/Mutex or mulitple lifetimes conflict)
 ```
 
+### 02/08/2022
+
+730. When reviewing PRs on Github, use `a` and `i` to toggle showing `a`nnotations and comments.
+
+731. Reading the [rustdoc book](https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html).
+* `///` is for outer docs, `//!` for the item present inside
+* `rustdoc` only documents items that are publicly reachable - use `--document-private-items` otherwise
+* take care with codegen options: `rustdoc --test src/lib.rs --codegen target_feature=+avx`
+* run tests: `rustdoc src/lib.rs --test`.
+* default theme: `rustdoc src/lib.rs --default-theme=ayu`
+* you can prefix search with `mod:` to only restrict search results to `mod`s, `+`, `-`s expand and collapse all sections of the doc.
+
+*Writing Good Docs:*
+    * Have a summary of the role of the crate, links to explain technical deets, why you want to use the crate
+    * Give an example of how to use it in a real world setting - but no shortcuts so that users can copy paste it.
+    * use inline comments to explain complexities of using a `foo`. Good crates are `futures`, `backtrace` and `regex`.
+    * first lines within `lib.rs` compose the front-page, and use `//!` to indicate module-level or crate-level docs.
+    * public API should have docs:
+    ```
+    [short sentence explaining what it is]
+
+    [more detailed explanation]
+
+    [at least one code example that users can copy/paste to try it]
+
+    [even more advanced explanations if necessary]
+    ```
+    * Footnotes:
+    ```
+    This is an example of a footnote[^note].
+
+    [^note]: This text is the contents of the footnote, which will be rendered
+    towards the bottom.
+    ```
+* You can do `#![warn(missing_docs)]` and `#![deny(missing_docs)]`.
+* Also use `#![deny(missing_doc_code_examples)]`
+* If you need to hide some lines that add noise, use `#`:
+```rust
+/// Example
+/// ```rust
+/// # main() -> Result<(), std::num::ParseIntError> {
+/// let fortytwo = "42".parse::<u32>()?;
+/// println!("{} + 10 = {}", fortytwo, fortytwo+10);
+/// #     Ok(())
+/// # }
+/// ```
+```
+* Technically, `/// This is a doc comment` == `#[doc = " This is a doc comment"]`.
+* These can be used for including external files via `#[doc = include_str!("../../READEM.md")]`
+* Setup a favicon/logo/playground_url:
+```
+#![allow(unused)]
+#![doc(html_favicon_url = "https://example.com/favicon.ico")]
+fn main() {
+}
+```
+* There's tons of ways [to use links](https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html).
+* If you use results with `?`, stick it in a `main()`.
+* macros need special handling
+* You can add attributes to the triple ticks: `ignore`, `should_panic`, `no_run`, `compile_fail`, `edition2018`
+* Lint with 
+```
+#![deny(rustdoc::broken_intra_doc_links)]
+#![deny(rustdoc::missing_crate_level_docs)]
+#![deny(rustdoc::missing_doc_code_examples)]
+#![deny(rustdoc::invalid_code_block_attributes)]
+#![deny(rustdoc::invalid_html_tags)]
+#![deny(rustdoc::invalid_rust_codeblocks)]
+#![deny(rustdoc::bare_urls)]
+```
+* omg - `rustdoc` can scrape your `examples/` directory with 
+```
+cargo doc -Zunstable-options -Zrustdoc-scrape-examples=examples
+```
+and on `docs.rs` with this in your `Cargo.toml`:
+```
+[package.metadata.docs.rs]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples=examples"]
+```
+* Perhaps have platform specific docs for stdsimd?
+
+### 03/08/2022
+
+732. This was a useful setup place for all the C++ shenanigans I needed: [Modern C++ for computer vision and image processing by Ignacio Vizzo and Cyrill Stachniss](https://www.youtube.com/watch?v=9mZw6Rwz1vg&list=PLgnQpQtFTOGRM59sr3nSL8BmeMZR9GCIA&index=5)
+
+733. Hack: To get LLVM people to teach you free compiler lessons, show up to [Office Hours](https://llvm.org/docs/GettingInvolved.html#office-hours) and ask them questions.
+Best shot for me right now:
+- clicking through with my phone to add all the calendar invites to sync
+
+### 04/08/2022
+
+734. There seems to be very useful [Competitive Programming](https://searleser97.github.io/cpbooster/) plugins - [even for VSCode](https://agrawal-d.github.io/cph/).
+- Both work with Codeforces, the first works with OmegaUp!
+- You also need to install the `Competitive Programming Plugin`, then run `cpb init`, then `cpb clone` and click the green tab in Firefox to add the problem.
+
+735. Setup [vim leap motion](https://github.com/ggandor/leap.nvim#usage). Not as good as `avy` in Doom emacs, but it's decent.
+
+### 06/08/2022
+
+736. Setting up your C++20 environment is... still painful. Even with item `732` above, I needed help with all my VSCode and `C/C++` plugin configs. Recipe:
+- Open `code` in the root folder
+- In the root folder, run `Configure Build Task` and add this in the `tasks.json` that pops up:
+```
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "build with clang++ (c++20)",
+            "command": "clang++",
+            "args": [
+                "-std=c++20",
+                "-O2",
+                "-fdiagnostics-color=always",
+                "-fsanitize=address,undefined",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: clang++"
+        }
+    ]
+}
+```
+This was thanks to `Léo` in the `#includecpp` Discord Server. Thanks!
+
+And then you can do `Run Build Task`, select the above task, and it should run. The task:
+- runs on C++20
+- Uses address sanitizers and Undefined Behavior sanitizers
+- Uses debug symbols so you can run the debugger.
+
+
+
+
 
 
