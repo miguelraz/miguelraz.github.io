@@ -4284,7 +4284,7 @@ Recipe:
 
 ```
 
-This was thanks to `Léo` in the `includecpp` Discord Server. Thanks!
+This was thanks to `Léo`/`@edhebi` in the `includecpp` Discord Server. Thanks!
 
 And then you can do `Run Build Task`, select the above task, and it should run. The task:
 runs on C++20, uses address sanitizers and Undefined Behavior sanitizers, uses debug symbols so you can run the debugger.
