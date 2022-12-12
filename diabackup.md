@@ -4454,16 +4454,20 @@ Dyadic @ (At)
 ```
 fn main() -> Result<(), ParseIntError> {
 ```
+
 Say because you could have multiple Errors, and you want the `Result<(), XXX>` to handle those different cases, you can do it dynamically with
+
 ```
 fn main() -> Result<(), Box<dyn error::Error>> {
 ```
+
 aka we want to make `?` return possibly both types of errors.
 
 The other way to do it is to make a `From` trait implementation from one Error type to another.
 
 751. The `ref` keyword is useful for not moving (and actually borrowing) into a pattern binding:
-```
+
+```rust
 let maybe_name = Some(String::from("Alice"));
 // Using `ref`, the value is borrowed, not moved ...
 match maybe_name {
@@ -4476,7 +4480,7 @@ println!("Hello again, {}", maybe_name.unwrap_or("world".into()));
 
 ### 30/08/2022
 752. Really like this method of building an `enum` of Rust error types and returning on them when different conditionals weren't handled - [great Rustlings error handling](https://github.com/alstn2468/rustlings-solution/blob/main/exercises/conversions/from_str.rs) exercise!
-```
+```rust
 // We will use this error type for the `FromStr` implementation.
 #[derive(Debug, PartialEq)]
 enum ParsePersonError {
@@ -4491,7 +4495,8 @@ enum ParsePersonError {
 }
 ```
 753. This was also a neat way to check many intervals of valid values:
-```
+
+```rust
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
@@ -4505,7 +4510,8 @@ impl TryFrom<(i16, i16, i16)> for Color {
 
 ### 23/09/2022
 754. Scoped threads! They rock! Instead of having to know that `let x: JoinHandle = thread::spawn(|| { ...});` and then to `x.join().unwrap();`
-```
+
+```rust
 let mut numbers = vec![1, 2, 3];
     thread::scope(|s| {
         s.spawn(|| {
@@ -4517,14 +4523,15 @@ let mut numbers = vec![1, 2, 3];
     });
 ```
 755. Use shadowing to your advantage and rename clones:
-```
+
+```rust
 let a = Arc::new([1,2,3]);
 let b = a.clone();
 thread::spawn(move || { dbg!(b); });
 dbg!(a);
 ```
 vs
-```
+```rust
 let a = Arc::new([1,2,3]);
 thread::spawn({let a = a.clone(); move || { dbg!(a);}});
 dbg!(a);
@@ -4534,16 +4541,19 @@ dbg!(a);
 757. The concurrent version of a `RefCell` is a `RwLock<T>`.
 758. The concurrent version of a `Cell` is an Atomic type.
 759. AHHHH! `PhantomData<T>` is treated by the compiler as `T`, but it doesn't exist as runtime, so it lets you opt out of being `Send/Sync`! This lets you prevent `X`
-```
+
+```rust
 struct X {
     handle: i32,
     _not_sync: PhantomData<Cell()>>,
 }
 ```
+
 from being `Send + Sync`, since both `i32` and `Cell<()>` are `Send + Sync`!
 
 760. Note: Do *NOT* put these into the same line, unless you really wanna increase the critical section drastically:
-```
+
+```rust
 let item = list.lock().unwrap().pop();
 if let Some(item) = item {
 process_item(item);
@@ -4563,8 +4573,8 @@ You can use these in Rust as `std::sync::CondVar` (e.g., is "is the quieue non-e
 ### 25/09/2022
 
 763. Thread parking with condition variables:
-```
 
+```rust
 // 1. define the mutex and the Condvar
 // 2. Start a thread scope, loop { useful }; drop(q); dbg!(item);
 // 3. in a for loop, lock(), pushback(i), notify_one();, sleep
@@ -4596,14 +4606,15 @@ thread::scope(|s| {
 ```
 
 764. Atomics use `load` and `store`:
-```
+
+```rust
 let num_done = AtomicUsize::new(0);
 num_done.store(1+1, Relaxed);
 num_done.load(Relaxed);
 ```
 
 765. To avoid the last item in a collection to be waited on, you can `unpark()` the main thread (and `thread::park_timeout(Duration::from_secs(1));`:
-```
+```rust
 thread::scope(|s| {
     s.spawn(|| {
         for i in 0..100 {
@@ -4621,7 +4632,7 @@ loop {
 ```
 
 766. You can get a `race` that's not a `data race` - like with *lazy ininitialization*
-```
+```rust
 fn get_x() -> u64 {
     static X: AtomicU64 = AtomicU64::new(0);
     let mut x = x.load(Relaxed);
@@ -4642,7 +4653,7 @@ These implement `wrapping` behaviour for overflows.
 
 768. And this is how you can aggregate statistics with threads, atomics and `Instant::now()`, `Instant::elapsed().as_micros()`:
 
-```
+```rust
 fn main() {
     let num_done = &AtomicU32::new(0);
     let total_time = &AtomicU64::new(0);
@@ -4706,7 +4717,8 @@ are impossible. The *specific* sequence isn't specified, but it will be universa
 
 772. `Release` -> `Acquire` is the useful combo (Re-Lis + A = Lisa!).
 773. What if you wanted to build up data more complex than a number? Try using `AtomicPtr<T>` and
-```
+
+```rust
 fn get_data() -> &'static Data {
     static PTR: AtomicPtr<Data> = AtomicPtr::new(ptr::null_mut());
     let mut p = PTR.load(Acquire);
@@ -4742,14 +4754,14 @@ buttttt - what if we didn't need the `AcqRel`? How can the data be accessed befo
 778. You can apply memory ordering to atomic avriables, but also to `atomic fences`!
 
 779. Fence equivalences:
-```
+```rust
 a.store(1, Release);
 // is the same as
 fence(Release);
 a.store(1, Relaxed);
 ```
 and
-```
+```rust
 a.load(Acquire);
 // is the same as
 a.load(Relaxed);
@@ -4759,7 +4771,7 @@ fence(Acquire);
 780. Atomic fences are not tied to any particular atomic variable!
 
 781. wtf is `std::hint::spin_loop()`???
-```
+```text
 Within the while loop, we use a spin loop hint, which tells the processor that we’re
 spinning while waiting for something to change. On most major platforms, this hint
 results in a special instruction that causes the processor core to optimize its behavior
@@ -4773,7 +4785,7 @@ called to put your thread to sleep in favor of another one.
 784. If we want to make a Safe One-Shot-Channel (and enforce safety through types), we need to try and restrict not calling `send` or `receive` more than once: make a funciton take an argument `by value`, and for `non-Copy` types, the object will be consumed.
 
 785. To make a blocking interface, you can jam a `std::thread::Thread` inside a `Sender` struct:
-```
+```rust
 pub struct Sender<'a, T> {
     channel: &'a Channel<T>,
     receiveing_thread: Thread // o.0
@@ -4781,7 +4793,7 @@ pub struct Sender<'a, T> {
 ```
 
 and restricting `Receiver` to not be `Send` with `PhantomData`:
-```
+```rust
 pub struct Receiver<'a, T> {
     channel: &'a Channel<T>,
     _no_send: PhantomData<*const ()>, // o.0
@@ -4789,7 +4801,7 @@ pub struct Receiver<'a, T> {
 ```
 
 786. Remember, `thread::park()` might return spuriously!, you need to loop!
-```
+```rust
 pub fn receive(self) -> T {
     while !self.channel.ready.swap(false, Acquire) {
         thread::park();
@@ -4803,7 +4815,7 @@ pub fn receive(self) -> T {
 
 788. We can represent a non-null pointer with `std::ptr::NonNull<T>` instead of `*mut T` or `*const T`.
 789. Conditions for `Arc<T>` being `Send` iff `T` is both `Send + Sync`, and being `Sync` iff `T` is also both `Send + Sync`:
-```
+```rust
 unsafe impl<T: Send + Sync> Send for Arc<T> {}
 unsafe impl<T: Send + Sync> Sync for Arc<T> {}
 ```
@@ -4813,7 +4825,7 @@ unsafe impl<T: Send + Sync> Sync for Arc<T> {}
 791. Ref counting is hard - especially so with *cyclic structures*. For that you need `Weak Pointers` - which are similar to `Arc`s but don't prevent objects from being dropped.
 792. Mara recommends `cargo-show-asm` and `Compiler Explorer` for snippets.
 793. WOW - going from
-```
+```rust
 pub fn a(x: &Atomici32) {
     x.fetch_add(10, Relaxed);
 }
@@ -4823,7 +4835,7 @@ pub fn a(x: &Atomici32) -> i32 {
 }
 ```
 means you get the `exchange and add` instruction
-```
+```rust
 a:
     move eax, 10
     lock xadd dword ptr[rdi], eax
@@ -4841,7 +4853,8 @@ but it only exists for `xadd` and `xchg` :(
 797. `std.rs/chain` will just search the docs for `chain`!
 798. `cargo install cargo-show-asm` is super duper cool and easy for getting the assembly/MIR/LLVMIR of a function. (Hat tip to Mara).
 799. To fill a slice with a number, just do: 
-```
+
+```rust
 let mut buf = vec![0; 10];
 buf.fill(1);
 assert_eq!(buf, vec![1; 10]);
@@ -4859,7 +4872,7 @@ assert_eq!(vec, ["hello", "world", "world"]);
 ```
 
 800. Instead of accepting super crappy iterator code like this...
-```
+```rust
 pub fn sgfilter6(v: Vec<f32>) -> Vec<f32> {
     // 5 filler elements
     // [1,1,1,1,1 ...]
@@ -4873,7 +4886,7 @@ pub fn sgfilter6(v: Vec<f32>) -> Vec<f32> {
 
 ```
 you can rock that code like Jubilee and now do:
-```
+```rust
 fn accept_vec(v: Vec<f32>) -> () {
     if let [_, _, _, _, _, ref interesting @ .., _, _, _, _, _] = *v {
         assert!(interesting.len() > 0);
@@ -4897,7 +4910,7 @@ Jubilee says: You can use `iter.skip(5)`, but this has the advantage of pattern 
 
 
 801. If you use `array_windows`, you are making super const intermediate arrays (no dynamic checking for bounds). (Nightly for now)
-```
+```rust
 #![feature(array_windows)]
 let slice = [0, 1, 2, 3];
 let mut iter = slice.array_windows();
@@ -4919,4 +4932,144 @@ assert!(iter.next().is_none());
 
 807. Don't forget to use `RUST_FLAGS= -C target-cpu=native`.
 
+808. Got nerdsniped immensely by an incredibly interesting data parallel implementation of the `octree` concept - [Maximizing Parallelism in the construction of Bounded Volume Hierarchies, Actress, and K-D Trees](https://research.nvidia.com/sites/default/files/publications/karras2012hpg_paper.pdf). You make the recursion friendly to the GPU
+- [Rust implementation](https://crates.io/crates/octree) (Seems quite abandoned, but based on the paper ` Efficient Radius Neighbor Search in Three-Dimensional Point Clouds. In 2015 IEEE International Conference on Robotics and Automation (ICRA); 2015; pp 3625–3630.`
+- `Gankra` kindly pointed out that Firefox uses `BspNodes` from the [binary-space-partition](https://docs.rs/binary-space-partition/0.1.2/binary_space_partition/) crate (via `webrender`, via [plane-split](https://docs.rs/plane-split/latest/plane_split/).
 
+This was a welcome link from lookin up documentation on the [Futhark - Ray tracing: the enext weekend](https://github.com/athas/raytracingthenextweekinfuthark/). Thank you `athas`!.
+
+809. Read [David Tolnay's Await a Minute post](https://docs.rs/dtolnay/latest/dtolnay/macro._01__await_a_minute.html).
+- tl;dr, `async` code can reduce bloat by a huge factor and increase readability. Boring, but important.
+
+810. [Optimization of Collective Communication Operations in MPICH](https://web.cels.anl.gov/~thakur/papers/ijhpca-coll.pdf). Sounds fun - `select the right algirthm for a particular message size and number of processes`... multiple dispatch + generated functions again?
+811. [Can't forget about the Formal Specification of the MPI-2.0 Standard in TLA+](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.570.3798&rep=rep1&type=pdf).
+812. Or the [FatTrees - Universal networks for hardware efficient supercomputing](http://courses.csail.mit.edu/6.896/spring04/handouts/papers/fat_trees.pdf) by Ya Cilk boiii Dr. Charles Leiserson.
+813. Back on my *Linear Algebra is everywhere bullshit*: [A Linear Algebraic approach to Datalog Evaluation](https://arxiv.org/pdf/1608.00139.pdf). Takeaway - like Aaron Hsu's APL -> GPU thesis, they take a "symbolic" problem and translate that to a linear algera problem (that runs 10-10^4 times faster!).
+814. TODO ... I should have some non-aggressive hashtag for finding tweets that are like "I really wish a programming language could do X" and then write up X. Case in point: [SymmetricInts.jl](https://www.foonathan.net/2022/09/new-integer-types/):
+This is not too hard to implement once you know how to implement `primitive types` in Julia, like in the [Julia 1.0 Programming CookBook](https://github.com/PacktPublishing/Julia-1.0-Programming-Cookbook/blob/master/Chapter06/04.%20Defining%20primitive%20types/argb.jl):
+```julia
+primitive type ARGB 32 end
+
+ARGB(c::UInt32) = reinterpret(ARGB, c)
+ARGB(c) = ARGB(UInt32(c))
+ARGB(α::UInt8, red::UInt8, green::UInt8, blue::UInt8) =
+    ARGB(UInt32(α) << 24 + UInt32(red) << 16 +
+         UInt32(green) << 8 + UInt32(blue))
+ARGB(α, red, green, blue) = ARGB(UInt8(α), UInt8(red),
+                                 UInt8(green), UInt8(blue))
+
+function ARGB(c::AbstractString)
+   if !occursin(r"^#[0-9a-fA-F]{8}$", c)
+       throw(DomainError("wrong color string: $c"))
+   end
+   ARGB(parse(UInt32, c[2:end], base=16))
+end
+
+macro ARGB_str(s) ARGB(s) end
+
+α(c::ARGB)::UInt8 = (UInt32(c) >> 24) & 0x000000FF
+red(c::ARGB)::UInt8 = (UInt32(c) >> 16) & 0x000000FF
+green(c::ARGB)::UInt8 = (UInt32(c) >> 8) & 0x000000FF
+blue(c::ARGB)::UInt8 = UInt32(c) & 0x000000FF
+
+Base.UInt32(c::ARGB) = reinterpret(UInt32, c)
+convert(UInt32, c::ARGB) = UInt32(c)
+convert(ARGB, c::UInt32) = ARGB(c)
+Base.String(c::ARGB) = "#" * lpad(string(UInt32(c), base=16), 8, "0")
+convert(String, c::ARGB) = String(c)
+convert(ARGB, c::AbstractString) = ARGB(c)
+```
+815. [Tokio tracing tutorial](https://tokio.rs/tokio/topics/tracing), as well as the normal tutorial.
+816. Back on my [Savitzky Golay BS](https://inst.eecs.berkeley.edu/~ee123/sp15/docs/SGFilter.pdf), [now in Rust!](https://github.com/miguelraz/sgfilter).
+817. TODO: [Translation to spanish of the Async Book in Rust](https://rust-lang.github.io/async-book/12_appendix/01_translations.html)
+
+### 04/10/2022 
+
+818. Recursive locking is when a thread that holds a lock attempts to hold it again -> UB! But it can be changed to being an error, or a succesful second lock.
+819. Condition variables with default settings use a real time clock (which is not a monotonic clock, like Rust's `Instant`.)
+820. Futex syscall details:
+```text
+For example, a FUTEX_WAKE_BITSET operation with a bitset of 0b0101 will wake
+up a FUTEX_WAIT_BITSET operation with a bitset of 0b1100, but not one with a
+bitset of 0b0010.
+This might be useful when implementing something like a reader-writer lock, to
+wake up a writer without waking up any readers. However, note that using two
+separate atomic variables can be more efficient than using a single one for two
+different kind of waiters, since the kernel will keep a single list of waiters per
+atomic variable.
+```
+821. Found the [bat-extras](https://github.com/eth-p/bat-extras) to go along with `bat`. Now I have colorful man pages! :D
+- `batgrep` - needs `ripgrep`
+- `batman`
+- `batpipe` 
+- `batwatch`
+- `batdiff`
+- `prettybat`
+
+822. Priority Inversion: when a high priority thread is blocked on a lock held by a low priority thread. There's 7 futex ops and 6 priority inheriting futex ops (that are there direct analogues).
+
+
+823. Futexes, being *robust*:
+```text
+As an extra feature, the kernel will set the second highest bit if the thread that holds
+the lock terminates without unlocking it, but only if there are any waiters. This allows
+for the mutex to be robust: a term used to describe a mutex that can gracefully handle
+a situation where its “owning” thread unexpectedly terminates.
+```
+
+824. [CXL](https://www.computeexpresslink.org/about-cxl) Compute Express Link is *the* open standard for the future of HPC RAM <-> CPU <-> GPU interconnects (across nodes!)
+
+825. [UCIe](https://en.wikipedia.org/wiki/UCIe) (PCIe, but for lower level chiplets) is based on CXL and is an open spec for `die-to-die interconnect`.
+
+826. Heavy Weight Kernel Objects include  `Mutex` and
+- `Event` - can be signaled and waited for 
+- `Waitable Timer` - can be automagicaly signalled
+
+827. Slim Reader Writer lock on Windows is called `SRW lock`.
+
+828. `atomic-wait` crate for cross platform building our own mutex, condvar and reader-writer lock.
+
+829. `lock_api` crate is useful for implementing the `UnsafeCell`, `Sync`, guard type, `Deref`.
+
+830. 2 basic lock optimizations - avoid a syscall in the uncontested case by storing `0,1,2` in your state and using `std::hint::spin_loop` and a `<100` counter that *then* goes to do the `wait` (syscall).
+
+
+### 05/08/2022
+
+831. In order to not have your entire freakin' loop optimized away by the compiler, you can have [std::hint::black_box](https://doc.rust-lang.org/stable/std/hint/fn.black_box.html). Other hints are `must_use` (for macros), `spin_loop`, and `unreachable_unchecked` for the uber-brave FLOP/s hunter.
+```rust
+static A: AtomicU64 = AtomicU64::new(0);
+fn main() {
+    black_box(&A);
+    thread::spawn(|| { // New!
+        loop {
+            black_box(A.load(Relaxed));
+        }
+    });
+    let satrt = Instant::now();
+    for _ in 0..1_000_000_000 {
+        black_box(A.load(Relaxed));
+    }
+    println!("{:?}", start.elapsed());
+}
+```
+
+832. Spurious wake ups of futexes can happen because of
+- some algorithms rely on being able to wake freed variables to reuse them
+- an awake may wake more than 1 varaible in C++, because they use a global hashmap of fixed size.
+
+833. Finished Mara's book on Rust and Atomic! 🎉 
+834. OMGGGG `Ctrl+Shift+E then SPACE` on PopOS let's you pick an emoji and input thatttttt!!!! 🤌
+
+### 07/10/22
+
+835. `cargo build && gdb --args --quiet ./target/waytoodeep` will let you observe a SEGFAULT where `RUST_BACKTRACE=1` wouldn't, and then you can press 
+```bash
+(gdb) r
+(gdb) bt
+```
+to see the full stack trace!
+
+### 08/10/2022
+
+836. Was reminded of [Zarr.jl](https://github.com/JuliaIO/Zarr.jl/issues/58) and my nugget of a nudge there.

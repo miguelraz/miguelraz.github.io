@@ -31,6 +31,9 @@ Name: funny bacon puns. Also `"APL" .+ 1 == "BQM"`, but people noticed too late 
 - [BQN keyoard](https://mlochbaum.github.io/BQN/keymap.html)
 - Tutorial
 * Note: If you are going to try to use your terminal with the CQBN REPL (the fastest implementation), note that you will want to do `rlwrap -r BQN` to fire it up.
+- The `nvim-bqn` interface is the best local option I've found.
+- Remember to change your terminal font to JuliaMono, otherwiseyour code will be *even more unreadable* (at first!).
+
 
 Range:
 
@@ -192,11 +195,21 @@ proficiently will really up your game in code-golfing powers, should you be inte
 
 ### Useful idioms
 
-- `TODO` Benchmarking:
+At some point, any seasoned array programmer develops a good collection of known code snippets. Here's a few to save you some headaches:
+
+- Reading lines from a file can be done via:
+```
+lines ← •FLines "day01-a-test.txt"
+nums ← •BQN¨ lines
+```
+The `•BQN¨` isn't optimal, but it's good enough to get going with AdventOfCode problems.
+
+- Benchmarking! (I am a Julia REPL stan after all.) If you're in the REPL, you can use `)t:X`
 ```
 )t:1000 3+3
 14.666 ns
 ```
+This will run your code `X` times and tell you how long it took on average. Elsewhere, `•_timed` can be bound to the left argument
 How does one get a finer performance report though?
 `Dzaima` kindly posted:
 
