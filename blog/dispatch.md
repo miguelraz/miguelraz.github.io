@@ -4,6 +4,7 @@
 @def rss = "This blog is a friendly introduction to multiple dispatch in Julia"
 @def rss_pubdate = Date(2021, 05, 09)
 @def published = "09 May 2021"
+@def rss_guid = 1
 
 
 @@colbox-blue

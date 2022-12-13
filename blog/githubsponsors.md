@@ -4,6 +4,7 @@
 @def rss = "GitHub sponsors - a useful lifeboat"
 #@def rss_pubdate = Date(2022, 10, 21)
 #@def published = "21st October"
+@def rss_guid = 6
 
 ### Saludos 👋 
 

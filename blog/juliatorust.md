@@ -4,6 +4,7 @@
 @def rss = "From Julia to Rust - learnings and reflections"
 @def rss_pubdate = Date(2021, 06, 05)
 @def published = "05 June 2021"
+@def rss_guid = 2
 
 ### From Julia to Rust 🗺 
 

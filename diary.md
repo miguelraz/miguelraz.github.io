@@ -2593,7 +2593,8 @@ Small lessons:
 14. Hah, I clicked the moment of [triump!](https://clips.twitch.tv/ExcitedSparklyTofuTheThing-I5DsaBoyOXcZ2KMw)
 15. `../julia runtests.jl strings` to run the string test suite.
 
-116. Remembered about `ArgParse.jl`. Noice:
+116. Remembered about `ArgParse.jl`. Notice:
+
 ```julia
 s = ArgParseSettings()
 @add_arg_table! s begin
@@ -2617,16 +2618,17 @@ end
 114. Don't forget to turn off `cpuscaling` when running your benchmarks! Hat tip to [Camille Fournier](https://twitter.com/skamille/status/1389731461893349380) for schooling a bunch of us on this one!
 
 [From this link:](https://nixcp.com/disable-cpu-frecuency-scaling/) we can do:
+
 ```bash
 grep -E '^model name|^cpu MHz' /proc/cpuinfo
 ```
 
 To figure out if the number on the left is lower than the number on the right. That's costing speed!
 if you install `cpupowerutils(Centos/Debian)/ cpufrequtils (ubuntu / Debian)` you can do:
+
 ```bash
 cpupower frequency-set -g performance
 ```
-
 
 ### 29/04/2021
 
@@ -2636,6 +2638,7 @@ As always, Mosè helped tons. He rocks.
 ### 28/04/2021
 
 112. Como deshacer tu [ultimo git commit](https://midu.dev/como-deshacer-el-ultimo-commit-git/)
+
 ```bash
 git reset --soft HEAD~1
 git reset --hard HEAD~1
@@ -3589,7 +3592,7 @@ julia> (^2, sqrt, inv).([2,4,4])
 
 3. Rust allows for defining anonymous functions!
 
-```
+```rust
 fn raindrops(n: u32) -> String {
 	let is_factor = |f| x % f == 0;
 	...
@@ -3597,7 +3600,8 @@ fn raindrops(n: u32) -> String {
 ```
 
 4. Rust match is very powerful... try and setup the anonymous functions in a tuple after the `match` and then filter by `(each, available, case) => action`.
-```
+
+```rust
 pub fn raindrops(num: i64) -> String {
     let mut raindrop = String::new();
 
@@ -3618,7 +3622,7 @@ pub fn raindrops(num: i64) -> String {
 
 5. This was a good use of match
 
-```
+```rust
 pub fn square(s: u32) -> u64 {
     match s {
         1...64 => 1u64.wrapping_shl(s-1),
@@ -3634,6 +3638,7 @@ pub fn total() -> u64 {
 // u64::max_value
 }
 ```
+
 Credit to Wow-BOB-Wow.
 
 
@@ -3641,9 +3646,6 @@ Credit to Wow-BOB-Wow.
 
 Today I got my website setup!
 
-
-
-----
 ### 04/08/2022
 
 579. Today I restart this diary but going the other way...fuck Markdown auto formatting.
@@ -3655,6 +3657,7 @@ Today I got my website setup!
 585. `?` does unwrap or early return.
 586. "Implement `From`, use `Into` in bounds." Since there is a blanket impl for getting an `Into` from anything that uses `From`.
 587. An early return here would be bad because it may skip the cleanup:
+
 ```rust
 fn do_the_thing() -> Result<(), Error> {
     let thing = Thing::setup()?
@@ -3671,36 +3674,51 @@ fn do_the_thing() -> Result<(), Error> {
     thing.cleanup();
     r
 ```
+
 588. Just because it has `!` at the func name doesn't mean it's a declarative macro, like `macro_rules!` and `format_args!` - just means that some source code will be replaced/changed at compile time.
+
 589. Declarative macros always generate valid Rust as output.
+
 590. `:ident`, `:ty`, `:tt` are known as `fragment types`.
+
 591. Macro variable identifiers existing in their own namespace => no name clashes => `hygienic`. Doesn't happen for Types, Modules and Functions within the call site (so that you can define them inside the macro and use them outside).
+
 592. Avoid `::std` paths so that macros can be used on `no_std` crates.
+
 593. You can escape/share identifiers with `$foo:ident`!
+
 594. Macros must respect import order - even in `lib.rs` so `mod foo; mod bar;` will let macros from `foo` be used in `bar`, and not vice versa.
+
 595. In procedural macros you can affect *how* the parsed code is generated, and aren't required to be hygienic.
-- function-like macros need `Span::call_site` and `Span::mixed_site`
-- attribute macros are like `#[test]`
-- `#[derive]` macros add to, don't replace token trees that come after them.
-- consider using the `syn` crate for macros, and using it in debug mode, and turning off features.
-- compile time pure computations sound like something good that a function-like macro can do.
-- testing configs and middleware like logging/tracing can be a good place for attribute macros
+* function-like macros need `Span::call_site` and `Span::mixed_site`
+* attribute macros are like `#[test]`.
+* `#[derive]` macros add to, don't replace token trees that come after them.
+* consider using the `syn` crate for macros, and using it in debug mode, and turning off features.
+* compile time pure computations sound like something good that a function-like macro can do.
+* testing configs and middleware like logging/tracing can be a good place for attribute macros
+
 596. `TokenStream` implements `Display`, which is handy for debugging!
+
 597. To propagate user errors like `u31` as a type, consider the `compiler_error!` macro.
+
 596. Async interfaces are mthods that return a `Poll`, as defined here:
+
 ```rust
 enum Poll<T> {
     Ready(T),
     Pending
 }
 ```
+
 597. Polling is standardized via the `Future` trait:
+
 ```rust
 trait Future {
     type Output;
     fn poll(&mut self) -> Poll<Self::Output>;
 }
 ```
+
 types that implement this trait are called `futures` (or *promises* in other langs).
 598. Don't poll futures after they have return a `Poll:Ready`, or they panic. If it's safe to do, it's called a `fused future`.
 
@@ -3708,6 +3726,7 @@ types that implement this trait are called `futures` (or *promises* in other lan
 600. `Generators` are chunks of code with some extra compiler generated bits that enable it to stop/`yield` its execution midway and resume later from the yieldpoint. Not yet in stable Rust but used internally.
 601. Generators need to store a bunch of internal state to be able to resume - if your app spends too much time in `memcpy`, perhaps its the generators. Rust checks that references across these internal states obey the ownership system.
 602. What happens when code isnide an `async` block takes a ref to a local var? The point is that the polling can give you `self-referential` data which holds both the data and the refs to that data, but the polling has moved it! To solve this conundrum, you use `Pin`, a wrapper type that prevents the underlying type from being (safely) moved and `Unpin` is a marker trait that the implementing type *can* be removed safely from a `Pin`.
+
 ```rust
 // What you get from using Pin to implement Future
 trait Future {
@@ -3715,8 +3734,10 @@ trait Future {
     fn poll(self: Pin<&mut self>) -> Poll<Self::Output>;
 }
 ```
+
 This means that "once you have the value behind a `Pin`, that value will never move again."
 603. Notice the implementation of Pin:
+
 ```rust
 struct Pin<P> {pointer: P}
 impl<P> Pin<P> where P: Deref {
@@ -3730,6 +3751,7 @@ impl<P> Deref for Pin<P> where P: Deref {
     fn deref(&self) -> &Self::Target;
 }
 ```
+
 - we hold a *pointer type*: `Pin<Box<MyType>>`/`Pin<Rc<MyType>>` and not `Pin<MyType>`
 - the constructor is unsafe! and the `get` method is unchecked - so that any moving is your responsibility
 - `Pin::set` can drop a value in place and store a new value - and yet fulfill the contract that the old value was never accessed outside of a `Pin` after it was placed there!
@@ -4042,19 +4064,20 @@ julia> @time_imports using CSV
    3369.7 ms  CSV
 ```
 
-719. How to copy paste [in tmux](https://linuxhint.com/copy-paste-clipboard-tmux/)
-:
-```
-Step 1. Press the ‘Prefix’ (‘Ctrl+b) and then press ‘[’ to enter the copy mode.
+719. How to copy paste [in tmux](https://linuxhint.com/copy-paste-clipboard-tmux/):
 
-Step 2. Using the arrow keys, locate the position to start copying from. Use the ‘Ctrl+spacebar’ to start copying.
+```
+Step 1. Press the 'Prefix' (‘Ctrl+b) and then press '[' to enter the copy mode.
+
+Step 2. Using the arrow keys, locate the position to start copying from. Use the 'Ctrl+spacebar' to start copying.
 
 Step 3. Move with the arrow keys to the position of the text you want to copy to. When you have finished selecting the text, press ‘Alt+w’ or ‘Ctrl+w’ to copy the text to a Tmux Buffer.
 
-Step 4. Paste the text to a Tmux pane/window/session using the Prefix (by default, it is ‘Ctrl+b’ ) followed by ‘]’.
+Step 4. Paste the text to a Tmux pane/window/session using the Prefix (by default, it is 'Ctrl+b' ) followed by ']'.
 ```
 
 720. This is what I use (besides `apertium eng-spa`) to get vim to translate a line for me and print it above with the `@q` macro:
+
 ```
 " map leader to Space
 nnoremap <SPACE> <Nop>
@@ -4062,6 +4085,7 @@ let mapleader = " "
 :vmap <leader>t !apertium -u eng-spa<CR>
 let @q = 'VypV t'
 ```
+
 Hat tip to Jacob Zelko.
 
 ### 01/08/2022
@@ -4069,6 +4093,7 @@ Hat tip to Jacob Zelko.
 721. Read: [Non-generic Inner functions](https://www.possiblerust.com/pattern/non-generic-inner-functions)
 
 This can help cut down on monomorphization time and not pollute the namespace with `inner`:
+
 ```rust
 // Taken from https://steveklabnik.com/writing/are-out-parameters-idiomatic-in-rust
 pub fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String> {
@@ -4085,6 +4110,7 @@ pub fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String> {
 722. [Rust and it's Orphan Rules](https://blog.mgattozzi.dev/orphan-rules/): If you split your crate into several, it can be a hassle to work with implementing types which "you own" but are external to your crate separation. Sometimes using the `newtype` idiom helps, other times you have to bust out the `PhantomData`.
 
 723. [Chalk](https://rust-lang.github.io/chalk/book/#chalk-works-by-converting-rust-goals-into-logical-inference-rules) is the trait resolution system that rustc uses.
+
 ```
 To do this, it takes as input key information about a Rust program, such as:
 
@@ -4093,9 +4119,11 @@ To do this, it takes as input key information about a Rust program, such as:
     * For a given struct, what are the types of its fields
 
 ```
+
 It lowers traits into `logical predicates`, then uses a `logic solver` to answer Yes/No.
 
 It even has a REPL!
+
 ```
 $ cargo run
 ?- load libstd.chalk
@@ -4163,6 +4191,7 @@ Ooooh - `_assert_send<T: Senc>(){}`. is cool, as well as the `compile-fail` crat
     * use inline comments to explain complexities of using a `foo`. Good crates are `futures`, `backtrace` and `regex`.
     * first lines within `lib.rs` compose the front-page, and use `//!` to indicate module-level or crate-level docs.
     * public API should have docs:
+
     ```
     [short sentence explaining what it is]
 
@@ -4172,17 +4201,21 @@ Ooooh - `_assert_send<T: Senc>(){}`. is cool, as well as the `compile-fail` crat
 
     [even more advanced explanations if necessary]
     ```
+
     * Footnotes:
+
     ```
     This is an example of a footnote[^note].
 
     [^note]: This text is the contents of the footnote, which will be rendered
     towards the bottom.
     ```
+
 * You can do `#![warn(missing_docs)]` and `#![deny(missing_docs)]`.
 * Also use `#![deny(missing_doc_code_examples)]`
 * If you need to hide some lines that add noise, use `#`:
-```rust
+
+<!--```rust
 /// Example
 /// ```rust
 /// # main() -> Result<(), std::num::ParseIntError> {
@@ -4192,21 +4225,26 @@ Ooooh - `_assert_send<T: Senc>(){}`. is cool, as well as the `compile-fail` crat
 /// # }
 /// ```
 ```
+-->
+
 * Technically, `/// This is a doc comment` == `#[doc = " This is a doc comment"]`.
 * These can be used for including external files via `#[doc = include_str!("../../READEM.md")]`
 * Setup a favicon/logo/playground_url:
-```
+
+```rust
 #![allow(unused)]
 #![doc(html_favicon_url = "https://example.com/favicon.ico")]
 fn main() {
 }
 ```
+
 * There's tons of ways [to use links](https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html).
 * If you use results with `?`, stick it in a `main()`.
 * macros need special handling
 * You can add attributes to the triple ticks: `ignore`, `should_panic`, `no_run`, `compile_fail`, `edition2018`
 * Lint with 
-```
+
+```rust
 #![deny(rustdoc::broken_intra_doc_links)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(rustdoc::missing_doc_code_examples)]
@@ -4215,15 +4253,19 @@ fn main() {
 #![deny(rustdoc::invalid_rust_codeblocks)]
 #![deny(rustdoc::bare_urls)]
 ```
+
 * omg - `rustdoc` can scrape your `examples/` directory with 
-```
+
+```bash
 cargo doc -Zunstable-options -Zrustdoc-scrape-examples=examples
 ```
 and on `docs.rs` with this in your `Cargo.toml`:
-```
+
+```toml
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples=examples"]
 ```
+
 * Perhaps have platform specific docs for stdsimd?
 
 ### 03/08/2022
@@ -4293,7 +4335,7 @@ runs on C++20, uses address sanitizers and Undefined Behavior sanitizers, uses d
 
 737. Uhhhhh, the `rr` guide says that to squeeze max perf from your laptop you should plug it in to the AC and then do:
 
-```
+```bash
 sudo apt-get install cpufrequtils
 sudo cpufreq-set -g performance
 ```
@@ -4306,40 +4348,47 @@ Which holds until next restart.
 
 739. Remember to set your Terminal font to `JuliaMono` if you want readable BQN code...
 740. To convert a BQN array into a string and write it into afile (Like what you would need for `ppm` images for RayTracing in a weekend...)
-```
+
+```bqn
 s ← •Repr¨ 1‿2‿4
 "test.txt" •FLines s
 PGM←{𝕨 •Fbytes ∾"P5 "‿(∾⟜"255" 2↓¯1↓•Fmt ≢𝕩)‿(@+10)‿(⥊𝕩)}
 ```
+
 the last line writes out a PPM file (Credit to `Cake` from the BQN chat).
 
 ### 14/08/2022
 
 741. To make a vector of 100 random Ints between `[1,3]` in APL, do
-```
+
+```apl
 ?100⍴3
 ```
 
 742. Warning from APL:
-```
+
+```apl
 In the expression A⍳B we search for B in A whereas in A∊B we search for A in B. Do not be confused!
 ```
+
 This is the classic `Changing the Frame of Reference` concept:a list of area numbers (initial set) is translated into a list of discount rates (the final set):
-```
+
+```apl
 r ← finalSet[initialSet ⍳ values]
 ```
 
 ### 15/08/2022
 
 743. How to think about the `where`:
-```
-What items are greater than 75?
+
+```apl
+⍝ What items are greater than 75?
 
 contents > 75
 
 0 0 1 0 1 1 0 0 0 0 1 0
 
-And where are they?
+⍝ And where are they?
 
 ⍸contents > 75
 
@@ -4347,7 +4396,7 @@ And where are they?
 ```
 
 744. Enclosures and partitions are powerful:
-```
+```apl
 
 dyadic ⊂ (Partitioned enclose)
 
@@ -4398,7 +4447,8 @@ dyadic ⊆ (Partition)
 ```
 
 745. Damn, apply a fill element/operation at a mask on an array with `@`:
-```
+
+```apl
 
 Dyadic @ (At)
 
@@ -4451,19 +4501,23 @@ Dyadic @ (At)
 
 750. To return a "Union type" of this
 
-```
+```rust
 fn main() -> Result<(), ParseIntError> {
 ```
+
 Say because you could have multiple Errors, and you want the `Result<(), XXX>` to handle those different cases, you can do it dynamically with
-```
+
+```rust
 fn main() -> Result<(), Box<dyn error::Error>> {
 ```
+
 aka we want to make `?` return possibly both types of errors.
 
 The other way to do it is to make a `From` trait implementation from one Error type to another.
 
 751. The `ref` keyword is useful for not moving (and actually borrowing) into a pattern binding:
-```
+
+```rust
 let maybe_name = Some(String::from("Alice"));
 // Using `ref`, the value is borrowed, not moved ...
 match maybe_name {
@@ -4476,7 +4530,8 @@ println!("Hello again, {}", maybe_name.unwrap_or("world".into()));
 
 ### 30/08/2022
 752. Really like this method of building an `enum` of Rust error types and returning on them when different conditionals weren't handled - [great Rustlings error handling](https://github.com/alstn2468/rustlings-solution/blob/main/exercises/conversions/from_str.rs) exercise!
-```
+
+```rust
 // We will use this error type for the `FromStr` implementation.
 #[derive(Debug, PartialEq)]
 enum ParsePersonError {
@@ -4490,8 +4545,10 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 ```
+
 753. This was also a neat way to check many intervals of valid values:
-```
+
+```rust
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
@@ -4505,7 +4562,8 @@ impl TryFrom<(i16, i16, i16)> for Color {
 
 ### 23/09/2022
 754. Scoped threads! They rock! Instead of having to know that `let x: JoinHandle = thread::spawn(|| { ...});` and then to `x.join().unwrap();`
-```
+
+```rust
 let mut numbers = vec![1, 2, 3];
     thread::scope(|s| {
         s.spawn(|| {
@@ -4516,15 +4574,19 @@ let mut numbers = vec![1, 2, 3];
         });
     });
 ```
+
 755. Use shadowing to your advantage and rename clones:
-```
+
+```rust
 let a = Arc::new([1,2,3]);
 let b = a.clone();
 thread::spawn(move || { dbg!(b); });
 dbg!(a);
 ```
+
 vs
-```
+
+```rust
 let a = Arc::new([1,2,3]);
 thread::spawn({let a = a.clone(); move || { dbg!(a);}});
 dbg!(a);
@@ -4534,16 +4596,19 @@ dbg!(a);
 757. The concurrent version of a `RefCell` is a `RwLock<T>`.
 758. The concurrent version of a `Cell` is an Atomic type.
 759. AHHHH! `PhantomData<T>` is treated by the compiler as `T`, but it doesn't exist as runtime, so it lets you opt out of being `Send/Sync`! This lets you prevent `X`
-```
+
+```rust
 struct X {
     handle: i32,
     _not_sync: PhantomData<Cell()>>,
 }
 ```
+
 from being `Send + Sync`, since both `i32` and `Cell<()>` are `Send + Sync`!
 
 760. Note: Do *NOT* put these into the same line, unless you really wanna increase the critical section drastically:
-```
+
+```rust
 let item = list.lock().unwrap().pop();
 if let Some(item) = item {
 process_item(item);
@@ -4563,8 +4628,8 @@ You can use these in Rust as `std::sync::CondVar` (e.g., is "is the quieue non-e
 ### 25/09/2022
 
 763. Thread parking with condition variables:
-```
 
+```rust
 // 1. define the mutex and the Condvar
 // 2. Start a thread scope, loop { useful }; drop(q); dbg!(item);
 // 3. in a for loop, lock(), pushback(i), notify_one();, sleep
@@ -4596,14 +4661,15 @@ thread::scope(|s| {
 ```
 
 764. Atomics use `load` and `store`:
-```
+
+```rust
 let num_done = AtomicUsize::new(0);
 num_done.store(1+1, Relaxed);
 num_done.load(Relaxed);
 ```
 
 765. To avoid the last item in a collection to be waited on, you can `unpark()` the main thread (and `thread::park_timeout(Duration::from_secs(1));`:
-```
+```rust
 thread::scope(|s| {
     s.spawn(|| {
         for i in 0..100 {
@@ -4621,7 +4687,8 @@ loop {
 ```
 
 766. You can get a `race` that's not a `data race` - like with *lazy ininitialization*
-```
+
+```rust
 fn get_x() -> u64 {
     static X: AtomicU64 = AtomicU64::new(0);
     let mut x = x.load(Relaxed);
@@ -4642,7 +4709,7 @@ These implement `wrapping` behaviour for overflows.
 
 768. And this is how you can aggregate statistics with threads, atomics and `Instant::now()`, `Instant::elapsed().as_micros()`:
 
-```
+```rust
 fn main() {
     let num_done = &AtomicU32::new(0);
     let total_time = &AtomicU64::new(0);
@@ -4689,15 +4756,16 @@ fn main() {
 - compare and exchange ops
 
 770. Ah, `Relaxed Ordering` means that everyone will see the same modification sequence for a given Atomic value!
-```
-0 0 0 0 0 5 15
-0 15 15 15
-```
+
+> 0 0 0 0 0 5 15
+> 0 15 15 15
+
 are possible but
-```
-0 5 0 15
-0 0 10 15
-```
+
+
+> 0 5 0 15
+> 0 0 10 15
+
 are impossible. The *specific* sequence isn't specified, but it will be universal to all threads.
 
 770. `Relaxed` Ordering cycles can happen in theory, but not in practice, so don't sweat it. (Called *out of thin air values*)
@@ -4706,7 +4774,8 @@ are impossible. The *specific* sequence isn't specified, but it will be universa
 
 772. `Release` -> `Acquire` is the useful combo (Re-Lis + A = Lisa!).
 773. What if you wanted to build up data more complex than a number? Try using `AtomicPtr<T>` and
-```
+
+```rust
 fn get_data() -> &'static Data {
     static PTR: AtomicPtr<Data> = AtomicPtr::new(ptr::null_mut());
     let mut p = PTR.load(Acquire);
@@ -4742,14 +4811,17 @@ buttttt - what if we didn't need the `AcqRel`? How can the data be accessed befo
 778. You can apply memory ordering to atomic avriables, but also to `atomic fences`!
 
 779. Fence equivalences:
-```
+
+```rust
 a.store(1, Release);
 // is the same as
 fence(Release);
 a.store(1, Relaxed);
 ```
+
 and
-```
+
+```rust
 a.load(Acquire);
 // is the same as
 a.load(Relaxed);
@@ -4759,21 +4831,22 @@ fence(Acquire);
 780. Atomic fences are not tied to any particular atomic variable!
 
 781. wtf is `std::hint::spin_loop()`???
-```
-Within the while loop, we use a spin loop hint, which tells the processor that we’re
-spinning while waiting for something to change. On most major platforms, this hint
-results in a special instruction that causes the processor core to optimize its behavior
-for such a situation. For example, it might temporarily slow down or prioritize other
-useful things it can do. Unlike blocking operations such as thread::sleep or
-thread::park, however, a spin loop hint does not cause the operating system to be
-called to put your thread to sleep in favor of another one.
-```
+
+> Within the while loop, we use a spin loop hint, which tells the processor that we’re 
+> spinning while waiting for something to change. On most major platforms, this hint
+> results in a special instruction that causes the processor core to optimize its behavior
+> for such a situation. For example, it might temporarily slow down or prioritize other
+> useful things it can do. Unlike blocking operations such as thread::sleep or
+> thread::park, however, a spin loop hint does not cause the operating system to be
+> called to put your thread to sleep in favor of another one.
+
 782. You should think of `Release` and `Acquire` as related to `Mutex` locks!
 783. Must re-visit -> implemting a `Guard` to make an `Unsafe Spinlock` to a `Safe Spinlock`! Chapter 4 - Atomics in Rust, Mara.
 784. If we want to make a Safe One-Shot-Channel (and enforce safety through types), we need to try and restrict not calling `send` or `receive` more than once: make a funciton take an argument `by value`, and for `non-Copy` types, the object will be consumed.
 
 785. To make a blocking interface, you can jam a `std::thread::Thread` inside a `Sender` struct:
-```
+
+```rust
 pub struct Sender<'a, T> {
     channel: &'a Channel<T>,
     receiveing_thread: Thread // o.0
@@ -4781,7 +4854,8 @@ pub struct Sender<'a, T> {
 ```
 
 and restricting `Receiver` to not be `Send` with `PhantomData`:
-```
+
+```rust
 pub struct Receiver<'a, T> {
     channel: &'a Channel<T>,
     _no_send: PhantomData<*const ()>, // o.0
@@ -4789,7 +4863,8 @@ pub struct Receiver<'a, T> {
 ```
 
 786. Remember, `thread::park()` might return spuriously!, you need to loop!
-```
+
+```rust
 pub fn receive(self) -> T {
     while !self.channel.ready.swap(false, Acquire) {
         thread::park();
@@ -4797,13 +4872,15 @@ pub fn receive(self) -> T {
     unsafe {(*self.channel.message.get()).assume_init_read() }
 }
 ```
+
 787. "Exclusively borrowing and splitting borrows can be a powerful tool for forcing correctness!" - Mara :D
 
 ### 26/09/2022
 
 788. We can represent a non-null pointer with `std::ptr::NonNull<T>` instead of `*mut T` or `*const T`.
 789. Conditions for `Arc<T>` being `Send` iff `T` is both `Send + Sync`, and being `Sync` iff `T` is also both `Send + Sync`:
-```
+
+```rust
 unsafe impl<T: Send + Sync> Send for Arc<T> {}
 unsafe impl<T: Send + Sync> Sync for Arc<T> {}
 ```
@@ -4813,7 +4890,8 @@ unsafe impl<T: Send + Sync> Sync for Arc<T> {}
 791. Ref counting is hard - especially so with *cyclic structures*. For that you need `Weak Pointers` - which are similar to `Arc`s but don't prevent objects from being dropped.
 792. Mara recommends `cargo-show-asm` and `Compiler Explorer` for snippets.
 793. WOW - going from
-```
+
+```rust
 pub fn a(x: &Atomici32) {
     x.fetch_add(10, Relaxed);
 }
@@ -4822,13 +4900,16 @@ pub fn a(x: &Atomici32) -> i32 {
     x.fetch_add(10, Relaxed);
 }
 ```
+
 means you get the `exchange and add` instruction
-```
+
+```asm
 a:
     move eax, 10
     lock xadd dword ptr[rdi], eax
     ret
 ```
+
 but it only exists for `xadd` and `xchg` :(
 
 794. On x86-64, there's no difference between `compare_exchange` and `compare_exchange_weak` - both compile down to a `lock cmpxchg` instruction.
@@ -4841,7 +4922,8 @@ but it only exists for `xadd` and `xchg` :(
 797. `std.rs/chain` will just search the docs for `chain`!
 798. `cargo install cargo-show-asm` is super duper cool and easy for getting the assembly/MIR/LLVMIR of a function. (Hat tip to Mara).
 799. To fill a slice with a number, just do: 
-```
+
+```rust
 let mut buf = vec![0; 10];
 buf.fill(1);
 assert_eq!(buf, vec![1; 10]);
@@ -4859,7 +4941,8 @@ assert_eq!(vec, ["hello", "world", "world"]);
 ```
 
 800. Instead of accepting super crappy iterator code like this...
-```
+
+```rust
 pub fn sgfilter6(v: Vec<f32>) -> Vec<f32> {
     // 5 filler elements
     // [1,1,1,1,1 ...]
@@ -4872,8 +4955,10 @@ pub fn sgfilter6(v: Vec<f32>) -> Vec<f32> {
     iter.next();
 
 ```
+
 you can rock that code like Jubilee and now do:
-```
+
+```rust
 fn accept_vec(v: Vec<f32>) -> () {
     if let [_, _, _, _, _, ref interesting @ .., _, _, _, _, _] = *v {
         assert!(interesting.len() > 0);
@@ -4893,11 +4978,13 @@ fn reject_ten() {
     accept_vec(vec![0.; 10])
 }
 ```
+
 Jubilee says: You can use `iter.skip(5)`, but this has the advantage of pattern matching (which can result at compile time *without* const traits or skip to be const stable).
 
 
 801. If you use `array_windows`, you are making super const intermediate arrays (no dynamic checking for bounds). (Nightly for now)
-```
+
+```rust
 #![feature(array_windows)]
 let slice = [0, 1, 2, 3];
 let mut iter = slice.array_windows();

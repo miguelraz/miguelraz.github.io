@@ -1,7 +1,7 @@
-@def title = "The Grind"
-@def hascode = true
+#@def title = "The Grind"
+#@def hascode = true
 
-@def tags = ["diary", "code"]
+#@def tags = ["diary", "code"]
 
 # Virtual diary for progress on all fronts
 
@@ -3735,19 +3735,23 @@ impl<P> Deref for Pin<P> where P: Deref {
 - `Pin::set` can drop a value in place and store a new value - and yet fulfill the contract that the old value was never accessed outside of a `Pin` after it was placed there!
 
 604. Git saves files more like this:
+
 ```
    V1    V2 V3 V4 V5
 File A   A1 A1 A2 A2
 File B   B  B  B1 B2
 File C   C1 C2 C2 C3
 ```
+
 and `vcs` does it more on a "delta based" version:
+
 ```
    V1   V2 V3 V4 V5
 Fila A  Δ1 -> Δ2
 File B  -> -> Δ1 Δ2
 File C  -> Δ1 -> Δ3
 ```
+
 and 99% of stuff can be done locally - you don't need a central server to answer you.
 605. Because Git checksums all file stores and is referred to by the checksum, you can't just swap files without detection.
 606. Git has 3 stages (*IMPORTANT*):
@@ -3761,28 +3765,32 @@ and 99% of stuff can be done locally - you don't need a central server to answer
     - `.git/config` for single repo
 
 608. Set `main` as the default branch name:
+
 ```bash
 git config --global init.defaultBranch main
 ```
+
 609. `git help <verb>` is a canonical way to get help, `git add -h` is an abbreviated way to get help/show flags.
 610. If anyone has any clone of your repo, they have the entire history of it, and can restore it if needed.
 611. Untracked files are files that weren't in the last snapshot.
 612. Once you stage it, it gets committed.
 613. Use `git status -s (or --short)` to get a nice summary of where you are.
 614. `.gitignore` can respect glob patters and ignores `#` lines
+
 ```
-# ignroes all .a files
+// ignores all .a files
 *.a 
 
-#but do track lib.a
+// but do track lib.a
 !lib.a
 
-#ignore all files in any dir named build
+// ignore all files in any dir named build
 build/
 
-ignore all .pdf files in the doc/ dir and its subdirs
+//ignore all .pdf files in the doc/ dir and its subdirs
 doc/**/*.pdf
 ```
+
 615. `git diff --staged` and `git diff --cached` are synonyms.
 616. `git difftool --tool=vimdiff` looks cool.
 617. Can declare inline commit message with `git commit -m`, and `git commit -am` will skip the need to stage the file and *then* committing.
@@ -3935,12 +3943,15 @@ What differs here is the **history**! Not the contents!
 
 ### 14/04/2022
 702. Revisited the `leap year ` exercise in Rust. Instead of this crappy 1-liner
+
 ```rust
 pub fn is_leap_year(year: u64) -> bool {
     (year % 100 != 0 || year % 400 == 0) && year % 4 == 0
 }
 ```
+
 You can use a neat `match`:
+
 ```rust
 pub fn is_leap_year(year: u64) -> bool {
     match (year % 400, year % 100, year % 4) {
@@ -3956,6 +3967,7 @@ pub fn is_leap_year(year: u64) -> bool {
 ### 15/04/2022
 
 704. Rust: Instead of doing this:
+
 ```rust
 for i in 0..v.len() {
     w.push('-');
@@ -3977,7 +3989,7 @@ for i in 0..v.len() {
 ### 22/06/2022
 
 709. Getting a long and random list of digits in Julia:
-```julia
+```julia-repl
 julia> using Folds
 
 julia> let s1 = string(BigFloat(π; precision = 2^20))[3:end],
@@ -3989,9 +4001,12 @@ julia> let s1 = string(BigFloat(π; precision = 2^20))[3:end],
        end
 26548
 ```
-710. Bindings in a `begin ... end` block are global, bindings in `let ... end` block are local
+
+710. Bindings in a `begin ... end` block are global, bindings in `let ... end` block are local.
+
 711. `Apertium` is an [open source translation tool](https://www.apertium.org/index.eng.html#?dir=eng-epo&q=), so now I can do this:
-```
+
+```bash
 # -u gets rid of * if it doesn't understand the word
 mrg@pop-os ~> echo "This is a sentence" | apertium -u eng-spa 
 Esto es una frase 
@@ -4001,6 +4016,7 @@ Tools like [Crow translate](ttps://github.com/crow-translate/crow-translate) als
 ### 23/07/2022
 
 712. Redirecting an erroring makefile into a text file:
+
 ```bash
 make &> error.txt
 ```
@@ -4700,15 +4716,15 @@ fn main() {
 - compare and exchange ops
 
 770. Ah, `Relaxed Ordering` means that everyone will see the same modification sequence for a given Atomic value!
-```
-0 0 0 0 0 5 15
-0 15 15 15
-```
+
+> 0 0 0 0 0 5 15
+> 0 15 15 15
+
 are possible but
-```
-0 5 0 15
-0 0 10 15
-```
+
+> 0 5 0 15
+> 0 0 10 15
+
 are impossible. The *specific* sequence isn't specified, but it will be universal to all threads.
 
 770. `Relaxed` Ordering cycles can happen in theory, but not in practice, so don't sweat it. (Called *out of thin air values*)
@@ -5037,6 +5053,7 @@ a situation where its “owning” thread unexpectedly terminates.
 ### 05/08/2022
 
 831. In order to not have your entire freakin' loop optimized away by the compiler, you can have [std::hint::black_box](https://doc.rust-lang.org/stable/std/hint/fn.black_box.html). Other hints are `must_use` (for macros), `spin_loop`, and `unreachable_unchecked` for the uber-brave FLOP/s hunter.
+
 ```rust
 static A: AtomicU64 = AtomicU64::new(0);
 fn main() {

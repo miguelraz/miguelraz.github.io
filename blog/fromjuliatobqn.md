@@ -1,4 +1,6 @@
 @def title = "🚧 WIP 🚧 From Julia to BQN"
+@def rss = "From Julia to BQN, an array based language"
+@def rss_guid = 7
 
 Here's the rough sketch of this blogpost:
 
@@ -105,9 +107,9 @@ Sol a
 which in Julia I would write like
 
 ```julia-repl
-x = [3 2 5 1 7]
-sol(x) = accumulate(max, x) - x |> sum
-sol(x)
+julia> x = [3 2 5 1 7];
+julia> sol(x) = accumulate(max, x) - x |> sum;
+julia> sol(x);
 ```
 
 Which took be a bit because `scanl` is called `accumulate` in Julia. Not too shabby.
@@ -121,18 +123,22 @@ Problem spec:
 > Given the string "<div>Hello <b>CppNorth!</b></div>", remove the HTML tags (underne
 
 The following snippets are thanks to `dzaima` on the BQN Discord:
-```
+
+```bqn
    )t:10000000 {𝕩/˜¬(≠`∨⊢)(𝕩='>')∨𝕩='<'} "<div>Hello <b>CppNorth!</b></div>"
 179.01ns
 ```
+
 On a `make o3n-singeli` build (built for SIMD speedups):
-```
+
+```bqn
    )t:10000000 ¬∘(≠`∨⊢)∘(=⟜'>'∨=⟜'<')⊸/ "<div>Hello <b>CppNorth!</b></div>"
 165.19ns
 ```
 
 On a 100x longer input it rips at about 0.24ns/character (without a block):
-```
+
+```bqn
    ≠a←∾100⥊<"<div>Hello <b>CppNorth!</b></div>"
 3300
    )t:1000000 ¬∘(≠`∨⊢)∘(=⟜'>'∨=⟜'<')⊸/ a
@@ -143,22 +149,22 @@ On a 100x longer input it rips at about 0.24ns/character (without a block):
 
 ### What Julians can learn from BQN
 
-1. Broadcasting semantics, `Each ([¨](https://mlochbaum.github.io/BQN/doc/map.html))`, and Taking Arrays Seriously™
-2. Data parallelism techniques
-3. Bit vector optimizations
-4. Flattening data recursive structures for performance
-5. Array-ify all the things
+1. Broadcasting semantics, `Each ([¨](https://mlochbaum.github.io/BQN/doc/map.html))`, and Taking Arrays Seriously™.
+2. Data parallelism techniques.
+3. Bit vector optimizations.
+4. Flattening data recursive structures for performance.
+5. Array-ify all the things.
 6. Algorithmic thinking
 
 ### Notes and words of caution
 
-- The syntax and symbols of BQN is a big "love it or hate it" part of the deal. I won't try to convince you to *like it*, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does:
-  - `≡"abc"` will give you the "depth" of something, because it looks like a little ladder that you descend
-  - `⌈` is taking the "highest" value (and is thus the max), `⌊` is taking the "lowest"
-  - `+´` will be dragging all the stuff to the right of the tick towards the `+`, so it's a reduction
-  - `` +` `` If you use the `` ` `` tick the other way, you will be dragging the `+` *towards* the stuff on the right, so it's a `scan`, from left to right. 
+The syntax and symbols of BQN is a big "love it or hate it" part of the deal. I won't try to convince you to *like it*, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does:
+    * `` ≡"abc" `` will give you the "depth" of something, because it looks like a little ladder that you descend
+    * `` ⌈ `` is taking the "highest" value (and is thus the max), ``⌊`` is taking the "lowest"
+    * `` +´ `` will be dragging all the stuff to the right of the tick towards the `+`, so it's a reduction
+    * `` +` `` If you use the tick the other way, you will be dragging the `+` *towards* the stuff on the right, so it's a `scan`, from left to right. 
   These are just the examples that come to mind, but I've found (completely subjectively) for BQN's symbology to be a bit friendlier/more consistent than APL's.
-- Be mindful that the `‿` character to denote lists is not the same as that of arrays. The [docs say that](https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets) newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:
+Be mindful that the `‿` character to denote lists is not the same as that of arrays. The [docs say that](https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets) newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:
 
 ```bqn
     3 1⊸+⊸× 5
@@ -198,29 +204,36 @@ proficiently will really up your game in code-golfing powers, should you be inte
 At some point, any seasoned array programmer develops a good collection of known code snippets. Here's a few to save you some headaches:
 
 - Reading lines from a file can be done via:
-```
+
+```bqn
 lines ← •FLines "day01-a-test.txt"
 nums ← •BQN¨ lines
 ```
+
 The `•BQN¨` isn't optimal, but it's good enough to get going with AdventOfCode problems.
 
 - Benchmarking! (I am a Julia REPL stan after all.) If you're in the REPL, you can use `)t:X`
-```
+
+```bqn
 )t:1000 3+3
 14.666 ns
 ```
+
 This will run your code `X` times and tell you how long it took on average. Elsewhere, `•_timed` can be bound to the left argument
 How does one get a finer performance report though?
 `Dzaima` kindly posted:
 
-> [perf report](https://dzaima.github.io/paste/#0XZC/TsMwEIf3PMVJCIkuJn9Imw4duqTAzG6M67QRVRwcg9Q3AGbYqGAsEg/AwtJHyRP0EfDZriVYIuu@L3e/uzwj47NjAOhWrFtSnponHMF@87o9NZ/PKMnIcGwFzhraCHBC//Rx7XhMRo7XtMoT8JwXE14wpSLISTxEflPr6TRwHNA/bm0LSEmWoiLufACrzOuuZZovQVZWnxzkOPP9TJwF0wLl3VegMdJKqlvKE9/qpIQZnA8iSEhhw0hlJlGT73@YMDWCmBQ5ukzL9m@rAcJREa4S4H7z8uPOEgTxwFaXF1dewBdW7pmuZYOWO65emyy0UkKUxtLrVszBVNgasFY3C6u6vYXZTZiZJTYs@@fvmYWJzVppoXwehO9vFub2z0bqQ1R7sbDrLw#BQN) of that, with some comments - most of the time is in replicate (which is implemented with pdep & pext, i.e. SWAR; 8 bytes per iteration), followed by the ≠-scan, which is more SWAR, but it processes 64 items per iteration so it's fast
+> [perf report](https://tinyurl.com/467pyk8n) of that, with some comments - most of the time is in replicate (which is implemented with pdep & pext, i.e. SWAR; 8 bytes per iteration), followed by the ≠-scan, which is more SWAR, but it processes 64 items per iteration so it's fast
 
 To get that, you do
-```
+
+```bash
 sudo perf record rlwrap ./BQN
 ```
+
 type in your script and then
-```
+
+```bash
 sudo perf report
 ```
 

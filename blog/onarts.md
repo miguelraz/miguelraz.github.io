@@ -4,6 +4,7 @@
 @def rss = "On Arts and Math Education"
 @def rss_pubdate = Date(2022, 03, 02)
 @def published = "02 March 2022"
+@def rss_guid = 3
 
 ### Intro
 When I tell people I study physics, more frequently than not I've had to help avoid a panic attack or two.

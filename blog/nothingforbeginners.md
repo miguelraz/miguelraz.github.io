@@ -4,6 +4,7 @@
 @def rss = "An intuitive explanation of nothing, missing, and NaN"
 @def rss_pubdate = Date(2022, 02, 26)
 @def published = "26 February 2021"
+@def rss_guid = 5
 
 
 A quick note for my Julia peeps to grok the difference between `NaN`, `missing` and `nothing` in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to [Jasmine Hughes](https://twitter.com/Jas_Hughes/status/1494020182171275266?s=20&t=X6bd-uWW4b2CMW5xFzctUw) for inspiring this post and also [sponsoring me on GitHub so I can continue my open source campaing](https://github.com/sponsors/miguelraz/).
