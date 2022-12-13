@@ -1,0 +1,161 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>🚧 WIP 🚧 From Julia to BQN</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><p>Here&#39;s the rough sketch of this blogpost:</p> <ol> <li><p>I will give a brief intro to BQN and talk about its pros and cos</p> <li><p>I will show a few Julia vs BQN code problems side by syde</p> <li><p>I will argue that there&#39;s areas for Julians to draw inspiration from BQN</p> <li><p>I will give a few resources at the end for you to dive deeper.</p> </ol> <p>As usual, if you want to support my writings and open source work, <a href="https://github.com/sponsors/miguelraz/">please consider sponsoring me on GitHub</a>. I&#39;m reaaaaally close to 50 monthly sponsors, and it makes a <em>huuuuge</em> difference in how much time/worries/resources I have for working on stuff like this.</p> <p>Alright, on with the blogpost.</p> <hr /> <h3 id=why_is_bqn_is_cool ><a href="#why_is_bqn_is_cool" class=header-anchor >Why is BQN is cool</a></h3> <ol> <li><p>It has fast multidimensional arrays</p> <li><p>They love unicode</p> <li><p>It has a REPL&#33;</p> <li><p>It&#39;s super at code golfing 🏌</p> <li><p>It&#39;s self hosted</p> <li><p>They use JuliaMono&#33; 💝</p> <li><p>They&#39;re building a JIT&#33;</p> </ol> <p>Name: funny bacon puns. Also <code>&quot;APL&quot; .&#43; 1 &#61;&#61; &quot;BQM&quot;</code>, but people noticed too late before the &quot;bacon&quot; puns began. <em>BQN vs APL</em>:</p> <h3 id=getting_started ><a href="#getting_started" class=header-anchor >Getting started</a></h3> <ul> <li><p><a href="https://mlochbaum.github.io/BQN/keymap.html">BQN keyoard</a></p> <li><p>Tutorial</p> <li><p>Note: If you are going to try to use your terminal with the CQBN REPL &#40;the fastest implementation&#41;, note that you will want to do <code>rlwrap -r BQN</code> to fire it up.</p> <li><p>The <code>nvim-bqn</code> interface is the best local option I&#39;ve found.</p> <li><p>Remember to change your terminal font to JuliaMono, otherwiseyour code will be <em>even more unreadable</em> &#40;at first&#33;&#41;.</p> </ul> <p>Range:</p> <ul> <li><p>15 reshape range 10 # cycles&#33;</p> <li><p>transpose 3_3</p> </ul> <h3 id=scripting ><a href="#scripting" class=header-anchor >Scripting</a></h3> <p>online REPL or download BQN repo and open with browser <code>BQN/docs/try.html</code> from their github repo.</p> <p>Everything in green is a function Everything in yellow is a 1 modifier Everything in purple/pink is a 2 modifer</p> <p>Defining <code>Hi</code> function</p> <h3 id=repl_duel ><a href="#repl_duel" class=header-anchor >REPL Duel</a></h3> <ul> <li><p>Problems: <code>palindromes</code>, <code>count different words</code>, <code>Remove HTML Tags</code></p> </ul> <h3 id=tutorial ><a href="#tutorial" class=header-anchor >Tutorial</a></h3> <h3 id=julia_vs_bqn_problems ><a href="#julia_vs_bqn_problems" class=header-anchor >Julia vs BQN problems:</a></h3> <p>Here&#39;s a few &quot;classic&quot; problems in both Julia and BQN</p> <ol> <li><p>Find the Hamming/edit distance between 2 strings:</p> </ol> <pre><code class=language-julia-repl >julia&gt; dist&#40;s1, s2&#41; &#61; count&#40;&#40;&#40;x,y&#41;,&#41; -&gt; x &#33;&#61; y, zip&#40;s1, s2&#41;&#41;
+dist &#40;generic function with 1 method&#41;
+
+julia&gt; dist&#40;&quot;ACCAGGG&quot;, &quot;ACTATGG&quot;&#41;
+2
+
+julia&gt; dist&#40;s1, s2&#41; &#61; sum&#40;map&#40;&#33;&#61;, s1, s2&#41;&#41; # kudos to Michael Abbot for the broadcasting tip
+dist &#40;generic function with 1 method&#41;
+
+julia&gt; dist&#40;s1, s2&#41; &#61; mapreduce&#40;&#33;&#61;, &#43;, s1, s2&#41; # kudos to J. Ling for this one</code></pre> <p>And in BQN:</p> <pre><code class=language-bqn >s1 ← &quot;XXXXGGG&quot;
+s2 ← &quot;ACTAGGG&quot;
+Sol ← &#43;´≠
+s1 Sol s2 # 4</code></pre> <p>This is a neat <code>3 char solution</code> that Asher will no doubt be very proud of.</p> <ol start=2 > <li><p><a href="https://cses.fi/problemset/task/1094/">Increasing Array</a></p> </ol> <blockquote> <p>You should take 3 minutes to go read the problem statement.</p> </blockquote> <p>I like that after seeing the problem &#40;you should go and click the link&#41;, I didn&#39;t think about a C&#43;&#43; but a BQN solution. Here&#39;s my attempt:</p> <pre><code class=language-bqn >a ← 3‿2‿5‿1‿7
+&#43;´a-˜⌈&#96;a
+Sol ← &#123;&#43;´𝕩-˜⌈&#96;𝕩&#125;
+Sol ← &#43;´∘&#40;⌈&#96;-⊢&#41; # Asher&#39;s solution
+Sol a</code></pre> <p>which in Julia I would write like</p> <pre><code class=language-julia-repl >julia&gt; x &#61; &#91;3 2 5 1 7&#93;;
+julia&gt; sol&#40;x&#41; &#61; accumulate&#40;max, x&#41; - x |&gt; sum;
+julia&gt; sol&#40;x&#41;;</code></pre> <p>Which took be a bit because <code>scanl</code> is called <code>accumulate</code> in Julia. Not too shabby. &#40;Extra kudos if you can get a non-allocating version working&#41;</p> <ol start=3 > <li><p>Maximum parenthesis depth</p> </ol> <ol start=4 > <li><p>Remove HTML Tags</p> </ol> <p>Problem spec:</p> <blockquote> <p>Given the string &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;, remove the HTML tags &#40;underne</p> </blockquote> <p>The following snippets are thanks to <code>dzaima</code> on the BQN Discord:</p> <pre><code class=language-bqn >&#41;t:10000000 &#123;𝕩/˜¬&#40;≠&#96;∨⊢&#41;&#40;𝕩&#61;&#39;&gt;&#39;&#41;∨𝕩&#61;&#39;&lt;&#39;&#125; &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+179.01ns</code></pre> <p>On a <code>make o3n-singeli</code> build &#40;built for SIMD speedups&#41;:</p> <pre><code class=language-bqn >&#41;t:10000000 ¬∘&#40;≠&#96;∨⊢&#41;∘&#40;&#61;⟜&#39;&gt;&#39;∨&#61;⟜&#39;&lt;&#39;&#41;⊸/ &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+165.19ns</code></pre> <p>On a 100x longer input it rips at about 0.24ns/character &#40;without a block&#41;:</p> <pre><code class=language-bqn >≠a←∾100⥊&lt;&quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+3300
+   &#41;t:1000000 ¬∘&#40;≠&#96;∨⊢&#41;∘&#40;&#61;⟜&#39;&gt;&#39;∨&#61;⟜&#39;&lt;&#39;&#41;⊸/ a
+782.1ns</code></pre> <ol start=5 > <li><p>&quot;LURD&quot; robot</p> </ol> <h3 id=what_julians_can_learn_from_bqn ><a href="#what_julians_can_learn_from_bqn" class=header-anchor >What Julians can learn from BQN</a></h3> <ol> <li><p>Broadcasting semantics, <code>Each &#40;&#91;¨&#93;&#40;https://mlochbaum.github.io/BQN/doc/map.html&#41;&#41;</code>, and Taking Arrays Seriously™.</p> <li><p>Data parallelism techniques.</p> <li><p>Bit vector optimizations.</p> <li><p>Flattening data recursive structures for performance.</p> <li><p>Array-ify all the things.</p> <li><p>Algorithmic thinking</p> </ol> <h3 id=notes_and_words_of_caution ><a href="#notes_and_words_of_caution" class=header-anchor >Notes and words of caution</a></h3> <p>The syntax and symbols of BQN is a big &quot;love it or hate it&quot; part of the deal. I won&#39;t try to convince you to <em>like it</em>, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does: * <code>≡&quot;abc&quot;</code> will give you the &quot;depth&quot; of something, because it looks like a little ladder that you descend * <code>⌈</code> is taking the &quot;highest&quot; value &#40;and is thus the max&#41;, <code>⌊</code> is taking the &quot;lowest&quot; * <code>&#43;´</code> will be dragging all the stuff to the right of the tick towards the <code>&#43;</code>, so it&#39;s a reduction * <code>&#43;&#96;</code> If you use the tick the other way, you will be dragging the <code>&#43;</code><em>towards</em> the stuff on the right, so it&#39;s a <code>scan</code>, from left to right. These are just the examples that come to mind, but I&#39;ve found &#40;completely subjectively&#41; for BQN&#39;s symbology to be a bit friendlier/more consistent than APL&#39;s. Be mindful that the <code>‿</code> character to denote lists is not the same as that of arrays. The <a href="https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets">docs say that</a> newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:</p> <pre><code class=language-bqn >3 1⊸&#43;⊸× 5
+20
+    3‿1⊸&#43;⊸× 5
+⟨ 40 30 ⟩</code></pre> <p>As stated in the page, <a href="https://aplwiki.com/wiki/Array_notation">general array notation is a thorny problem</a> in APL, and it took Julia about 10 years to finally nail down the tools <a href="https://github.com/JuliaLang/julia/pull/33697">and syntax to land it in Base.</a>.</p> <ul> <li><p>Reading BQN/APL is likely where the learning difficulty curve hits hardest when starting out - this <a href="https://mlochbaum.github.io/BQN/doc/context.html#is-grammatical-context-really-a-problem">docs page</a> was very useful to grok that <code>˜</code> is a 1-modifier &#40;as all symbols that &quot;float higher up&quot;&#41; and <code>∘</code> &#40;like all symbols with unbroken circles&#41; are 2-modifiers. Concretely, having a <code>context free grammar</code> removes ambiguity</p> <li><p>When I&#39;m struggling to find out how to write my solutions to problems like the <code>Increasing Array</code>, this is my workflow:</p> <ol> <li><p>Start with thinking &quot;I should propagate the max function&quot; like <code>⌈&#96;a</code>. I&#39;ll press <code>Shift&#43;Enter</code> on the online BQN REPL and build up the solution</p> <li><p>&quot;I should now try to subtract it from the original array&quot; and write <code>a-⌈&#96;a</code></p> <li><p>&quot;Ah, right - I need to add a flip thingy&quot; and evaluate <code>a-˜⌈&#96;a</code></p> <li><p>&quot;Sweet, just have to reduce with a sum now&quot; <code>&#43;´a-˜⌈&#96;a</code></p> <li><p>&quot;Ok, to make it tacit I had to use those ⊣ ⊢ thingies.&quot; &#40;I go and review the <a href="https://mlochbaum.github.io/BQN/doc/primitive.html#modifiers">modifiers diagrams docs</a>&#41;</p> <li><p>&#40;After much plugging away at the REPL&#41; ... &quot;Dammit, I forgot I can use the <code>Explain</code> button&#33;&quot;</p> <li><p>&#40;Fiddle around some more&#41; &quot;OK, I think I got it&quot; and write</p> </ol> </ul> <pre><code class=language-bqn >Sol ← &#43;´∘&#40;⌈&#96;-⊢&#41;</code></pre>
+<ul>
+<li><p>The next big step up in BQN skills is <a href="https://mlochbaum.github.io/BQN/doc/train.html">identifying function trains</a>, which took me a bit of spelunking about in the manual before finding it. For example, going from the first line to the second in this snippet 👇🏻</p>
+
+</ul>
+<pre><code class=language-bqn >&quot;whatsin&quot; &#123;&#40;𝕨∊𝕩&#41;/𝕨&#125; &quot;intersect&quot;
+&quot;whatsin&quot; &#40;∊/⊣&#41; &quot;intersect&quot;</code></pre>
+<p>proficiently will really up your game in code-golfing powers, should you be interested in that. This <a href="https://aplwiki.com/wiki/Tacit_programming#Trains">APL Wiki page</a> and the <a href="https://xpqz.github.io/learnapl/tacit.html">Trainspotting</a> links and <a href="https://www.youtube.com/watch?v&#61;Enlh5qwwDuY?t&#61;440">videos at the end</a> are also useful resources.</p>
+<h3 id=useful_idioms ><a href="#useful_idioms" class=header-anchor >Useful idioms</a></h3>
+<p>At some point, any seasoned array programmer develops a good collection of known code snippets. Here&#39;s a few to save you some headaches:</p>
+<ul>
+<li><p>Reading lines from a file can be done via:</p>
+
+</ul>
+<pre><code class=language-bqn >lines ← •FLines &quot;day01-a-test.txt&quot;
+nums ← •BQN¨ lines</code></pre>
+<p>The <code>•BQN¨</code> isn&#39;t optimal, but it&#39;s good enough to get going with AdventOfCode problems.</p>
+<ul>
+<li><p>Benchmarking&#33; &#40;I am a Julia REPL stan after all.&#41; If you&#39;re in the REPL, you can use <code>&#41;t:X</code></p>
+
+</ul>
+<pre><code class=language-bqn >&#41;t:1000 3&#43;3
+14.666 ns</code></pre>
+<p>This will run your code <code>X</code> times and tell you how long it took on average. Elsewhere, <code>•_timed</code> can be bound to the left argument How does one get a finer performance report though? <code>Dzaima</code> kindly posted:</p>
+<blockquote>
+<p><a href="https://tinyurl.com/467pyk8n">perf report</a> of that, with some comments - most of the time is in replicate &#40;which is implemented with pdep &amp; pext, i.e. SWAR; 8 bytes per iteration&#41;, followed by the ≠-scan, which is more SWAR, but it processes 64 items per iteration so it&#39;s fast</p>
+</blockquote>
+<p>To get that, you do</p>
+<pre><code class=language-bash >sudo perf record rlwrap ./BQN</code></pre>
+<p>type in your script and then</p>
+<pre><code class=language-bash >sudo perf report</code></pre>
+<ul>
+<li><p><code>TODO</code> Generating random arrays:</p>
+
+</ul>
+<p>If we need to repeat a string 100 times, we can use:</p>
+<pre><code class=language-julia >100⥊&quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;</code></pre>
+<p>That will give you the above string repeated 100 times.</p>
+<h3 id=interesting_resources ><a href="#interesting_resources" class=header-anchor >Interesting resources</a></h3>
+<p>For those that <em>truly</em> want to stare into the abyss and have it stare right back at them, there&#39;s some ~university level courses that are written in APL/BQN/J.</p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v&#61;UogkQ67d0nY&amp;t&#61;780s">Code Report/Connor Hoekstra&#39;s</a> Youtube channel - where he goes over some of the <a href="https://archive.org/details/combinatorylogic0002curr">history and theory of combinator logic</a> via code examples in Scala, Haskell and APL.</p>
+
+<li><p><a href="https://link.springer.com/chapter/10.1007&#37;2F978-3-642-41422-0_2">Here&#39;s Kenneth Iverson&#39;s</a> <code>Notation and Thinking</code> paper.</p>
+
+<li><p><a href="http://www.softwarepreservation.org/projects/apl/Books/Physics&#37;20in&#37;20APL2">Physics in APL2</a></p>
+
+<li><p><a href="https://www.jsoftware.com/books/pdf/calculus.pdf">Calculus in J</a></p>
+
+</ul>
+<h3 id=whats_next ><a href="#whats_next" class=header-anchor >What&#39;s next?</a></h3>
+<p>...Well, I think I want to learn a bit from the people that <em>took parallelism and performance seriously in ML</em> aka, &quot;What if Haskell wasn&#39;t slow and they wanted to dunk on MATLAB&quot;?</p>
+<p>Don&#39;t forget...</p>
+<div class=row ><div class=container ><div class=colbox-red ><div class=right ><img src="/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>If you want to see more blogposts, <a href="https://github.com/sponsors/miguelraz/">sponsor me on GitHub</a></p></div></div></div></p>
+<p>
+<div style="clear: both"></div>
+
+<div class=page-foot >
+  <div class=copyright >
+    &copy; . Last modified: December 13, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+ <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
+  </div>
+</div>
+</div>
+    
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
+	
+
+<script>
+(function(){
+
+	// Get the elements.
+	// - the 'pre' element.
+	// - the 'div' with the 'paste-content' id.
+
+	var pre = document.getElementsByTagName('pre');
+
+	// Add a copy button in the 'pre' element.
+	// which only has the className of 'language-'.
+
+	for (var i = 0; i < pre.length; i++) {
+		var isLanguage = pre[i].children[0].className.indexOf('language-');
+
+		if ( isLanguage === 0 ) {
+			var button           = document.createElement('button');
+					button.className = 'copy-button';
+					button.textContent = 'Copy';
+
+					pre[i].appendChild(button);
+		}
+	};
+
+	// Run Clipboard
+
+	var copyCode = new Clipboard('.copy-button', {
+		target: function(trigger) {
+			return trigger.previousElementSibling;
+    }
+	});
+
+	// On success:
+	// - Change the "Copy" text to "Copied".
+	// - Swap it to "Copy" in 2s.
+	// - Lead user to the "contenteditable" area with Velocity scroll.
+
+	copyCode.on('success', function(event) {
+		event.clearSelection();
+		event.trigger.textContent = 'Copied';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 2000);
+
+	});
+
+	// On error (Safari):
+	// - Change the  "Press Ctrl+C to copy"
+	// - Swap it to "Copy" in 2s.
+
+	copyCode.on('error', function(event) {
+		event.trigger.textContent = 'Press "Ctrl + C" to copy';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 5000);
+	});
+
+})();
+</script>
+
+
+ <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>

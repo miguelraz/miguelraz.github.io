@@ -19,10 +19,315 @@
 
 
 <item>
+    <title><![CDATA[🚧 WIP 🚧 From Julia to BQN]]></title>
+    <link>https://miguelraz.github.io/blog/fromjuliatobqn/index.html</link>
+    <guid>7</guid>
+    <description><![CDATA[From Julia to BQN, an array based language]]></description>    
+    
+    <content:encoded><![CDATA[<p>Here&#39;s the rough sketch of this blogpost:</p>
+<ol>
+<li><p>I will give a brief intro to BQN and talk about its pros and cos</p>
+</li>
+<li><p>I will show a few Julia vs BQN code problems side by syde</p>
+</li>
+<li><p>I will argue that there&#39;s areas for Julians to draw inspiration from BQN</p>
+</li>
+<li><p>I will give a few resources at the end for you to dive deeper.</p>
+</li>
+</ol>
+<p>As usual, if you want to support my writings and open source work, <a href="https://github.com/sponsors/miguelraz/">please consider sponsoring me on GitHub</a>. I&#39;m reaaaaally close to 50 monthly sponsors, and it makes a <em>huuuuge</em> difference in how much time/worries/resources I have for working on stuff like this.</p>
+<p>Alright, on with the blogpost.</p>
+<hr />
+<h3 id="why_is_bqn_is_cool">Why is BQN is cool</h3>
+<ol>
+<li><p>It has fast multidimensional arrays</p>
+</li>
+<li><p>They love unicode</p>
+</li>
+<li><p>It has a REPL&#33;</p>
+</li>
+<li><p>It&#39;s super at code golfing 🏌</p>
+</li>
+<li><p>It&#39;s self hosted</p>
+</li>
+<li><p>They use JuliaMono&#33; 💝</p>
+</li>
+<li><p>They&#39;re building a JIT&#33;</p>
+</li>
+</ol>
+<p>Name: funny bacon puns. Also <code>&quot;APL&quot; .&#43; 1 &#61;&#61; &quot;BQM&quot;</code>, but people noticed too late before the &quot;bacon&quot; puns began. <em>BQN vs APL</em>:</p>
+<h3 id="getting_started">Getting started</h3>
+<ul>
+<li><p><a href="https://mlochbaum.github.io/BQN/keymap.html">BQN keyoard</a></p>
+</li>
+<li><p>Tutorial</p>
+</li>
+<li><p>Note: If you are going to try to use your terminal with the CQBN REPL &#40;the fastest implementation&#41;, note that you will want to do <code>rlwrap -r BQN</code> to fire it up.</p>
+</li>
+<li><p>The <code>nvim-bqn</code> interface is the best local option I&#39;ve found.</p>
+</li>
+<li><p>Remember to change your terminal font to JuliaMono, otherwiseyour code will be <em>even more unreadable</em> &#40;at first&#33;&#41;.</p>
+</li>
+</ul>
+<p>Range:</p>
+<ul>
+<li><p>15 reshape range 10 # cycles&#33;</p>
+</li>
+<li><p>transpose 3_3</p>
+</li>
+</ul>
+<h3 id="scripting">Scripting</h3>
+<p>online REPL or download BQN repo and open with browser <code>BQN/docs/try.html</code> from their github repo.</p>
+<p>Everything in green is a function Everything in yellow is a 1 modifier Everything in purple/pink is a 2 modifer</p>
+<p>Defining <code>Hi</code> function</p>
+<h3 id="repl_duel">REPL Duel</h3>
+<ul>
+<li><p>Problems: <code>palindromes</code>, <code>count different words</code>, <code>Remove HTML Tags</code></p>
+</li>
+</ul>
+<h3 id="tutorial">Tutorial</h3>
+<h3 id="julia_vs_bqn_problems">Julia vs BQN problems:</h3>
+<p>Here&#39;s a few &quot;classic&quot; problems in both Julia and BQN</p>
+<ol>
+<li><p>Find the Hamming/edit distance between 2 strings:</p>
+</li>
+</ol>
+<pre><code class="language-julia-repl">julia&gt; dist&#40;s1, s2&#41; &#61; count&#40;&#40;&#40;x,y&#41;,&#41; -&gt; x &#33;&#61; y, zip&#40;s1, s2&#41;&#41;
+dist &#40;generic function with 1 method&#41;julia&gt; dist&#40;&quot;ACCAGGG&quot;, &quot;ACTATGG&quot;&#41;
+2julia&gt; dist&#40;s1, s2&#41; &#61; sum&#40;map&#40;&#33;&#61;, s1, s2&#41;&#41; # kudos to Michael Abbot for the broadcasting tip
+dist &#40;generic function with 1 method&#41;julia&gt; dist&#40;s1, s2&#41; &#61; mapreduce&#40;&#33;&#61;, &#43;, s1, s2&#41; # kudos to J. Ling for this one</code></pre>
+<p>And in BQN:</p>
+<pre><code class="language-bqn">s1 ← &quot;XXXXGGG&quot;
+s2 ← &quot;ACTAGGG&quot;
+Sol ← &#43;´≠
+s1 Sol s2 # 4</code></pre>
+<p>This is a neat <code>3 char solution</code> that Asher will no doubt be very proud of.</p>
+<ol start="2">
+<li><p><a href="https://cses.fi/problemset/task/1094/">Increasing Array</a></p>
+</li>
+</ol>
+<blockquote>
+<p>You should take 3 minutes to go read the problem statement.</p>
+</blockquote>
+<p>I like that after seeing the problem &#40;you should go and click the link&#41;, I didn&#39;t think about a C&#43;&#43; but a BQN solution. Here&#39;s my attempt:</p>
+<pre><code class="language-bqn">a ← 3‿2‿5‿1‿7
+&#43;´a-˜⌈&#96;a
+Sol ← &#123;&#43;´𝕩-˜⌈&#96;𝕩&#125;
+Sol ← &#43;´∘&#40;⌈&#96;-⊢&#41; # Asher&#39;s solution
+Sol a</code></pre>
+<p>which in Julia I would write like</p>
+<pre><code class="language-julia-repl">julia&gt; x &#61; &#91;3 2 5 1 7&#93;;
+julia&gt; sol&#40;x&#41; &#61; accumulate&#40;max, x&#41; - x |&gt; sum;
+julia&gt; sol&#40;x&#41;;</code></pre>
+<p>Which took be a bit because <code>scanl</code> is called <code>accumulate</code> in Julia. Not too shabby. &#40;Extra kudos if you can get a non-allocating version working&#41;</p>
+<ol start="3">
+<li><p>Maximum parenthesis depth</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>Remove HTML Tags</p>
+</li>
+</ol>
+<p>Problem spec:</p>
+<blockquote>
+<p>Given the string &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;, remove the HTML tags &#40;underne</p>
+</blockquote>
+<p>The following snippets are thanks to <code>dzaima</code> on the BQN Discord:</p>
+<pre><code class="language-bqn">&#41;t:10000000 &#123;𝕩/˜¬&#40;≠&#96;∨⊢&#41;&#40;𝕩&#61;&#39;&gt;&#39;&#41;∨𝕩&#61;&#39;&lt;&#39;&#125; &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+179.01ns</code></pre>
+<p>On a <code>make o3n-singeli</code> build &#40;built for SIMD speedups&#41;:</p>
+<pre><code class="language-bqn">&#41;t:10000000 ¬∘&#40;≠&#96;∨⊢&#41;∘&#40;&#61;⟜&#39;&gt;&#39;∨&#61;⟜&#39;&lt;&#39;&#41;⊸/ &quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+165.19ns</code></pre>
+<p>On a 100x longer input it rips at about 0.24ns/character &#40;without a block&#41;:</p>
+<pre><code class="language-bqn">≠a←∾100⥊&lt;&quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;
+3300
+   &#41;t:1000000 ¬∘&#40;≠&#96;∨⊢&#41;∘&#40;&#61;⟜&#39;&gt;&#39;∨&#61;⟜&#39;&lt;&#39;&#41;⊸/ a
+782.1ns</code></pre>
+<ol start="5">
+<li><p>&quot;LURD&quot; robot</p>
+</li>
+</ol>
+<h3 id="what_julians_can_learn_from_bqn">What Julians can learn from BQN</h3>
+<ol>
+<li><p>Broadcasting semantics, <code>Each &#40;&#91;¨&#93;&#40;https://mlochbaum.github.io/BQN/doc/map.html&#41;&#41;</code>, and Taking Arrays Seriously™.</p>
+</li>
+<li><p>Data parallelism techniques.</p>
+</li>
+<li><p>Bit vector optimizations.</p>
+</li>
+<li><p>Flattening data recursive structures for performance.</p>
+</li>
+<li><p>Array-ify all the things.</p>
+</li>
+<li><p>Algorithmic thinking</p>
+</li>
+</ol>
+<h3 id="notes_and_words_of_caution">Notes and words of caution</h3>
+<p>The syntax and symbols of BQN is a big &quot;love it or hate it&quot; part of the deal. I won&#39;t try to convince you to <em>like it</em>, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does:     * <code>≡&quot;abc&quot;</code> will give you the &quot;depth&quot; of something, because it looks like a little ladder that you descend     * <code>⌈</code> is taking the &quot;highest&quot; value &#40;and is thus the max&#41;, <code>⌊</code> is taking the &quot;lowest&quot;     * <code>&#43;´</code> will be dragging all the stuff to the right of the tick towards the <code>&#43;</code>, so it&#39;s a reduction     * <code>&#43;&#96;</code> If you use the tick the other way, you will be dragging the <code>&#43;</code><em>towards</em> the stuff on the right, so it&#39;s a <code>scan</code>, from left to right.    These are just the examples that come to mind, but I&#39;ve found &#40;completely subjectively&#41; for BQN&#39;s symbology to be a bit friendlier/more consistent than APL&#39;s. Be mindful that the <code>‿</code> character to denote lists is not the same as that of arrays. The <a href="https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets">docs say that</a> newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:</p>
+<pre><code class="language-bqn">3 1⊸&#43;⊸× 5
+20
+    3‿1⊸&#43;⊸× 5
+⟨ 40 30 ⟩</code></pre>
+<p>As stated in the page, <a href="https://aplwiki.com/wiki/Array_notation">general array notation is a thorny problem</a> in APL, and it took Julia about 10 years to finally nail down the tools <a href="https://github.com/JuliaLang/julia/pull/33697">and syntax to land it in Base.</a>.</p>
+<ul>
+<li><p>Reading BQN/APL is likely where the learning difficulty curve hits hardest when starting out - this <a href="https://mlochbaum.github.io/BQN/doc/context.html#is-grammatical-context-really-a-problem">docs page</a> was very useful to grok that <code>˜</code> is a 1-modifier &#40;as all symbols that &quot;float higher up&quot;&#41; and <code>∘</code> &#40;like all symbols with unbroken circles&#41; are 2-modifiers. Concretely, having a <code>context free grammar</code> removes ambiguity</p>
+</li>
+<li><p>When I&#39;m struggling to find out how to write my solutions to problems like the <code>Increasing Array</code>, this is my workflow:</p>
+<ol>
+<li><p>Start with thinking &quot;I should propagate the max function&quot; like <code>⌈&#96;a</code>. I&#39;ll press <code>Shift&#43;Enter</code> on the online BQN REPL and build up the solution</p>
+</li>
+<li><p>&quot;I should now try to subtract it from the original array&quot; and write <code>a-⌈&#96;a</code></p>
+</li>
+<li><p>&quot;Ah, right - I need to add a flip thingy&quot; and evaluate <code>a-˜⌈&#96;a</code></p>
+</li>
+<li><p>&quot;Sweet, just have to reduce with a sum now&quot; <code>&#43;´a-˜⌈&#96;a</code></p>
+</li>
+<li><p>&quot;Ok, to make it tacit I had to use those ⊣ ⊢ thingies.&quot; &#40;I go and review the <a href="https://mlochbaum.github.io/BQN/doc/primitive.html#modifiers">modifiers diagrams docs</a>&#41;</p>
+</li>
+<li><p>&#40;After much plugging away at the REPL&#41; ... &quot;Dammit, I forgot I can use the <code>Explain</code> button&#33;&quot;</p>
+</li>
+<li><p>&#40;Fiddle around some more&#41; &quot;OK, I think I got it&quot; and write</p>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-bqn">Sol ← &#43;´∘&#40;⌈&#96;-⊢&#41;</code></pre>
+<ul>
+<li><p>The next big step up in BQN skills is <a href="https://mlochbaum.github.io/BQN/doc/train.html">identifying function trains</a>, which took me a bit of spelunking about in the manual before finding it. For example, going from the first line to the second in this snippet 👇🏻</p>
+</li>
+</ul>
+<pre><code class="language-bqn">&quot;whatsin&quot; &#123;&#40;𝕨∊𝕩&#41;/𝕨&#125; &quot;intersect&quot;
+&quot;whatsin&quot; &#40;∊/⊣&#41; &quot;intersect&quot;</code></pre>
+<p>proficiently will really up your game in code-golfing powers, should you be interested in that. This <a href="https://aplwiki.com/wiki/Tacit_programming#Trains">APL Wiki page</a> and the <a href="https://xpqz.github.io/learnapl/tacit.html">Trainspotting</a> links and <a href="https://www.youtube.com/watch?v&#61;Enlh5qwwDuY?t&#61;440">videos at the end</a> are also useful resources.</p>
+<h3 id="useful_idioms">Useful idioms</h3>
+<p>At some point, any seasoned array programmer develops a good collection of known code snippets. Here&#39;s a few to save you some headaches:</p>
+<ul>
+<li><p>Reading lines from a file can be done via:</p>
+</li>
+</ul>
+<pre><code class="language-bqn">lines ← •FLines &quot;day01-a-test.txt&quot;
+nums ← •BQN¨ lines</code></pre>
+<p>The <code>•BQN¨</code> isn&#39;t optimal, but it&#39;s good enough to get going with AdventOfCode problems.</p>
+<ul>
+<li><p>Benchmarking&#33; &#40;I am a Julia REPL stan after all.&#41; If you&#39;re in the REPL, you can use <code>&#41;t:X</code></p>
+</li>
+</ul>
+<pre><code class="language-bqn">&#41;t:1000 3&#43;3
+14.666 ns</code></pre>
+<p>This will run your code <code>X</code> times and tell you how long it took on average. Elsewhere, <code>•_timed</code> can be bound to the left argument How does one get a finer performance report though? <code>Dzaima</code> kindly posted:</p>
+<blockquote>
+<p><a href="https://tinyurl.com/467pyk8n">perf report</a> of that, with some comments - most of the time is in replicate &#40;which is implemented with pdep &amp; pext, i.e. SWAR; 8 bytes per iteration&#41;, followed by the ≠-scan, which is more SWAR, but it processes 64 items per iteration so it&#39;s fast</p>
+</blockquote>
+<p>To get that, you do</p>
+<pre><code class="language-bash">sudo perf record rlwrap ./BQN</code></pre>
+<p>type in your script and then</p>
+<pre><code class="language-bash">sudo perf report</code></pre>
+<ul>
+<li><p><code>TODO</code> Generating random arrays:</p>
+</li>
+</ul>
+<p>If we need to repeat a string 100 times, we can use:</p>
+<pre><code class="language-julia">100⥊&quot;&lt;div&gt;Hello &lt;b&gt;CppNorth&#33;&lt;/b&gt;&lt;/div&gt;&quot;</code></pre>
+<p>That will give you the above string repeated 100 times.</p>
+<h3 id="interesting_resources">Interesting resources</h3>
+<p>For those that <em>truly</em> want to stare into the abyss and have it stare right back at them, there&#39;s some ~university level courses that are written in APL/BQN/J.</p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v&#61;UogkQ67d0nY&amp;t&#61;780s">Code Report/Connor Hoekstra&#39;s</a> Youtube channel - where he goes over some of the <a href="https://archive.org/details/combinatorylogic0002curr">history and theory of combinator logic</a> via code examples in Scala, Haskell and APL.</p>
+</li>
+<li><p><a href="https://link.springer.com/chapter/10.1007&#37;2F978-3-642-41422-0_2">Here&#39;s Kenneth Iverson&#39;s</a> <code>Notation and Thinking</code> paper.</p>
+</li>
+<li><p><a href="http://www.softwarepreservation.org/projects/apl/Books/Physics&#37;20in&#37;20APL2">Physics in APL2</a></p>
+</li>
+<li><p><a href="https://www.jsoftware.com/books/pdf/calculus.pdf">Calculus in J</a></p>
+</li>
+</ul>
+<h3 id="whats_next">What&#39;s next?</h3>
+<p>...Well, I think I want to learn a bit from the people that <em>took parallelism and performance seriously in ML</em> aka, &quot;What if Haskell wasn&#39;t slow and they wanted to dunk on MATLAB&quot;?</p>
+<p>Don&#39;t forget...</p>
+<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>If you want to see more blogposts, <a href="https://github.com/sponsors/miguelraz/">sponsor me on GitHub</a></p></div></div></div></p>
+<p>
+<div style="clear: both"></div>]]></content:encoded>
+        
+    <pubDate>Tue, 13 Dec 2022 00:00:00 +0000</pubDate>    
+    
+                
+</item>
+
+<item>
     <title><![CDATA[GitHub Sponsors - the good, the bad, and the ugly]]></title>
     <link>https://miguelraz.github.io/blog/githubsponsors/index.html</link>
-    <guid></guid>
+    <guid>6</guid>
     <description><![CDATA[GitHub sponsors - a useful lifeboat]]></description>    
+    
+    <content:encoded><![CDATA[<h2></h2>
+<h3 id="saludos">Saludos 👋 </h3>
+<p>Hola&#33; Me llamo Raz y este es mi granito de arena para quienes quieren empezar con el software libre &#40;o encontrar fuentes de ingreso en este mundo&#41;. Puedes <a href="https://github.com/sponsors/miguelraz/">ser mi sponsor en GitHub</a> para que escriba más cosas como esta y contribuya al software libre de Julia/Rust y sus traducciones en español.</p>
+<h1 id="github_sponsors">GitHub Sponsors </h1>
+<p>with apologies to Holge and Randy and David and Logan and Hector and...</p>
+<h4 id="summary">Summary:</h4>
+<p>You can get money via donations and your GitHub profile. This can take a few hours to setup and be a good side revenue, or an emergency lifeboat. Depending on where you live, your marketing skills, larger community environment and a slew of other factors, this may or may not work for you. This post is an exercise in Your Mileage May Vary from someone who spawned the game of life in Easy Mode &#40;white cis english speaking STEM focused able male&#41;, so take what you can and dismiss what doesn&#39;t apply.</p>
+<p><strong>Make no mistake</strong>: living from GitHub sponsorship means charity with extra steps, and with a multinational corporation &#40;ultimately, Microsoft, Github&#39;s owner&#41; as your uncaring and all powerful boss. Assume they will use power to control your &quot;wage&quot; to align with their interests and diversify your risks accordingly.</p>
+<p>If you live in the Global South and this program can apply for you, please consider getting started NOW. If you live in the Global North, consider sponsoring devs in the Global South with monthly payments - foreign exchange rate makes them <em>life changing</em>. If you are giddy for how to get started, my recommendations for a setup are farther down in this post.</p>
+<h3 id="who_what_when_where_why">Who what when where why</h3>
+<p>GitHub sponsors is a program you can sign up for &#40;free&#41; on github.com and receive donations from other people for &#40;mostly&#41; working on open source stuff. If you were already doing open source stuff, you can setup a profile and people can choose to give you one-time or monthly donations &#40;more on that later&#41; at tiers you are free to specify - from 1USD a month to full 666USD Bezos level patronage.</p>
+<p>Github sponsors is attractive in comparison to other platforms because, at time of writing, <a href="https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors">they do not charge a percentage on your sponsorships</a>. </p>
+<p>Patreon charges &#40;at time of writing&#41;, <a href="https://support.patreon.com/hc/en-us/articles/204606125-My-earnings-fees-founding-creator-">5&#37;&#43;</a>, and other &#40;main stream&#41; platforms are not far off. </p>
+<p>This is an attractive proposition, but you should investigate before you launch yourself into the &quot;content creator&quot; lifestyle.</p>
+<ol>
+<li><p>GitHub has yet, to my knowledge, bound itself legally into always respecting this financial agreement. It could start changing it&#39;s terms tomorrow, lest you obey some orders from corporate, as was the case recently with <a href="https://techcrunch.com/2022/09/21/twitch-subcription-revenue-share-changes/">Twitch streamer&#39;s revenue sharing overnight change with ...Amazon</a>. That news was the most recent one off the top of my head, but every subscription/donation based platform can, has, and will unilaterally change your ~~wage split~~donations how they see fit. </p>
+</li>
+<li><p>This doesn&#39;t apply to every country. At time of writing, <a href="https://github.com/sponsors#countries">68 regions can qualify for sponsorships</a> of which, sadly, I only count 4 African countries, for a &quot;global&quot; program that has been running for almost 3 years now. Mexico initially wasn&#39;t on the beta list &#40;for which there was promo where GitHub would match donations, to my chagrin&#41;, but I joined the waitlist and received my email after a while. Note that Iran, Venezuela, Russia and CubaN</p>
+</li>
+</ol>
+<ul>
+<li><p>who i am</p>
+<ul>
+<li><p>how i got started, my presence</p>
+</li>
+<li><p>marketing  </p>
+</li>
+</ul>
+</li>
+<li><p>who i am not</p>
+<ul>
+<li><p>orgs, umbrella, collectives</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>So. I think I&#39;ve had what I would call a &quot;moderately&quot; succesful run with my GitHub sponsors. A lot of people have asked me about tips and tricks, and I&#39;m not the one for </p>
+<ul>
+<li><p>what sponsors is</p>
+</li>
+</ul>
+<p>how it works</p>
+<ul>
+<li><p>how to setup your profile</p>
+</li>
+<li><ul>
+<li></li>
+</ul>
+</li>
+<li><p>countries, bans, availability</p>
+</li>
+<li><p>taxes</p>
+</li>
+<li><p>Dos </p>
+</li>
+<li><p>public presence: famous code, repos, books, talks, online presence &#40;pandemic podcasts, community building&#41;*  </p>
+</li>
+<li><p>big disclaimers, aka the don&#39;ts:</p>
+</li>
+<li><p>don&#39;t assume you won&#39;t pay taxes. </p>
+</li>
+<li><p>uni might clash - grad students/scholarships may not work. dont knmow if amazon wish lists or payments in kind can be setup</p>
+</li>
+<li><p>make this yourplan A, at least forever.</p>
+</li>
+</ul>
+]]></content:encoded>
         
     <pubDate>Fri, 21 Oct 2022 00:00:00 +0000</pubDate>    
     
@@ -36,8 +341,62 @@
 <item>
     <title><![CDATA[On Arts and Math Education]]></title>
     <link>https://miguelraz.github.io/blog/onarts/index.html</link>
-    <guid></guid>
+    <guid>3</guid>
     <description><![CDATA[On Arts and Math Education]]></description>    
+    
+    <content:encoded><![CDATA[<h3 id="intro">Intro</h3>
+<p>When I tell people I study physics, more frequently than not I&#39;ve had to help avoid a panic attack or two. There&#39;s always that 2nd grade teacher, the trauma, the gnashing of teeth; I don&#39;t really fault people for having gone through the pedagogic wringer and suffered the tyranny of schooling. This is the story I tell math-phobic to let them know I think they&#39;re right.</p>
+<p>As usual, by <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub, I can continue my open source campaign</a>.  Plus, you get a monthly summary of all my writing shenanigans at the end of the month.</p>
+<h3 id="art_class">Art class</h3>
+<p>Let&#39;s imagine an you are in an ideal art classroom for beginners in secondary school. The recess bell rings and the kids are streaming in to their seats. In front of every kid there&#39;s a full decked-out art kit: brushes, paints, canvas and the works. Being their first art assignment, the kids will fill out one of those paint-by-number Monalisa&#39;s – there&#39;s chunks of the painting numbered <code>1</code> and they should all be green, all the <code>2</code> sections should be red, and so forth.</p>
+<p>The brushes begun to dip, swirl, then dance across the canvases and the kids are jubilant. You&#39;ve been completing the green-&gt;<code>1</code> chunks when a hand strikes your fingers holding the brush. </p>
+<blockquote>
+<p>Sorry kid we&#39;re in art class, and, in here, when you paint green stuff, you must do it always by holding the brush with these two fingers at a time, and you must stroke from left to right</p>
+</blockquote>
+<p>Apoplectic, you ask &quot;Why?&quot; </p>
+<blockquote>
+<p>Because I said so, and these are the rules for art.</p>
+</blockquote>
+<p>...</p>
+<p>You muster what courage you can and soldier on with the greens. Remember your parents&#39; edict: failing this art class will mean detention, do overs during summer break, getting grounded - not a fun way to spend vacations. The teacher isn&#39;t too worried about explaining why these rules of art must be so, but questioning aesthetics isn&#39;t really proactive in the present situation.</p>
+<p>Halfway through the reds, a swift hand strikes down your brush again:</p>
+<blockquote>
+<p>In art class, when you paint the reds, you must use these other two fingers, and always stroke from the top to the bottom.</p>
+</blockquote>
+<p>&quot;How was I supposed to know <em>that</em>?&quot;</p>
+<blockquote>
+<p>Doesn&#39;t matter. Shape up or you&#39;ll fail this quiz.</p>
+</blockquote>
+<p>...and you figure this will continue for each other color. The lesson is clear - disobey and be punished for failing these rules obtained from god-knows-where, so it&#39;s best to try and suss them out piecemeal from the teacher and avoid their wrath.</p>
+<p>But every torment must end, and though there&#39;s been wailing and gnashing of teeth, your Mona Lisa is finished.</p>
+<p>The teacher comes by, pops up your piece into the sunlight and delivers the coup de grace:</p>
+<blockquote>
+<p>Ah&#33; Look at this beauty - isn&#39;t art just <em>beautiful</em>?</p>
+</blockquote>
+<hr />
+<p>My claim is twofold: any child that walks out of such an &quot;art&quot; class saying they like art is in need of a dire intervention and/or therapy, and that &#40;modulo metaphoric license&#41;, that is basically how we teach &quot;math&quot; in most schooling systems I know &#40;or rather arithmetic&#41;.</p>
+<p>We show little empathy with kids about why they&#39;re learning a particular system, punish them based on our predetermined system of axioms without explaining why we chose such a system over many others, and people just learn to game the system enough to evade punishment &#40;we&#39;re only talking about harsh impacts to your future economic prospects here&#33;&#41;.</p>
+<p>Why are we learning about these numbers and not others?</p>
+<blockquote>
+<p>Because they <a href="https://lareviewofbooks.org/article/to-infinity-and-beyond-the-power-of-calculus/">build up to calculus</a> and we&#39;ve &quot;decided&quot; as a society that that goal is what will make you most productive.</p>
+</blockquote>
+<p>How do we know these are the only kinds of numbers that have these rules?</p>
+<blockquote>
+<p>There might be many&#33; But you better learn these or else&#33;</p>
+</blockquote>
+<p>Why not choose different rules for our numbers? Why not have different axioms for our geometry?</p>
+<blockquote>
+<p>We&#39;ll have none of that nonsense here you lil&#39; insubordinate rascal...</p>
+</blockquote>
+<p>Do we really need to optimize those missile trajectories?</p>
+<blockquote>
+<p>Alright, that&#39;s enough thinking about where the tools we teach end up being applied.</p>
+</blockquote>
+<p>...and so on.</p>
+<p>Yes: some form of rote practice is needed to gain basic mathematical acumen - but nowhere near the level of attention that it deserves. Spelling drills are necessary to manipulate language, yet spelling bee championships do not poets make; neither should we conflate arithmetic worksheets and piles of homework with exercises in mathematical thinking.</p>
+<p>Worst of all, I think is that people don&#39;t even have the vocabulary to know the worlds they aren&#39;t seeing. This is in contrast to musical experience - even if you never hit a solid note on your recorder, you can still appreciate songs and dance beyond your classroom disappointment. But how would you explain to someone that Daft Punk, Dolly Parton and Beethoven can coexist in the same universe of musical enjoyment if their &#40;let&#39;s imagine for sake of argument&#41; only musical exposure in life were the beeping of an alarm clock?</p>
+<p>You&#39;d get a lot more people traumatized about art and music class, and if I was a musician in that world, I&#39;d also field a lot of people dumping their childhood traumas on me because I was &quot;into music&quot;.</p>
+]]></content:encoded>
         
     <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>    
     
@@ -51,8 +410,42 @@
 <item>
     <title><![CDATA[Julia&#39;s nothing, missing and NaN - a simple mental model]]></title>
     <link>https://miguelraz.github.io/blog/nothingforbeginners/index.html</link>
-    <guid></guid>
+    <guid>5</guid>
     <description><![CDATA[An intuitive explanation of nothing, missing, and NaN]]></description>    
+    
+    <content:encoded><![CDATA[<p>A quick note for my Julia peeps to grok the difference between <code>NaN</code>, <code>missing</code> and <code>nothing</code> in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to <a href="https://twitter.com/Jas_Hughes/status/1494020182171275266?s&#61;20&amp;t&#61;X6bd-uWW4b2CMW5xFzctUw">Jasmine Hughes</a> for inspiring this post and also <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub so I can continue my open source campaing</a>.</p>
+<h3 id="a_rainy_setup">A rainy setup</h3>
+<p>You are running a science experiment where you must measure the amount of rainwater that falls in a given day. The scientific-est thing your advisor has recommend is to setup a RainWater-O-Tron 9000 that collects data every day on how much water fell into a tube that sticks on top of it and reports it back the total at the end of the day. Once the thing is plugged, your machine graciously spits into your data pipeline tool a table that looks something like this:</p>
+<table><tr><th align="right">Days</th><th align="center">Rain &#91;cm&#93;</th><th align="right">Status</th></tr><tr><td align="right">1</td><td align="center">15</td><td align="right">OK</td></tr><tr><td align="right">2</td><td align="center">20</td><td align="right">OK</td></tr><tr><td align="right">3</td><td align="center">10</td><td align="right">OK</td></tr></table>
+<p>So far, nothing out of the ordinary. Another humble data gathering expedition to appease the fickle gods of science and grants. The machine kindly records the centimeters of rain collected and its operating status - seems sensible.</p>
+<p>You reset the machine and leave for Easter break and leave the robot running for a week, ready to come back and do some proper Science TM once you get the data back.</p>
+<p>Ominously, you find the report to say this:</p>
+<table><tr><th align="right">Days</th><th align="center">Rain &#91;cm&#93;</th><th align="right">Status</th></tr><tr><td align="right">1</td><td align="center">12</td><td align="right">OK</td></tr><tr><td align="right">2</td><td align="center">22</td><td align="right">OK</td></tr><tr><td align="right">3</td><td align="center">13</td><td align="right">OK</td></tr><tr><td align="right">4</td><td align="center"></td><td align="right">OK</td></tr><tr><td align="right">5</td><td align="center"></td><td align="right">NO</td></tr><tr><td align="right">6</td><td align="center">💩</td><td align="right">OK</td></tr><tr><td align="right">7</td><td align="center">18</td><td align="right">OK</td></tr></table>
+<p>Clearly something has gone wrong, on days 4-6, but if you think about it carefuly for a second, the <code>Status</code> of each data point gives you some insight into <em>where</em> your data collection <em>could</em> have gone wrong.</p>
+<ul>
+<li><p>Days 1-3 went &#40;likely&#41; as expected</p>
+</li>
+<li><p>Day 4 the RainWater-O-Tron recorded it <em>was</em> functional, but you didn&#39;t receive the data. You thus know the data for Day 4 is <code>missing</code>.</p>
+</li>
+<li><p>Day 5 the machine wasn&#39;t even functional, and thus no data was collected, which means you have <code>nothing</code> as a data entry.</p>
+</li>
+<li><p>Day 6 the machine <em>did</em> record data, but it got garbled somehow, and the result you got is <code>Not a Number</code>/<code>NaN</code>.</p>
+</li>
+<li><p>Day 7 it seems the machine resumed normal operations.</p>
+</li>
+</ul>
+<p>This is the big distinction in how <em>much</em> you know about your data, and the &quot;failure modes&quot; of how it was mis/collected: you get an idea for how to approach its shortcomings based on what you recorded.</p>
+<ul>
+<li><p>for the <code>missing</code> data, perhaps the machine ran out of memory from the moment it made the water measurement accurately, but didn&#39;t transmit it, or the cable got bitten by some rats and thus you couldn&#39;t receive it</p>
+</li>
+<li><p>the <code>nothing</code> data means that perhaps there was a power outage, and your entire apparatus was offline</p>
+</li>
+<li><p><code>NaN</code> means the internal functioning of the machine got compromised, or something in your calculations is wildly wrong</p>
+</li>
+</ul>
+<p>Of course, these are just narratives for illustrative purposes, but hopefully it can help solidify the distinctions and how these can help you think to solve your problem. Does that mean you must always use these sentinel values in your code or data collection? Not necessarily, but that&#39;s for you to decide if these are the right tools.</p>
+<p>&#39;Til next time.</p>
+]]></content:encoded>
         
     <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>    
     
@@ -66,8 +459,18 @@
 <item>
     <title><![CDATA[Popotismo]]></title>
     <link>https://miguelraz.github.io/blog/popotismo/index.html</link>
-    <guid></guid>
+    <guid>4</guid>
     <description><![CDATA[Acuñando popotismo]]></description>    
+    
+    <content:encoded><![CDATA[<p>Hola, me dedico al software libre y este es un pequeño post para poder acuñar una palabra que me falta en el diario. Puedes <a href="https://github.com/sponsors/miguelraz/">ser mi sponsor en GitHub</a> para que escriba más cosas como esta y contribuya al software libre y traducciones en español.</p>
+<h3 id="órdenes_de_magnitud">Órdenes de magnitud</h3>
+<p>Cuando uno quiere saber cuánto pesa una elefante, no te preocupas &#40;mucho&#41; por cuánto pesan las moscas que se le paran en la cabeza. Por supuesto que su peso no es 0, pero no contribuyen <em>tanto</em> como para preocuparse. Esta intuición cotidiana se puede formalizar si uno estudia matemáticas, y se les llama &quot;términos de menor órden&quot;, y en algún momento del despeje algebraico uno se toma la licencia de tacharlos y seguir campante con el análisis del fenómeno de interés.</p>
+<p>En este sentido, es muy útil el poder tener una intuición de los órdenes de magnitud en una cierta discusión antes de aventarse por la borda en favor o en contra de alguna causa. En México, por ejemplo, si alguien quiere tener una discusión seria sobre el ambientalismo, es útil tener en mente los números que más importan &#40;el peso del elefante pues&#41;, como el hecho que <a href="https://www.theguardian.com/sustainable-business/2017/jul/10/100-fossil-fuel-companies-investors-responsible-71-global-emissions-cdp-study-climate-change">100 compañías son responsables del 71&#37; de todos los gases invernadero</a>.</p>
+<p>Teniendo en mente ese elefante, no es que uno no debería evitar el consumo de plásticos deshechables gratuitamente, pero hay que darse cuenta que uno está evitando la discusión principal de cómo lidiar con los <strong>términos de mayor orden</strong>. En el peor de los casos, sobra la santurronería y se desgarran las vestiduras los políticos para castigar a la gente por seguir usando popotes.</p>
+<p>A éste fenómeno donde el problema estructural se trata de resolver con recursos de responsabilidad individual le llamo <code>popotismo</code>, en honor a la campaña masiva que se dió súbitamente en México para prohibir el uso de popotes de plástico a nivel individual, y creo que no vale la pena seguir esa línea de argumentación.</p>
+<p>Sí, recicla, disminuye tu consumo, eso es bueno y vale la pena, etc; pero a veces la solución es cambiar el sistema y no encontentarse que uno pone un granito de arena en donde ya extrajeron la playa.</p>
+<p>El juego es otro.</p>
+]]></content:encoded>
         
     <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>    
     
@@ -81,8 +484,354 @@
 <item>
     <title><![CDATA[From Julia to Rust]]></title>
     <link>https://miguelraz.github.io/blog/juliatorust/index.html</link>
-    <guid></guid>
+    <guid>2</guid>
     <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
+    
+    <content:encoded><![CDATA[<h3 id="from_julia_to_rust">From Julia to Rust 🗺 </h3>
+<p>I&#39;ve been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians interested in Rust. I&#39;ve written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a different mindset and tradeoffs that are worth considering.</p>
+<p>I hope you enjoy it.</p>
+<p><a href="https://www.youtube.com/watch?v&#61;drvAftwsTlU">TLDR:</a></p>
+<blockquote>
+<p>&quot;It is important to draw wisdom from many different places. If you take it from only one place, it becomes rigid and stale.&quot;</p>
+<p>–Uncle Iroh</p>
+</blockquote>
+<hr />
+<h3 id="why_rust">Why Rust? 🤷 </h3>
+<p>There are 3 talks that sold me on Rust being worth learning, the first is <a href="https://www.youtube.com/watch?v&#61;A3AdN7U24iU">by Carol Nichols</a> and the <a href="https://www.youtube.com/watch?v&#61;cUrggIAPJEs">second is a lecture by Ryan Eberhardt and Armin Nanavari</a>. The first talks about how about ~70&#37; of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how sytems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.</p>
+<p>That&#39;s the point of technology&#33; To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine. </p>
+<p>The third talk that really sold me on Rust was <a href="https://www.usenix.org/conference/enigma2021/presentation/gaynor">Alex Gaynor&#39;s</a>. It&#39;s bad enough that a bank or a school web site could crash because of memory bugs, but once you take into account the fact that not even the best programmers in the world &#40;sorted by salaries, roughly&#41; can ship safe code, you start to despair a little. Then you hear about the incredibly battle-tested libraries like <a href="https://www.helpnetsecurity.com/2021/01/27/cve-2021-3156/">sudo </a> and, as the moral argument goes, you are likely going to put vulnerable people in harm&#39;s way if you keep shipping a broken tool. I buy the urgency of that argument more and more when journalists or human rights advocates get targeted by state actors due to a trivial &#40;but buried&#41; C mistake.</p>
+<p>So that&#39;s the spiel for jumping on the Rust train when I argue with myself in the shower. What&#39;s the Rust&#39;s philosophy?</p>
+<hr />
+<h3 id="informal_introductions_-_tales_of_two_languages">Informal introductions - tales of two languages 📚 </h3>
+<p>I will now give 2 hand-wavy historical rehashings of the origins of both languages.</p>
+<p>You might know Julia&#39;s origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man&#39;s version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of <a href="https://youtu.be/lZb2JKhf-mk?t&#61;208">algorithms</a>.</p>
+<p>Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C&#43;&#43; tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. Eventually, they named the language after the <a href="https://en.wikipedia.org/wiki/Rust_&#40;fungus&#41;">fungus</a>.</p>
+<p>Recap: Julians were sick of unreusable code, niche DSLs and hacky polymorphism. With multiple dispatch as the central design feature they solved those problems. Rustaceans were sick of the C/C&#43;&#43; minefields and trying to keep all the invariants of large, error-prone codebases in their head. The idea of ownership and a borrow checker to know those errors <em>at compile time</em> and be data-race free is what&#39;s got them to where they are now.</p>
+<p>There&#39;s obviously important details missing on both stories - you can get it from proper historians if you like, this is a brief and informal introduction. I will however, mention the other big Rustian idea of affine types when I talk about how they get a version of generic code we&#39;ve come to know and love in Julia land. Spoiler alert: you can get generic code if you pay the price of a Julia runtime, and that&#39;s not something Rustaceans want. If you want generics at compile time, you have to &quot;prove&quot; to the compiler that your types are constrained to some extent, and you relay that information by tacking on affine types to your code.</p>
+<p>That&#39;s enough of an intro, here&#39;s the table of contents.</p>
+<div class="franklin-toc"><ol><li>From Julia to Rust 🗺 </li><li>Why Rust? 🤷 </li><li>Informal introductions - tales of two languages 📚 </li><li>Handy learning materials 🍎🐛 </li><li>What does generic Rustian code look like? 🔍 </li><li>Rustian projects of interest 🥇 </li><li>Optimization walkthroughs 🏃 </li><li>Papercuts and sharp edges ✂ </li><li>Things I wish I&#39;d known earlier 👓 </li><li>Appreciation of Rust things 🦀  </li><li>What Rust can bring to Julia ⚒ </li><li>Acknowledgments 🙌🏻 </li></ol></div>
+<hr />
+<h3 id="handy_learning_materials">Handy learning materials 🍎🐛 </h3>
+<p>If for some reason you&#39;ve already decided that learning Rust is a worthy endeavour, here&#39;s my list of resources to learn. I think they are a good resource to follow in approximate order, but use whatever works, and if it doesn&#39;t, skip it.</p>
+<ul>
+<li><p><a href="https://www.rust-lang.org/">The Rust book</a>: Click the link to get started with installation and IDE setup. It pays to read it at least once cover to cover and not fret about coming back to the thorny bits.</p>
+</li>
+<li><p><a href="https://marketplace.visualstudio.com/items?itemName&#61;usernamehw.errorlens">VSCode Error Lens</a> and <a href="https://github.com/rust-analyzer/rust-analyzer">Rustanalyzer</a>: The quicker the feedback loop you get from the compiler, the sooner you can spot mistakes and keep going. These aren&#39;t mandatory but it&#39;s the easiest way to make the feedback loop faster.</p>
+</li>
+<li><p><a href="https://tourofrust.com/TOC_en.html">Tour of Rust</a>: Also has good examples.</p>
+</li>
+<li><p><a href="https://cheats.rs/">cheat.rs</a>: A cheat sheet for all the new syntax, priceless.</p>
+</li>
+<li><p><a href="https://doc.rust-lang.org/stable/rust-by-example/index.html">Rust by example</a>: Always good for a quick MWE.</p>
+</li>
+<li><p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html">Rust docs</a>: Their version of the Julia manual. Make sure to click the <code>&#91;&#43;&#93;</code> to see how the code drops down. I still spend time looking at the iterators page.</p>
+</li>
+<li><p>Courses and exercises:</p>
+<ul>
+<li><p><a href="https://exercism.io/my/tracks">Exercism</a>: If you want to get into some guided learning, Exercisms is great, but focuses too much on strings at the beginning for my liking. Make sure to look at the community solutions when you&#39;re done.</p>
+</li>
+<li><p><a href="https://fasterthanli.me/series/advent-of-code-2020/part-1">Advent of Code 2020 by Amos</a>: This was my first &quot;get your hands dirty&quot; with Rust experience. Other articles by Amos are great and friendly too, but this series was useful for figuring out a Rustian workflow and design thinking.</p>
+</li>
+<li><p><a href="https://reberhardt.com/blog/2020/10/05/designing-a-new-class-at-stanford-safety-in-systems-programming.html#lectures">Ryan Eberhardt Stanford course</a>: University course that gets you up and running with systems programming constraints and problem solving. I&#39;m not its target audience but it was great for understanding Rust&#39;s domain.</p>
+</li>
+<li><p><a href="https://github.com/jzarnett/ece459">Jeff Zarnett programming for performance course repo</a>, with a <a href="https://www.youtube.com/watch?v&#61;BE64OK7l20k&amp;list&#61;PLFCH6yhq9yAHnjKmB9RLA2Qdk3XhphqrN">full youtube playlist</a>: Another good course for stepping in directly into high performance computing - not done with it yet, but the professor is friendly and enthusiastic.</p>
+</li>
+<li><p><a href="https://github.com/rust-lang/rustlings">Rustlings</a>: I found some exercises too hard the first time I picked up the Rust book. Your Mileage May Vary but I did them solo and suffered. I would recommend pairing up with a buddy before attempting all of it.</p>
+</li>
+</ul>
+</li>
+<li><p><a href="https://rust-unofficial.github.io/too-many-lists/">Too many linked lists</a>: Another great walkthrough once you feel more comfortable reading and writing Rust.</p>
+</li>
+<li><p>Jon Gjengset&#39;s streams:  Jon Gjengset is a well-known Rust community member and has amazing quality streams - if you want to see a proficient Rustacean code, this is a good place to start.</p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v&#61;h4RkCyJyXmM&amp;t&#61;2455s">sorting algos stream</a>: More friendly to beginners if you know your sorts.</p>
+</li>
+<li><p><a href="https://www.youtube.com/watch?v&#61;rMGWeSjctlY">multicore and atomics</a>: Gets into the weeds about all the pain that Rust can save you when you&#39;re implementing low-level tricky concurrency.</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>Alright, so you&#39;re set up to go on a learning journey. What&#39;s Rust look like anyway when compared to Julia?</p>
+<h3 id="what_does_generic_rustian_code_look_like">What does generic Rustian code look like? 🔍 </h3>
+<p>We love composability and multiple dispatch, so let&#39;s look at a short example of how to get the good ol&#39; Julia bang-for-buck, with a 1D point:</p>
+<pre><code class="language-julia">import Base: &#43;
+struct Point&#123;T&lt;:Real&#125;
+    val::T
+end&#43;&#40;x::Point&#123;T&#125;, y::Point&#123;T&#125;&#41; where T&lt;:Real &#61; Point&#123;T&#125;&#40;x.val &#43; y.val&#41;
+a &#61; Point&#123;Int32&#125;&#40;1&#41;
+b &#61; Point&#123;Int32&#125;&#40;2&#41;
+a &#43; b # works
+c &#61; Point&#123;Float32&#125;&#40;1.0&#41;
+d &#61; Point&#123;Float32&#125;&#40;2.0&#41;
+c &#43; d # Also works&#33;</code></pre>
+<p>So, in Julia land, how do I get generic code? </p>
+<p>I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like <code>zero&#40;...&#41;</code>, <code>eltype&#40;...&#41;</code>. With the dispatches, I add them to the appropriate subtype with <code>where T&lt;:Foo</code>. If I define the appropriate methods, the others get composed atop of them , so I don&#39;t need to define <code>&#43;&#61;</code> once I&#39;ve defined <code>&#43;</code>. Duck type all the way - when something errors at runtime because I forgot a case &#40;like the fact there&#39;s no type promotion rules above&#41; I just write a function per call I missed and keep hacking on.</p>
+<p>Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.</p>
+<p>Let&#39;s look at the rust example:</p>
+<pre><code class="language-rust">use std::ops::Add;#&#91;derive&#40;Clone, Copy, Debug, PartialEq&#41;&#93;
+struct Point&lt;T&gt; &#123;
+    val: T
+&#125;impl&lt;T: Add&lt;Output &#61; T&gt;&gt; Add for Point&lt;T&gt; &#123;
+    type Output &#61; Self;
+    
+    fn add&#40;self, b: Self&#41; -&gt; Self::Output &#123;
+        Self &#123; val: self.val &#43; b.val &#125;
+    &#125;
+&#125;fn main&#40;&#41; &#123;
+    let a &#61; Point::&lt;i32&gt;&#123;val: 1&#125;;
+    let b &#61; Point::&lt;i32&gt;&#123;val: 2&#125;;
+    
+    let c &#61; Point::&lt;f32&gt;&#123;val: 1.0&#125;;    println&#33;&#40;&quot;&#123;:?&#125;&quot;, a &#43; b&#41;;
+    println&#33;&#40;&quot;&#123;:?&#125;&quot;, c &#61;&#61; c&#41;;
+&#125;</code></pre>
+<p>In Rust Land, how do I get a similar generic code?</p>
+<p>I worked on like half of this code and then had to <a href="https://doc.rust-lang.org/std/ops/trait.Add.html">look it up</a>. You can run it in the <a href="https://play.rust-lang.org/?version&#61;stable&amp;mode&#61;debug&amp;edition&#61;2018&amp;gist&#61;e3dd98c60fa0cdebb5f1a582599d3b0d">Rust Playground here</a>. Avid readers will notice the following: </p>
+<ol>
+<li><p>Damn, that&#39;s a lot of boilerplate. 😣 </p>
+</li>
+<li><p>To get generics, you need a <code>struct</code> for your type, an <code>impl&lt;T&gt; &#36;TRAIT for Point&lt;T&gt;</code> block where the <code>add</code> function is defined, and type annotations like <code>Self::Output</code>, <code>Add&lt;Output &#61; T&gt;</code>.</p>
+</li>
+<li><p>There&#39;s a sort of &quot;name spacing&quot; with the turbo fish operator: <code>::&lt;this one&#33;&gt;</code>. We don&#39;t get functions that can share names but differ in behaviour. Bummer. &#40;We get this in Julia with some nicer outer constructors, but I think it takes from the thrust of the argument.&#41;</p>
+</li>
+<li><p>The <code>println&#33;</code> function is different - it&#39;s a macro, and it runs at parse time, also like Julia&#39;s macros. The chars inside the <code>&#123;:?&#125;</code> signal that we want debug printing, that we got above with the <code>#&#91;derive&#40;Debug&#41;&#93;</code>. Rust doesn&#39;t know how to print new structs if you don&#39;t define it, <a href="https://discourse.julialang.org/t/is-julias-way-of-oop-superior-to-c-python-why-julia-doesnt-use-class-based-oop/52058/84?u&#61;miguelraz">which, as Framespoints out, is one of the problems solved by multiple dispatch </a>.</p>
+</li>
+<li><p>Oh, those <code>#&#91;things&#40;above_the_struct&#41;&#93;</code> are also macros. I still don&#39;t know how they&#39;re different, but they seem to affect how the compiler interacts with the crate too. Since some traits &#40;like the ones for copying or printing&#41; are so boilerplate heavy and predictable, you can get some behaviour for &quot;free&quot; if you add the right <code>#&#91;derive&#40;...&#41;&#93;</code> stuff in the declaration. That&#39;s how the <code>c &#61;&#61; c</code> works actually, it&#39;s due to the <code>PartialEq</code>.</p>
+</li>
+</ol>
+<p>The main workflow feels like this: </p>
+<p>Slap a <code>&lt;T&gt;</code> in front of your struct and the fields you want it to be generic over. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn&#39;t compile? See what <code>rustc</code> says and try and tack it on some traits; maybe you missed an affine type with <code>impl&lt;T: Foo&gt;</code> or the <code>Self::Output</code> - the compiler guides you through patching up your code. If you&#39;re asking for some generic behaviour, the compiler will complain and you&#39;ll have to add another trait implementation so that <em>it is damn sure</em> you&#39;re allowed to continue.</p>
+<p>I also chose a particularly easy example: there&#39;s no associated data &#40;like a string&#41; in my <code>Point&lt;T&gt;</code>, so I don&#39;t need to prove to the compiler that my data doesn&#39;t outlive its uses - those are <code>lifetimes</code>, and they can get hairy, fast, but you&#39;ll run into them eventually. I also don&#39;t know how easily you could handle multiple generic types and the compile time penalties associated with them.</p>
+<p>There&#39;s more syntax up front compared to Julia, and not just because we&#39;re writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with <code>match</code>, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...</p>
+<p>Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price. They might not be right for every use case but they&#39;re a solid investment.</p>
+<hr />
+<h3 id="rustian_projects_of_interest">Rustian projects of interest 🥇 </h3>
+<p>There&#39;s a steep wall to climb when starting out with Rust - however, they&#39;ve nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of &quot;We weren&#39;t missing a sufficiently smart compiler, but a more empathetic one&quot;.</p>
+<p>Alright, so what&#39;s the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it&#39;s weight against the established candidates? </p>
+<p>Here&#39;s a list of all the projects that I&#39;ve found particularly of note to Julians.</p>
+<ul>
+<li><p><a href="https://github.com/rayon-rs/rayon">rayon</a> is the original reason I got interested in Rust. Check their <a href="https://github.com/rayon-rs/rayon#parallel-iterators-and-more">hello world</a> - the promise is that if you are using iterators, you can swap &#40;mostly&#41; <code>iter&#40;&#41;</code> for <code>par_iter&#40;&#41;</code> and at compile time you can know if your code will run in parallel. That&#39;s just about the friendliest user interface to parallelism besides <code>Threads.@threads</code>, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the <a href="https://youtu.be/gof_OEv71Aw?t&#61;1184">same idea for work stealing thread scheduler</a> that Julia&#39;s parallel task run time system uses &#40;inspired by Cilk, get it? &#39;Cuz Rayon is a fake silk? Ha...&#41;. </p>
+</li>
+<li><p><a href="https://github.com/tokio-rs/tokio">tokio</a> deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though&#33; </p>
+</li>
+</ul>
+<p><em>NB</em>: It is non-trivial to compose <code>rayon</code> and <code>tokio</code> codes.</p>
+<ul>
+<li><p><a href="https://egraphs-good.github.io/">egg</a> and related projects like <a href="https://herbie.uwplse.org/">herbie</a>: A wicked fast egraph matching engine - a great competitor and inspiration for the Symbolics.jl ecosystem.</p>
+</li>
+<li><p><a href="https://github.com/mmtk/mmtk-core">MMtk and GCs</a>: Garbage Collectors are a family of algorithms that share behaviour, and different strategies can be built atop of tweakable parameters. The promise for building a configurable, performant and battle-tested back-end for Garbage Collectors is alive with this project by Steve Blackburn and gang. If you haven&#39;t heard of <a href="https://www.youtube.com/watch?v&#61;73djjTs4sew&amp;t&#61;914s">Immix</a> or <a href="https://github.com/RedlineResearch/floorplan">Floorplan</a>, enjoy the rabbithole. If you&#39;re new to GCs, <a href="https://www.cs.cornell.edu/courses/cs6120/2020fa/lesson/10/">this is a good starting point</a> for seasoned Julians.</p>
+</li>
+<li><p><a href="https://zaiste.net/posts/shell-commands-rust/">Rust CLI</a>: Rust people feel comfortable working in the terminal, and they&#39;ve taken that user experience Very Seriously and have a top notch performance and user experience for their command line CLIs. Here&#39;s a few of my favorites - you only need to <code>cargo install foo</code> and they should be properly installed on your system.</p>
+<ul>
+<li><p><a href="https://github.com/BurntSushi/ripgrep">rg</a>: SIMDified grep replacemnt tool &#40;for some use cases&#41;. Includes colors&#33;</p>
+</li>
+<li><p><a href="https://github.com/sharkdp/bat">bat</a>: cat clone with tons more built-in syntax highlighting.</p>
+</li>
+<li><p><a href="https://github.com/bootandy/dust">dust</a>: visualize disk space used by folders.</p>
+</li>
+<li><p><a href="https://lib.rs/crates/typeracer">typeracer</a>: fun typing game.</p>
+</li>
+<li><p><a href="https://lib.rs/crates/zoxide">taskwarrior-tui</a>: Todo tracker.</p>
+</li>
+<li><p><a href="https://lib.rs/crates/zoxide">zoxide</a>: directory autojumper. I don&#39;t really do <code>cd ../..</code> climbing around anymore I just do <code>z foo</code> a couple of times and that usually guesses right.</p>
+</li>
+<li><p><a href="https://github.com/zellij-org/zellij">zellij</a>: Terminal multiplexer with friendly UX. Young and promising.</p>
+</li>
+</ul>
+</li>
+<li><p><a href="https://github.com/plasma-umass/coz">coz</a>: Invaluable tool for <em>causal profiling</em>. <a href="https://youtu.be/r-TLSBdHe1A?t&#61;2182">Emery Berger&#39;s</a> presentation alone is worth knowing about this project. I reeeeeally want to nerdsnipe someone to port this to Julia.</p>
+</li>
+<li><p><a href="https://sled.rs/perf#e-prime-and-precise-language">sled&#39;s</a> approach to benchmarking and databases is top-notch. Also worthy of note is the same author&#39;s <code>rio</code> crate, which is a Rust interface for the <code>io_uring</code> linux kernel module, which can significantly speed up asynchronous programming. There&#39;s some WIP PRs for landing this for <code>libuv</code>, Julia&#39;s thread runtime backend, and that effort <a href="https://github.com/libuv/libuv/pull/2322">is close to wrapping up</a>.</p>
+</li>
+<li><p><a href="https://www.lpalmieri.com/posts/2019-02-23-scientific-computing-a-rust-adventure-part-0-vectors/">Scientific Computing in Rust</a>: A <em>must</em> to dive straight into linear algebra.</p>
+</li>
+<li><p><a href="https://www.lpalmieri.com/posts/2019-12-01-taking-ml-to-production-with-rust-a-25x-speedup/">Taking ML to production with Rust</a>: A sister article to the one above.</p>
+</li>
+<li><p><a href="https://github.com/ejmahler/RustFFT">Rust FFT</a>: They beat FFTW in some cases with this one, so it seems worthwhile to take a look 👀 .</p>
+</li>
+<li><p><a href="https://github.com/rusty-fast-solvers/rusty-green-kernel">Green function evaluation kernels</a>: Newer package, but I&#39;d like to see how special functions pan out in Rust land.</p>
+</li>
+<li><p><a href="https://docs.rs/polars/0.12.1/polars/">Polars</a>: A highly tuned dataframes implementation for some use cases. They&#39;ve topped the charts in some of the <a href="https://h2oai.github.io/db-benchmark/">H20ai benchmarks</a>, so they&#39;ve definitely got technical chops. &#40;They beat DataFrames.jl because of a sparsification trick which is a bit non-trivial to implement, but there&#39;s not necessarily an impediment to matching their speed.&#41;</p>
+</li>
+<li><p><a href="https://github.com/tokio-rs/loom">Loom</a>: a model checker for atomic primitives, sister project to <code>tokio</code>. I think Julia is a more natural fit for this approach given the ease of operator overloading  and it will be great to try something similar once Jameson&#39;s atomics PR lands.</p>
+</li>
+<li><p><a href="https://www.stateright.rs/">Stateright</a>: distributed systems model checker with a graphic user interface.</p>
+</li>
+<li><p><a href="https://github.com/xldenis/creusot">Creusot</a>: Add some macros to your Rust code, and have it formally verified by Why3.</p>
+</li>
+<li><p><a href="https://altsysrq.github.io/proptest-book/proptest/getting-started.html">proptest</a>: Configure strategies for exploring type instantiations to fuzz your tests, shrink the cases, and automatically track regressions. Impressive stuff&#33;</p>
+</li>
+<li><p><a href="https://gleam.run/">Gleam</a> and <a href="https://github.com/lumen/lumen">Lumen</a>: Gleam is a Rust backend for an Erlang based language and Lumen is a Rewritten-in-Rust implementation of the ErlangVM, BEAM. Erlang is a concurrency monster, and their actor based model is scalable as hell for certain workloads. I&#39;m glad to see Julia start to step into that domain with <a href="https://github.com/JuliaActors/Actors.jl">Actors.jl</a>. This seems to be the <em>right way</em> to abstract for fault tolerance workloads.</p>
+</li>
+</ul>
+<p>There&#39;s oodles more. Check out <a href="https://www.crates.io">crates.io</a> or <a href="https://lib.rs">lib.rs</a> if you want to explore more &#40;this is their community based JuliaHub equivalent&#41;.</p>
+<p>I&#39;ll make a special note of <a href="https://github.com/google/evcxr">evcxr</a>, a Rust REPL. For now, I don&#39;t think it&#39;s profitable to use Rust with a REPL-like workflow. I&#39;m too used to that in Julia, and that works well there, but I think there&#39;s a risk of digging yourself into a &quot;Everything must be a REPL&quot; mentality and cutting yourself off from learning opportunities. In Rust land, I don&#39;t mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that&#39;s the package that I wanted to learn when I bought into Rust, I don&#39;t mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I&#39;d love to be wrong on this down the road.</p>
+<hr />
+<h3 id="optimization_walkthroughs">Optimization walkthroughs 🏃 </h3>
+<p>If you want to dive deep into nitty gritty performance fundamentals, these are the best guides I found for explaining the tradeoffs, gotchas, mental model, and engineering for those tasty, tasty flops.</p>
+<ol>
+<li><p><a href="http://www.frankmcsherry.org/assets/COST.pdf">COST paper</a>: Maybe doesn&#39;t fit here but this is one of my favorite papers and everyone should read it.</p>
+</li>
+<li><p><a href="https://parallel-rust-cpp.github.io/">Comparing parallel Rust and C&#43;&#43;</a></p>
+</li>
+<li><p><a href="https://deterministic.space/high-performance-rust.html">Cheap tricks</a></p>
+</li>
+<li><p><a href="https://nnethercote.github.io/perf-book/">The Rust performance Book</a></p>
+</li>
+<li><p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html">How to write Fast Rust code</a></p>
+</li>
+<li><p><a href="http://troubles.md/posts/rustfest-2018-workshop/">Fastware Workshope</a></p>
+</li>
+</ol>
+<hr />
+<h3 id="papercuts_and_sharp_edges">Papercuts and sharp edges ✂ </h3>
+<p>So Rust is &quot;worth learning&quot;, but these are roadblocks that I faced and would warn others about to save them some grief.</p>
+<ul>
+<li><p>You can learn another hobby waiting for Rust projects to compile. The price for compile-time guarantees/being the designated driver in the codebase is offloading more work to the compiler. They&#39;re working on leveraging concurrency for speeding up the pipeline, and it&#39;s gotten better. Let&#39;s just say they also suffer from TTFP 😉 .</p>
+</li>
+<li><p>Learn to run your code with <code>cargo run --release</code> <a href="https://deterministic.space/high-performance-rust.html">and other tricks</a>. This is the equivalent to running your Julia code with globals &#40;or <code>-O0</code> flags&#41;, and it&#39;s an easy gotcha. This will not change in Rust.</p>
+</li>
+<li><p>Rust people keep saying they have no Garbage Collector, *when they have a Region Based Garbage Collector**. It&#39;s all fun and games until they have to implement those linked lists...</p>
+</li>
+</ul>
+<p>&#40;<em>NB</em>: After posting in <a href="https://news.ycombinator.com/item?id&#61;27407268">HackerNews</a>, Steve Klabnik has pointed out that the term <code>region based</code> is technical jargon in Programming Language Theory Literature as seen in section <a href="https://www.cs.umd.edu/projects/cyclone/papers/cyclone-regions.pdf">2 of this paper</a> on Cyclone&#39;s memory model.&#41; &#40;<em>NB2</em>: <code>kibwen</code> on HN pointed out that the term <code>garbage collection</code> implies dynamic memory management, whereas Rust&#39;s ownership system allows for lifetimes to be determined statically. In that sense, I&#39;m wrong except for when users opt-in to using <code>Rc</code>s and the like. Glad to be corrected&#33;&#41;</p>
+<ul>
+<li><p>Don&#39;t add crates manually&#33; Install <code>cargo-add</code>, use it to manage crate dependencies. That and some other tricks are great from doing the <code>AdventOfCode2020</code> from the article above.</p>
+</li>
+<li><p>For numerics, install <code>ndarray</code> and <code>num_traits</code>. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.</p>
+</li>
+<li><p>Benchmarking with <code>@btime</code> is painless, <code>criterion</code> is your best Rustian bet.</p>
+</li>
+<li><p>Setup your <code>rust-analyzer</code> and <code>error lens</code> plugins on VSCode or IDE asap, you&#39;ll thank me later. Rust-land expects you to be in constant dialogue with the compiler, and making that iteration cycle as ergonomic as possible will yield dividends in the long run. What we don&#39;t get from accessing help docs in the REPL, Rust people keep a terminal tab handy where they run <code>cargo watch -c</code> and get continuous feedback from the compiler.</p>
+</li>
+<li><p>You CAN&#39;T index into a String in Rust with ints&#33; <a href="https://doc.rust-lang.org/std/primitive.str.html#method.chars">Instead</a> use slices like <code>&amp;str&#91;1..&#93; &#61;&#61; str&#91;2:end&#93;</code> or iterators like <code>str.chars&#40;&#41;</code>, if I may riff on Rust and Julia syntax in the equality just there.</p>
+</li>
+<li><p>Reading from <code>stdin</code> is a pain as a newcomer. I wanted to try out some competitive coding exercises and reading from <code>stdin</code> was waaaay too rough for me at first. Eventually I cobbled this template up <a href="https://gist.github.com/miguelraz/d0341e9fee8c728baa99fd6fe86c1be1">link here</a> so that you don&#39;t struggle if you want to try a couple of CodeForces problems.</p>
+</li>
+<li><p>Not having a generic <code>rand</code> is just painful. So painful. This is my easiest workaround so far for generating a vector of <code>n</code> random entries:</p>
+</li>
+</ul>
+<pre><code class="language-rust">let n &#61; 100;
+use rand::distributions::Standard;
+use rand::prelude::*;
+thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&#40;&#41;</code></pre>
+<p>&#40;Oh, and <code>rand</code> isn&#39;t part of the stdlib so that&#39;s another papercut&#41;.</p>
+<blockquote>
+<ul>
+<li><p>There is no <code>@code_native</code> and friends in Rust - your best bet is to use the Rust Playground and click on the <code>...</code> to have it emit the total assembly. This only works for the top 100 most popular crates though. You can <code>cargo run --release -- --emit&#61;llvm-ir/asm</code> and then fish the results out of <code>target/</code>, but that&#39;s unwieldy - why does no one have a CLI for this yet?</p>
+</li>
+</ul>
+</blockquote>
+<p><em>NB</em>: <code>u/Schnatsel</code> has kindly pointed me towards <code>cargo-asm</code>. The interface is not as nice as <code>@code_XXX</code>, but I think I&#39;m satisfied with this. Thanks a ton&#33;</p>
+<ul>
+<li><p>Another multiple dispatch gripe: having to implement <code>Display</code> traits for new structs feels like pulling teeth, and this initial type signature seems inscrutable as a beginner:</p>
+</li>
+</ul>
+<pre><code class="language-rust">use std::fmt;struct Point &#123;
+    x: i32,
+    y: i32,
+&#125;impl fmt::Display for Point &#123;
+    fn fmt&#40;&amp;self, f: &amp;mut fmt::Formatter&lt;&#39;_&gt;&#41; -&gt; fmt::Result &#123;
+        write&#33;&#40;f, &quot;&#40;&#123;&#125;, &#123;&#125;&#41;&quot;, self.x, self.y&#41;
+    &#125;
+&#125;</code></pre>
+<ul>
+<li><p>Rust does NOT look like math and that hurts my little physicist heart. <a href="https://rust-lang.github.io/wg-async-foundations/vision/status_quo/niklaus_simulates_hydrodynamics.html">Look at this story of a hydrodynamics simulator code</a> vs anything in the DiffEq verse that is user facing or from ApproxFun.jl, or Turing.jl, or ... anything else. Even the linear algebra from <code>ndarray</code> is painful to understand unless you are comfortable in Rust, and all the <code>i as usize</code> conversions are a huge eye sore.</p>
+</li>
+<li><p>Many of your functions will be faster if you annotate them with <code>#&#91;inline&#93;</code>.</p>
+</li>
+</ul>
+<hr />
+<h3 id="things_i_wish_id_known_earlier">Things I wish I&#39;d known earlier 👓 </h3>
+<p>These could have helped me settle down into a more productive workflow sooner. Get a buddy that knows Rust to see you code to figure most of these out.</p>
+<ol>
+<li><p>If you can, avoid the examples with Strings and &amp;str. Yes, they&#39;re a great motivation for systems people for all the gnarly use-after free and double-free and memory-leak examples - stick with numerical algorithms first, to get the gist of ownership, try and do some exercisms with iterators and Strings will be much easier to get after that. I don&#39;t think it&#39;s worth worrying about at first unless your target is systems.</p>
+</li>
+<li><p>The preferred way of &quot;whipping up an example in the REPL&quot;/getting a MWE is to <code>cargo new foo</code>, mucking about and then <code>cargo run --release</code> or using the Rust Playground.</p>
+</li>
+<li><p>If you&#39;re using an expansive test suite, <code>cargo test --test-threads 8</code> and <code>cargo test --quiet</code> are helpful flags.</p>
+</li>
+<li><p>For loops are not idiomatic in Rust - writing Fortran-ey code instead of iterators will lead to pain and slower loops. Spending time reading the examples in <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html">the iterator docs</a> and the community solutions in the exercisms will help a lot.</p>
+</li>
+<li><p>Just clone everything when you are starting out to get around most borrow checker shenanigans - worry about allocations later, Rust is usually fast enough.</p>
+</li>
+<li><p>In the following function, the types of <code>v</code> and <code>w</code> are a <code>slice</code> of <code>Int32</code>s, which are different from <code>Vec&lt;32&gt;</code>. Read the Scientific Computing link above to see a nice table of the differences. An array like <code>&#91;f32; 4&#93;</code> includes the size as part of the type, a slice like <code>&#91;f32&#93;</code> does not. Diving into linear algebra means being familiar with many <code>to_array&#40;&#41;</code>, <code>to_slice&#40;&#41;</code>, <code>from_array&#40;&#41;</code>, and <code>from_slice&#40;&#41;</code> cases.</p>
+</li>
+</ol>
+<pre><code class="language-rust">fn dot&#40;v: &amp;&#91;i32&#93;, w: &amp;&#91;i32&#93;&#41; -&gt; i32 &#123;...&#125;</code></pre>
+<ol start="6">
+<li><p>Including docs and tests in the same file as your implementation is idiomatic - even the IDEs support clicking on the <code>#&#91;test&#93;</code> line and having that run. Julia has a nice workflow for test driven development out-of-the-box - Rust gives you some of those guarantees by... conversing with the compiler.</p>
+</li>
+<li><p>Rust has something similar to the concept of <code>type piracy</code>: they&#39;re called the <code>orphan rules</code>, as explained by <a href="https://blog.mgattozzi.dev/orphan-rules/">this Michael Gattozzi</a> post:</p>
+</li>
+</ol>
+<blockquote>
+<p>Recently at work I managed to hit the Orphan Rules implementing some things for an internal crate. Orphan Rules you say? These are ancient rules passed down from the before times &#40;pre 1.0&#41; that have to do with trait coherence. Mainly, if you and I both implement a trait from another crate on the same type in another crate and we compile the code, which implementation do we use?</p>
+</blockquote>
+<ol start="8">
+<li><p>Rust is not as centralized with online communication as Julia is around Slack/Zulip/Discourse. Their version of <code>#appreciation</code> channels is to go on twitter and tell <code>@ekuber</code> what a joy the compilers errors are. There&#39;s tons of people on their Discord, and everywhere.</p>
+</li>
+</ol>
+<hr />
+<h3 id="appreciation_of_rust_things">Appreciation of Rust things 🦀  </h3>
+<p>These are things the Rust people have nailed down.</p>
+<ol>
+<li><p>Ferris the crab is too cute.</p>
+</li>
+<li><p>Rust people take uwu-ification very, VERY seriously. <a href="https://github.com/Daniel-Liu-c0deb0t/uwu">The uwu</a> project uses SIMD to uwu-ify strings for <a href="https://twitter.com/twent_weznowor">great artistic value</a>. Julia and Rust both draw me because they make me feel more powerful when I code with them than I think I should be.</p>
+</li>
+<li><p>Governance: The Rust foundation and strong community conduct codes. Given the blow ups that have happened with open source communities recently from short-sighted governance or hate reactionaries tanking projects, this is a welcome sight that will probably pay off for decades to come.</p>
+</li>
+<li><p>Compiler error messages are second to none. Definitely check out <code>clippy</code> too and follow the hints. <code>cargo fmt</code> will also format all your crate so that Rust code is almost always a unified reading experience.</p>
+</li>
+<li><p><a href="https://rustbeginners.github.io/awesome-rust-mentors/">Awesome mentors</a>. This is a project maintained <code>Jane Lusby</code> and other volunteers. I&#39;ve gotten world-class mentorship from kind, patient and friendly Rust folks. Shoutout to <code>Jubilee</code> for her great wisdom and patience and the rest of the <code>stdsimd</code> gang.</p>
+</li>
+<li><p>They also poke the LLVM crowd to improve the compilation times, which is great.</p>
+</li>
+<li><p>They&#39;re doc deployment system is unified, polished, and friendly. Inline docs and tests are also great.</p>
+</li>
+<li><p><code>cargo</code> is a joy compared to <code>Make</code> hell. <code>Pkg</code> is somewhat inspired by it, so that rocks.</p>
+</li>
+</ol>
+<hr />
+<h3 id="what_rust_can_bring_to_julia">What Rust can bring to Julia ⚒ </h3>
+<ol>
+<li><p>A model of governance. The Rust community is at least 10x the size of Julia, and it&#39;s unclear that adding more hats to the same <code>TruckFactorCritical</code> people would help. That said, it&#39;d be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don&#39;t think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don&#39;t see what is lost from learning from them.</p>
+</li>
+<li><p>Less vulnerable software in the world is a good thing. Oxidization is great&#33; Sometimes. I don&#39;t think any Julia internals will oxidize in the short term, but it would be an interesting experiment to say the least.</p>
+</li>
+<li><p><a href="https://www.youtube.com/watch?v&#61;rAF8mLI0naQ&amp;t&#61;947s">Error handling</a>: Multiple dispatch may prove advantageous in this domain, and it hasn&#39;t been as much of a priority as it has in Rust. Perhaps that merits some careful rethinking for future Julia versions.</p>
+</li>
+<li><p>Awesome Julia mentors, I think we need this.</p>
+</li>
+</ol>
+<hr />
+<h3 id="acknowledgments">Acknowledgments 🙌🏻 </h3>
+<ul>
+<li><p>Thanks to <code>Jubilee</code> for feedback on this post and the following corrections: </p>
+<ul>
+<li><p>Rust does not necessarily have an RC GC but a <a href="https://en.wikipedia.org/wiki/Region-based_memory_management">region based GC</a>. You can opt into the RC GC with <code>Arc</code> and <code>Rc</code> types.</p>
+</li>
+<li><p>Technically Rust doesn&#39;t have linear types but <a href="https://gankra.github.io/blah/linear-rust/">affine types</a>.</p>
+</li>
+<li><p>Tokio&#39;s story is not as simple as I had made it out to be so I cut some comments</p>
+</li>
+</ul>
+</li>
+<li><p><code>Alex Weech</code> helpfully suggested refactoring the original Julia Point code to be more similar to the Rust example.</p>
+</li>
+<li><p><code>Daniel Menéndez</code> helpfully suggested adding <code>crates.io</code> or <code>lib.rs</code></p>
+</li>
+<li><p>Thanks to <code>oliver</code> I also read about this post by Chris Lattner, author of LLVM, on the dangers of <a href="https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html">undefined behaviour</a>, to really scare you out of thinking you know what C is doing under the hood.</p>
+</li>
+<li><p><code>Zamalek1</code> on HN also provided useful feedback on precise academese: Rust is definitely a memory managed language, but that&#39;s been hoisted to compile time.</p>
+</li>
+<li><p>Thanks to <code>u/Schnatsel</code> for pointing me to a broken url here and to <code>cargo-asm</code>.</p>
+</li>
+<li><p>Thanks to <code>ministatsdev</code> for the string iterator nit.</p>
+</li>
+</ul>
+]]></content:encoded>
         
     <pubDate>Sat, 05 Jun 2021 00:00:00 +0000</pubDate>    
     
@@ -96,8 +845,278 @@
 <item>
     <title><![CDATA[Why Julia - Meet Dispatch]]></title>
     <link>https://miguelraz.github.io/blog/dispatch/index.html</link>
-    <guid></guid>
+    <guid>1</guid>
     <description><![CDATA[This blog is a friendly introduction to multiple dispatch in Julia]]></description>    
+    
+    <content:encoded><![CDATA[<div class="colbox-blue"><h1 id="hello_world_im_dispatch">Hello, World&#33; 👋 I&#39;m Dispatch</h1>
+<p>My name&#39;s <strong>Dispatch</strong>,  your friendly neighbourhood walkie-talkie, and I&#39;m here to talk to you all about Julia -  a cool programming language and why I think they made the right calls when they built it.</p>
+<div class="center"><img src="https://miguelraz.github.io/assets/bigdispatch.png" alt="" /></div></div>
+<h4 id="reading_time_20_minutes">Reading time: 20 minutes</h4>
+<h4 id="summary">Summary:</h4>
+<p>This post is about Julia and <em>multiple dispatch</em> as its foundation. Julia is not</p>
+<ul>
+<li><p>the first language to implement multiple dispatch &#40;see the lecture link below&#41;</p>
+</li>
+<li><p>the only language to use multiple dispatch &#40;Dylan does use it, also available as a lib in Python and others&#41;</p>
+</li>
+</ul>
+<p>but it definitely feels like the first to stick the landing.  My <strong>claim</strong> is this: Julia is unique in implementing multiple dispatch as a fundamental design feature <em>and</em> building a language around it. Don&#39;t take it too seriously; it&#39;s more an invitation to learn than anything else. If you like this topic, check out <a href="https://www.youtube.com/watch?v&#61;kc9HwsxE1OY&amp;t&#61;346s">&quot;The Unreasonable effectiveness of Multiple Dispatch&quot; JuliaCon</a> by Stefan Karpinski, and <a href="https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/">this article on &quot;The Expression problem&quot;</a> which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.</p>
+<p>The <strong>audience</strong> of this post are programmers who like Python/C&#43;&#43;/80s MIT Lisp courses who have heard of Julia but don&#39;t get what new things it brings to the table. If you want to dive deeper into emergent Julia features, check out <a href="https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/">Frame&#39;s</a> 2 part posts.</p>
+<p>Sure, there&#39;s a fancy subtyping algorithm that Jeff Bezanson &#40;Julia co-creator&#41; pulled out of Turing-knows-where and that Swift re-adapted with some unholy <a href="https://fullstackfeed.com/formalizing-swift-generics-as-a-term-rewriting-system/">term rewriting</a> shenanigans, but that&#39;s not the &quot;new contribution&quot; I mean - careful design iteration around multiple dispatch with measured trade-offs is.</p>
+<p>The rest of this post are code snippets in different programming languages and how they look like next to a Julian re-implementation.</p>
+<p>To talk about all these things, we&#39;ll be hearing from our newest battery-powered friend, <strong>Dispatch</strong>.</p>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Hey peeps, that&#39;s me&#33;</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><p>... interspersed with a comments of our not-yet-super-proficient-but-keeps-working-at-it-student, <strong>miguelito</strong>:</p>
+<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>¡Hola Dispatch&#33; Nice to meet you&#33;</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><p>Off we go&#33; 🚀</p>
+<h2 id="what_is_dispatch">What is dispatch?</h2>
+<p>To begin our journey, we sould define some terms. Per <a href="https://www.merriam-webster.com/dictionary/dispatch">Merriam-Webster</a>, <code>to dispatch</code> means:</p>
+<blockquote>
+<p>to send off or away with promptness or speed</p>
+</blockquote>
+<blockquote>
+<p>to dispatch a letter</p>
+</blockquote>
+<blockquote>
+<p>dispatch an ambulance to the scene</p>
+</blockquote>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>And if you have a dispatcher, which is what I do, then you call what you need at the right time. There&#39;s no need for extra fussing about&#33; Sometimes you need to call a cab, sometimes its a delivery driver, sometimes its a helicopter. Just dispatch on what you need.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Ok, call what you nee– Aaaaaah, now I get why you&#39;re a walkie-talkie. Clever&#33; <a href="https://fasterthanli.me/series/advent-of-code-2020/part-3">I&#39;ll have to tell my friend Cool Bear</a> about this one...</p>
+<p>At any rate - dispatch sounds simple I guess... but all these programmers from the Object Oriented Land keep asking me about where I stand in <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">inheritance vs composition</a>, and my takeaway was that there&#39;s a lot of terms I <em>thought</em> knew what they meant, but I have to re-learn for all this programming stuff. I guess I&#39;m just not that into Rectangle vs Square debates...</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><p><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Yup, there&#39;s a lot of fancy words. It can be hard to describe where you are standing to other people because <a href="https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf">the Kingdoms of Nouns</a> monopolized the programming language map-making business decades ago. </p>
+<p>Now it sucks to get directions anywhere.</p>
+<p>But it&#39;s cool - just take a deep breath, and, like a well oiled StepMaster, we&#39;ll do this one step at a time. </p>
+<p>On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we&#39;re not too far from them in the theory, but the language doesn&#39;t actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div>
+ </p>
+<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>What? No way.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Of course&#33; What&#39;s more natural than addition? You just haven&#39;t used the name multiple dispatch for it, which is fine. Bear with me for some simple arithmetic: Can you describe the procedure you know for adding integers? Say you want to add <code>123 &#43; 890</code>. &#40;This is a good moment to install and open julia from <a href="https://www.julialang.org">julialang.org</a> if you haven&#39;t already done so.&#41;</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Sure, you line up the digits, add the columns right to left, carry the ones...</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><pre><code class="language-julia-repl">julia&gt; 123 &#43; 890
+1013</code></pre>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Yup. What about trying to add <code>1//2 &#43; 1//3</code>. Those &quot;fractions&quot; are what we call <code>Rationals</code> in Julia. What procedure do you follow then?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Oh right, the famous <code>regla de tres</code> - find the common denominator, cancel, add up apples to apples...</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><pre><code class="language-julia-repl">julia&gt; 1//2 &#43; 1//3
+5//6</code></pre>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Swell. And <code>.25 &#43; 5.2</code>? You&#39;re still <em>&quot;adding&quot;</em> things right?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Yup, like adding natural numbers - line &#39;em up, carry the one.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><pre><code class="language-julia-repl">julia&gt; .25 &#43; 5.5
+5.75</code></pre>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Excelente, ignore the decimals for now. Did you ever face matrices? Can you try to add <code>2x2</code> matrix of <code>1</code>s and a <code>2x2</code> matrix of <code>3</code>s?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Yup - I think we defined it as element to element. So you end up with a <code>2x2</code> matrix of <code>4</code>s.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><pre><code class="language-julia-repl">julia&gt; &#91;1 1; 1 1&#93; &#43; &#91;3 3; 3 3&#93;
+2×2 Matrix&#123;Int64&#125;:
+ 4  4
+ 4  4</code></pre>
+<div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Alright - thanks for following along. Now here&#39;s the tickler question - Who does the <code>&#43;</code> belong to?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>...qué.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p><strong>Exactly</strong>. If you know you&#39;re adding 2 Natural numbers, you just use, &#40;or when coding, <em>call</em>&#41; the right procedure. If you <code>&#43;</code> 2 decimal numbers, you call the right thing. It&#39;s the addition you&#39;ve always known&#33; There&#39;s this <em>notion</em> of what <code>&#43;</code> should do in different cases, and we wrap them all up under the same <code>&#43;</code> umbrella - even though addition of matrices, decimals and natural numbers mean different procedures. You can check all the ones that come out of the box if you try this:</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><pre><code class="language-julia-repl">julia&gt; methods&#40;&#43;&#41;
+# 195 methods for generic function &quot;&#43;&quot;:
+&#91;1&#93; &#43;&#40;x::T, y::T&#41; where T&lt;:Union&#123;Int128, Int16, Int32, Int64, Int8, UInt128, UInt16, UInt32, UInt64, UInt8&#125; in Base at int.jl:87
+&#91;2&#93; &#43;&#40;c::Union&#123;UInt16, UInt32, UInt64, UInt8&#125;, x::BigInt&#41; in Base.GMP at gmp.jl:528
+&#91;3&#93; &#43;&#40;c::Union&#123;Int16, Int32, Int64, Int8&#125;, x::BigInt&#41; in Base.GMP at gmp.jl:534
+...</code></pre>
+<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Oh&#33; But you stated that <code>&#43;</code> &quot;belongs&quot; to someone, so what does <code>&#43;</code> have to do with property?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Nothing - that&#39;s the point&#33; At least not in Julia. It doesn&#39;t make sense to say that the <code>&#43;</code> belongs to the <code>1</code> or the <code>2</code> in the statement <code>1 &#43; 2</code>, and that&#39;s where the headaches come from: when you bind identity to objects, you&#39;re gonna have a bad time, <a href="https://youtu.be/dO1aqPBJCPg?t&#61;3583">as 80s lisp hackers and philosophers alike have struggled with that question for a long, long time</a> – it&#39;s just <em>devilishly</em> hard to reason about identity when objects change. Avoid worrying about that if you can. Just worry about calling the right procedure in the right case. In other words, &quot;just dispatch and carry on.&quot;</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><hr />
+<h3 id="single_dispatch">Single dispatch</h3>
+<p>This post promised comparing different languages. Now that we&#39;ve discussed what we mean by dispatching, let&#39;s see how it&#39;s implemented. Astute readers have picked up that dispatching already exists in other languages, albeit in limited form: single dispatch.</p>
+<p>I&#39;m going to do some serious hand-waving here, so strap in: in Python and C&#43;&#43;, and other object oriented languages, you have the barebones version of dispatch. If a function takes an argument <code>f&#40;a&#41;</code> you can only dispatch on the type of the first argument.</p>
+<p>Specifically, we want the function <code>f</code> to behave differently when the types of <code>a</code> are different. Recall our previous examples for addition: if <code>a</code> is an <code>Int</code>, we want it to do one thing - if it&#39;s an <code>Float64</code>, another thing.</p>
+<p>Whipping up a Python REPL:</p>
+<pre><code class="language-python">&gt;&gt;&gt; class Foo:
+...     x &#61; 1
+...
+&gt;&gt;&gt; class Bar:
+...     x &#61; 1
+...
+&gt;&gt;&gt; def f&#40;a: Foo&#41;:
+...     print&#40;&quot;Just Foo&quot;&#41;
+...
+&gt;&gt;&gt; a &#61; Foo&#40;&#41;
+&gt;&gt;&gt; b &#61; Bar&#40;&#41;
+&gt;&gt;&gt; f&#40;a&#41;
+Just Foo
+&gt;&gt;&gt; def f&#40;b: Bar&#41;:
+...     print&#40;&quot;Just Bar&quot;&#41;
+...
+&gt;&gt;&gt; f&#40;b&#41;
+&quot;Just Bar&quot;
+&gt;&gt;&gt; f&#40;a&#41;
+&quot;Just Bar&quot;</code></pre>
+<p><strong>💥WHOOPS&#33;💥</strong> - something went wrong, we should have gotten a <code>&quot;Just Foo&quot;</code> in that last line&#33;</p>
+<h2 id="multiple_dispatch">Multiple Dispatch</h2>
+<p>In the previous section, we wanted <code>f</code> to have two different behaviours depending on the types &#40;and call it <code>polymorphic operator overloading</code>, if we want to bait some Dunning-Krugers on the <a href="http://n-gate.com/">god-forsaken orange-site</a>&#41;. But we won&#39;t worry about fancy terms - we just want to our programming language tools to able to behave like the <code>&#43;</code> we know from primary school.</p>
+<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>OK - I&#39;ll take a crack at this. I&#39;ve read and reread the <a href="https://docs.julialang.org/en/v1/manual/methods/">Julia Manual page for Methods</a>, and I think I have a better idea of this now. Here&#39;s what my Julia code looks like:</p>
+<pre><code class="language-julia">abstract type Things end # We&#39;ll come back to this line
+struct Foo &lt;: Things end
+struct Bar &lt;: Things end
+f&#40;::Things&#41; &#61; &quot;Just a Thing&quot;
+f&#40;x::Foo&#41; &#61; &quot;Just Foo&quot;
+f&#40;x::Bar&#41; &#61; &quot;Just Bar&quot;
+x &#61; Foo&#40;&#41;
+y &#61; Bar&#40;&#41;
+f&#40;x&#41;
+f&#40;y&#41;</code></pre>
+<p>And it works&#33; I like thinking about this as a table, just like what we talked about with <code>&#43;</code>: I just check what types the arguments I&#39;m applying <code>&#43;</code> to are, and apply to proper procedure. Adding integers means line them up and carry the digits. Fractions, common denominators, etc. For <code>f</code>, if I apply it to an <code>Foo</code>, the procedure is to return the string <code>&quot;Just Foo&quot;</code>. If I apply <code>f</code> to an object <code>Bar</code>, it returns the string <code>&quot;Just Bar.&quot;</code>. Dispatch and carry on, ach so...</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Great&#33; You&#39;re on your way to learn the <em>Zen of Julia&#33;</em>. It usually looks like</p>
+<ol>
+<li><p>Setup an abstract type like <code>Things</code>.</p>
+</li>
+<li><p>Make some structs that are subtypes of <code>Things</code> with <code>&lt;:</code></p>
+</li>
+<li><p>Define functions <code>f</code> that act on specific subtypes of <code>Things</code> - aka dispatching.</p>
+</li>
+<li><p>Create your structs/objects with constructors like <code>x &#61; Foo&#40;&#41;</code> and then call <code>f&#40;x&#41;</code> to handle different behaviors.</p>
+</li>
+</ol>
+<p>That&#39;s it&#33;</p>
+<p>Small nitpick - You actually <em>can</em> dispatch in Python, but it requires a bit of boilerplate, but that&#39;s a secondary concern. Since it wasn&#39;t a foundational design of the language, people didn&#39;t build a vocabulary or an ecosystem around it. In the words of Turing award winner Barbara Liskov,</p>
+<blockquote>
+<p>The quality of software depends primarily on the programming methodology in use. &#91;...&#93; A methodology can be easy or difficult to apply in a given language, depending on how well the language constructs match the structures that the methodology deems desirable. &#91;...&#93; – Barbara Liskov, Abstractions Mechanisms in CLU &#40;1977&#41;</p>
+</blockquote>
+<p>&#40;Shoutout to <a href="https://youtu.be/UCIcJBM_YDw?t&#61;478">Quinn Wilton and her great Gleam presentation were I took this quote from</a>&#41;. Basically, not all <a href="https://www.youtube.com/watch?v&#61;evthRoKoE1o">tools can fit nicely into a particular niche</a>, and insisting otherwise is a recipe for frustration, but I guess some companies just have billions in cash for R&#43;D to burn. It&#39;s not only honest, but necessary, to know the limitations of your own tools.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Huh - sounds like Julia got really... lucky &#40;?&#41; in that it didn&#39;t need to be the first to run up against these problems? That knowledge accrues over decades by loads of smart people by trying, failing, and figuring things out.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>🎉 Correct&#33; 🎉 Julia has benefitted immensely from the efforts of others. We gain nothing from being smug about recent successes - there&#39;s still lots of problems to solve and it&#39;s in our best interests that we nurture a diverse community of people that we can cross-pollinate ideas with. Maybe someone implements multiple dispatch with some different tradeoffs in Python &#40;like the <a href="https://github.com/wesselb/plum">Plum library&#33;</a>&#41;, or <a href="https://youtu.be/UeGvhfW1v9M?t&#61;3011">type class resolution in Lean</a> or whatever they&#39;re building with <a href="https://www.fstar-lang.org/tutorial/">F&#42;</a> that shows us a new way of thinking. We lose nothing by encouraging people to experiment, far and wide.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Hold up, you had mentioned that Julia&#39;s not the first to get multiple dispatch. Why didn&#39;t it pick up in the other languages?</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Hmmm, hard to say, I think we&#39;d need to reach out to a legit PL historian for that. However, looking at some of the other key components that coalesce together helps suss some of it out:</p>
+<ol>
+<li><p>Common Lisp had an easy opt-in multiple dispatch system, but it was slow. People didn&#39;t buy in because it cost performance. There&#39;s a social factor to this - if your paradigm takes more effort to use, it&#39;s less likely to be grow.</p>
+</li>
+<li><p>Performance was not an afterthought. Look at the graveyard of attempts to <a href="https://wiki.python.org/moin/PythonImplementations">speed up Python</a>, all mutually incompatible. The Julia devs designed the abstractions to match LLVM semantics to optimize for performance. At some point, you have to ask if you&#39;re standing in the right place to begin with, like the London cabby:</p>
+</li>
+</ol>
+<blockquote>
+<p>Excuse me, what&#39;s the best way to get to Manchester?</p>
+</blockquote>
+<blockquote>
+<p>Ah, Manchester? I wouldn&#39;t start from here...</p>
+</blockquote>
+<p>I don&#39;t think Python for performance has failed, but <a href="https://youtu.be/6JcMuFgnA6U?t&#61;1089">wouldn&#39;t start with a language that takes 28 bytes to store an integer:</a></p>
+<pre><code class="language-python">Python 3.9.3 &#40;default, Apr  8 2021, 23:35:02&#41;
+&#91;GCC 10.2.0&#93; on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from sys import getsizeof
+&gt;&gt;&gt; getsizeof&#40;1&#41;
+28</code></pre>
+<p>whereas</p>
+<pre><code class="language-julia-repl">julia&gt; sizeof&#40;1&#41; # This is in bytes, so an Int on my system is 64 bits
+8</code></pre>
+<ol start="3">
+<li><p>Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn&#39;t have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it&#39;s not at all trivial to see those two things and put them together. But don&#39;t take my word for it, hear <strong>them</strong> say why it wasn&#39;t practical then:</p>
+</li>
+</ol>
+<p><a href="https://youtu.be/OscT4N2qq7o?t&#61;1598"><img src="https://imgur.com/zA72zGB.png" alt="Lisp hackers preaching the Julia gospel" /></a></p>
+<ol start="4">
+<li><p>That video tells precisely the pain-point that Stefan talked about for functional languages in his talk: In Functional Land, it&#39;s easy to add new procedures to old types, but <em>unwieldy</em> to add new types to old functions.</p>
+</li>
+</ol>
+<p>Concretely, the code that stumps object oriented PLs is</p>
+<pre><code class="language-julia">f&#40;x::Foo&#41; &#61; &quot;Just Foo&quot;
+f&#40;x::Bar&#41; &#61; &quot;Just Bar&quot;</code></pre>
+<p>and the one that stumps functional language oriented PLs without multiple dispatch is</p>
+<pre><code class="language-julia">struct Qux &lt;: Things end
+t &#61; Qux&#40;&#41;
+f&#40;t&#41;</code></pre></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<p><strong>miguelito:</strong></p>
+<p>Alright so what I&#39;m really getting here is </p>
+<ol>
+<li><p>I should really, really <a href="https://youtu.be/kc9HwsxE1OY?t&#61;1564">just go watch Stefan&#39;s talk</a>.</p>
+</li>
+<li><p>A big &quot;the Romans had a steam engine but didn&#39;t industrialize because they didn&#39;t have carbon deposits&quot; vibe from all the convergence of PL ideas and techniques.</p>
+</li>
+</ol>
+<p>There&#39;s a time and a place I guess.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<p><strong>Dispatch:</strong></p>
+<p>Yeesh. </p>
+<p>Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against &#40;and whose expertise they drew from&#33;&#41;. Julia is the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That&#39;s not a linear process, but I can&#39;t complain, we&#39;re still increasing the <code>SmileFactor</code> of all the things that feel like they should work, and do. Like <a href="https://www.youtube.com/watch?v&#61;EkgCENBFrAY">the REPL</a>.</p></div></div></div></p>
+<p>
+<div style="clear: both"></div><p>Until next time. Toodles. 👋</p>
+<hr />
+<p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
+<h2><em>Note</em>:</h2>
+<p>I created <strong>Dispatch</strong> by copy/pasting the icon from <a href="https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id&#61;1362009&amp;origin&#61;search&amp;k&#61;1618671790997">flaticon.com</a> under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the <strong>Dispatch</strong> merch to <a href="https://donate.doctorswithoutborders.org/onetime.cfm">Doctors without Borders</a>.</p>
+<p>Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Frames for her blog posts diving into these similar materials.</p>
+]]></content:encoded>
         
     <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>    
     
