@@ -5949,9 +5949,39 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 <li><p>Don&#39;t forget to use <code>RUST_FLAGS&#61; -C target-cpu&#61;native</code>.</p>
 
 </ol>
+<h3 id=032624 ><a href="#032624" class=header-anchor >03/26/24 </a></h3>
+<p>Up and at &#39;em.</p>
+<p>Trying to ramp up for an LLVM GSoC and there&#39;s 3 cool candidates.</p>
+<ol>
+<li><p>On making the <code>lit-tests</code>/unit tests UB free</p>
+
+<li><p>On finding optimization parameters and tuning them</p>
+
+<li><p>On adding the <code>&lt;&#61;&gt;</code> to C&#43;&#43;/Rust/Julia? LLVM IR for proper lowering.</p>
+
+</ol>
+<p>Project 3 sound the most paedagogical and kinda the best deal for learning about a wide path of LLVM.</p>
+<p>Things I&#39;ve done so far:</p>
+<ul>
+<li><p>Setup a clickup projects with actionable tasks.</p>
+
+<li><p>Skimmed over the project <a href="https://discourse.llvm.org/t/rfc-add-3-way-comparison-intrinsics/76685">project descriptions</a></p>
+
+<li><p>Read the excellent <a href="https://mcyoung.xyz/2023/08/01/llvm-ir/">mcyoung&#39;s Gentle Introduction to LLVM IR</a></p>
+
+<li><p>Read the mentioned <a href="https://github.com/llvm/llvm-project/commit/905abe5b5d8bfb0e7819d9215a4b52c9f3296414">PRs as prior art</a></p>
+<ul>
+<li><p>This one leaves some good room for learning the basic files to mess with.</p>
+
+</ul>
+
+</ul>
+<p>Given it&#39;s a new intrinsic, there&#39;s only new unit tests to add but also some old tests to patch up.</p>
+<p>We&#39;ll see how it goes.</p>
+<p>Tomorrow I&#39;ll start by adding the node to <code>ISDOpcodes.h</code> and friends with some ample documentation.</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; . Last modified: December 13, 2022. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; . Last modified: February 27, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
