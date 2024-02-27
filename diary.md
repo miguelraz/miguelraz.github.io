@@ -5008,7 +5008,7 @@ assert!(iter.next().is_none());
 
 ### 03/26/24 
 
-Up and at 'em.
+808. Up and at 'em.
 
 Trying to ramp up for an LLVM GSoC and there's 3 cool candidates.
 
@@ -5031,6 +5031,13 @@ Given it's a new intrinsic, there's only new unit tests to add but also some old
 We'll see how it goes.
 
 Tomorrow I'll start by adding the node to `ISDOpcodes.h` and friends with some ample documentation.
+
+I'll focus on doing 
+* something concrete first related to the project
+* then learning theory
+
+There's [LLVM tutor](https://github.com/banach-space/llvm-tutor), the [DC888 LLVM course](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/ementa/),
+[and the beginner links in the Discourse repo](https://discourse.llvm.org/t/beginner-resources-documentation/5872).
 
 
 
