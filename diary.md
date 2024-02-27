@@ -5006,4 +5006,31 @@ assert!(iter.next().is_none());
 
 807. Don't forget to use `RUST_FLAGS= -C target-cpu=native`.
 
+### 03/26/24 
+
+Up and at 'em.
+
+Trying to ramp up for an LLVM GSoC and there's 3 cool candidates.
+
+1. On making the `lit-tests`/unit tests UB free
+2. On finding optimization parameters and tuning them
+3. On adding the `<=>` to C++/Rust/Julia? LLVM IR for proper lowering.
+
+Project 3 sound the most paedagogical and kinda the best deal for learning about a wide path of LLVM.
+
+Things I've done so far:
+
+* Setup a clickup projects with actionable tasks.
+* Skimmed over the project [project descriptions](https://discourse.llvm.org/t/rfc-add-3-way-comparison-intrinsics/76685)
+* Read the excellent [mcyoung's Gentle Introduction to LLVM IR](https://mcyoung.xyz/2023/08/01/llvm-ir/)
+* Read the mentioned [PRs as prior art](https://github.com/llvm/llvm-project/commit/905abe5b5d8bfb0e7819d9215a4b52c9f3296414)
+    * This one leaves some good room for learning the basic files to mess with.
+
+Given it's a new intrinsic, there's only new unit tests to add but also some old tests to patch up.
+
+We'll see how it goes.
+
+Tomorrow I'll start by adding the node to `ISDOpcodes.h` and friends with some ample documentation.
+
+
 
