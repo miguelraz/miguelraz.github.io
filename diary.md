@@ -5006,7 +5006,7 @@ assert!(iter.next().is_none());
 
 807. Don't forget to use `RUST_FLAGS= -C target-cpu=native`.
 
-### 03/26/24 
+### 26/03/24 
 
 808. Up and at 'em.
 
@@ -5039,5 +5039,52 @@ I'll focus on doing
 There's [LLVM tutor](https://github.com/banach-space/llvm-tutor), the [DC888 LLVM course](https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/ementa/),
 [and the beginner links in the Discourse repo](https://discourse.llvm.org/t/beginner-resources-documentation/5872).
 
+
+### 27/02/2024 
+
+LLVM Notes from McYoung's "Gentle intro to LLVM IR". Damn that kid writes well.
+
+* "A block %a is said to dominate a block %b if each of its predecessors is either %a or a block dominated by %a"
+    * aka, every path from the first path of %b passes through %a
+    * aka %a guards %b
+* `<{...}>` is a packed struct == `#[repr(packed)]`
+* type aliases can be created at file scope with the syntax `%Slice = type {i64, ptr}`
+* extract values from a field with `%v = extractvalue %MyStruct %s 1, 0, 4`
+* `insertvalue` copies the struct and swaps out a field (can't mutate!)
+* there's GEP: `%q = getelementptr %MyStruct, ptr %p, i64, %idx, i32 1, i32 1`
+* Function calls look like this (args in parens) `%r = call i32 @my_func(i32 %x)`
+* function calls get heavy annotations and become noisy
+* `%v = load atomic i32, ptr %p acquire`
+* reinterpret between equivalent bitwidths with `%bits = bitcast double %fp to i64`
+* Intrinsics! `declare void @llvm.memcpy.p0.p0.i64(ptr, ptr, i64, i1)` brings it into scope.
+    * llvm intrinsics start with `llvm.` 
+* UB! 
+
+> LLVM exists to generate optimized code, and optimizations require that we declare 
+> certain machine states “impossible”, so that we can detect when we can simplify
+> what the programmer has said. This is “undefined behavior”.
+
+* `poison`: takes on every value at once - useful for blowing up other optim passes but not your own
+* using a `poison` value as a pointer in a `load`, `store`, or `call` MUST be UB [LEARN]
+* passing a `poison` into a denominator of `udiv`, `br` or `switch` is also defined to be UB [LEARN]
+* in C, signed overflow is UB
+
+> Creating poison is not UB; only using it is.
+> This is weaker than the way UB works in most languages; in C, overflow is instantly UB,
+> but in LLVM overflow that is never “witnessed” is simply ignored.
+> This is a simpler operational semantics for reasoning about the validity of optimizations:
+> UB must often be viewed as a side-effect, because the compiler will generate code 
+> that puts the program into a broken state.
+>For example, division by zero will cause a fault in many architectures.
+> This means UB-causing operations cannot always be reordered soundly.
+> Replacing “causes UB” with “produces poison” ensures the vast majority of operations are pure and freely reorderable.
+
+* All external functions need to be `declare`d.
+
+Put in 3 mini commits [in my GSoC PR](https://github.com/llvm/llvm-project/pull/83227), but got screwed by
+    - not knowing tablegen. Will learn that tomorrow.
+    - not turning off the fucking autoformatter.
+
+G'night.
 
 
