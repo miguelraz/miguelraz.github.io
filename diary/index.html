@@ -5949,7 +5949,7 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 <li><p>Don&#39;t forget to use <code>RUST_FLAGS&#61; -C target-cpu&#61;native</code>.</p>
 
 </ol>
-<h3 id=032624 ><a href="#032624" class=header-anchor >03/26/24 </a></h3>
+<h3 id=260324 ><a href="#260324" class=header-anchor >26/03/24 </a></h3>
 <ol start=808 >
 <li><p>Up and at &#39;em.</p>
 
@@ -5990,9 +5990,69 @@ assert&#33;&#40;iter.next&#40;&#41;.is_none&#40;&#41;&#41;;</code></pre>
 
 </ul>
 <p>There&#39;s <a href="https://github.com/banach-space/llvm-tutor">LLVM tutor</a>, the <a href="https://homepages.dcc.ufmg.br/~fernando/classes/dcc888/ementa/">DC888 LLVM course</a>, <a href="https://discourse.llvm.org/t/beginner-resources-documentation/5872">and the beginner links in the Discourse repo</a>.</p>
+<h3 id=27022024 ><a href="#27022024" class=header-anchor >27/02/2024 </a></h3>
+<p>LLVM Notes from McYoung&#39;s &quot;Gentle intro to LLVM IR&quot;. Damn that kid writes well.</p>
+<ul>
+<li><p>&quot;A block &#37;a is said to dominate a block &#37;b if each of its predecessors is either &#37;a or a block dominated by &#37;a&quot;</p>
+<ul>
+<li><p>aka, every path from the first path of &#37;b passes through &#37;a</p>
+
+<li><p>aka &#37;a guards &#37;b</p>
+
+</ul>
+
+<li><p><code>&lt;&#123;...&#125;&gt;</code> is a packed struct &#61;&#61; <code>#&#91;repr&#40;packed&#41;&#93;</code></p>
+
+<li><p>type aliases can be created at file scope with the syntax <code>&#37;Slice &#61; type &#123;i64, ptr&#125;</code></p>
+
+<li><p>extract values from a field with <code>&#37;v &#61; extractvalue &#37;MyStruct &#37;s 1, 0, 4</code></p>
+
+<li><p><code>insertvalue</code> copies the struct and swaps out a field &#40;can&#39;t mutate&#33;&#41;</p>
+
+<li><p>there&#39;s GEP: <code>&#37;q &#61; getelementptr &#37;MyStruct, ptr &#37;p, i64, &#37;idx, i32 1, i32 1</code></p>
+
+<li><p>Function calls look like this &#40;args in parens&#41; <code>&#37;r &#61; call i32 @my_func&#40;i32 &#37;x&#41;</code></p>
+
+<li><p>function calls get heavy annotations and become noisy</p>
+
+<li><p><code>&#37;v &#61; load atomic i32, ptr &#37;p acquire</code></p>
+
+<li><p>reinterpret between equivalent bitwidths with <code>&#37;bits &#61; bitcast double &#37;fp to i64</code></p>
+
+<li><p>Intrinsics&#33; <code>declare void @llvm.memcpy.p0.p0.i64&#40;ptr, ptr, i64, i1&#41;</code> brings it into scope.</p>
+<ul>
+<li><p>llvm intrinsics start with <code>llvm.</code> </p>
+
+</ul>
+
+<li><p>UB&#33; </p>
+
+</ul>
+<blockquote>
+<p>LLVM exists to generate optimized code, and optimizations require that we declare  certain machine states “impossible”, so that we can detect when we can simplify what the programmer has said. This is “undefined behavior”.</p>
+</blockquote>
+<ul>
+<li><p><code>poison</code>: takes on every value at once - useful for blowing up other optim passes but not your own</p>
+
+<li><p>using a <code>poison</code> value as a pointer in a <code>load</code>, <code>store</code>, or <code>call</code> MUST be UB &#91;LEARN&#93;</p>
+
+<li><p>passing a <code>poison</code> into a denominator of <code>udiv</code>, <code>br</code> or <code>switch</code> is also defined to be UB &#91;LEARN&#93;</p>
+
+<li><p>in C, signed overflow is UB</p>
+
+</ul>
+<blockquote>
+<p>Creating poison is not UB; only using it is. This is weaker than the way UB works in most languages; in C, overflow is instantly UB, but in LLVM overflow that is never “witnessed” is simply ignored. This is a simpler operational semantics for reasoning about the validity of optimizations: UB must often be viewed as a side-effect, because the compiler will generate code  that puts the program into a broken state. For example, division by zero will cause a fault in many architectures. This means UB-causing operations cannot always be reordered soundly. Replacing “causes UB” with “produces poison” ensures the vast majority of operations are pure and freely reorderable.</p>
+</blockquote>
+<ul>
+<li><p>All external functions need to be <code>declare</code>d.</p>
+
+</ul>
+<p>Put in 3 mini commits <a href="https://github.com/llvm/llvm-project/pull/83227">in my GSoC PR</a>, but got screwed by     - not knowing tablegen. Will learn that tomorrow.     - not turning off the fucking autoformatter.</p>
+<p>G&#39;night.</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; . Last modified: February 27, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; . Last modified: February 28, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
