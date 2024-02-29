@@ -5087,4 +5087,7 @@ Put in 3 mini commits [in my GSoC PR](https://github.com/llvm/llvm-project/pull/
 
 G'night.
 
+### 28/02/2024 
 
+Exhausting days but I managed to unbork the autoformatter. VERY useful to change a file and make a commit! Will keep that in mind.
+Also, read some LangRef for LLVM today and the first few videos of the DC888 course. It's tough stuff!
