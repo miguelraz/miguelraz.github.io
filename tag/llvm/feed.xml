@@ -43,9 +43,18 @@
 <li><p>I was dared by <a href="https://twitter.com/DrawsMiguel/status/1759708211286835309">the other, more talented Miguel</a> to actually help improve LLVM</p>
 </li>
 </ul>
-<h3 id="next_task">Next task</h3>
+<h3 id="task_1_add_to_langref">Task 1: Add to LangRef</h3>
 <p><a href="https://llvm.org/docs/ExtendingLLVM.html">Add a new intrinsic</a> - <code>Langref</code>, then <code>Intrinsics.td</code>, then maybe the pass verifier.</p>
 <p>I&#39;ve already put up a <a href="https://github.com/llvm/llvm-project/pull/83227">sample PR</a> and got redirected on what looks like the proper working path for this endeavour.</p>
+<p>Oh neat, I&#39;ve finished. Only took about 1 hour with careful copy pasting. I&#39;m probably blundering the return type being <code>iM</code> bits, but someone will correct me.</p>
+<p>Now, I need to add an entry of the intrinsic into TableGen.</p>
+<h3 id="task_2_add_to_intrinsicstd">Task 2: Add to Intrinsics.td</h3>
+<p>Whelp, I guess I gotta learn tablegen and then this <code>Intrinsics.td</code> file.</p>
+<p>Ok, I found <a href="https://llvm.org/docs/TableGen/index.html">a non-intimidating TableGen overview</a>.</p>
+<p>Gotta find the optimization wizardry in there after reading for a few minutes.</p>
+<p>Alright, took more than a bit of an hour but <a href="https://github.com/llvm/llvm-project/pull/83227#issuecomment-1972375003">I got pushed something for this task</a>.</p>
+<p>Pinged Nikita to get some adults to look at my horrible TableGen incantation.</p>
+<p>See ya tomorrow.</p>
 ]]></content:encoded>
         
     <pubDate>Thu, 29 Feb 2024 00:00:00 +0000</pubDate>    
