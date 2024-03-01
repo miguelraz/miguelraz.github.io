@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:media="http://search.yahoo.com/mrss/"
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:georss="http://www.georss.org/georss">
+
+      <channel>
+        <title><![CDATA[PathToPerformance]]></title>
+        <link>https://miguelraz.github.io</link>
+        <description><![CDATA[A virtual diary for progress on all fronts by Miguel Raz Guzmán Macedo]]></description>
+        <generator>Franklin.jl -- https://github.com/tlienart/Franklin.jl</generator>
+        <atom:link
+            href="https://miguelraz.github.io/feed.xml"
+            rel="self"
+            type="application/rss+xml" />
+
+
+<item>
+    <title><![CDATA[GSoC in LLVM 2024]]></title>
+    <link>https://miguelraz.github.io/blog/gsoc2024/index.html</link>
+    <guid>9</guid>
+    <description><![CDATA[GSoC in LLVM 2024]]></description>    
+    
+    <content:encoded><![CDATA[<h1 id="im_trying_to_get_a_gsoc_2024_in_llvm">I&#39;m trying to get a GSoC 2024 in LLVM</h1>
+<p>and I will be documenting my work with this ongoing blogpost in reverse chronological order.</p>
+<hr />
+<p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
+<hr />
+<h2 id="29022024">29/02/2024 </h2>
+<h3 id="hazlo_cobarde">&quot;hazlo cobarde&quot;</h3>
+<p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM. </p>
+<p>I like this GSoC in particular because</p>
+<ul>
+<li><p>I will learn a wide swath of LLVM </p>
+</li>
+<li><p>I&#39;ll be working with a lot of optimization passes</p>
+</li>
+<li><p>I&#39;ll get to bring cool perf to C&#43;&#43;/Rust and Julia</p>
+</li>
+<li><p>I was dared by <a href="https://twitter.com/DrawsMiguel/status/1759708211286835309">the other, more talented Miguel</a> to actually help improve LLVM</p>
+</li>
+</ul>
+<h3 id="next_task">Next task</h3>
+<p><a href="https://llvm.org/docs/ExtendingLLVM.html">Add a new intrinsic</a> - <code>Langref</code>, then <code>Intrinsics.td</code>, then maybe the pass verifier.</p>
+<p>I&#39;ve already put up a <a href="https://github.com/llvm/llvm-project/pull/83227">sample PR</a> and got redirected on what looks like the proper working path for this endeavour.</p>
+]]></content:encoded>
+        
+    <pubDate>Thu, 29 Feb 2024 00:00:00 +0000</pubDate>    
+    
+    
+    <atom:author>
+    <atom:name>Miguel Raz Guzmán Macedo</atom:name>
+    </atom:author>
+                
+</item>
+</channel></rss>
