@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Fri, 01 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,57 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="09022024">09/02/2024</h2>
+<h2 id="8022024">8/02/2024 </h2>
+<p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p>
+<p>Otherwise, install:</p>
+<pre><code class="language-julia">sudo apt install libzstd-dev libcurl4-openssl-dev libedit-dev</code></pre>
+<p>to get rolling.</p>
+<p>Once you do </p>
+<pre><code class="language-julia"># Run the pass
+&#36;LLVM_DIR/bin/opt -load-pass-plugin ./libHelloWorld.&#123;so|dylib&#125; -passes&#61;hello-world -disable-output input_for_hello.ll
+# Expected output
+&#40;llvm-tutor&#41; Hello from: foo
+&#40;llvm-tutor&#41;   number of arguments: 1
+&#40;llvm-tutor&#41; Hello from: bar
+&#40;llvm-tutor&#41;   number of arguments: 2
+&#40;llvm-tutor&#41; Hello from: fez
+&#40;llvm-tutor&#41;   number of arguments: 3
+&#40;llvm-tutor&#41; Hello from: main
+&#40;llvm-tutor&#41;   number of arguments: 2</code></pre>
+<p>using <code>-disable-output</code> means no bitcode gets produced.</p>
+<p>Passes come in 3 flavors, mostly: Analysis, Transformations and CFG manipulations.</p>
+<p>Note that <code>clang</code> adds the <code>optnone</code> function attribute if 1&#41; no opt level is specified or <code>-O0</code> is specified. </p>
+<p>Ah, forgot to run the <code>cmake .. -&gt; mold -run make -j</code> and had some passes missing. Derp.</p>
+<p>Minutes lost to cmake bullshit: 60.</p>
+<p>Oh sweet&#33; I just learned that I can write an injection pass that will give me a new binary and it will print out cool analysis info.</p>
+<p>Also, if I get an instrumented binary I can just use <code>lli</code> to interpret the <code>.ll</code> file directly.</p>
+<p>You can also build a static binary that will run that analysis for you&#33; </p>
+<p>Ran a bunch of passes with <code>opt</code> and friends. Transformation passes will normally inherit from <code>PassInfoMixin</code>.</p>
+<p>Analysis Passes will inherit from <code>AnalysisInfoMixin</code>.</p>
+<p>Ok, cool I an outdated example in llvm-tutor <a href="https://github.com/banach-space/llvm-tutor/pull/111">in the examples</a> and sent a PR for it.</p>
+<p>Tomorrow I shall dive into those optimization passes at the end and hopefully run some good <code>lit</code> tests.</p>
+<h2 id="7022024">7/02/2024 </h2>
+<p>Alright, did some good catchup on the semester and pushed the <a href="https://discourse.llvm.org/t/rfc-add-3-way-comparison-intrinsics/76685/7?u&#61;miguelraz">PR forward a bit</a>.</p>
+<p>I also had an awesome &quot;uniwtting tourist&quot; genius moment by pointing out the return type could be different than what Nikita had thought of.</p>
+<p>Today I setup my environment with</p>
+<pre><code class="language-julia">wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+sudo apt-add-repository &quot;deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main&quot;
+sudo apt-get update
+sudo apt-get install -y llvm-17 llvm-17-dev llvm-17-tools clang-17</code></pre>
+<p>so now I can run <code>opt</code> shenanigans without awkward path invocations.</p>
+<h2 id="2022024">2/02/2024 </h2>
+<p>I&#39;m waiting for others to chime in on my latest fix so I will be reading on how to add <a href="https://llvm.org/docs/TestingGuide.html">unit tests</a>.</p>
+<p>Cool, that took like 25 minutes and I pushed a commit into the unit test generation framework.</p>
+<p>Took me a bit but tried adding using <code>llvm-lit</code> and couldn&#39;t get the <code>Examples</code> folder to run, so I posted a question in the #beginners channel about it.</p>
+<h2 id="1022024">1/02/2024 </h2>
+<p>Sweet&#33; I was able to address Nikita&#39;s refactoring comments without too much hassle.</p>
+<p>I guess the next task is to add it to the Verifier.</p>
+<p>-&gt; I read the <code>llvm/lib/IR/Verifier.cpp</code> header and grep&#39;d for <code>smin</code>. Seems I can add a </p>
+<pre><code class="language-julia">Intrinsics::vector_reduce_sthreecmp:
+Intrinsics::vector_reduce_uthreecmp:</code></pre>
+<p>on line 5378 and get away with this. I don&#39;t see other places where it&#39;s defined.</p>
+<p>I think I&#39;ve hit my potential here. I will go do some tutorials.</p>
 <h2 id="29022024">29/02/2024 </h2>
 <h3 id="hazlo_cobarde">&quot;hazlo cobarde&quot;</h3>
 <p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM. </p>

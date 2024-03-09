@@ -1,1 +1,149 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>GSoC in LLVM 2024</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=im_trying_to_get_a_gsoc_2024_in_llvm ><a href="#im_trying_to_get_a_gsoc_2024_in_llvm" class=header-anchor >I&#39;m trying to get a GSoC 2024 in LLVM</a></h1> <p>and I will be documenting my work with this ongoing blogpost in reverse chronological order.</p> <hr /> <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p> <hr /> <h2 id=29022024 ><a href="#29022024" class=header-anchor >29/02/2024 </a></h2> <h3 id=hazlo_cobarde ><a href="#hazlo_cobarde" class=header-anchor >&quot;hazlo cobarde&quot;</a></h3> <p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM. </p> <p>I like this GSoC in particular because</p> <ul> <li><p>I will learn a wide swath of LLVM </p> <li><p>I&#39;ll be working with a lot of optimization passes</p> <li><p>I&#39;ll get to bring cool perf to C&#43;&#43;/Rust and Julia</p> <li><p>I was dared by <a href="https://twitter.com/DrawsMiguel/status/1759708211286835309">the other, more talented Miguel</a> to actually help improve LLVM</p> </ul> <h3 id=task_1_add_to_langref ><a href="#task_1_add_to_langref" class=header-anchor >Task 1: Add to LangRef</a></h3> <p><a href="https://llvm.org/docs/ExtendingLLVM.html">Add a new intrinsic</a> - <code>Langref</code>, then <code>Intrinsics.td</code>, then maybe the pass verifier.</p> <p>I&#39;ve already put up a <a href="https://github.com/llvm/llvm-project/pull/83227">sample PR</a> and got redirected on what looks like the proper working path for this endeavour.</p> <p>Oh neat, I&#39;ve finished. Only took about 1 hour with careful copy pasting. I&#39;m probably blundering the return type being <code>iM</code> bits, but someone will correct me.</p> <p>Now, I need to add an entry of the intrinsic into TableGen.</p> <h3 id=task_2_add_to_intrinsicstd ><a href="#task_2_add_to_intrinsicstd" class=header-anchor >Task 2: Add to Intrinsics.td</a></h3> <p>Whelp, I guess I gotta learn tablegen and then this <code>Intrinsics.td</code> file.</p> <p>Ok, I found <a href="https://llvm.org/docs/TableGen/index.html">a non-intimidating TableGen overview</a>.</p> <p>Gotta find the optimization wizardry in there after reading for a few minutes.</p> <p>Alright, took more than a bit of an hour but <a href="https://github.com/llvm/llvm-project/pull/83227#issuecomment-1972375003">I got pushed something for this task</a>.</p> <p>Pinged Nikita to get some adults to look at my horrible TableGen incantation.</p> <p>See ya tomorrow.</p> <div class=page-foot > <div class=copyright > &copy; Miguel Raz Guzmán Macedo. Last modified: March 01, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script> </div> </div> </div>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>GSoC in LLVM 2024</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=im_trying_to_get_a_gsoc_2024_in_llvm ><a href="#im_trying_to_get_a_gsoc_2024_in_llvm" class=header-anchor >I&#39;m trying to get a GSoC 2024 in LLVM</a></h1> <p>and I will be documenting my work with this ongoing blogpost in reverse chronological order.</p> <hr /> <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p> <hr /> <h2 id=09022024 ><a href="#09022024" class=header-anchor >09/02/2024</a></h2> <h2 id=8022024 ><a href="#8022024" class=header-anchor >8/02/2024 </a></h2> <p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p> <p>Otherwise, install:</p> <pre><code class="julia hljs">sudo apt install libzstd-dev libcurl4-openssl-dev libedit-dev</code></pre>
+<p>to get rolling.</p>
+<p>Once you do </p>
+<pre><code class="julia hljs"><span class=hljs-comment ># Run the pass</span>
+$LLVM_DIR/bin/opt -load-pass-plugin ./libHelloWorld.{so|dylib} -passes=hello-world -disable-output input_for_hello.ll
+<span class=hljs-comment ># Expected output</span>
+(llvm-tutor) Hello from: foo
+(llvm-tutor)   number of arguments: <span class=hljs-number >1</span>
+(llvm-tutor) Hello from: bar
+(llvm-tutor)   number of arguments: <span class=hljs-number >2</span>
+(llvm-tutor) Hello from: fez
+(llvm-tutor)   number of arguments: <span class=hljs-number >3</span>
+(llvm-tutor) Hello from: main
+(llvm-tutor)   number of arguments: <span class=hljs-number >2</span></code></pre>
+<p>using <code>-disable-output</code> means no bitcode gets produced.</p>
+<p>Passes come in 3 flavors, mostly: Analysis, Transformations and CFG manipulations.</p>
+<p>Note that <code>clang</code> adds the <code>optnone</code> function attribute if 1&#41; no opt level is specified or <code>-O0</code> is specified. </p>
+<p>Ah, forgot to run the <code>cmake .. -&gt; mold -run make -j</code> and had some passes missing. Derp.</p>
+<p>Minutes lost to cmake bullshit: 60.</p>
+<p>Oh sweet&#33; I just learned that I can write an injection pass that will give me a new binary and it will print out cool analysis info.</p>
+<p>Also, if I get an instrumented binary I can just use <code>lli</code> to interpret the <code>.ll</code> file directly.</p>
+<p>You can also build a static binary that will run that analysis for you&#33; </p>
+<p>Ran a bunch of passes with <code>opt</code> and friends. Transformation passes will normally inherit from <code>PassInfoMixin</code>.</p>
+<p>Analysis Passes will inherit from <code>AnalysisInfoMixin</code>.</p>
+<p>Ok, cool I an outdated example in llvm-tutor <a href="https://github.com/banach-space/llvm-tutor/pull/111">in the examples</a> and sent a PR for it.</p>
+<p>Tomorrow I shall dive into those optimization passes at the end and hopefully run some good <code>lit</code> tests.</p>
+<h2 id=7022024 ><a href="#7022024" class=header-anchor >7/02/2024 </a></h2>
+<p>Alright, did some good catchup on the semester and pushed the <a href="https://discourse.llvm.org/t/rfc-add-3-way-comparison-intrinsics/76685/7?u&#61;miguelraz">PR forward a bit</a>.</p>
+<p>I also had an awesome &quot;uniwtting tourist&quot; genius moment by pointing out the return type could be different than what Nikita had thought of.</p>
+<p>Today I setup my environment with</p>
+<pre><code class="julia hljs">wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+sudo apt-add-repository <span class=hljs-string >&quot;deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main&quot;</span>
+sudo apt-get update
+sudo apt-get install -y llvm-<span class=hljs-number >17</span> llvm-<span class=hljs-number >17</span>-dev llvm-<span class=hljs-number >17</span>-tools clang-<span class=hljs-number >17</span></code></pre>
+<p>so now I can run <code>opt</code> shenanigans without awkward path invocations.</p>
+<h2 id=2022024 ><a href="#2022024" class=header-anchor >2/02/2024 </a></h2>
+<p>I&#39;m waiting for others to chime in on my latest fix so I will be reading on how to add <a href="https://llvm.org/docs/TestingGuide.html">unit tests</a>.</p>
+<p>Cool, that took like 25 minutes and I pushed a commit into the unit test generation framework.</p>
+<p>Took me a bit but tried adding using <code>llvm-lit</code> and couldn&#39;t get the <code>Examples</code> folder to run, so I posted a question in the #beginners channel about it.</p>
+<h2 id=1022024 ><a href="#1022024" class=header-anchor >1/02/2024 </a></h2>
+<p>Sweet&#33; I was able to address Nikita&#39;s refactoring comments without too much hassle.</p>
+<p>I guess the next task is to add it to the Verifier.</p>
+<p>-&gt; I read the <code>llvm/lib/IR/Verifier.cpp</code> header and grep&#39;d for <code>smin</code>. Seems I can add a </p>
+<pre><code class="julia hljs">Intrinsics::vector_reduce_sthreecmp:
+Intrinsics::vector_reduce_uthreecmp:</code></pre>
+<p>on line 5378 and get away with this. I don&#39;t see other places where it&#39;s defined.</p>
+<p>I think I&#39;ve hit my potential here. I will go do some tutorials.</p>
+<h2 id=29022024 ><a href="#29022024" class=header-anchor >29/02/2024 </a></h2>
+<h3 id=hazlo_cobarde ><a href="#hazlo_cobarde" class=header-anchor >&quot;hazlo cobarde&quot;</a></h3>
+<p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM. </p>
+<p>I like this GSoC in particular because</p>
+<ul>
+<li><p>I will learn a wide swath of LLVM </p>
+
+<li><p>I&#39;ll be working with a lot of optimization passes</p>
+
+<li><p>I&#39;ll get to bring cool perf to C&#43;&#43;/Rust and Julia</p>
+
+<li><p>I was dared by <a href="https://twitter.com/DrawsMiguel/status/1759708211286835309">the other, more talented Miguel</a> to actually help improve LLVM</p>
+
+</ul>
+<h3 id=task_1_add_to_langref ><a href="#task_1_add_to_langref" class=header-anchor >Task 1: Add to LangRef</a></h3>
+<p><a href="https://llvm.org/docs/ExtendingLLVM.html">Add a new intrinsic</a> - <code>Langref</code>, then <code>Intrinsics.td</code>, then maybe the pass verifier.</p>
+<p>I&#39;ve already put up a <a href="https://github.com/llvm/llvm-project/pull/83227">sample PR</a> and got redirected on what looks like the proper working path for this endeavour.</p>
+<p>Oh neat, I&#39;ve finished. Only took about 1 hour with careful copy pasting. I&#39;m probably blundering the return type being <code>iM</code> bits, but someone will correct me.</p>
+<p>Now, I need to add an entry of the intrinsic into TableGen.</p>
+<h3 id=task_2_add_to_intrinsicstd ><a href="#task_2_add_to_intrinsicstd" class=header-anchor >Task 2: Add to Intrinsics.td</a></h3>
+<p>Whelp, I guess I gotta learn tablegen and then this <code>Intrinsics.td</code> file.</p>
+<p>Ok, I found <a href="https://llvm.org/docs/TableGen/index.html">a non-intimidating TableGen overview</a>.</p>
+<p>Gotta find the optimization wizardry in there after reading for a few minutes.</p>
+<p>Alright, took more than a bit of an hour but <a href="https://github.com/llvm/llvm-project/pull/83227#issuecomment-1972375003">I got pushed something for this task</a>.</p>
+<p>Pinged Nikita to get some adults to look at my horrible TableGen incantation.</p>
+<p>See ya tomorrow.</p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Miguel Raz Guzmán Macedo. Last modified: March 09, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+ <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
+  </div>
+</div>
+</div>
+    
+    
+        
+
+
+	
+
+<script>
+(function(){
+
+	// Get the elements.
+	// - the 'pre' element.
+	// - the 'div' with the 'paste-content' id.
+
+	var pre = document.getElementsByTagName('pre');
+
+	// Add a copy button in the 'pre' element.
+	// which only has the className of 'language-'.
+
+	for (var i = 0; i < pre.length; i++) {
+		var isLanguage = pre[i].children[0].className.indexOf('language-');
+
+		if ( isLanguage === 0 ) {
+			var button           = document.createElement('button');
+					button.className = 'copy-button';
+					button.textContent = 'Copy';
+
+					pre[i].appendChild(button);
+		}
+	};
+
+	// Run Clipboard
+
+	var copyCode = new Clipboard('.copy-button', {
+		target: function(trigger) {
+			return trigger.previousElementSibling;
+    }
+	});
+
+	// On success:
+	// - Change the "Copy" text to "Copied".
+	// - Swap it to "Copy" in 2s.
+	// - Lead user to the "contenteditable" area with Velocity scroll.
+
+	copyCode.on('success', function(event) {
+		event.clearSelection();
+		event.trigger.textContent = 'Copied';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 2000);
+
+	});
+
+	// On error (Safari):
+	// - Change the  "Press Ctrl+C to copy"
+	// - Swap it to "Copy" in 2s.
+
+	copyCode.on('error', function(event) {
+		event.trigger.textContent = 'Press "Ctrl + C" to copy';
+		window.setTimeout(function() {
+			event.trigger.textContent = 'Copy';
+		}, 5000);
+	});
+
+})();
+</script>
+
+
+ <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
