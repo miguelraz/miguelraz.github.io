@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -267,6 +267,42 @@ nums ← •BQN¨ lines</code></pre>
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
 <h2 id="09022024">09/02/2024</h2>
+<p>Lost the renaming battle to standard practices. Can&#39;t complain. Updated the PR to reflect that.</p>
+<p>Now, reading the <a href="https://github.com/llvm/llvm-project/blob/release/17.x/llvm/lib/Transforms/Scalar/DCE.cpp">DCE</a> pass code.</p>
+<p>Ok, Andrzej Warzyński did <a href="https://www.youtube.com/watch?v&#61;ar7cJl2aBuU">an incredibly useful tutorial</a> for <code>llvm-tutor</code>.</p>
+<p>I&#39;ll try writing the Transformation pass, since it&#39;s closes to what I need.</p>
+<p>Notes:     * <code>LLVM_DEBUG</code> is super useful. </p>
+<pre><code class="language-julia">#include &quot;llvm/ADT/Statistic.h&quot;
+#include &quot;llvm/Support/Debug.h&quot;#define DEBUG_TYPE &quot;mba-add&quot;
+STATISIC&#40;SubstCount, &quot;The # of substituted instructions&quot;</code></pre>
+<p>and then you can do:</p>
+<pre><code class="language-julia">LLVM_DEBUG&#40;dbgs&#40;&#41; &lt;&lt; *BinOp &lt;&lt; &quot; -&gt; &quot; &lt;&lt; *NewInst &lt;&lt; &quot;\n&quot;;
+    // or , with Statistic and &#96;-stat&#96; on the &#96;opt&#96; CLI and debug build
+    &#43;&#43;SubstCount;</code></pre>
+<ul>
+<li><p>Analysis inherits from <code>AnalysisInfoMixin</code></p>
+</li>
+<li><p>Very common pattern:</p>
+</li>
+</ul>
+<pre><code class="language-julia">for &#40;auto &amp;Func : M&#41; &#123;
+    for &#40;auto &amp;BB : Func&#41; &#123;
+        for &#40;auto &amp;Ins : BB&#41; &#123;
+            ...</code></pre>
+<ul>
+<li><p>You call <code>PreservedAnalysis.abandon&#40;&#41;</code> when you wanna bail on a logic.</p>
+</li>
+<li><p><code>FileCheck</code> is a pattern matching tool that comes with LLVM. Can check emitted assembly output for test correctness.</p>
+</li>
+<li><p>Rely on CMake&#39;s <code>find_package</code> and add sanity-checks to your scripts&#33;</p>
+</li>
+<li><p>LLDB is your friend </p>
+</li>
+</ul>
+<pre><code class="language-julia">lldb -- &#36;LLVM_DIR/bin/opt -load-pass-plugin lib/libMyPass.so -passes&#61;my-pass -S dummy.ll
+&#40;lldb&#41; b MyPass::run 
+&#40;lldb&#41; r</code></pre>
+<p>Finally: started a branch called <code>scmp-and-ucmp</code> and I&#39;ll start trying out changes there whilst people make up their minds.</p>
 <h2 id="8022024">8/02/2024 </h2>
 <p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p>
 <p>Otherwise, install:</p>
