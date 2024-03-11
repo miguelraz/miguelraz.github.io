@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,44 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="10022024">10/02/2024 </h2>
+<p>Plan for today: Read the IR Verifier, add code to it if needed, then work on adding to SDAG node.</p>
+<p>IR Verifier code: It&#39;s under <code>llvm/IR/Verifier.h</code> and <code>llvm/IR/Verifier.cpp</code>.</p>
+<p>Ok, read the code for a bit. What I&#39;m interested in in <code>Verifier.cpp</code> is the huge switch statement towards the end of the file where the verification of intrinsics happens.</p>
+<p>Oh neat, learned a lot of places that probably need modification via searching <code>case Intrinsic::</code> in the llvm folder.</p>
+<p>Neat&#33; <code>VectorUtils.cpp</code> looks like where we add SIMD :D</p>
+<p>There is also a <code>SelectionDAGBuilder.cpp</code> that seems like I should update stuff there.</p>
+<p>Ah, seems the SDAG needs the ID node to be added to the ISDOpcodes first, like <code>ISD::SCMP</code> and such.</p>
+<p><a href="https://llvm.org/docs/LangRef.html#intrinsic-functions">Intrinsic Function</a>: start with <code>llvm.</code> prefix. Must always be external functions. If any are added, must be documented in LangRef. Have naming convention on type name return.</p>
+<p>In <code>TargetLowering.h</code>:</p>
+<pre><code class="language-julia">/// This class defines information used to lower LLVM code to legal SelectionDAG
+/// operators that the target instruction selector can accept natively.
+///
+/// This class also defines callbacks that targets must implement to lower
+/// target-specific constructs to SelectionDAG operators.
+class TargetLowering : public TargetLoweringBase &#123;</code></pre>
+<p>Updated the PR to not include a dirty file from the <code>ValueTracking.cpp</code> unit tests.</p>
+<p>Sweet, rebased the <code>spaceship-intrinsic</code> branch changes into a new one.</p>
+<p>Now I can go for </p>
+<pre><code class="language-julia">lib/CodeGen/SelectionDAG/SelectionDAG.cpp:Add code to print the node to getOperationName. If your new node can be
+evaluated at compile time when given constant arguments &#40;such as an add of a constant with another constant&#41;, find the getNode method that takes the appropriate number of arguments, and add a case for your node to the switch statement that performs constant folding for nodes that take the same number of arguments as your new node.</code></pre>
+<p>Which gives on Line 6629 of <code>SelectionDAG.cpp</code></p>
+<pre><code class="language-julia">SDValue SelectionDAG::getNode&#40;unsigned Opcode, const SDLoc &amp;DL, EVT VT,
+                              SDValue N1, SDValue N2, const SDNodeFlags Flags&#41; &#123;</code></pre>
+<p>where I can add an <code>case ISD::UCMP</code>/<code>case ISD::SCMP</code>. </p>
+<p>Oh wow, having VSCode let me just hover over a type and give me info is amazing.</p>
+<p>Alright, did some good work today I think.</p>
+<hr />
+<p>Got some feedback on typo fixes from other people and some concrete directions from Nikita:</p>
+<pre><code class="language-julia">def int_scmp : DefaultAttrsIntrinsic&lt;
+    &#91;llvm_anyint_ty&#93;, &#91;llvm_anyint_ty, LLVMMatchType&lt;1&gt;&#93;,
+    &#91;IntrNoMem, IntrSpeculatable, IntrWillReturn&#93;&gt;;</code></pre>
+<p>for the <code>Intrinsics.td</code> so that we can have a &quot;result type overload over a fixed type&quot; and then </p>
+<blockquote>
+<p>and then add a check in Verifier.cpp that a&#41; the return type and the first argument type have the same number of elements &#40;if they are vectors&#41; and b&#41; the return scalar type has width at least 2.</p>
+</blockquote>
+<p>So I&#39;ve pushed a commit already to have the <code>Intrinsics.td</code> that way and I will now add a case to the <code>Verifier.cpp</code> in the <code>void Verifier::visitIntrinsicCall&#40;Intrinsic::ID ID, CallBase &amp;Call&#41; &#123;</code> to add </p>
+<p>&#40;Many hours later&#41; Put in a good first effort into the <code>Verifier.cpp</code> cases for <code>Intrinsic::scmp/ucmp</code>. It&#39;s probably a bit boneheaded but I&#39;ve been getting really good and fast feedback on the PRs, so I feel encouraged to keep the hot streak going.</p>
 <h2 id="09022024">09/02/2024</h2>
 <p>Lost the renaming battle to standard practices. Can&#39;t complain. Updated the PR to reflect that.</p>
 <p>Now, reading the <a href="https://github.com/llvm/llvm-project/blob/release/17.x/llvm/lib/Transforms/Scalar/DCE.cpp">DCE</a> pass code.</p>
