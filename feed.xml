@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,13 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="11022024">11/02/2024 </h2>
+<p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR.  Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the  invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p>
+<p><a href="https://llvm.org/docs/CommandGuide/FileCheck.html">FileCheck</a> reading I&#39;ll do for a bit.</p>
+<p>Note: If you are going to check multiple things in a single file, use a <code>CHECK-LABEL</code> to avoid spurious matches.</p>
+<p>Sometimes, a <code>CHECK-NEXT</code> is useful as the last unit test. </p>
+<p>Learned the LLVMIR verbose call syntax goes &#40;gotta include types in call site&#41;.</p>
+<p>That should do it for today, see y&#39;all tomorrow.</p>
 <h2 id="10022024">10/02/2024 </h2>
 <p>Plan for today: Read the IR Verifier, add code to it if needed, then work on adding to SDAG node.</p>
 <p>IR Verifier code: It&#39;s under <code>llvm/IR/Verifier.h</code> and <code>llvm/IR/Verifier.cpp</code>.</p>
