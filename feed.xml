@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,43 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="13022024">13/02/2024 </h2>
+<p>OK, I just saw that both Nikita Popov and Dhruv Chawla are listed as mentors for the project. Should try and reach out before the application period begins.</p>
+<p>Nikita commented that there&#39;s two good places to look into &#40;which I should do meanwhile&#41;:</p>
+<ul>
+<li><p>The <a href="https://llvm.org/docs/CodeGenerator.html#instruction-selection-section">Selection DAG part of the manual</a></p>
+</li>
+<li><p>The good first issues on the github tracker, which probably are good to look into.</p>
+</li>
+</ul>
+<h3 id="notes_on_the_selectiondag">Notes on the SelectionDAG </h3>
+<ul>
+<li><p>GlobalISel and SelectionDAG both translated LLVM code to target specific machine instructions.</p>
+</li>
+<li><p>In theory Intrinsics.td should handle it all but some parts need custo C&#43;&#43; code.</p>
+</li>
+<li><p>SDAGs represent Machine Value Types and DataFlow types. Dataflow types provide ordering.</p>
+</li>
+<li><p>Legal vs illegal DAG: only use supported ops on supported types </p>
+</li>
+<li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling</p>
+<ul>
+<li><p>common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p>
+</li>
+<li><p>several flags can print SDAG after each pass </p>
+</li>
+</ul>
+</li>
+<li><p>OK, effective sign extension elimination seems to be highly non-trivial optimizations</p>
+</li>
+<li><p>Oohhhh TableGen representing stuff as a DAG lets you build the SelectionDAG on top of it&#33;</p>
+</li>
+</ul>
+<p>After a few hours of noodling with PR reviews, it&#39;s clear I gotta jump on a next one/help PR review some other people. Maybe it&#39;s not great to go full mercenary on every <code>good-first-issue</code> and try and help others along the way.</p>
+<p><code>ParticleSwarmOptimization</code> was kind enough in the <code>LLVM/beginners</code> Discord chat to point out that I should have a full build of LLVM and then run <code>llvm-lit</code> from there on a unit test. Sure enough, that let me do <code>gh pr checkout 84903</code> and then <code>LIT llvm/test/CodeGen/AArch64/hadd-combine.ll</code> to check that a unit test properly ran. Now I can help verify my own and other people&#39;s PRs&#33; yay&#33;</p>
+<p>That seems like enough for today, I&#39;ll hunt for some good issues tomorrow.</p>
+<h2 id="12022024">12/02/2024 </h2>
+<p>Did a bunch of very quick fixes and got some neat feedback.</p>
 <h2 id="11022024">11/02/2024 </h2>
 <p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR.  Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the  invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p>
 <p><a href="https://llvm.org/docs/CommandGuide/FileCheck.html">FileCheck</a> reading I&#39;ll do for a bit.</p>
