@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Thu, 14 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Sat, 16 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,85 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="16022024">16/02/2024 </h2>
+<p>Start: read LLVM Programmer&#39;s Manual, then start with some local changes to the SelectionDAG.</p>
+<h2 id="15022024">15/02/2024</h2>
+<p>Derp, I kept getting &quot;undefined intrinsics&quot; errors when running FileCheck like </p>
+<pre><code class="language-julia">&gt; ../../../build/bin/opt -S -passes&#61;verify 2&gt;&amp;1 intrinsic-cmp.ll | FileCheck intrinsic-cmp.ll</code></pre>
+<p>... because I had to rebuild LLVM and have the new <code>opt</code> pick it up. Once that happened, even the new <code>llvm-lit</code> passed :D</p>
+<p>I also had to remove the <code>CHECK-LABEL</code>, still not sure why. Lemme read that for a bit.</p>
+<p>Also, I should update <code>mold</code> - it failed with an unknown <code>--long-plt</code> option.</p>
+<p>Here&#39;s my LLVM build instruction: </p>
+<pre><code class="language-julia">&gt; cmake -S . -B build -G Ninja -DLLVM_TARGETS_TO_BUILD&#61;X86 -DBUILD_SHARED_LIBS&#61;ON -DCMAKE_BUILD_TYPE&#61;Debug -DLLVM_OPTIMIZED_TABLEGEN&#61;ON -DLLVM_USE_NEWPM&#61;ON -DLLVM_USE_SPLIT_DWARF&#61;ON -DLLVM_PARALLEL_LINKER_JOBS&#61;10 -DLLVM_PARALLEL_COMPILE_JOBS&#61;10
+&gt; mold -run ninja -C .</code></pre>
+<p>Windows builders take freakin&#39; forever to run.</p>
+<ul>
+<li><p>Coding Standards </p>
+<ul>
+<li><p>prefer <code>llvm::DenseMap</code> over <code>std::unordered_map</code> and similar. No std IO plz.</p>
+</li>
+<li><p>comments - write what does is trying to do and why, not <em>how</em></p>
+</li>
+<li><p>spaces not tabs</p>
+</li>
+<li><p>prefer C&#43;&#43; style casts like <code>auto DestVecLen &#61; cast&lt;VectorType&gt;&#40;DestTy&#41;-&gt;getElementCount&#40;&#41;;</code> for getting the Vector length</p>
+</li>
+<li><p>beware <code>auto</code> copies:</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-julia">// Typically there&#39;s no reason to copy.
+for &#40;const auto &amp;Val : Container&#41; observe&#40;Val&#41;;
+for &#40;auto &amp;Val : Container&#41; Val.change&#40;&#41;;// Remove the reference if you really want a new copy.
+for &#40;auto Val : Container&#41; &#123; Val.change&#40;&#41;; saveSomewhere&#40;Val&#41;; &#125;// Copy pointers, but make it clear that they&#39;re pointers.
+for &#40;const auto *Ptr : Container&#41; observe&#40;*Ptr&#41;;
+for &#40;auto *Ptr : Container&#41; Ptr-&gt;change&#40;&#41;;</code></pre>
+<p>* use early returns, specially in loops:</p>
+<pre><code class="language-julia">// not this 
+for &#40;Instruction &amp;I : BB&#41; &#123;
+  if &#40;auto *BO &#61; dyn_cast&lt;BinaryOperator&gt;&#40;&amp;I&#41;&#41; &#123;
+    Value *LHS &#61; BO-&gt;getOperand&#40;0&#41;;
+    Value *RHS &#61; BO-&gt;getOperand&#40;1&#41;;
+    if &#40;LHS &#33;&#61; RHS&#41; &#123;
+      ...
+    &#125;
+  &#125;
+&#125;
+// prefer this 
+for &#40;Instruction &amp;I : BB&#41; &#123;
+  auto *BO &#61; dyn_cast&lt;BinaryOperator&gt;&#40;&amp;I&#41;;
+  if &#40;&#33;BO&#41; continue;  Value *LHS &#61; BO-&gt;getOperand&#40;0&#41;;
+  Value *RHS &#61; BO-&gt;getOperand&#40;1&#41;;
+  if &#40;LHS &#61;&#61; RHS&#41; continue;  ...
+&#125;</code></pre>
+<p>* other good tips for no *else* after a *return* 
+* turn predicate loops into functions 
+* assert liberally&#33; you may find other people&#39;s bugs&#33; <code>assert&#40;Ty-&gt;isPointerType&#40;&#41; &amp;&amp; &quot;Can&#39;t allocate a non-pointer type&#33;&quot;&#41;;</code>
+* consider <code>llvm::unreachable&#40;&quot;invalid radix for integer literal&quot;&#41;</code>
+* never <code>using namespace std</code>
+* don&#39;t evaluate <code>end&#40;&#41;</code> every time through a loop&#33;</p>
+<pre><code class="language-julia">// not this
+BasicBlock *BB &#61; ...
+for &#40;auto I &#61; BB-&gt;begin&#40;&#41;; I &#33;&#61; BB-&gt;end&#40;&#41;; &#43;&#43;I&#41;
+  ... use I ...// prefer this 
+BasicBlock *BB &#61; ...
+for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#33;&#61; E; &#43;&#43;I&#41;
+  ... use I ...</code></pre>
+<p>* lol <code>#include &lt;iostream&gt;</code> is forbidden, as well as <code>std::endl</code>
+* prefer preincrement &#40;&#43;&#43;x&#41;
+* anonymous namespaces allow more aggressive optimizations&#33; make them small and only use them for class declarations
+* omit braces on short if&#39;s -_-
+* read &quot;Effective C&#43;&#43;&quot; by Scott Meyers or &quot;Large Scale C&#43;&#43; Software Design&quot; by John Lakos. later.</p>
+<p>BIG ALERT&#33; We&#39;re passing all tests and Nikita says &quot;LGTM&#33;&quot; Huzzahhh&#33;</p>
+<p>I finished reading the Coding Standards and will now read the LLVM Programmer&#39;s Manual.</p>
+<p>Afternoon: only 1 reviewer missing approval&#33;</p>
+<h2 id="14022024">14/02/2024 </h2>
+<p>It&#39;s close to finishingggggggggg</p>
+<p>Nikita mentioned the <a href="https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly">CodingStandars</a>, I&#39;ll give that a read in a bit.</p>
+<p>In <code>FileCheck</code> unit tests, it&#39;s just 2 spaces, not tabs or 4 spaces.</p>
+<p>Dhruv recommends using <code>git clang-format</code> or <code>Format Modified Lines</code> in VSCode.</p>
+<p>I only have to make <code>FileCheck</code> pass now and Nikita says it should be good&#33;</p>
 <h2 id="13022024">13/02/2024 </h2>
 <p>OK, I just saw that both Nikita Popov and Dhruv Chawla are listed as mentors for the project. Should try and reach out before the application period begins.</p>
 <p>Nikita commented that there&#39;s two good places to look into &#40;which I should do meanwhile&#41;:</p>
@@ -285,10 +364,8 @@ nums ← •BQN¨ lines</code></pre>
 </li>
 <li><p>Legal vs illegal DAG: only use supported ops on supported types </p>
 </li>
-<li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling</p>
+<li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling       * common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p>
 <ul>
-<li><p>common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p>
-</li>
 <li><p>several flags can print SDAG after each pass </p>
 </li>
 </ul>

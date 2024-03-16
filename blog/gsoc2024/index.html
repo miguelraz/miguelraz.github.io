@@ -1,26 +1,213 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>GSoC in LLVM 2024</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=im_trying_to_get_a_gsoc_2024_in_llvm ><a href="#im_trying_to_get_a_gsoc_2024_in_llvm" class=header-anchor >I&#39;m trying to get a GSoC 2024 in LLVM</a></h1> <p>and I will be documenting my work with this ongoing blogpost in reverse chronological order.</p> <hr /> <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p> <hr /> <h2 id=13022024 ><a href="#13022024" class=header-anchor >13/02/2024 </a></h2> <p>OK, I just saw that both Nikita Popov and Dhruv Chawla are listed as mentors for the project. Should try and reach out before the application period begins.</p> <p>Nikita commented that there&#39;s two good places to look into &#40;which I should do meanwhile&#41;:</p> <ul> <li><p>The <a href="https://llvm.org/docs/CodeGenerator.html#instruction-selection-section">Selection DAG part of the manual</a></p> <li><p>The good first issues on the github tracker, which probably are good to look into.</p> </ul> <h3 id=notes_on_the_selectiondag ><a href="#notes_on_the_selectiondag" class=header-anchor >Notes on the SelectionDAG </a></h3> <ul> <li><p>GlobalISel and SelectionDAG both translated LLVM code to target specific machine instructions.</p> <li><p>In theory Intrinsics.td should handle it all but some parts need custo C&#43;&#43; code.</p> <li><p>SDAGs represent Machine Value Types and DataFlow types. Dataflow types provide ordering.</p> <li><p>Legal vs illegal DAG: only use supported ops on supported types </p> <li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling</p> <ul> <li><p>common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p> <li><p>several flags can print SDAG after each pass </p> </ul> <li><p>OK, effective sign extension elimination seems to be highly non-trivial optimizations</p> <li><p>Oohhhh TableGen representing stuff as a DAG lets you build the SelectionDAG on top of it&#33;</p> </ul> <p>After a few hours of noodling with PR reviews, it&#39;s clear I gotta jump on a next one/help PR review some other people. Maybe it&#39;s not great to go full mercenary on every <code>good-first-issue</code> and try and help others along the way.</p> <p><code>ParticleSwarmOptimization</code> was kind enough in the <code>LLVM/beginners</code> Discord chat to point out that I should have a full build of LLVM and then run <code>llvm-lit</code> from there on a unit test. Sure enough, that let me do <code>gh pr checkout 84903</code> and then <code>LIT llvm/test/CodeGen/AArch64/hadd-combine.ll</code> to check that a unit test properly ran. Now I can help verify my own and other people&#39;s PRs&#33; yay&#33;</p> <p>That seems like enough for today, I&#39;ll hunt for some good issues tomorrow.</p> <h2 id=12022024 ><a href="#12022024" class=header-anchor >12/02/2024 </a></h2> <p>Did a bunch of very quick fixes and got some neat feedback.</p> <h2 id=11022024 ><a href="#11022024" class=header-anchor >11/02/2024 </a></h2> <p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR. Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p> <p><a href="https://llvm.org/docs/CommandGuide/FileCheck.html">FileCheck</a> reading I&#39;ll do for a bit.</p> <p>Note: If you are going to check multiple things in a single file, use a <code>CHECK-LABEL</code> to avoid spurious matches.</p> <p>Sometimes, a <code>CHECK-NEXT</code> is useful as the last unit test. </p> <p>Learned the LLVMIR verbose call syntax goes &#40;gotta include types in call site&#41;.</p> <p>That should do it for today, see y&#39;all tomorrow.</p> <h2 id=10022024 ><a href="#10022024" class=header-anchor >10/02/2024 </a></h2> <p>Plan for today: Read the IR Verifier, add code to it if needed, then work on adding to SDAG node.</p> <p>IR Verifier code: It&#39;s under <code>llvm/IR/Verifier.h</code> and <code>llvm/IR/Verifier.cpp</code>.</p> <p>Ok, read the code for a bit. What I&#39;m interested in in <code>Verifier.cpp</code> is the huge switch statement towards the end of the file where the verification of intrinsics happens.</p> <p>Oh neat, learned a lot of places that probably need modification via searching <code>case Intrinsic::</code> in the llvm folder.</p> <p>Neat&#33; <code>VectorUtils.cpp</code> looks like where we add SIMD :D</p> <p>There is also a <code>SelectionDAGBuilder.cpp</code> that seems like I should update stuff there.</p> <p>Ah, seems the SDAG needs the ID node to be added to the ISDOpcodes first, like <code>ISD::SCMP</code> and such.</p> <p><a href="https://llvm.org/docs/LangRef.html#intrinsic-functions">Intrinsic Function</a>: start with <code>llvm.</code> prefix. Must always be external functions. If any are added, must be documented in LangRef. Have naming convention on type name return.</p> <p>In <code>TargetLowering.h</code>:</p> <pre><code class="julia hljs">/// This class defines information used to lower LLVM code to legal SelectionDAG
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>GSoC in LLVM 2024</title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><h1 id=im_trying_to_get_a_gsoc_2024_in_llvm ><a href="#im_trying_to_get_a_gsoc_2024_in_llvm" class=header-anchor >I&#39;m trying to get a GSoC 2024 in LLVM</a></h1> <p>and I will be documenting my work with this ongoing blogpost in reverse chronological order.</p> <hr /> <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p> <hr /> <h2 id=16022024 ><a href="#16022024" class=header-anchor >16/02/2024 </a></h2> <p>Start: read LLVM Programmer&#39;s Manual, then start with some local changes to the SelectionDAG.</p> <h2 id=15022024 ><a href="#15022024" class=header-anchor >15/02/2024</a></h2> <p>Derp, I kept getting &quot;undefined intrinsics&quot; errors when running FileCheck like </p> <pre><code class="julia hljs">&gt; ../../../build/bin/opt -S -passes=verify <span class=hljs-number >2</span>&gt;&amp;<span class=hljs-number >1</span> intrinsic-cmp.ll | FileCheck intrinsic-cmp.ll</code></pre>
+<p>... because I had to rebuild LLVM and have the new <code>opt</code> pick it up. Once that happened, even the new <code>llvm-lit</code> passed :D</p>
+<p>I also had to remove the <code>CHECK-LABEL</code>, still not sure why. Lemme read that for a bit.</p>
+<p>Also, I should update <code>mold</code> - it failed with an unknown <code>--long-plt</code> option.</p>
+<p>Here&#39;s my LLVM build instruction: </p>
+<pre><code class="julia hljs">&gt; cmake -S . -B build -G Ninja -DLLVM_TARGETS_TO_BUILD=X86 -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Debug -DLLVM_OPTIMIZED_TABLEGEN=ON -DLLVM_USE_NEWPM=ON -DLLVM_USE_SPLIT_DWARF=ON -DLLVM_PARALLEL_LINKER_JOBS=<span class=hljs-number >10</span> -DLLVM_PARALLEL_COMPILE_JOBS=<span class=hljs-number >10</span>
+&gt; mold -run ninja -C .</code></pre>
+<p>Windows builders take freakin&#39; forever to run.</p>
+<ul>
+<li><p>Coding Standards </p>
+<ul>
+<li><p>prefer <code>llvm::DenseMap</code> over <code>std::unordered_map</code> and similar. No std IO plz.</p>
+
+<li><p>comments - write what does is trying to do and why, not <em>how</em></p>
+
+<li><p>spaces not tabs</p>
+
+<li><p>prefer C&#43;&#43; style casts like <code>auto DestVecLen &#61; cast&lt;VectorType&gt;&#40;DestTy&#41;-&gt;getElementCount&#40;&#41;;</code> for getting the Vector length</p>
+
+<li><p>beware <code>auto</code> copies:</p>
+
+</ul>
+
+</ul>
+<pre><code class="julia hljs">// Typically there&#x27;s no reason to copy.
+<span class=hljs-keyword >for</span> (<span class=hljs-keyword >const</span> auto &amp;<span class=hljs-built_in >Val</span> : Container) observe(<span class=hljs-built_in >Val</span>);
+<span class=hljs-keyword >for</span> (auto &amp;<span class=hljs-built_in >Val</span> : Container) <span class=hljs-built_in >Val</span>.change();
+
+// Remove the reference <span class=hljs-keyword >if</span> you really want a new copy.
+<span class=hljs-keyword >for</span> (auto <span class=hljs-built_in >Val</span> : Container) { <span class=hljs-built_in >Val</span>.change(); saveSomewhere(<span class=hljs-built_in >Val</span>); }
+
+// Copy pointers, but make it clear that they&#x27;re pointers.
+<span class=hljs-keyword >for</span> (<span class=hljs-keyword >const</span> auto *<span class=hljs-built_in >Ptr</span> : Container) observe(*<span class=hljs-built_in >Ptr</span>);
+<span class=hljs-keyword >for</span> (auto *<span class=hljs-built_in >Ptr</span> : Container) <span class=hljs-built_in >Ptr</span>-&gt;change();</code></pre>
+<p>* use early returns, specially in loops:</p>
+<pre><code class="julia hljs">// not this 
+<span class=hljs-keyword >for</span> (Instruction &amp;I : BB) {
+  <span class=hljs-keyword >if</span> (auto *BO = dyn_cast&lt;BinaryOperator&gt;(&amp;I)) {
+    Value *LHS = BO-&gt;getOperand(<span class=hljs-number >0</span>);
+    Value *RHS = BO-&gt;getOperand(<span class=hljs-number >1</span>);
+    <span class=hljs-keyword >if</span> (LHS != RHS) {
+      ...
+    }
+  }
+}
+// prefer this 
+<span class=hljs-keyword >for</span> (Instruction &amp;I : BB) {
+  auto *BO = dyn_cast&lt;BinaryOperator&gt;(&amp;I);
+  <span class=hljs-keyword >if</span> (!BO) <span class=hljs-keyword >continue</span>;
+
+  Value *LHS = BO-&gt;getOperand(<span class=hljs-number >0</span>);
+  Value *RHS = BO-&gt;getOperand(<span class=hljs-number >1</span>);
+  <span class=hljs-keyword >if</span> (LHS == RHS) <span class=hljs-keyword >continue</span>;
+
+  ...
+}</code></pre>
+<p>* other good tips for no *else* after a *return* 
+* turn predicate loops into functions 
+* assert liberally&#33; you may find other people&#39;s bugs&#33; <code>assert&#40;Ty-&gt;isPointerType&#40;&#41; &amp;&amp; &quot;Can&#39;t allocate a non-pointer type&#33;&quot;&#41;;</code>
+* consider <code>llvm::unreachable&#40;&quot;invalid radix for integer literal&quot;&#41;</code>
+* never <code>using namespace std</code>
+* don&#39;t evaluate <code>end&#40;&#41;</code> every time through a loop&#33;</p>
+<pre><code class="julia hljs">// not this
+BasicBlock *BB = ...
+<span class=hljs-keyword >for</span> (auto I = BB-&gt;<span class=hljs-keyword >begin</span>(); I != BB-&gt;<span class=hljs-keyword >end</span>(); ++I)
+  ... use I ...
+
+// prefer this 
+BasicBlock *BB = ...
+<span class=hljs-keyword >for</span> (auto I = BB-&gt;<span class=hljs-keyword >begin</span>(), E = BB-&gt;<span class=hljs-keyword >end</span>(); I != E; ++I)
+  ... use I ...</code></pre>
+<p>* lol <code>#include &lt;iostream&gt;</code> is forbidden, as well as <code>std::endl</code>
+* prefer preincrement &#40;&#43;&#43;x&#41;
+* anonymous namespaces allow more aggressive optimizations&#33; make them small and only use them for class declarations
+* omit braces on short if&#39;s -_-
+* read &quot;Effective C&#43;&#43;&quot; by Scott Meyers or &quot;Large Scale C&#43;&#43; Software Design&quot; by John Lakos. later.</p>
+<p>BIG ALERT&#33; We&#39;re passing all tests and Nikita says &quot;LGTM&#33;&quot; Huzzahhh&#33;</p>
+<p>I finished reading the Coding Standards and will now read the LLVM Programmer&#39;s Manual.</p>
+<p>Afternoon: only 1 reviewer missing approval&#33;</p>
+<h2 id=14022024 ><a href="#14022024" class=header-anchor >14/02/2024 </a></h2>
+<p>It&#39;s close to finishingggggggggg</p>
+<p>Nikita mentioned the <a href="https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly">CodingStandars</a>, I&#39;ll give that a read in a bit.</p>
+<p>In <code>FileCheck</code> unit tests, it&#39;s just 2 spaces, not tabs or 4 spaces.</p>
+<p>Dhruv recommends using <code>git clang-format</code> or <code>Format Modified Lines</code> in VSCode.</p>
+<p>I only have to make <code>FileCheck</code> pass now and Nikita says it should be good&#33;</p>
+<h2 id=13022024 ><a href="#13022024" class=header-anchor >13/02/2024 </a></h2>
+<p>OK, I just saw that both Nikita Popov and Dhruv Chawla are listed as mentors for the project. Should try and reach out before the application period begins.</p>
+<p>Nikita commented that there&#39;s two good places to look into &#40;which I should do meanwhile&#41;:</p>
+<ul>
+<li><p>The <a href="https://llvm.org/docs/CodeGenerator.html#instruction-selection-section">Selection DAG part of the manual</a></p>
+
+<li><p>The good first issues on the github tracker, which probably are good to look into.</p>
+
+</ul>
+<h3 id=notes_on_the_selectiondag ><a href="#notes_on_the_selectiondag" class=header-anchor >Notes on the SelectionDAG </a></h3>
+<ul>
+<li><p>GlobalISel and SelectionDAG both translated LLVM code to target specific machine instructions.</p>
+
+<li><p>In theory Intrinsics.td should handle it all but some parts need custo C&#43;&#43; code.</p>
+
+<li><p>SDAGs represent Machine Value Types and DataFlow types. Dataflow types provide ordering.</p>
+
+<li><p>Legal vs illegal DAG: only use supported ops on supported types </p>
+
+<li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling       * common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p>
+<ul>
+<li><p>several flags can print SDAG after each pass </p>
+
+</ul>
+
+<li><p>OK, effective sign extension elimination seems to be highly non-trivial optimizations</p>
+
+<li><p>Oohhhh TableGen representing stuff as a DAG lets you build the SelectionDAG on top of it&#33;</p>
+
+</ul>
+<p>After a few hours of noodling with PR reviews, it&#39;s clear I gotta jump on a next one/help PR review some other people. Maybe it&#39;s not great to go full mercenary on every <code>good-first-issue</code> and try and help others along the way.</p>
+<p><code>ParticleSwarmOptimization</code> was kind enough in the <code>LLVM/beginners</code> Discord chat to point out that I should have a full build of LLVM and then run <code>llvm-lit</code> from there on a unit test. Sure enough, that let me do <code>gh pr checkout 84903</code> and then <code>LIT llvm/test/CodeGen/AArch64/hadd-combine.ll</code> to check that a unit test properly ran. Now I can help verify my own and other people&#39;s PRs&#33; yay&#33;</p>
+<p>That seems like enough for today, I&#39;ll hunt for some good issues tomorrow.</p>
+<h2 id=12022024 ><a href="#12022024" class=header-anchor >12/02/2024 </a></h2>
+<p>Did a bunch of very quick fixes and got some neat feedback.</p>
+<h2 id=11022024 ><a href="#11022024" class=header-anchor >11/02/2024 </a></h2>
+<p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR.  Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the  invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p>
+<p><a href="https://llvm.org/docs/CommandGuide/FileCheck.html">FileCheck</a> reading I&#39;ll do for a bit.</p>
+<p>Note: If you are going to check multiple things in a single file, use a <code>CHECK-LABEL</code> to avoid spurious matches.</p>
+<p>Sometimes, a <code>CHECK-NEXT</code> is useful as the last unit test. </p>
+<p>Learned the LLVMIR verbose call syntax goes &#40;gotta include types in call site&#41;.</p>
+<p>That should do it for today, see y&#39;all tomorrow.</p>
+<h2 id=10022024 ><a href="#10022024" class=header-anchor >10/02/2024 </a></h2>
+<p>Plan for today: Read the IR Verifier, add code to it if needed, then work on adding to SDAG node.</p>
+<p>IR Verifier code: It&#39;s under <code>llvm/IR/Verifier.h</code> and <code>llvm/IR/Verifier.cpp</code>.</p>
+<p>Ok, read the code for a bit. What I&#39;m interested in in <code>Verifier.cpp</code> is the huge switch statement towards the end of the file where the verification of intrinsics happens.</p>
+<p>Oh neat, learned a lot of places that probably need modification via searching <code>case Intrinsic::</code> in the llvm folder.</p>
+<p>Neat&#33; <code>VectorUtils.cpp</code> looks like where we add SIMD :D</p>
+<p>There is also a <code>SelectionDAGBuilder.cpp</code> that seems like I should update stuff there.</p>
+<p>Ah, seems the SDAG needs the ID node to be added to the ISDOpcodes first, like <code>ISD::SCMP</code> and such.</p>
+<p><a href="https://llvm.org/docs/LangRef.html#intrinsic-functions">Intrinsic Function</a>: start with <code>llvm.</code> prefix. Must always be external functions. If any are added, must be documented in LangRef. Have naming convention on type name return.</p>
+<p>In <code>TargetLowering.h</code>:</p>
+<pre><code class="julia hljs">/// This class defines information used to lower LLVM code to legal SelectionDAG
 /// operators that the target instruction selector can accept natively.
 ///
 /// This class also defines callbacks that targets must implement to lower
 /// target-specific constructs to SelectionDAG operators.
-class TargetLowering : public TargetLoweringBase {</code></pre> <p>Updated the PR to not include a dirty file from the <code>ValueTracking.cpp</code> unit tests.</p> <p>Sweet, rebased the <code>spaceship-intrinsic</code> branch changes into a new one.</p> <p>Now I can go for </p> <pre><code class="julia hljs">lib/CodeGen/SelectionDAG/SelectionDAG.cpp:
+class TargetLowering : public TargetLoweringBase {</code></pre>
+<p>Updated the PR to not include a dirty file from the <code>ValueTracking.cpp</code> unit tests.</p>
+<p>Sweet, rebased the <code>spaceship-intrinsic</code> branch changes into a new one.</p>
+<p>Now I can go for </p>
+<pre><code class="julia hljs">lib/CodeGen/SelectionDAG/SelectionDAG.cpp:
 
 Add code to print the node to getOperationName. If your new node can be
-evaluated at compile time when given constant arguments (such as an add of a constant with another constant), find the getNode method that takes the appropriate number of arguments, and add a case <span class=hljs-keyword >for</span> your node to the switch statement that performs constant folding <span class=hljs-keyword >for</span> nodes that take the same number of arguments as your new node.</code></pre> <p>Which gives on Line 6629 of <code>SelectionDAG.cpp</code></p> <pre><code class="julia hljs">SDValue SelectionDAG::getNode(unsigned Opcode, <span class=hljs-keyword >const</span> SDLoc &amp;DL, EVT VT,
-                              SDValue N1, SDValue N2, <span class=hljs-keyword >const</span> SDNodeFlags Flags) {</code></pre> <p>where I can add an <code>case ISD::UCMP</code>/<code>case ISD::SCMP</code>. </p> <p>Oh wow, having VSCode let me just hover over a type and give me info is amazing.</p> <p>Alright, did some good work today I think.</p> <hr /> <p>Got some feedback on typo fixes from other people and some concrete directions from Nikita:</p> <pre><code class="julia hljs">def int_scmp : DefaultAttrsIntrinsic&lt;
+evaluated at compile time when given constant arguments (such as an add of a constant with another constant), find the getNode method that takes the appropriate number of arguments, and add a case <span class=hljs-keyword >for</span> your node to the switch statement that performs constant folding <span class=hljs-keyword >for</span> nodes that take the same number of arguments as your new node.</code></pre>
+<p>Which gives on Line 6629 of <code>SelectionDAG.cpp</code></p>
+<pre><code class="julia hljs">SDValue SelectionDAG::getNode(unsigned Opcode, <span class=hljs-keyword >const</span> SDLoc &amp;DL, EVT VT,
+                              SDValue N1, SDValue N2, <span class=hljs-keyword >const</span> SDNodeFlags Flags) {</code></pre>
+<p>where I can add an <code>case ISD::UCMP</code>/<code>case ISD::SCMP</code>. </p>
+<p>Oh wow, having VSCode let me just hover over a type and give me info is amazing.</p>
+<p>Alright, did some good work today I think.</p>
+<hr />
+<p>Got some feedback on typo fixes from other people and some concrete directions from Nikita:</p>
+<pre><code class="julia hljs">def int_scmp : DefaultAttrsIntrinsic&lt;
     [llvm_anyint_ty], [llvm_anyint_ty, LLVMMatchType&lt;<span class=hljs-number >1</span>&gt;],
-    [IntrNoMem, IntrSpeculatable, IntrWillReturn]&gt;;</code></pre> <p>for the <code>Intrinsics.td</code> so that we can have a &quot;result type overload over a fixed type&quot; and then </p> <blockquote> <p>and then add a check in Verifier.cpp that a&#41; the return type and the first argument type have the same number of elements &#40;if they are vectors&#41; and b&#41; the return scalar type has width at least 2.</p> </blockquote> <p>So I&#39;ve pushed a commit already to have the <code>Intrinsics.td</code> that way and I will now add a case to the <code>Verifier.cpp</code> in the <code>void Verifier::visitIntrinsicCall&#40;Intrinsic::ID ID, CallBase &amp;Call&#41; &#123;</code> to add </p> <p>&#40;Many hours later&#41; Put in a good first effort into the <code>Verifier.cpp</code> cases for <code>Intrinsic::scmp/ucmp</code>. It&#39;s probably a bit boneheaded but I&#39;ve been getting really good and fast feedback on the PRs, so I feel encouraged to keep the hot streak going.</p> <h2 id=09022024 ><a href="#09022024" class=header-anchor >09/02/2024</a></h2> <p>Lost the renaming battle to standard practices. Can&#39;t complain. Updated the PR to reflect that.</p> <p>Now, reading the <a href="https://github.com/llvm/llvm-project/blob/release/17.x/llvm/lib/Transforms/Scalar/DCE.cpp">DCE</a> pass code.</p> <p>Ok, Andrzej Warzyński did <a href="https://www.youtube.com/watch?v&#61;ar7cJl2aBuU">an incredibly useful tutorial</a> for <code>llvm-tutor</code>.</p> <p>I&#39;ll try writing the Transformation pass, since it&#39;s closes to what I need.</p> <p>Notes: * <code>LLVM_DEBUG</code> is super useful. </p> <pre><code class="julia hljs"><span class=hljs-comment >#include &quot;llvm/ADT/Statistic.h&quot;</span>
+    [IntrNoMem, IntrSpeculatable, IntrWillReturn]&gt;;</code></pre>
+<p>for the <code>Intrinsics.td</code> so that we can have a &quot;result type overload over a fixed type&quot; and then </p>
+<blockquote>
+<p>and then add a check in Verifier.cpp that a&#41; the return type and the first argument type have the same number of elements &#40;if they are vectors&#41; and b&#41; the return scalar type has width at least 2.</p>
+</blockquote>
+<p>So I&#39;ve pushed a commit already to have the <code>Intrinsics.td</code> that way and I will now add a case to the <code>Verifier.cpp</code> in the <code>void Verifier::visitIntrinsicCall&#40;Intrinsic::ID ID, CallBase &amp;Call&#41; &#123;</code> to add </p>
+<p>&#40;Many hours later&#41; Put in a good first effort into the <code>Verifier.cpp</code> cases for <code>Intrinsic::scmp/ucmp</code>. It&#39;s probably a bit boneheaded but I&#39;ve been getting really good and fast feedback on the PRs, so I feel encouraged to keep the hot streak going.</p>
+<h2 id=09022024 ><a href="#09022024" class=header-anchor >09/02/2024</a></h2>
+<p>Lost the renaming battle to standard practices. Can&#39;t complain. Updated the PR to reflect that.</p>
+<p>Now, reading the <a href="https://github.com/llvm/llvm-project/blob/release/17.x/llvm/lib/Transforms/Scalar/DCE.cpp">DCE</a> pass code.</p>
+<p>Ok, Andrzej Warzyński did <a href="https://www.youtube.com/watch?v&#61;ar7cJl2aBuU">an incredibly useful tutorial</a> for <code>llvm-tutor</code>.</p>
+<p>I&#39;ll try writing the Transformation pass, since it&#39;s closes to what I need.</p>
+<p>Notes:     * <code>LLVM_DEBUG</code> is super useful. </p>
+<pre><code class="julia hljs"><span class=hljs-comment >#include &quot;llvm/ADT/Statistic.h&quot;</span>
 <span class=hljs-comment >#include &quot;llvm/Support/Debug.h&quot;</span>
 
 <span class=hljs-comment >#define DEBUG_TYPE &quot;mba-add&quot;</span>
-STATISIC(SubstCount, <span class=hljs-string >&quot;The # of substituted instructions&quot;</span></code></pre> <p>and then you can do:</p> <pre><code class="julia hljs">LLVM_DEBUG(dbgs() &lt;&lt; *BinOp &lt;&lt; <span class=hljs-string >&quot; -&gt; &quot;</span> &lt;&lt; *NewInst &lt;&lt; <span class=hljs-string >&quot;\n&quot;</span>;
+STATISIC(SubstCount, <span class=hljs-string >&quot;The # of substituted instructions&quot;</span></code></pre>
+<p>and then you can do:</p>
+<pre><code class="julia hljs">LLVM_DEBUG(dbgs() &lt;&lt; *BinOp &lt;&lt; <span class=hljs-string >&quot; -&gt; &quot;</span> &lt;&lt; *NewInst &lt;&lt; <span class=hljs-string >&quot;\n&quot;</span>;
     // or , with Statistic and <span class=hljs-string >`-stat`</span> on the <span class=hljs-string >`opt`</span> CLI and debug build
-    ++SubstCount;</code></pre> <ul> <li><p>Analysis inherits from <code>AnalysisInfoMixin</code></p> <li><p>Very common pattern:</p> </ul> <pre><code class="julia hljs"><span class=hljs-keyword >for</span> (auto &amp;Func : M) {
+    ++SubstCount;</code></pre>
+<ul>
+<li><p>Analysis inherits from <code>AnalysisInfoMixin</code></p>
+
+<li><p>Very common pattern:</p>
+
+</ul>
+<pre><code class="julia hljs"><span class=hljs-keyword >for</span> (auto &amp;Func : M) {
     <span class=hljs-keyword >for</span> (auto &amp;BB : Func) {
         <span class=hljs-keyword >for</span> (auto &amp;Ins : BB) {
-            ...</code></pre> <ul> <li><p>You call <code>PreservedAnalysis.abandon&#40;&#41;</code> when you wanna bail on a logic.</p> <li><p><code>FileCheck</code> is a pattern matching tool that comes with LLVM. Can check emitted assembly output for test correctness.</p> <li><p>Rely on CMake&#39;s <code>find_package</code> and add sanity-checks to your scripts&#33;</p> <li><p>LLDB is your friend </p> </ul> <pre><code class="julia hljs">lldb -- $LLVM_DIR/bin/opt -load-pass-plugin lib/libMyPass.so -passes=my-pass -S dummy.ll
+            ...</code></pre>
+<ul>
+<li><p>You call <code>PreservedAnalysis.abandon&#40;&#41;</code> when you wanna bail on a logic.</p>
+
+<li><p><code>FileCheck</code> is a pattern matching tool that comes with LLVM. Can check emitted assembly output for test correctness.</p>
+
+<li><p>Rely on CMake&#39;s <code>find_package</code> and add sanity-checks to your scripts&#33;</p>
+
+<li><p>LLDB is your friend </p>
+
+</ul>
+<pre><code class="julia hljs">lldb -- $LLVM_DIR/bin/opt -load-pass-plugin lib/libMyPass.so -passes=my-pass -S dummy.ll
 (lldb) b MyPass::run 
-(lldb) r</code></pre> <p>Finally: started a branch called <code>scmp-and-ucmp</code> and I&#39;ll start trying out changes there whilst people make up their minds.</p> <h2 id=8022024 ><a href="#8022024" class=header-anchor >8/02/2024 </a></h2> <p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p> <p>Otherwise, install:</p> <pre><code class="julia hljs">sudo apt install libzstd-dev libcurl4-openssl-dev libedit-dev</code></pre>
+(lldb) r</code></pre>
+<p>Finally: started a branch called <code>scmp-and-ucmp</code> and I&#39;ll start trying out changes there whilst people make up their minds.</p>
+<h2 id=8022024 ><a href="#8022024" class=header-anchor >8/02/2024 </a></h2>
+<p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p>
+<p>Otherwise, install:</p>
+<pre><code class="julia hljs">sudo apt install libzstd-dev libcurl4-openssl-dev libedit-dev</code></pre>
 <p>to get rolling.</p>
 <p>Once you do </p>
 <pre><code class="julia hljs"><span class=hljs-comment ># Run the pass</span>
@@ -95,7 +282,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <p>See ya tomorrow.</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Miguel Raz Guzmán Macedo. Last modified: March 14, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+    &copy; Miguel Raz Guzmán Macedo. Last modified: March 16, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
   </div>
 </div>
