@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Sat, 16 Mar 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -266,6 +266,46 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
+<h2 id="17022024">17/02/2024 </h2>
+<p>Actually just rested yesterday. &#39;Twas good. Today I&#39;ll do some  light reading.</p>
+<ul>
+<li><p><code>isa&lt;&gt;, cast&lt;&gt;, dyn_cast&lt;&gt;</code> templates</p>
+<ul>
+<li><p><code>isa&lt;&gt;</code> returns <code>true/false</code> if it&#39;s an instance of the specified class </p>
+</li>
+<li><p><code>cast&lt;&gt;</code> is a &quot;checked cast&quot;</p>
+</li>
+<li><p><code>dyn_cast&lt;&gt;</code> usually used in <code>if &#40;auto *AI &#61; dyn_cast&lt;AllocationInst&gt;&#40;Val&#41;&#41; &#123;</code></p>
+</li>
+</ul>
+</li>
+<li><p><code>STringRef</code> and <code>Twine</code> - <code>Value</code> class and <code>StringMap</code> must be generic over null chars, can&#39;t take a <code>const char*</code></p>
+</li>
+<li><p>Error handling: abort early, use <code>assert&#40;cond &amp;&amp; &quot;you done goofed&quot;&#41;;</code></p>
+</li>
+</ul>
+<pre><code class="language-julia">enum &#123; Foo, Bar, Baz &#125; X &#61; foo&#40;&#41;;switch &#40;X&#41; &#123;
+  case Foo: /* Handle Foo */; break;
+  case Bar: /* Handle Bar */; break;
+  default:
+    llvm_unreachable&#40;&quot;X should be Foo or Bar here&quot;&#41;;
+&#125;</code></pre>
+<ul>
+<li><p>use LLVM_DEBUG and <a href="https://llvm.org/docs/ProgrammersManual.html#fine-grained-debug-info-with-debug-type-and-the-debug-only-option">friends</a></p>
+</li>
+</ul>
+<pre><code class="language-julia">LLVM_DEBUG&#40;dbgs&#40;&#41; &lt;&lt; &quot;I am here&#33;\n&quot;&#41;;</code></pre>
+<p>and then </p>
+<pre><code class="language-julia">&#36; opt &lt; a.bc &gt; /dev/null -mypass
+&lt;no output&gt;
+&#36; opt &lt; a.bc &gt; /dev/null -mypass -debug
+I am here&#33;</code></pre>
+<ul>
+<li><p>Use the <a href="https://llvm.org/docs/ProgrammersManual.html#the-statistic-class-stats-option">Statistic</a> class&#33;</p>
+</li>
+<li><p>stopped at picking the right data structure.</p>
+</li>
+</ul>
 <h2 id="16022024">16/02/2024 </h2>
 <p>Start: read LLVM Programmer&#39;s Manual, then start with some local changes to the SelectionDAG.</p>
 <h2 id="15022024">15/02/2024</h2>
