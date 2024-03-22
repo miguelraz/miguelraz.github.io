@@ -321,6 +321,31 @@ julia> threetuple isa NTuple{3,Number}
 true
 ```
 
+### Aliasing is hard 
+
+Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive Python footgun:
+
+```
+julia> a = [[]]
+1-element Vector{Vector{Any}}:
+ []
+
+julia> push!(a, a[1])
+2-element Vector{Vector{Any}}:
+ []
+ []
+
+julia> push!(a[1], "seriously?")
+1-element Vector{Any}:
+ "seriously?"
+
+julia> a
+2-element Vector{Vector{Any}}:
+ ["seriously?"]
+ ["seriously?"]
+ ```
+
+
 
 -----
 
