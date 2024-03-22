@@ -323,7 +323,7 @@ true
 
 ### Aliasing is hard 
 
-Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive to [Python](https://twitter.com/francoisfleuret/status/1770528106513600636) footgun:
+Both [Agus](https://x.com/austinc3301/status/1770987021378387993?s=20)Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive to [Python](https://twitter.com/francoisfleuret/status/1770528106513600636) footgun:
 
 ```
 julia> a = [[]]
@@ -344,6 +344,27 @@ julia> a
  ["seriously?"]
  ["seriously?"]
  ```
+
+ where Agus' sinister variant also holds:
+ ```
+julia> a = fill([], 4)
+4-element Vector{Vector{Any}}:
+ []
+ []
+ []
+ []
+
+julia> push!(a[1], "seriously")
+1-element Vector{Any}:
+ "seriously"
+
+julia> a
+4-element Vector{Vector{Any}}:
+ ["seriously"]
+ ["seriously"]
+ ["seriously"]
+ ["seriously"]
+```
 
 
 
