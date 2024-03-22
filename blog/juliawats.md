@@ -323,7 +323,7 @@ true
 
 ### Aliasing is hard 
 
-Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive Python footgun:
+Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive to [Python](https://twitter.com/francoisfleuret/status/1770528106513600636) footgun:
 
 ```
 julia> a = [[]]
