@@ -266,7 +266,9 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <hr />
-<h1 id="22022024">22/02/2024 </h1>
+<h2 id="23022024">23/02/2024</h2>
+<p>Only added stubs for where <code>ISD::&#91;US&#93;CMP</code> will go in the <code>LegalizerDAG.cpp</code>. Some code is better than no code&#33;</p>
+<h2 id="22022024">22/02/2024 </h2>
 <p>Back from exams. I let my mentors know I wouldn&#39;t be around for a few and would come back later.</p>
 <p>Omg Nori taught me how to use vim marks &#40;even within VSCode&#41;. <code>ma</code> will set a mark <code>a</code> and <code>&#39;a</code> lets you jump back to it. If you set an uppercase one, it&#39;s GLOBAL and you can jump between files&#33;</p>
 <h2 id="19022024">19/02/2024</h2>
