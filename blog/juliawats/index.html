@@ -1,102 +1,102 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>🚧 WIP 🚧 A most refined collection of Julia WATs </title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><blockquote> <p>This talk is inspired by the classic <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a> talk by Gary Bernhardt, applied to Julia.</p> </blockquote> <p>Huge thanks to Mason Protter, many of the inital specimens are his.</p> <p>Why collect a huge array of scary footguns? <a href="https://viralinstruction.com/posts/badjulia/">Others have ranted</a> before on all the things that <a href="https://www.youtube.com/watch?v&#61;TPuJsgyu87U&amp;t&#61;28s">are bad about Julia</a>, profusely&#33; Enthusiastically&#33; I think there&#39;s good value in knowing precisely why <a href="https://www.hillelwayne.com/hate-your-tools/">you should hate your tools</a>. I&#39;m clearly in the &quot;Julia will take over the world camp&quot;, and that effusiveness can work great for some projects, but it&#39;s good to understand the limitations of the tools we use. There&#39;s well known effective ways to come across in a reasoned manner when pitching Julia for a particular use case, but being able to specify <em>many</em> of these limitations and the pain points they inflict will generally show that you&#39;re willing to take criticism in a healthy manner.</p> <p>As always, if you want to support me writing more of these Julia horror stories, please consider <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub</a>.</p> <h3 id=empty_collections_and_truthiness ><a href="#empty_collections_and_truthiness" class=header-anchor >Empty collections and truthiness</a></h3> <code>TODO</code> <ul> <li><p>and, or on empty collections</p> </ul> <h3 id=broadcasting_is_hard ><a href="#broadcasting_is_hard" class=header-anchor >Broadcasting is hard</a></h3> <ul> <li><p>broadcasting shenanigans: &#40;Credit to Mosè Giordano&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > all([] .== [<span class=hljs-number >42</span>])
-</span>true
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <!--<link rel=stylesheet  href="/libs/highlight/github.min.css"> --> <link rel=stylesheet  href="/libs/highlight/styles/atom-one-dark.css"> <script src="libs/clipboard.min.js"></script> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico" type="image/x-icon"> <title>🚧 WIP 🚧 A most refined collection of Julia WATs </title> <header> <div class=blog-name ><a href="">PathToPerformance</a></div> <nav> <ul> <li><a href="/">Welcome! 👋🏾</a> <li><a href="/diary/">Diary📒</a> <li><a href="/blog/">Blog💭</a> <li><a href="/pubs/">Publications 📓 /Talks🗣️ /Videos🎥 </a> <li><a href="/teaching/">Teaching🎓/Translations🗺️</a> <li><a href="/about/">CV💃</a> <script src="/libs/clipboard.js"></script> </ul> <img src="/assets/hamburger.svg" id=menu-icon > </nav> </header> <div class=franklin-content ><blockquote> <p>This talk is inspired by the classic <a href="https://www.destroyallsoftware.com/talks/wat">Wat</a> talk by Gary Bernhardt, applied to Julia.</p> </blockquote> <p>Huge thanks to Mason Protter, many of the inital specimens are his.</p> <p>Why collect a huge array of scary footguns? <a href="https://viralinstruction.com/posts/badjulia/">Others have ranted</a> before on all the things that <a href="https://www.youtube.com/watch?v&#61;TPuJsgyu87U&amp;t&#61;28s">are bad about Julia</a>, profusely&#33; Enthusiastically&#33; I think there&#39;s good value in knowing precisely why <a href="https://www.hillelwayne.com/hate-your-tools/">you should hate your tools</a>. I&#39;m clearly in the &quot;Julia will take over the world camp&quot;, and that effusiveness can work great for some projects, but it&#39;s good to understand the limitations of the tools we use. There&#39;s well known effective ways to come across in a reasoned manner when pitching Julia for a particular use case, but being able to specify <em>many</em> of these limitations and the pain points they inflict will generally show that you&#39;re willing to take criticism in a healthy manner.</p> <p>As always, if you want to support me writing more of these Julia horror stories, please consider <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub</a>.</p> <h3 id=empty_collections_and_truthiness ><a href="#empty_collections_and_truthiness" class=header-anchor >Empty collections and truthiness</a></h3> <code>TODO</code> <ul> <li><p>and, or on empty collections</p> </ul> <h3 id=broadcasting_is_hard ><a href="#broadcasting_is_hard" class=header-anchor >Broadcasting is hard</a></h3> <ul> <li><p>broadcasting shenanigans: &#40;Credit to Mosè Giordano&#41;</p> </ul> <pre><code class=language-julia-repl >julia&gt; all&#40;&#91;&#93; .&#61;&#61; &#91;42&#93;&#41;
+true
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > all([] .≈ [<span class=hljs-number >42</span>])
-</span>true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code>: &#40;Credit to Michael Abbott&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-meta >@testset</span> <span class=hljs-keyword >begin</span>
-         x = rand()
-         <span class=hljs-meta >@testset</span> <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>
-           y = rand()
-           <span class=hljs-meta >@test</span> x == y
-         <span class=hljs-keyword >end</span>
-       <span class=hljs-keyword >end</span>;
-</span>Test Summary: | Pass  Total  Time
-test set      |   10     10  0.0s</code></pre> <h3 id=parsing_is_hard ><a href="#parsing_is_hard" class=header-anchor >Parsing is hard</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > -<span class=hljs-number >5</span>:<span class=hljs-number >5</span> .+ <span class=hljs-number >.5</span>
-</span>-5.0:1.0:5.0
+julia&gt; all&#40;&#91;&#93; .≈ &#91;42&#93;&#41;
+true</code></pre> <h3 id=rng ><a href="#rng" class=header-anchor >RNG</a></h3> <ul> <li><p>RNG seed set by <code>@testset</code>: &#40;Credit to Michael Abbott&#41;</p> </ul> <pre><code class=language-julia-repl >julia&gt; @testset begin
+         x &#61; rand&#40;&#41;
+         @testset for i in 1:10
+           y &#61; rand&#40;&#41;
+           @test x &#61;&#61; y
+         end
+       end;
+Test Summary: | Pass  Total  Time
+test set      |   10     10  0.0s</code></pre> <h3 id=parsing_is_hard ><a href="#parsing_is_hard" class=header-anchor >Parsing is hard</a></h3> <ul> <li><p>Operator precedene with ranges: &#40;Credit to Oscar Smith&#41;</p> </ul> <pre><code class=language-julia-repl >julia&gt; -5:5 .&#43; .5
+-5.0:1.0:5.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (-<span class=hljs-number >5</span>:<span class=hljs-number >5</span>) .+ <span class=hljs-number >.5</span>
-</span>-4.5:1.0:5.5</code></pre> <ul> <li><p>Another few examples from <a href="https://bkamins.github.io/julialang/2022/03/04/wat.html">Bogumił Kamiński&#39;s Blog &quot;Confused by Julia&quot;</a> &#40;which I will include for the completeness of this list, but leave you to visit his blog for the explainers&#41;</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :a =&gt; x -&gt; x =&gt; :b
-</span>:a =&gt; var&quot;#1#2&quot;()</code></pre> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span> == <span class=hljs-number >3</span> &amp; <span class=hljs-number >1</span> == <span class=hljs-number >1</span>
-</span>true</code></pre> <ul> <li><p><code>var&quot;N&#43;1&quot;</code> and other sneaky shenanigans like stealing the pipe operator with an even uglier syntax </p> </ul> <pre><code class="julia-repl hljs">struct PseudoClass{T}
+julia&gt; &#40;-5:5&#41; .&#43; .5
+-4.5:1.0:5.5</code></pre> <ul> <li><p>Another few examples from <a href="https://bkamins.github.io/julialang/2022/03/04/wat.html">Bogumił Kamiński&#39;s Blog &quot;Confused by Julia&quot;</a> &#40;which I will include for the completeness of this list, but leave you to visit his blog for the explainers&#41;</p> </ul> <pre><code class=language-julia-repl >julia&gt; :a &#61;&gt; x -&gt; x &#61;&gt; :b
+:a &#61;&gt; var&quot;#1#2&quot;&#40;&#41;</code></pre> <pre><code class=language-julia-repl >julia&gt; 1 &#61;&#61; 3 &amp; 1 &#61;&#61; 1
+true</code></pre> <ul> <li><p><code>var&quot;N&#43;1&quot;</code> and other sneaky shenanigans like stealing the pipe operator with an even uglier syntax </p> </ul> <pre><code class=language-julia-repl >struct PseudoClass&#123;T&#125;
     data::T
-end(o::PseudoClass)(f, args...; kwargs...) = f(o.data, args...; kwargs...)
-var&quot;&#x27;ᶜ&quot; = PseudoClass
-my_thing&#x27;ᶜ(stuff)&#x27;ᶜ(more_stuff, an_argument)&#x27;ᶜ(final_stuff; a_keyword_argument)</code></pre> <ul> <li><p>Courtesy of <a href="https://github.com/miguelraz/miguelraz.github.io/issues/2#issuecomment-1022312868">Stefan Karpinski</a></p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > e = <span class=hljs-number >9998.0</span>
-</span>9998.0
+end&#40;o::PseudoClass&#41;&#40;f, args...; kwargs...&#41; &#61; f&#40;o.data, args...; kwargs...&#41;
+var&quot;&#39;ᶜ&quot; &#61; PseudoClass
+my_thing&#39;ᶜ&#40;stuff&#41;&#39;ᶜ&#40;more_stuff, an_argument&#41;&#39;ᶜ&#40;final_stuff; a_keyword_argument&#41;</code></pre> <ul> <li><p>Courtesy of <a href="https://github.com/miguelraz/miguelraz.github.io/issues/2#issuecomment-1022312868">Stefan Karpinski</a></p> </ul> <pre><code class=language-julia-repl >julia&gt; e &#61; 9998.0
+9998.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >2</span>e
-</span>19996.0
+julia&gt; 2e
+19996.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >2e+4</span>
-</span>20000.0
+julia&gt; 2e&#43;4
+20000.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >2e+5</span> <span class=hljs-comment ># This should be 20001.0, and yet...</span>
-</span>200000.0
+julia&gt; 2e&#43;5 # This should be 20001.0, and yet...
+200000.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >2</span>e + <span class=hljs-number >5</span> <span class=hljs-comment ># note the spacing</span>
-</span>200001.0</code></pre> <ul> <li><p>Shadowing: Courtesy of <a href="https://github.com/JuliaLang/julia/issues/15483">Kristoffer Carlsson</a></p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > git_tree-sha1 = <span class=hljs-string >&quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;</span>;
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span>-<span class=hljs-number >2</span>
-</span>&quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;</code></pre> <p>And another example:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >function</span> f(x)
-           my_cool-variable=<span class=hljs-number >3</span>
-           <span class=hljs-keyword >if</span> x &gt; <span class=hljs-number >5</span>
-               <span class=hljs-keyword >return</span> my_cool_variable
-           <span class=hljs-keyword >else</span>
-               <span class=hljs-keyword >return</span> <span class=hljs-number >3</span> - <span class=hljs-number >1</span>
-           <span class=hljs-keyword >end</span>
-       <span class=hljs-keyword >end</span>
-</span>f (generic function with 1 method)
+julia&gt; 2e &#43; 5 # note the spacing
+200001.0</code></pre> <ul> <li><p>Shadowing: Courtesy of <a href="https://github.com/JuliaLang/julia/issues/15483">Kristoffer Carlsson</a></p> </ul> <pre><code class=language-julia-repl >julia&gt; git_tree-sha1 &#61; &quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;;
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > f(<span class=hljs-number >2</span>)
-</span>3
+julia&gt; 1-2
+&quot;8eb7b4d4ca487caade9ba3e85932e28ce6d6e1f8&quot;</code></pre> <p>And another example:</p> <pre><code class=language-julia-repl >julia&gt; function f&#40;x&#41;
+           my_cool-variable&#61;3
+           if x &gt; 5
+               return my_cool_variable
+           else
+               return 3 - 1
+           end
+       end
+f &#40;generic function with 1 method&#41;
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >3</span>-<span class=hljs-number >1</span>
-</span>2</code></pre> <ul> <li><p>Symbols and numbers: Courtesy of <code>Mosè Giordano</code>:</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :a === <span class=hljs-string >&quot;a&quot;</span>
-</span>false
+julia&gt; f&#40;2&#41;
+3
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :<span class=hljs-number >2</span> === <span class=hljs-number >2</span>
-</span>true</code></pre> <p>Credit to <code>Jakob Nybo Nissen</code>:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :<span class=hljs-number >1234567890123456789</span> == <span class=hljs-number >1234567890123456789</span>
-</span>true
+julia&gt; 3-1
+2</code></pre> <ul> <li><p>Symbols and numbers: Courtesy of <code>Mosè Giordano</code>:</p> </ul> <pre><code class=language-julia-repl >julia&gt; :a &#61;&#61;&#61; &quot;a&quot;
+false
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :<span class=hljs-number >12345678901234567890</span> == <span class=hljs-number >12345678901234567890</span>
-</span>false</code></pre> <p>See also <a href="https://github.com/JuliaLang/julia/issues/43054">this issue</a>.</p> <p>As a corollary, a Pythonista stumper:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > arr1 = reshape(<span class=hljs-number >1.0</span>:<span class=hljs-number >4.0</span>, <span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
-</span>2×2 reshape(::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, 2, 2) with eltype Float64:
+julia&gt; :2 &#61;&#61;&#61; 2
+true</code></pre> <p>Credit to <code>Jakob Nybo Nissen</code>:</p> <pre><code class=language-julia-repl >julia&gt; :1234567890123456789 &#61;&#61; 1234567890123456789
+true
+
+julia&gt; :12345678901234567890 &#61;&#61; 12345678901234567890
+false</code></pre> <p>See also <a href="https://github.com/JuliaLang/julia/issues/43054">this issue</a>.</p> <p>As a corollary, a Pythonista stumper:</p> <pre><code class=language-julia-repl >julia&gt; arr1 &#61; reshape&#40;1.0:4.0, 2, 2&#41;
+2×2 reshape&#40;::StepRangeLen&#123;Float64, Base.TwicePrecision&#123;Float64&#125;, Base.TwicePrecision&#123;Float64&#125;, Int64&#125;, 2, 2&#41; with eltype Float64:
  1.0  3.0
  2.0  4.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > arr2 = zeros(<span class=hljs-number >2</span>, <span class=hljs-number >2</span>)
-</span>2×2 Matrix{Float64}:
+julia&gt; arr2 &#61; zeros&#40;2, 2&#41;
+2×2 Matrix&#123;Float64&#125;:
  0.0  0.0
  0.0  0.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > arr2 .= arr1[:, :<span class=hljs-number >2</span>]
-</span>2×2 Matrix{Float64}:
+julia&gt; arr2 .&#61; arr1&#91;:, :2&#93;
+2×2 Matrix&#123;Float64&#125;:
  3.0  3.0
- 4.0  4.0</code></pre> <p>because <code>:2</code> is not the same as <code>1:2</code></p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > arr2 .= arr1[:, <span class=hljs-number >1</span>:<span class=hljs-number >2</span>]
-</span>2×2 Matrix{Float64}:
+ 4.0  4.0</code></pre> <p>because <code>:2</code> is not the same as <code>1:2</code></p> <pre><code class=language-julia-repl >julia&gt; arr2 .&#61; arr1&#91;:, 1:2&#93;
+2×2 Matrix&#123;Float64&#125;:
  1.0  3.0
- 2.0  4.0</code></pre> <ul> <li><p>Callable ints by <code>Alexander Plavin</code>: <a href="https://julialang.slack.com/archives/C67TK21LJ/p1643312895067919">link here</a></p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (<span class=hljs-number >1</span>)(<span class=hljs-number >2</span>)
-</span>2
+ 2.0  4.0</code></pre> <ul> <li><p>Callable ints by <code>Alexander Plavin</code>: <a href="https://julialang.slack.com/archives/C67TK21LJ/p1643312895067919">link here</a></p> </ul> <pre><code class=language-julia-repl >julia&gt; &#40;1&#41;&#40;2&#41;
+2
 
 # but
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > x = <span class=hljs-number >1</span>
-</span>1
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (x)(<span class=hljs-number >2</span>)
-</span>ERROR: MethodError: objects of type Int64 are not callable</code></pre> <p>BUT&#33; This can be avoided, as <code>Mason Protter</code> invokes through the magic of type piracy:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (x::<span class=hljs-built_in >Int</span>)(y) = x * y
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > x = <span class=hljs-number >1</span>
-</span>1
+julia&gt; x &#61; 1
+1
+julia&gt; &#40;x&#41;&#40;2&#41;
+ERROR: MethodError: objects of type Int64 are not callable</code></pre> <p>BUT&#33; This can be avoided, as <code>Mason Protter</code> invokes through the magic of type piracy:</p> <pre><code class=language-julia-repl >julia&gt; &#40;x::Int&#41;&#40;y&#41; &#61; x * y
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (x)(<span class=hljs-number >2</span>)
-</span>2</code></pre> <p>and the following super dirty:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > (s::<span class=hljs-built_in >Symbol</span>)(x) = getproperty(x, s)
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > :<span class=hljs-literal >im</span>(<span class=hljs-number >1</span> - <span class=hljs-literal >im</span>)
-</span>-1</code></pre> <p>Lowering is hard, credit to <code>Jonnie Diegelman</code>:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums = zeros(<span class=hljs-built_in >Int</span>, <span class=hljs-number >10</span>);
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >for</span> nums[rand(<span class=hljs-number >1</span>:<span class=hljs-number >10</span>)] <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >20</span>
-       <span class=hljs-keyword >end</span>
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums
-</span>10-element Vector{Int64}:
+julia&gt; x &#61; 1
+1
+
+julia&gt; &#40;x&#41;&#40;2&#41;
+2</code></pre> <p>and the following super dirty:</p> <pre><code class=language-julia-repl >julia&gt; &#40;s::Symbol&#41;&#40;x&#41; &#61; getproperty&#40;x, s&#41;
+
+julia&gt; :im&#40;1 - im&#41;
+-1</code></pre> <p>Lowering is hard, credit to <code>Jonnie Diegelman</code>:</p> <pre><code class=language-julia-repl >julia&gt; nums &#61; zeros&#40;Int, 10&#41;;
+
+julia&gt; for nums&#91;rand&#40;1:10&#41;&#93; in 1:20
+       end
+
+julia&gt; nums
+10-element Vector&#123;Int64&#125;:
  12
  16
   7
@@ -106,100 +106,112 @@ my_thing&#x27;ᶜ(stuff)&#x27;ᶜ(more_stuff, an_argument)&#x27;ᶜ(final_stuff;
  15
   0
  13
- 17</code></pre> <p>&#40;Python suffers from <a href="https://twitter.com/jonniedie/status/1503881984514400261?s&#61;20&amp;t&#61;3GH8TA-92Kr_eDyGepIsaA">something</a> <a href="https://twitter.com/nedbat/status/1498426481906786305?s&#61;20&amp;t&#61;1fmfRPR3rpzGVp2y4_vMoQ">similar</a>&#41;. Explanation: As <code>Jabon Nissen</code> pointed out, &quot;It&#39;s because for i in 1:20 lowers to for i &#61; 1:20 in Julia. Here, it&#39;s nums&#91;rand&#40;1:10&#41;&#93; &#61; 1:20&quot; This is another one <a href="https://twitter.com/jonniedie/status/1503881984514400261">for the road</a></p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums = [<span class=hljs-number >1</span>, <span class=hljs-number >3</span>, <span class=hljs-number >5</span>, <span class=hljs-number >7</span>, <span class=hljs-number >9</span>];
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > gen = (n <span class=hljs-keyword >for</span> n <span class=hljs-keyword >in</span> nums <span class=hljs-keyword >if</span> n <span class=hljs-keyword >in</span> nums);
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > collect(gen)
-</span>5-element Vector{Int64}:
+ 17</code></pre> <p>&#40;Python suffers from <a href="https://twitter.com/jonniedie/status/1503881984514400261?s&#61;20&amp;t&#61;3GH8TA-92Kr_eDyGepIsaA">something</a> <a href="https://twitter.com/nedbat/status/1498426481906786305?s&#61;20&amp;t&#61;1fmfRPR3rpzGVp2y4_vMoQ">similar</a>&#41;. Explanation: As <code>Jabon Nissen</code> pointed out, &quot;It&#39;s because for i in 1:20 lowers to for i &#61; 1:20 in Julia. Here, it&#39;s nums&#91;rand&#40;1:10&#41;&#93; &#61; 1:20&quot; This is another one <a href="https://twitter.com/jonniedie/status/1503881984514400261">for the road</a></p> <pre><code class=language-julia-repl >julia&gt; nums &#61; &#91;1, 3, 5, 7, 9&#93;;
+julia&gt; gen &#61; &#40;n for n in nums if n in nums&#41;;
+julia&gt; collect&#40;gen&#41;
+5-element Vector&#123;Int64&#125;:
  1
  3
  5
  7
  9
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums = [<span class=hljs-number >1</span>, <span class=hljs-number >3</span>, <span class=hljs-number >5</span>, <span class=hljs-number >7</span>, <span class=hljs-number >9</span>];
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > gen = (n <span class=hljs-keyword >for</span> n <span class=hljs-keyword >in</span> nums <span class=hljs-keyword >if</span> n <span class=hljs-keyword >in</span> nums);
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums = [<span class=hljs-number >1</span>, <span class=hljs-number >2</span>, <span class=hljs-number >3</span>, <span class=hljs-number >4</span>];
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > collect(gen)
-</span>2-element Vector{Int64}:
+julia&gt; nums &#61; &#91;1, 3, 5, 7, 9&#93;;
+julia&gt; gen &#61; &#40;n for n in nums if n in nums&#41;;
+julia&gt; nums &#61; &#91;1, 2, 3, 4&#93;;
+julia&gt; collect&#40;gen&#41;
+2-element Vector&#123;Int64&#125;:
  1
- 3</code></pre> <p>Why does this happen: Jeff points out that the thing to iterate over is evaluated once; everything inside has to be evaluated for each iteration and so can change. However, a cleverly place <code>let</code> binding can avoid some of these headaches:</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > gen = <span class=hljs-keyword >let</span> nums = <span class=hljs-number >1</span>:<span class=hljs-number >2</span>:<span class=hljs-number >9</span>
-           (n <span class=hljs-keyword >for</span> n  <span class=hljs-keyword >in</span> nums <span class=hljs-keyword >if</span> n <span class=hljs-keyword >in</span> nums)
-       <span class=hljs-keyword >end</span>;
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > nums = <span class=hljs-number >1</span>:<span class=hljs-number >4</span>;
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > collect(gen)
-</span>5-element Vector{Int64}:
+ 3</code></pre> <p>Why does this happen: Jeff points out that the thing to iterate over is evaluated once; everything inside has to be evaluated for each iteration and so can change. However, a cleverly place <code>let</code> binding can avoid some of these headaches:</p> <pre><code class=language-julia-repl >julia&gt; gen &#61; let nums &#61; 1:2:9
+           &#40;n for n  in nums if n in nums&#41;
+       end;
+julia&gt; nums &#61; 1:4;
+julia&gt; collect&#40;gen&#41;
+5-element Vector&#123;Int64&#125;:
  1
  3
  5
  7
- 9</code></pre> <h3 id=equality_is_hard ><a href="#equality_is_hard" class=header-anchor >Equality is hard</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code> vs <code>&#61;&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > first(<span class=hljs-number >1</span>,<span class=hljs-number >2</span>)
-</span>1-element Vector{Int64}:
- 1</code></pre> <p>Rationale: Partly explained in the docstring for <code>first</code>. Maybe a MATLAB-ism.</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-comment ># Credit to Dheepak Krishnamurthy</span>
-</span><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-number >1</span>[<span class=hljs-number >1</span>][<span class=hljs-number >1</span>][<span class=hljs-number >1</span>] == <span class=hljs-number >1</span>
-</span>true</code></pre> <h3 id=closures_and_functions ><a href="#closures_and_functions" class=header-anchor >Closures and functions</a></h3> <ul> <li><p>What is this syntax?</p> </ul> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >function</span> (YOLO)
-</span>    YOLO + 1
-end</code></pre> <h3 id=conversions_and_promotions ><a href="#conversions_and_promotions" class=header-anchor >Conversions and promotions</a></h3> <p>Credit to <code>Miha Zgubič</code></p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > append!([<span class=hljs-number >1</span>, <span class=hljs-number >2</span>, <span class=hljs-number >3</span>], <span class=hljs-string >&quot;4&quot;</span>)
-</span>4-element Vector{Int64}:
+ 9</code></pre> <h3 id=equality_is_hard ><a href="#equality_is_hard" class=header-anchor >Equality is hard</a></h3> <ul> <li><p><code>isequal</code> vs <code>egal</code> vs <code>&#61;&#61;</code> vs <code>&#61;&#61;&#61;</code></p> </ul> <h3 id=numbers_are_iterable ><a href="#numbers_are_iterable" class=header-anchor >Numbers are iterable:</a></h3> <pre><code class=language-julia-repl >julia&gt; first&#40;1,2&#41;
+1-element Vector&#123;Int64&#125;:
+ 1</code></pre> <p>Rationale: Partly explained in the docstring for <code>first</code>. Maybe a MATLAB-ism.</p> <pre><code class=language-julia-repl >julia&gt; # Credit to Dheepak Krishnamurthy
+julia&gt; 1&#91;1&#93;&#91;1&#93;&#91;1&#93; &#61;&#61; 1
+true</code></pre> <h3 id=closures_and_functions ><a href="#closures_and_functions" class=header-anchor >Closures and functions</a></h3> <ul> <li><p>What is this syntax?</p> </ul> <pre><code class=language-julia-repl >julia&gt; function &#40;YOLO&#41;
+    YOLO &#43; 1
+end</code></pre> <h3 id=conversions_and_promotions ><a href="#conversions_and_promotions" class=header-anchor >Conversions and promotions</a></h3> <p>Credit to <code>Miha Zgubič</code></p> <pre><code class=language-julia-repl >julia&gt; append&#33;&#40;&#91;1, 2, 3&#93;, &quot;4&quot;&#41;
+4-element Vector&#123;Int64&#125;:
   1
   2
   3
- 52</code></pre> <p>Explanation: <code>convert</code> is called implicitly to make <code>&quot;4&quot;</code> into <code>Char</code>, and since <code>Int&#40;&#39;4&#39;&#41; &#61;&#61; 52</code>, you get the result above.</p> <p>You can get similar results with </p> <pre><code class="julia hljs">push!([<span class=hljs-number >1</span>, <span class=hljs-number >2</span>, <span class=hljs-number >3</span>], <span class=hljs-string >&#x27;4&#x27;</span>) 
+ 52</code></pre> <p>Explanation: <code>convert</code> is called implicitly to make <code>&quot;4&quot;</code> into <code>Char</code>, and since <code>Int&#40;&#39;4&#39;&#41; &#61;&#61; 52</code>, you get the result above.</p> <p>You can get similar results with </p> <pre><code class=language-julia >push&#33;&#40;&#91;1, 2, 3&#93;, &#39;4&#39;&#41; 
 
-x = [<span class=hljs-number >1</span>, <span class=hljs-number >2</span>, <span class=hljs-number >3</span>]; 
-x[<span class=hljs-number >3</span>] = <span class=hljs-string >&#x27;4&#x27;</span>; 
+x &#61; &#91;1, 2, 3&#93;; 
+x&#91;3&#93; &#61; &#39;4&#39;; 
 x
 
-copyto!([<span class=hljs-number >1</span>,<span class=hljs-number >2</span>,<span class=hljs-number >3</span>], <span class=hljs-string >&quot;456&quot;</span>)</code></pre> <p>Credit to <code>Michael Abott</code> for those.</p> <p>Not that the general Julia idiom of <code>&#91;x, y&#93;</code> will try to promote to a common element type of possible, but only if it equals one of the input types. This is a constraint that homogenous array representation demands, but can lead to some interesting cases like: &#40;Credit to <code>MIlan Bouchet-Valat</code>&#41;</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > [<span class=hljs-built_in >BigInt</span>[<span class=hljs-number >1</span>], [<span class=hljs-number >1.0</span>]]
-</span>2-element Vector{Vector}:
- BigInt[1]
- [1.0]
+copyto&#33;&#40;&#91;1,2,3&#93;, &quot;456&quot;&#41;</code></pre> <p>Credit to <code>Michael Abott</code> for those.</p> <p>Not that the general Julia idiom of <code>&#91;x, y&#93;</code> will try to promote to a common element type of possible, but only if it equals one of the input types. This is a constraint that homogenous array representation demands, but can lead to some interesting cases like: &#40;Credit to <code>MIlan Bouchet-Valat</code>&#41;</p> <pre><code class=language-julia-repl >julia&gt; &#91;BigInt&#91;1&#93;, &#91;1.0&#93;&#93;
+2-element Vector&#123;Vector&#125;:
+ BigInt&#91;1&#93;
+ &#91;1.0&#93;
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > [[<span class=hljs-number >1</span>], [<span class=hljs-number >1.0</span>]]
-</span>2-element Vector{Vector{Float64}}:
- [1.0]
- [1.0]</code></pre> <h3 id=strings_are_hard ><a href="#strings_are_hard" class=header-anchor >Strings are hard</a></h3> <p>Credit to <code>Vasily Pisarev</code>.</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > countlines(<span class=hljs-string >&quot;&quot;&quot;
+julia&gt; &#91;&#91;1&#93;, &#91;1.0&#93;&#93;
+2-element Vector&#123;Vector&#123;Float64&#125;&#125;:
+ &#91;1.0&#93;
+ &#91;1.0&#93;</code></pre> <h3 id=strings_are_hard ><a href="#strings_are_hard" class=header-anchor >Strings are hard</a></h3> <p>Credit to <code>Vasily Pisarev</code>.</p> <pre><code class=language-julia-repl >julia&gt; countlines&#40;&quot;&quot;&quot;
        Mary had a little lamb,
           Its fleece was white as snow,
        And every where that Mary went
           The lamb was sure to go
-       &quot;&quot;&quot;</span>)
-</span>ERROR: SystemError: opening file &quot;Mary had a little lamb,\n   Its fleece was white as snow,\nAnd every where that Mary went\n   The lamb was sure to go\n&quot;: No such file or directory</code></pre> <h3 id=types_are_hard ><a href="#types_are_hard" class=header-anchor >Types are hard</a></h3> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > threetuple = (<span class=hljs-number >3</span>, <span class=hljs-number >3.0</span>, <span class=hljs-number >3f0</span>)
-</span>(3, 3.0, 3.0f0)
+       &quot;&quot;&quot;&#41;
+ERROR: SystemError: opening file &quot;Mary had a little lamb,\n   Its fleece was white as snow,\nAnd every where that Mary went\n   The lamb was sure to go\n&quot;: No such file or directory</code></pre> <h3 id=types_are_hard ><a href="#types_are_hard" class=header-anchor >Types are hard</a></h3> <pre><code class=language-julia-repl >julia&gt; threetuple &#61; &#40;3, 3.0, 3f0&#41;
+&#40;3, 3.0, 3.0f0&#41;
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > threetuple <span class=hljs-keyword >isa</span> <span class=hljs-built_in >NTuple</span>
-</span>false
+julia&gt; threetuple isa NTuple
+false
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > threetuple <span class=hljs-keyword >isa</span> <span class=hljs-built_in >NTuple</span>{<span class=hljs-number >3</span>,<span class=hljs-built_in >Number</span>}
-</span>true</code></pre> <h3 id=aliasing_is_hard ><a href="#aliasing_is_hard" class=header-anchor >Aliasing is hard </a></h3> <p>Both <a href="https://x.com/austinc3301/status/1770987021378387993?s&#61;20">Agus</a>Thom <code>@at_tcsc</code> has <a href="https://twitter.com/at_tcsc/status/1770987124692516946">kindly corrected</a> me on a non-exclusive to <a href="https://twitter.com/francoisfleuret/status/1770528106513600636">Python</a> footgun:</p> <pre><code class="julia hljs">julia&gt; a = [[]]
-<span class=hljs-number >1</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}}:
- []
+julia&gt; threetuple isa NTuple&#123;3,Number&#125;
+true</code></pre> <h3 id=aliasing_is_hard ><a href="#aliasing_is_hard" class=header-anchor >Aliasing is hard </a></h3> <p>Both <a href="https://x.com/austinc3301/status/1770987021378387993?s&#61;20">Agus</a>Thom <code>@at_tcsc</code> has <a href="https://twitter.com/at_tcsc/status/1770987124692516946">kindly corrected</a> me on a non-exclusive to <a href="https://twitter.com/francoisfleuret/status/1770528106513600636">Python</a> footgun:</p> <pre><code class=language-julia >julia&gt; a &#61; &#91;&#91;&#93;&#93;
+1-element Vector&#123;Vector&#123;Any&#125;&#125;:
+ &#91;&#93;
 
-julia&gt; push!(a, a[<span class=hljs-number >1</span>])
-<span class=hljs-number >2</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}}:
- []
- []
+julia&gt; push&#33;&#40;a, a&#91;1&#93;&#41;
+2-element Vector&#123;Vector&#123;Any&#125;&#125;:
+ &#91;&#93;
+ &#91;&#93;
 
-julia&gt; push!(a[<span class=hljs-number >1</span>], <span class=hljs-string >&quot;seriously?&quot;</span>)
-<span class=hljs-number >1</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}:
- <span class=hljs-string >&quot;seriously?&quot;</span>
-
-julia&gt; a
-<span class=hljs-number >2</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}}:
- [<span class=hljs-string >&quot;seriously?&quot;</span>]
- [<span class=hljs-string >&quot;seriously?&quot;</span>]</code></pre> <p>where Agus&#39; sinister variant also holds:</p> <pre><code class="julia hljs">julia&gt; a = fill([], <span class=hljs-number >4</span>)
-<span class=hljs-number >4</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}}:
- []
- []
- []
- []
-
-julia&gt; push!(a[<span class=hljs-number >1</span>], <span class=hljs-string >&quot;seriously&quot;</span>)
-<span class=hljs-number >1</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}:
- <span class=hljs-string >&quot;seriously&quot;</span>
+julia&gt; push&#33;&#40;a&#91;1&#93;, &quot;seriously?&quot;&#41;
+1-element Vector&#123;Any&#125;:
+ &quot;seriously?&quot;
 
 julia&gt; a
-<span class=hljs-number >4</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Any</span>}}:
- [<span class=hljs-string >&quot;seriously&quot;</span>]
- [<span class=hljs-string >&quot;seriously&quot;</span>]
- [<span class=hljs-string >&quot;seriously&quot;</span>]
- [<span class=hljs-string >&quot;seriously&quot;</span>]</code></pre> <hr /> <h4 id=credits ><a href="#credits" class=header-anchor >Credits</a></h4> <ul> <li><p>Mark Kittisopikul</p> <li> </ul> <div class=page-foot > <div class=copyright > &copy; . Last modified: March 23, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script> </div> </div> </div> <script> (function(){ // Get the elements. // - the 'pre' element. // - the 'div' with the 'paste-content' id. var pre = document.getElementsByTagName('pre'); // Add a copy button in the 'pre' element. // which only has the className of 'language-'. for (var i = 0; i < pre.length; i++) { var isLanguage = pre[i].children[0].className.indexOf('language-'); if ( isLanguage === 0 ) { var button = document.createElement('button'); button.className = 'copy-button'; button.textContent = 'Copy'; pre[i].appendChild(button); } }; // Run Clipboard var copyCode = new Clipboard('.copy-button', { target: function(trigger) { return trigger.previousElementSibling; } }); // On success: // - Change the "Copy" text to "Copied". // - Swap it to "Copy" in 2s. // - Lead user to the "contenteditable" area with Velocity scroll. copyCode.on('success', function(event) { event.clearSelection(); event.trigger.textContent = 'Copied'; window.setTimeout(function() { event.trigger.textContent = 'Copy'; }, 2000); }); // On error (Safari): // - Change the "Press Ctrl+C to copy" // - Swap it to "Copy" in 2s. copyCode.on('error', function(event) { event.trigger.textContent = 'Press "Ctrl + C" to copy'; window.setTimeout(function() { event.trigger.textContent = 'Copy'; }, 5000); }); })(); </script> <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
+2-element Vector&#123;Vector&#123;Any&#125;&#125;:
+ &#91;&quot;seriously?&quot;&#93;
+ &#91;&quot;seriously?&quot;&#93;</code></pre> <p>where Agus&#39; sinister variant also holds:</p> <pre><code class=language-julia >julia&gt; a &#61; fill&#40;&#91;&#93;, 4&#41;
+4-element Vector&#123;Vector&#123;Any&#125;&#125;:
+ &#91;&#93;
+ &#91;&#93;
+ &#91;&#93;
+ &#91;&#93;
+
+julia&gt; push&#33;&#40;a&#91;1&#93;, &quot;seriously&quot;&#41;
+1-element Vector&#123;Any&#125;:
+ &quot;seriously&quot;
+
+julia&gt; a
+4-element Vector&#123;Vector&#123;Any&#125;&#125;:
+ &#91;&quot;seriously&quot;&#93;
+ &#91;&quot;seriously&quot;&#93;
+ &#91;&quot;seriously&quot;&#93;
+ &#91;&quot;seriously&quot;&#93;</code></pre> <h3 id=constructors_are_hard ><a href="#constructors_are_hard" class=header-anchor >Constructors are hard </a></h3> <p>Hat tip to <a href="https://rogerluo.dev/Moshi.jl/data/understand/">Moshi.jl</a> and Jakob for pointing this one out.</p> <pre><code class=language-julia-repls >julia&gt; struct A end
+
+julia&gt; struct B
+           1 &#43; 1
+       end
+
+julia&gt; methods&#40;A&#41;
+# 1 method for type constructor:
+ &#91;1&#93; A&#40;&#41;
+     @ REPL&#91;5&#93;:1
+
+julia&gt; methods&#40;B&#41;
+# 0 methods for type constructor</code></pre> <hr /> <h4 id=credits ><a href="#credits" class=header-anchor >Credits</a></h4> <ul> <li><p>Mark Kittisopikul</p> <li> </ul> <div class=page-foot > <div class=copyright > &copy; . Last modified: August 28, 2024. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script> </div> </div> </div> <script src="/libs/highlight/highlight.pack.js"></script> <script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: ' '});</script> <script> (function(){ // Get the elements. // - the 'pre' element. // - the 'div' with the 'paste-content' id. var pre = document.getElementsByTagName('pre'); // Add a copy button in the 'pre' element. // which only has the className of 'language-'. for (var i = 0; i < pre.length; i++) { var isLanguage = pre[i].children[0].className.indexOf('language-'); if ( isLanguage === 0 ) { var button = document.createElement('button'); button.className = 'copy-button'; button.textContent = 'Copy'; pre[i].appendChild(button); } }; // Run Clipboard var copyCode = new Clipboard('.copy-button', { target: function(trigger) { return trigger.previousElementSibling; } }); // On success: // - Change the "Copy" text to "Copied". // - Swap it to "Copy" in 2s. // - Lead user to the "contenteditable" area with Velocity scroll. copyCode.on('success', function(event) { event.clearSelection(); event.trigger.textContent = 'Copied'; window.setTimeout(function() { event.trigger.textContent = 'Copy'; }, 2000); }); // On error (Safari): // - Change the "Press Ctrl+C to copy" // - Swap it to "Copy" in 2s. copyCode.on('error', function(event) { event.trigger.textContent = 'Press "Ctrl + C" to copy'; window.setTimeout(function() { event.trigger.textContent = 'Copy'; }, 5000); }); })(); </script> <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "efaaeb52e1314322a75ffd9edd8d1566"}'></script>
