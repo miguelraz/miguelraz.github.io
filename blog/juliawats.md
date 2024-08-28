@@ -366,6 +366,28 @@ julia> a
  ["seriously"]
 ```
 
+### Constructors are hard 
+
+Hat tip to [Moshi.jl](https://rogerluo.dev/Moshi.jl/data/understand/) and Jakob for pointing this one out.
+
+
+```julia-repls
+julia> struct A end
+
+julia> struct B
+           1 + 1
+       end
+
+julia> methods(A)
+# 1 method for type constructor:
+ [1] A()
+     @ REPL[5]:1
+
+julia> methods(B)
+# 0 methods for type constructor
+```
+
+
 
 
 -----
