@@ -368,7 +368,7 @@ julia> a
 
 ### Constructors are hard 
 
-Hat tip to [Moshi.jl](https://rogerluo.dev/Moshi.jl/data/understand/) and Jakob for pointing this one out.
+Hat tip to [Unityper.jl](https://rogerluo.dev/Moshi.jl/data/understand/) devs and Jakob for pointing this one out to me.
 
 
 ```julia-repls
