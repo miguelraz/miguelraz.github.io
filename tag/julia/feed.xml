@@ -582,7 +582,7 @@ struct Point&lt;T&gt; &#123;
 <ul>
 <li><p>Don&#39;t add crates manually&#33; Install <code>cargo-add</code>, use it to manage crate dependencies. That and some other tricks are great from doing the <code>AdventOfCode2020</code> from the article above.</p>
 </li>
-<li><p>For numerics, install <code>ndarray</code> and <code>num_traits</code>. Linear Algebra and numerics where not a primary focus of Rust when starting out as they were with Julia.</p>
+<li><p>For numerics, install <code>ndarray</code> and <code>num_traits</code>. Linear Algebra and numerics where not a primary focus of Rust when starting out as they where with Julia.</p>
 </li>
 <li><p>Benchmarking with <code>@btime</code> is painless, <code>criterion</code> is your best Rustian bet.</p>
 </li>
