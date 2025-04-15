@@ -21,9 +21,9 @@ This post is about Julia and *multiple dispatch* as its foundation.
 Julia is not
 - the first language to implement multiple dispatch (see the lecture link below)
 - the only language to use multiple dispatch (Dylan does use it, also available as a lib in Python and others)
-but it definitely feels like the first to stick the landing. 
+but it definitely feels like the first to stick the landing.
 My **claim** is this: Julia is unique in implementing multiple dispatch as a fundamental design feature *and* building a language around it. Don't take it too seriously; it's more an invitation to learn than anything else.
-If you like this topic, check out ["The Unreasonable effectiveness of Multiple Dispatch" JuliaCon](https://www.youtube.com/watch?v=kc9HwsxE1OY&t=346s) by Stefan Karpinski, and [this article on "The Expression problem"](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/) which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.
+If you like this topic, check out ["The Unreasonable effectiveness of Multiple Dispatch" JuliaCon](https://www.youtube.com/watch?v=kc9HwsxE1OY&t=346s) by Stefan Karpinski, and [this article on "The Expression problem"](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/) which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-ified version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.
 
 The **audience** of this post are programmers who like Python/C++/80s MIT Lisp courses
 who have heard of Julia but don't get what new things it brings to the table.
@@ -48,7 +48,7 @@ Off we go! 🚀
 
 ## What is dispatch?
 
-To begin our journey, we sould define some terms. Per [Merriam-Webster](https://www.merriam-webster.com/dictionary/dispatch), `to dispatch` means:
+To begin our journey, we should define some terms. Per [Merriam-Webster](https://www.merriam-webster.com/dictionary/dispatch), `to dispatch` means:
 > to send off or away with promptness or speed
 
 > to dispatch a letter
@@ -61,13 +61,13 @@ To begin our journey, we sould define some terms. Per [Merriam-Webster](https://
 
 At any rate - dispatch sounds simple I guess... but all these programmers from the Object Oriented Land keep asking me about where I stand in [inheritance vs composition](https://en.wikipedia.org/wiki/Composition_over_inheritance), and my takeaway was that there's a lot of terms I *thought* knew what they meant, but I have to re-learn for all this programming stuff. I guess I'm just not that into Rectangle vs Square debates...}
 
-\dispatch{Yup, there's a lot of fancy words. It can be hard to describe where you are standing to other people because [the Kingdoms of Nouns](https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf) monopolized the programming language map-making business decades ago. 
+\dispatch{Yup, there's a lot of fancy words. It can be hard to describe where you are standing to other people because [the Kingdoms of Nouns](https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf) monopolized the programming language map-making business decades ago.
 
 Now it sucks to get directions anywhere.
 
-But it's cool - just take a deep breath, and, like a well oiled StepMaster, we'll do this one step at a time. 
+But it's cool - just take a deep breath, and, like a well oiled StepMaster, we'll do this one step at a time.
 
-On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we're not too far from them in the theory, but the language doesn't actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.} 
+On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we're not too far from them in the theory, but the language doesn't actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.}
 
 \miguelito{What? No way.}
 
@@ -223,10 +223,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 whereas
 ```julia-repl
 julia> sizeof(1) # This is in bytes, so an Int on my system is 64 bits
-8 
+8
 ```
 
-3. Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn't have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it's not at all trivial to see those two things and put them together. But don't take my word for it, hear **them** say why it wasn't practical then:
+3. Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn't have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the bureaucratic overhead of the dispatching system, and it's not at all trivial to see those two things and put them together. But don't take my word for it, hear **them** say why it wasn't practical then:
 
 [![Lisp hackers preaching the Julia gospel](https://imgur.com/zA72zGB.png)](https://youtu.be/OscT4N2qq7o?t=1598)
 
@@ -248,7 +248,7 @@ f(t)
 
 }
 
-\miguelito{Alright so what I'm really getting here is 
+\miguelito{Alright so what I'm really getting here is
 
 1. I should really, really [just go watch Stefan's talk](https://youtu.be/kc9HwsxE1OY?t=1564).
 2. A big "the Romans had a steam engine but didn't industrialize because they didn't have carbon deposits" vibe from all the convergence of PL ideas and techniques.
@@ -256,7 +256,7 @@ f(t)
 There's a time and a place I guess.
 }
 
-\dispatch{Yeesh. 
+\dispatch{Yeesh.
 
 Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against (and whose expertise they drew from!). Julia is the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That's not a linear process, but I can't complain, we're still increasing the `SmileFactor` of all the things that feel like they should work, and do. Like [the REPL](https://www.youtube.com/watch?v=EkgCENBFrAY).
 }
@@ -270,8 +270,8 @@ Until next time. Toodles. :wave:
 If you want to see more posts like this, consider chucking a buck or two on my [GitHub sponsors](https://github.com/miguelraz), or, you know, hire me as a grad student.
 
 
-*Note*: 
+*Note*:
 ----
-I created **Dispatch** by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
+I created **Dispatch** by copy/pasting the icon from [flaticon.com](https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id=1362009&origin=search&k=1618671790997) under the terms of their Flaticon License. It is free for personal and commercial purpose with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commercial purposes, please donate a non-trivial part of your profits from the **Dispatch** merch to [Doctors without Borders](https://donate.doctorswithoutborders.org/onetime.cfm).
 
 Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Frames for her blog posts diving into these similar materials.

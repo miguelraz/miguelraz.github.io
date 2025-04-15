@@ -9,7 +9,7 @@ Plan of attack:
 
 ### Finding what happens with `x = 123`
 I tried `rg "assignment"` within `julia/src` and tried to clue where I could find the culprit.
-I posted in Slack aobut it, and Simeon Schaub pointed me towards `src/interpreter.c` (which came up in one of the `rg` searches but I ignored it).
+I posted in Slack about it, and Simeon Schaub pointed me towards `src/interpreter.c` (which came up in one of the `rg` searches but I ignored it).
 
 (Morning!) I finally landed on something interesting
 ```c
@@ -49,8 +49,8 @@ Specifically, it's the block on lines 23-26 that assigns to globals, but first i
 * check there is a binding
 * check the types match and assign the value (aka, actually carry out the `x = 123`.)
 
-Now thinking a bit more clearly in the morning, it is not sufficient to just patch the assigment here in the `src/interpreter.c`,
-because that would only help when the REPL is running, but also with the `jl_check_assigment` function itself.
+Now thinking a bit more clearly in the morning, it is not sufficient to just patch the assignment here in the `src/interpreter.c`,
+because that would only help when the REPL is running, but also with the `jl_check_assignment` function itself.
 
 Let's read what's in `jl_checked_assignment`:
 ```
@@ -104,7 +104,7 @@ state it's value, and all the interesting internal knobs to work with it
 
 In a humbling moment, I realize that this definition is literally atop of the previous one I just read. Literally 2 lines of code above.
 
-Wiping away a single tear, let's consider if we shold add a global type to this struct itself.
+Wiping away a single tear, let's consider if we should add a global type to this struct itself.
 
 2. Now all those `b->things` make a lot more sense in the `jl_checked_assignment`:
 You check if different properties apply by going through the pointer and do the appropriate way of assigning.
@@ -126,15 +126,9 @@ typedef struct {
     10 } jl_binding_t;
 ```
 Which is a weird looking struct but it's the C way to make one, via a `typedef` and putting the name after the `struct {...} name`.
-5. (10 minutes later) OK so re-reading the assignment [about global type annotations](https://github.com/JuliaLang/julia/issues/8870#issuecomment-320101744), the point is to add a 
+5. (10 minutes later) OK so re-reading the assignment [about global type annotations](https://github.com/JuliaLang/julia/issues/8870#issuecomment-320101744), the point is to add a
 special path to the function and if if there is a `x::Int = 123` typing, then make that type valid.
 
 6. (post lunch slump) Chat has answered: Jeff suggests we just add a `jl_value_t *ty` to the struct and get it on with. Actually started a new `typedglobals` git branch and started adding code.
 
 7. (spaced out on twitter for 10 minutes) Ok actually added code.
-
-
-
-
-
-

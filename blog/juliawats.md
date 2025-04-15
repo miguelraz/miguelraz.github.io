@@ -2,7 +2,7 @@
 
 > This talk is inspired by the classic [Wat](https://www.destroyallsoftware.com/talks/wat) talk by Gary Bernhardt, applied to Julia.
 
-Huge thanks to Mason Protter, many of the inital specimens are his.
+Huge thanks to Mason Protter, many of the initial specimens are his.
 
 Why collect a huge array of scary footguns? [Others have ranted](https://viralinstruction.com/posts/badjulia/) before on all the things that [are bad about Julia](https://www.youtube.com/watch?v=TPuJsgyu87U&t=28s), profusely! Enthusiastically! I think there's good value in knowing precisely why [you should hate your tools](https://www.hillelwayne.com/hate-your-tools/). I'm clearly in the "Julia will take over the world camp", and that effusiveness can work great for some projects, but it's good to understand the limitations of the tools we use. There's well known effective ways to come across in a reasoned manner when pitching Julia for a particular use case, but being able to specify *many* of these limitations and the pain points they inflict will generally show that you're willing to take criticism in a healthy manner.
 
@@ -20,7 +20,7 @@ true
 
 julia> all([] .≈ [42])
 true
-``` 
+```
 
 ### RNG
 - RNG seed set by `@testset`: (Credit to Michael Abbott)
@@ -38,7 +38,7 @@ test set      |   10     10  0.0s
 ```
 
 ### Parsing is hard
-- Operator precedene with ranges: (Credit to Oscar Smith)
+- Operator precedence with ranges: (Credit to Oscar Smith)
 ```julia-repl
 julia> -5:5 .+ .5
 -5.0:1.0:5.0
@@ -55,7 +55,7 @@ julia> :a => x -> x => :b
 julia> 1 == 3 & 1 == 1
 true
 ```
-- `var"N+1"` and other sneaky shenanigans like stealing the pipe operator with an even uglier syntax 
+- `var"N+1"` and other sneaky shenanigans like stealing the pipe operator with an even uglier syntax
 ```julia-repl
 struct PseudoClass{T}
     data::T
@@ -168,7 +168,7 @@ julia> x = 1
 1
 
 julia> (x)(2)
-2 
+2
 ```
 and the following super dirty:
 ```julia-repl
@@ -272,12 +272,12 @@ julia> append!([1, 2, 3], "4")
 ```
 Explanation: `convert` is called implicitly to make `"4"` into `Char`, and since `Int('4') == 52`, you get the result above.
 
-You can get similar results with 
+You can get similar results with
 ```julia
-push!([1, 2, 3], '4') 
+push!([1, 2, 3], '4')
 
-x = [1, 2, 3]; 
-x[3] = '4'; 
+x = [1, 2, 3];
+x[3] = '4';
 x
 
 copyto!([1,2,3], "456")
@@ -321,7 +321,7 @@ julia> threetuple isa NTuple{3,Number}
 true
 ```
 
-### Aliasing is hard 
+### Aliasing is hard
 
 Both [Agus](https://x.com/austinc3301/status/1770987021378387993?s=20)Thom `@at_tcsc` has [kindly corrected](https://twitter.com/at_tcsc/status/1770987124692516946) me on a non-exclusive to [Python](https://twitter.com/francoisfleuret/status/1770528106513600636) footgun:
 
@@ -366,7 +366,7 @@ julia> a
  ["seriously"]
 ```
 
-### Constructors are hard 
+### Constructors are hard
 
 Hat tip to [Unityper.jl](https://rogerluo.dev/Moshi.jl/data/understand/) devs and Jakob for pointing this one out to me.
 
@@ -394,4 +394,4 @@ julia> methods(B)
 
 #### Credits
 - Mark Kittisopikul
-- 
+-

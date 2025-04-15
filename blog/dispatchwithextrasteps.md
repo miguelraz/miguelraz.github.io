@@ -1,4 +1,4 @@
-@def title = """🚧 WIP 🚧 'That just sounds like mulitple dispatch but with extra steps'"""
+@def title = """🚧 WIP 🚧 'That just sounds like multiple dispatch but with extra steps'"""
 
 Same function, different behaviors. How do you get that?
 

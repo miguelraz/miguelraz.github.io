@@ -16,7 +16,7 @@ The original code is in Appendix B of the same thesis.
 
 # Kernel transformation
 
-Input: kernel function $ K(r) $.  Output "first integral" of $ K $ : 
+Input: kernel function $ K(r) $.  Output "first integral" of $ K $ :
 
 $$
 \mathcal{K}_n(X) = \int_0^1 w^n K(wX) dw
@@ -150,7 +150,7 @@ julia> function evalcheb(x, a)
     return a[1] + x*bₖ₊₁ - bₖ₊₂
 end
 
-# inlined version of evalcheb given coefficents a, and x in (-1,1)
+# inlined version of evalcheb given coefficients a, and x in (-1,1)
 julia> macro evalcheb(x, a...)
     isempty(a) && throw(BoundsError())
     # Clenshaw recurrence, evaluated symbolically:
@@ -202,13 +202,13 @@ julia> @generated function (::FirstIntegral{P,n}, X::Real) where {P<:PowerLawSca
     # compute the Chebyshev coefficients (of the rescaled 𝒦ₙ as described above)
     K = P()
     p,q,s = pqsPowerLawScaling(K)
-    
+
     𝒦ₙ = X -> quadgk(w -> w^n * K(w*X), 0,1, abstol=1e-12, reltol=1e-10)[1]
     Lₙ = p < 0 ? X -> 𝒦ₙ(X) / (s^p + X^p) : 𝒦ₙ # scale out X ≪ s singularity
     q > 0 && throw(DomainError()) # don't know how to deal with growing kernels
     qinv = 1/q
     c = chebcoef(ξ -> Lₙ((1-ξ)^qinv - 2^qinv), 1e-9)
-    
+
     # return an expression that inlines the evaluation of 𝒦ₙ via C(ξ)
     quote
         X <= 0 && throw(DomainError())
@@ -231,7 +231,7 @@ julia> @code_llvm F(3.7)
 ```julia-repl
 julia> #Pkg.add("PyPlot")
 julia> using PyPlot
-julia> x = [0.01:.0125:1.0;]; 
+julia> x = [0.01:.0125:1.0;];
 julia> plot(x, map(FirstIntegral{DumbPowerLaw{-1,1.}, 3}(),x))
 ```
 
@@ -256,4 +256,3 @@ function (::FirstIntegral{MFIE{k}, n})(x) where {k,n}
     return exp(ikx) * (im * k * exprel(n - 1, -ikx)/((n - 1)*x) - exprel(n - 2, -ikx)/((n-2)*(x^2)) / (4*pi*x)
 end
 ```
-

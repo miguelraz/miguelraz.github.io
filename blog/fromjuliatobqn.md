@@ -48,7 +48,7 @@ online REPL or download BQN repo and open with browser `BQN/docs/try.html` from 
 
 Everything in green is a function
 Everything in yellow is a 1 modifier
-Everything in purple/pink is a 2 modifer
+Everything in purple/pink is a 2 modifier
 
 Defining `Hi` function
 
@@ -162,7 +162,7 @@ The syntax and symbols of BQN is a big "love it or hate it" part of the deal. I 
     * `` ≡"abc" `` will give you the "depth" of something, because it looks like a little ladder that you descend
     * `` ⌈ `` is taking the "highest" value (and is thus the max), ``⌊`` is taking the "lowest"
     * `` +´ `` will be dragging all the stuff to the right of the tick towards the `+`, so it's a reduction
-    * `` +` `` If you use the tick the other way, you will be dragging the `+` *towards* the stuff on the right, so it's a `scan`, from left to right. 
+    * `` +` `` If you use the tick the other way, you will be dragging the `+` *towards* the stuff on the right, so it's a `scan`, from left to right.
   These are just the examples that come to mind, but I've found (completely subjectively) for BQN's symbology to be a bit friendlier/more consistent than APL's.
 Be mindful that the `‿` character to denote lists is not the same as that of arrays. The [docs say that](https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets) newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:
 

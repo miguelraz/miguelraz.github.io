@@ -7,7 +7,7 @@
 @def rss_guid = 5
 
 
-A quick note for my Julia peeps to grok the difference between `NaN`, `missing` and `nothing` in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to [Jasmine Hughes](https://twitter.com/Jas_Hughes/status/1494020182171275266?s=20&t=X6bd-uWW4b2CMW5xFzctUw) for inspiring this post and also [sponsoring me on GitHub so I can continue my open source campaing](https://github.com/sponsors/miguelraz/).
+A quick note for my Julia peeps to grok the difference between `NaN`, `missing` and `nothing` in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to [Jasmine Hughes](https://twitter.com/Jas_Hughes/status/1494020182171275266?s=20&t=X6bd-uWW4b2CMW5xFzctUw) for inspiring this post and also [sponsoring me on GitHub so I can continue my open source campaign](https://github.com/sponsors/miguelraz/).
 
 ### A rainy setup
 
@@ -36,7 +36,7 @@ Ominously, you find the report to say this:
 | 6 | 💩  | OK |
 | 7 | 18  | OK |
 
-Clearly something has gone wrong, on days 4-6, but if you think about it carefuly for a second, the `Status` of each data point gives you some insight into *where* your data collection *could* have gone wrong.
+Clearly something has gone wrong, on days 4-6, but if you think about it carefully for a second, the `Status` of each data point gives you some insight into *where* your data collection *could* have gone wrong.
 * Days 1-3 went (likely) as expected
 * Day 4 the RainWater-O-Tron recorded it *was* functional, but you didn't receive the data. You thus know the data for Day 4 is `missing`.
 * Day 5 the machine wasn't even functional, and thus no data was collected, which means you have `nothing` as a data entry.
@@ -51,4 +51,3 @@ This is the big distinction in how *much* you know about your data, and the "fai
 Of course, these are just narratives for illustrative purposes, but hopefully it can help solidify the distinctions and how these can help you think to solve your problem. Does that mean you must always use these sentinel values in your code or data collection? Not necessarily, but that's for you to decide if these are the right tools.
 
 'Til next time.
-
