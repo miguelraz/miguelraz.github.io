@@ -36,7 +36,7 @@
 <li><p>the only language to use multiple dispatch &#40;Dylan does use it, also available as a lib in Python and others&#41;</p>
 </li>
 </ul>
-<p>but it definitely feels like the first to stick the landing.  My <strong>claim</strong> is this: Julia is unique in implementing multiple dispatch as a fundamental design feature <em>and</em> building a language around it. Don&#39;t take it too seriously; it&#39;s more an invitation to learn than anything else. If you like this topic, check out <a href="https://www.youtube.com/watch?v&#61;kc9HwsxE1OY&amp;t&#61;346s">&quot;The Unreasonable effectiveness of Multiple Dispatch&quot; JuliaCon</a> by Stefan Karpinski, and <a href="https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/">this article on &quot;The Expression problem&quot;</a> which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.</p>
+<p>but it definitely feels like the first to stick the landing. My <strong>claim</strong> is this: Julia is unique in implementing multiple dispatch as a fundamental design feature <em>and</em> building a language around it. Don&#39;t take it too seriously; it&#39;s more an invitation to learn than anything else. If you like this topic, check out <a href="https://www.youtube.com/watch?v&#61;kc9HwsxE1OY&amp;t&#61;346s">&quot;The Unreasonable effectiveness of Multiple Dispatch&quot; JuliaCon</a> by Stefan Karpinski, and <a href="https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/">this article on &quot;The Expression problem&quot;</a> which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-ified version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.</p>
 <p>The <strong>audience</strong> of this post are programmers who like Python/C&#43;&#43;/80s MIT Lisp courses who have heard of Julia but don&#39;t get what new things it brings to the table. If you want to dive deeper into emergent Julia features, check out <a href="https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/">Frame&#39;s</a> 2 part posts.</p>
 <p>Sure, there&#39;s a fancy subtyping algorithm that Jeff Bezanson &#40;Julia co-creator&#41; pulled out of Turing-knows-where and that Swift re-adapted with some unholy <a href="https://fullstackfeed.com/formalizing-swift-generics-as-a-term-rewriting-system/">term rewriting</a> shenanigans, but that&#39;s not the &quot;new contribution&quot; I mean - careful design iteration around multiple dispatch with measured trade-offs is.</p>
 <p>The rest of this post are code snippets in different programming languages and how they look like next to a Julian re-implementation.</p>
@@ -52,7 +52,7 @@
 <p>
 <div style="clear: both"></div><p>Off we go&#33; 🚀</p>
 <h2 id="what_is_dispatch">What is dispatch?</h2>
-<p>To begin our journey, we sould define some terms. Per <a href="https://www.merriam-webster.com/dictionary/dispatch">Merriam-Webster</a>, <code>to dispatch</code> means:</p>
+<p>To begin our journey, we should define some terms. Per <a href="https://www.merriam-webster.com/dictionary/dispatch">Merriam-Webster</a>, <code>to dispatch</code> means:</p>
 <blockquote>
 <p>to send off or away with promptness or speed</p>
 </blockquote>
@@ -71,16 +71,14 @@
 <p>Ok, call what you nee– Aaaaaah, now I get why you&#39;re a walkie-talkie. Clever&#33; <a href="https://fasterthanli.me/series/advent-of-code-2020/part-3">I&#39;ll have to tell my friend Cool Bear</a> about this one...</p>
 <p>At any rate - dispatch sounds simple I guess... but all these programmers from the Object Oriented Land keep asking me about where I stand in <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">inheritance vs composition</a>, and my takeaway was that there&#39;s a lot of terms I <em>thought</em> knew what they meant, but I have to re-learn for all this programming stuff. I guess I&#39;m just not that into Rectangle vs Square debates...</p></div></div></div></p>
 <p>
-<div style="clear: both"></div><p><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
 <p><strong>Dispatch:</strong></p>
-<p>Yup, there&#39;s a lot of fancy words. It can be hard to describe where you are standing to other people because <a href="https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf">the Kingdoms of Nouns</a> monopolized the programming language map-making business decades ago. </p>
+<p>Yup, there&#39;s a lot of fancy words. It can be hard to describe where you are standing to other people because <a href="https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf">the Kingdoms of Nouns</a> monopolized the programming language map-making business decades ago.</p>
 <p>Now it sucks to get directions anywhere.</p>
-<p>But it&#39;s cool - just take a deep breath, and, like a well oiled StepMaster, we&#39;ll do this one step at a time. </p>
+<p>But it&#39;s cool - just take a deep breath, and, like a well oiled StepMaster, we&#39;ll do this one step at a time.</p>
 <p>On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we&#39;re not too far from them in the theory, but the language doesn&#39;t actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.</p></div></div></div></p>
 <p>
-<div style="clear: both"></div>
- </p>
-<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
 <p><strong>miguelito:</strong></p>
 <p>What? No way.</p></div></div></div></p>
 <p>
@@ -254,7 +252,7 @@ Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;licen
 <pre><code class="language-julia-repl">julia&gt; sizeof&#40;1&#41; # This is in bytes, so an Int on my system is 64 bits
 8</code></pre>
 <ol start="3">
-<li><p>Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn&#39;t have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it&#39;s not at all trivial to see those two things and put them together. But don&#39;t take my word for it, hear <strong>them</strong> say why it wasn&#39;t practical then:</p>
+<li><p>Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn&#39;t have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the bureaucratic overhead of the dispatching system, and it&#39;s not at all trivial to see those two things and put them together. But don&#39;t take my word for it, hear <strong>them</strong> say why it wasn&#39;t practical then:</p>
 </li>
 </ol>
 <p><a href="https://youtu.be/OscT4N2qq7o?t&#61;1598"><img src="https://imgur.com/zA72zGB.png" alt="Lisp hackers preaching the Julia gospel" /></a></p>
@@ -272,7 +270,7 @@ f&#40;t&#41;</code></pre></div></div></div></p>
 <p>
 <div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
 <p><strong>miguelito:</strong></p>
-<p>Alright so what I&#39;m really getting here is </p>
+<p>Alright so what I&#39;m really getting here is</p>
 <ol>
 <li><p>I should really, really <a href="https://youtu.be/kc9HwsxE1OY?t&#61;1564">just go watch Stefan&#39;s talk</a>.</p>
 </li>
@@ -283,14 +281,14 @@ f&#40;t&#41;</code></pre></div></div></div></p>
 <p>
 <div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
 <p><strong>Dispatch:</strong></p>
-<p>Yeesh. </p>
+<p>Yeesh.</p>
 <p>Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against &#40;and whose expertise they drew from&#33;&#41;. Julia is the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That&#39;s not a linear process, but I can&#39;t complain, we&#39;re still increasing the <code>SmileFactor</code> of all the things that feel like they should work, and do. Like <a href="https://www.youtube.com/watch?v&#61;EkgCENBFrAY">the REPL</a>.</p></div></div></div></p>
 <p>
 <div style="clear: both"></div><p>Until next time. Toodles. 👋</p>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <h2><em>Note</em>:</h2>
-<p>I created <strong>Dispatch</strong> by copy/pasting the icon from <a href="https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id&#61;1362009&amp;origin&#61;search&amp;k&#61;1618671790997">flaticon.com</a> under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the <strong>Dispatch</strong> merch to <a href="https://donate.doctorswithoutborders.org/onetime.cfm">Doctors without Borders</a>.</p>
+<p>I created <strong>Dispatch</strong> by copy/pasting the icon from <a href="https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id&#61;1362009&amp;origin&#61;search&amp;k&#61;1618671790997">flaticon.com</a> under the terms of their Flaticon License. It is free for personal and commercial purpose with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commercial purposes, please donate a non-trivial part of your profits from the <strong>Dispatch</strong> merch to <a href="https://donate.doctorswithoutborders.org/onetime.cfm">Doctors without Borders</a>.</p>
 <p>Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Frames for her blog posts diving into these similar materials.</p>
 ]]></content:encoded>
         

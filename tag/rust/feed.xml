@@ -24,7 +24,7 @@
     <guid>2</guid>
     <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
     
-    <content:encoded><![CDATA[<h3 id="from_julia_to_rust">From Julia to Rust 🗺 </h3>
+    <content:encoded><![CDATA[<h3 id="from_julia_to_rust">From Julia to Rust 🗺</h3>
 <p>I&#39;ve been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians interested in Rust. I&#39;ve written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a different mindset and tradeoffs that are worth considering.</p>
 <p>I hope you enjoy it.</p>
 <p><a href="https://www.youtube.com/watch?v&#61;drvAftwsTlU">TLDR:</a></p>
@@ -33,22 +33,22 @@
 <p>–Uncle Iroh</p>
 </blockquote>
 <hr />
-<h3 id="why_rust">Why Rust? 🤷 </h3>
-<p>There are 3 talks that sold me on Rust being worth learning, the first is <a href="https://www.youtube.com/watch?v&#61;A3AdN7U24iU">by Carol Nichols</a> and the <a href="https://www.youtube.com/watch?v&#61;cUrggIAPJEs">second is a lecture by Ryan Eberhardt and Armin Nanavari</a>. The first talks about how about ~70&#37; of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how sytems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.</p>
-<p>That&#39;s the point of technology&#33; To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine. </p>
+<h3 id="why_rust">Why Rust? 🤷</h3>
+<p>There are 3 talks that sold me on Rust being worth learning, the first is <a href="https://www.youtube.com/watch?v&#61;A3AdN7U24iU">by Carol Nichols</a> and the <a href="https://www.youtube.com/watch?v&#61;cUrggIAPJEs">second is a lecture by Ryan Eberhardt and Armin Nanavari</a>. The first talks about how about ~70&#37; of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how systems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.</p>
+<p>That&#39;s the point of technology&#33; To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine.</p>
 <p>The third talk that really sold me on Rust was <a href="https://www.usenix.org/conference/enigma2021/presentation/gaynor">Alex Gaynor&#39;s</a>. It&#39;s bad enough that a bank or a school web site could crash because of memory bugs, but once you take into account the fact that not even the best programmers in the world &#40;sorted by salaries, roughly&#41; can ship safe code, you start to despair a little. Then you hear about the incredibly battle-tested libraries like <a href="https://www.helpnetsecurity.com/2021/01/27/cve-2021-3156/">sudo </a> and, as the moral argument goes, you are likely going to put vulnerable people in harm&#39;s way if you keep shipping a broken tool. I buy the urgency of that argument more and more when journalists or human rights advocates get targeted by state actors due to a trivial &#40;but buried&#41; C mistake.</p>
 <p>So that&#39;s the spiel for jumping on the Rust train when I argue with myself in the shower. What&#39;s the Rust&#39;s philosophy?</p>
 <hr />
-<h3 id="informal_introductions_-_tales_of_two_languages">Informal introductions - tales of two languages 📚 </h3>
+<h3 id="informal_introductions_-_tales_of_two_languages">Informal introductions - tales of two languages 📚</h3>
 <p>I will now give 2 hand-wavy historical rehashings of the origins of both languages.</p>
-<p>You might know Julia&#39;s origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man&#39;s version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of <a href="https://youtu.be/lZb2JKhf-mk?t&#61;208">algorithms</a>.</p>
+<p>You might know Julia&#39;s origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man&#39;s version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilities, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of <a href="https://youtu.be/lZb2JKhf-mk?t&#61;208">algorithms</a>.</p>
 <p>Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C&#43;&#43; tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. Eventually, they named the language after the <a href="https://en.wikipedia.org/wiki/Rust_&#40;fungus&#41;">fungus</a>.</p>
 <p>Recap: Julians were sick of unreusable code, niche DSLs and hacky polymorphism. With multiple dispatch as the central design feature they solved those problems. Rustaceans were sick of the C/C&#43;&#43; minefields and trying to keep all the invariants of large, error-prone codebases in their head. The idea of ownership and a borrow checker to know those errors <em>at compile time</em> and be data-race free is what&#39;s got them to where they are now.</p>
 <p>There&#39;s obviously important details missing on both stories - you can get it from proper historians if you like, this is a brief and informal introduction. I will however, mention the other big Rustian idea of affine types when I talk about how they get a version of generic code we&#39;ve come to know and love in Julia land. Spoiler alert: you can get generic code if you pay the price of a Julia runtime, and that&#39;s not something Rustaceans want. If you want generics at compile time, you have to &quot;prove&quot; to the compiler that your types are constrained to some extent, and you relay that information by tacking on affine types to your code.</p>
 <p>That&#39;s enough of an intro, here&#39;s the table of contents.</p>
-<div class="franklin-toc"><ol><li>From Julia to Rust 🗺 </li><li>Why Rust? 🤷 </li><li>Informal introductions - tales of two languages 📚 </li><li>Handy learning materials 🍎🐛 </li><li>What does generic Rustian code look like? 🔍 </li><li>Rustian projects of interest 🥇 </li><li>Optimization walkthroughs 🏃 </li><li>Papercuts and sharp edges ✂ </li><li>Things I wish I&#39;d known earlier 👓 </li><li>Appreciation of Rust things 🦀  </li><li>What Rust can bring to Julia ⚒ </li><li>Acknowledgments 🙌🏻 </li></ol></div>
+<div class="franklin-toc"><ol><li>From Julia to Rust 🗺</li><li>Why Rust? 🤷</li><li>Informal introductions - tales of two languages 📚</li><li>Handy learning materials 🍎🐛</li><li>What does generic Rustian code look like? 🔍</li><li>Rustian projects of interest 🥇</li><li>Optimization walkthroughs 🏃</li><li>Papercuts and sharp edges ✂</li><li>Things I wish I&#39;d known earlier 👓</li><li>Appreciation of Rust things 🦀</li><li>What Rust can bring to Julia ⚒</li><li>Acknowledgments 🙌🏻</li></ol></div>
 <hr />
-<h3 id="handy_learning_materials">Handy learning materials 🍎🐛 </h3>
+<h3 id="handy_learning_materials">Handy learning materials 🍎🐛</h3>
 <p>If for some reason you&#39;ve already decided that learning Rust is a worthy endeavour, here&#39;s my list of resources to learn. I think they are a good resource to follow in approximate order, but use whatever works, and if it doesn&#39;t, skip it.</p>
 <ul>
 <li><p><a href="https://www.rust-lang.org/">The Rust book</a>: Click the link to get started with installation and IDE setup. It pays to read it at least once cover to cover and not fret about coming back to the thorny bits.</p>
@@ -90,7 +90,7 @@
 </ul>
 <hr />
 <p>Alright, so you&#39;re set up to go on a learning journey. What&#39;s Rust look like anyway when compared to Julia?</p>
-<h3 id="what_does_generic_rustian_code_look_like">What does generic Rustian code look like? 🔍 </h3>
+<h3 id="what_does_generic_rustian_code_look_like">What does generic Rustian code look like? 🔍</h3>
 <p>We love composability and multiple dispatch, so let&#39;s look at a short example of how to get the good ol&#39; Julia bang-for-buck, with a 1D point:</p>
 <pre><code class="language-julia">import Base: &#43;
 struct Point&#123;T&lt;:Real&#125;
@@ -102,7 +102,7 @@ a &#43; b # works
 c &#61; Point&#123;Float32&#125;&#40;1.0&#41;
 d &#61; Point&#123;Float32&#125;&#40;2.0&#41;
 c &#43; d # Also works&#33;</code></pre>
-<p>So, in Julia land, how do I get generic code? </p>
+<p>So, in Julia land, how do I get generic code?</p>
 <p>I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like <code>zero&#40;...&#41;</code>, <code>eltype&#40;...&#41;</code>. With the dispatches, I add them to the appropriate subtype with <code>where T&lt;:Foo</code>. If I define the appropriate methods, the others get composed atop of them , so I don&#39;t need to define <code>&#43;&#61;</code> once I&#39;ve defined <code>&#43;</code>. Duck type all the way - when something errors at runtime because I forgot a case &#40;like the fact there&#39;s no type promotion rules above&#41; I just write a function per call I missed and keep hacking on.</p>
 <p>Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.</p>
 <p>Let&#39;s look at the rust example:</p>
@@ -110,22 +110,18 @@ c &#43; d # Also works&#33;</code></pre>
 struct Point&lt;T&gt; &#123;
     val: T
 &#125;impl&lt;T: Add&lt;Output &#61; T&gt;&gt; Add for Point&lt;T&gt; &#123;
-    type Output &#61; Self;
-    
-    fn add&#40;self, b: Self&#41; -&gt; Self::Output &#123;
+    type Output &#61; Self;    fn add&#40;self, b: Self&#41; -&gt; Self::Output &#123;
         Self &#123; val: self.val &#43; b.val &#125;
     &#125;
 &#125;fn main&#40;&#41; &#123;
     let a &#61; Point::&lt;i32&gt;&#123;val: 1&#125;;
-    let b &#61; Point::&lt;i32&gt;&#123;val: 2&#125;;
-    
-    let c &#61; Point::&lt;f32&gt;&#123;val: 1.0&#125;;    println&#33;&#40;&quot;&#123;:?&#125;&quot;, a &#43; b&#41;;
+    let b &#61; Point::&lt;i32&gt;&#123;val: 2&#125;;    let c &#61; Point::&lt;f32&gt;&#123;val: 1.0&#125;;    println&#33;&#40;&quot;&#123;:?&#125;&quot;, a &#43; b&#41;;
     println&#33;&#40;&quot;&#123;:?&#125;&quot;, c &#61;&#61; c&#41;;
 &#125;</code></pre>
 <p>In Rust Land, how do I get a similar generic code?</p>
-<p>I worked on like half of this code and then had to <a href="https://doc.rust-lang.org/std/ops/trait.Add.html">look it up</a>. You can run it in the <a href="https://play.rust-lang.org/?version&#61;stable&amp;mode&#61;debug&amp;edition&#61;2018&amp;gist&#61;e3dd98c60fa0cdebb5f1a582599d3b0d">Rust Playground here</a>. Avid readers will notice the following: </p>
+<p>I worked on like half of this code and then had to <a href="https://doc.rust-lang.org/std/ops/trait.Add.html">look it up</a>. You can run it in the <a href="https://play.rust-lang.org/?version&#61;stable&amp;mode&#61;debug&amp;edition&#61;2018&amp;gist&#61;e3dd98c60fa0cdebb5f1a582599d3b0d">Rust Playground here</a>. Avid readers will notice the following:</p>
 <ol>
-<li><p>Damn, that&#39;s a lot of boilerplate. 😣 </p>
+<li><p>Damn, that&#39;s a lot of boilerplate. 😣</p>
 </li>
 <li><p>To get generics, you need a <code>struct</code> for your type, an <code>impl&lt;T&gt; &#36;TRAIT for Point&lt;T&gt;</code> block where the <code>add</code> function is defined, and type annotations like <code>Self::Output</code>, <code>Add&lt;Output &#61; T&gt;</code>.</p>
 </li>
@@ -136,20 +132,20 @@ struct Point&lt;T&gt; &#123;
 <li><p>Oh, those <code>#&#91;things&#40;above_the_struct&#41;&#93;</code> are also macros. I still don&#39;t know how they&#39;re different, but they seem to affect how the compiler interacts with the crate too. Since some traits &#40;like the ones for copying or printing&#41; are so boilerplate heavy and predictable, you can get some behaviour for &quot;free&quot; if you add the right <code>#&#91;derive&#40;...&#41;&#93;</code> stuff in the declaration. That&#39;s how the <code>c &#61;&#61; c</code> works actually, it&#39;s due to the <code>PartialEq</code>.</p>
 </li>
 </ol>
-<p>The main workflow feels like this: </p>
+<p>The main workflow feels like this:</p>
 <p>Slap a <code>&lt;T&gt;</code> in front of your struct and the fields you want it to be generic over. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn&#39;t compile? See what <code>rustc</code> says and try and tack it on some traits; maybe you missed an affine type with <code>impl&lt;T: Foo&gt;</code> or the <code>Self::Output</code> - the compiler guides you through patching up your code. If you&#39;re asking for some generic behaviour, the compiler will complain and you&#39;ll have to add another trait implementation so that <em>it is damn sure</em> you&#39;re allowed to continue.</p>
 <p>I also chose a particularly easy example: there&#39;s no associated data &#40;like a string&#41; in my <code>Point&lt;T&gt;</code>, so I don&#39;t need to prove to the compiler that my data doesn&#39;t outlive its uses - those are <code>lifetimes</code>, and they can get hairy, fast, but you&#39;ll run into them eventually. I also don&#39;t know how easily you could handle multiple generic types and the compile time penalties associated with them.</p>
 <p>There&#39;s more syntax up front compared to Julia, and not just because we&#39;re writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with <code>match</code>, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...</p>
 <p>Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price. They might not be right for every use case but they&#39;re a solid investment.</p>
 <hr />
-<h3 id="rustian_projects_of_interest">Rustian projects of interest 🥇 </h3>
+<h3 id="rustian_projects_of_interest">Rustian projects of interest 🥇</h3>
 <p>There&#39;s a steep wall to climb when starting out with Rust - however, they&#39;ve nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of &quot;We weren&#39;t missing a sufficiently smart compiler, but a more empathetic one&quot;.</p>
-<p>Alright, so what&#39;s the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it&#39;s weight against the established candidates? </p>
+<p>Alright, so what&#39;s the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it&#39;s weight against the established candidates?</p>
 <p>Here&#39;s a list of all the projects that I&#39;ve found particularly of note to Julians.</p>
 <ul>
-<li><p><a href="https://github.com/rayon-rs/rayon">rayon</a> is the original reason I got interested in Rust. Check their <a href="https://github.com/rayon-rs/rayon#parallel-iterators-and-more">hello world</a> - the promise is that if you are using iterators, you can swap &#40;mostly&#41; <code>iter&#40;&#41;</code> for <code>par_iter&#40;&#41;</code> and at compile time you can know if your code will run in parallel. That&#39;s just about the friendliest user interface to parallelism besides <code>Threads.@threads</code>, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the <a href="https://youtu.be/gof_OEv71Aw?t&#61;1184">same idea for work stealing thread scheduler</a> that Julia&#39;s parallel task run time system uses &#40;inspired by Cilk, get it? &#39;Cuz Rayon is a fake silk? Ha...&#41;. </p>
+<li><p><a href="https://github.com/rayon-rs/rayon">rayon</a> is the original reason I got interested in Rust. Check their <a href="https://github.com/rayon-rs/rayon#parallel-iterators-and-more">hello world</a> - the promise is that if you are using iterators, you can swap &#40;mostly&#41; <code>iter&#40;&#41;</code> for <code>par_iter&#40;&#41;</code> and at compile time you can know if your code will run in parallel. That&#39;s just about the friendliest user interface to parallelism besides <code>Threads.@threads</code>, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the <a href="https://youtu.be/gof_OEv71Aw?t&#61;1184">same idea for work stealing thread scheduler</a> that Julia&#39;s parallel task run time system uses &#40;inspired by Cilk, get it? &#39;Cuz Rayon is a fake silk? Ha...&#41;.</p>
 </li>
-<li><p><a href="https://github.com/tokio-rs/tokio">tokio</a> deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though&#33; </p>
+<li><p><a href="https://github.com/tokio-rs/tokio">tokio</a> deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though&#33;</p>
 </li>
 </ul>
 <p><em>NB</em>: It is non-trivial to compose <code>rayon</code> and <code>tokio</code> codes.</p>
@@ -160,7 +156,7 @@ struct Point&lt;T&gt; &#123;
 </li>
 <li><p><a href="https://zaiste.net/posts/shell-commands-rust/">Rust CLI</a>: Rust people feel comfortable working in the terminal, and they&#39;ve taken that user experience Very Seriously and have a top notch performance and user experience for their command line CLIs. Here&#39;s a few of my favorites - you only need to <code>cargo install foo</code> and they should be properly installed on your system.</p>
 <ul>
-<li><p><a href="https://github.com/BurntSushi/ripgrep">rg</a>: SIMDified grep replacemnt tool &#40;for some use cases&#41;. Includes colors&#33;</p>
+<li><p><a href="https://github.com/BurntSushi/ripgrep">rg</a>: SIMDified grep replacement tool &#40;for some use cases&#41;. Includes colors&#33;</p>
 </li>
 <li><p><a href="https://github.com/sharkdp/bat">bat</a>: cat clone with tons more built-in syntax highlighting.</p>
 </li>
@@ -204,7 +200,7 @@ struct Point&lt;T&gt; &#123;
 <p>There&#39;s oodles more. Check out <a href="https://www.crates.io">crates.io</a> or <a href="https://lib.rs">lib.rs</a> if you want to explore more &#40;this is their community based JuliaHub equivalent&#41;.</p>
 <p>I&#39;ll make a special note of <a href="https://github.com/google/evcxr">evcxr</a>, a Rust REPL. For now, I don&#39;t think it&#39;s profitable to use Rust with a REPL-like workflow. I&#39;m too used to that in Julia, and that works well there, but I think there&#39;s a risk of digging yourself into a &quot;Everything must be a REPL&quot; mentality and cutting yourself off from learning opportunities. In Rust land, I don&#39;t mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that&#39;s the package that I wanted to learn when I bought into Rust, I don&#39;t mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I&#39;d love to be wrong on this down the road.</p>
 <hr />
-<h3 id="optimization_walkthroughs">Optimization walkthroughs 🏃 </h3>
+<h3 id="optimization_walkthroughs">Optimization walkthroughs 🏃</h3>
 <p>If you want to dive deep into nitty gritty performance fundamentals, these are the best guides I found for explaining the tradeoffs, gotchas, mental model, and engineering for those tasty, tasty flops.</p>
 <ol>
 <li><p><a href="http://www.frankmcsherry.org/assets/COST.pdf">COST paper</a>: Maybe doesn&#39;t fit here but this is one of my favorite papers and everyone should read it.</p>
@@ -221,7 +217,7 @@ struct Point&lt;T&gt; &#123;
 </li>
 </ol>
 <hr />
-<h3 id="papercuts_and_sharp_edges">Papercuts and sharp edges ✂ </h3>
+<h3 id="papercuts_and_sharp_edges">Papercuts and sharp edges ✂</h3>
 <p>So Rust is &quot;worth learning&quot;, but these are roadblocks that I faced and would warn others about to save them some grief.</p>
 <ul>
 <li><p>You can learn another hobby waiting for Rust projects to compile. The price for compile-time guarantees/being the designated driver in the codebase is offloading more work to the compiler. They&#39;re working on leveraging concurrency for speeding up the pipeline, and it&#39;s gotten better. Let&#39;s just say they also suffer from TTFP 😉 .</p>
@@ -279,7 +275,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ul>
 <hr />
-<h3 id="things_i_wish_id_known_earlier">Things I wish I&#39;d known earlier 👓 </h3>
+<h3 id="things_i_wish_id_known_earlier">Things I wish I&#39;d known earlier 👓</h3>
 <p>These could have helped me settle down into a more productive workflow sooner. Get a buddy that knows Rust to see you code to figure most of these out.</p>
 <ol>
 <li><p>If you can, avoid the examples with Strings and &amp;str. Yes, they&#39;re a great motivation for systems people for all the gnarly use-after free and double-free and memory-leak examples - stick with numerical algorithms first, to get the gist of ownership, try and do some exercisms with iterators and Strings will be much easier to get after that. I don&#39;t think it&#39;s worth worrying about at first unless your target is systems.</p>
@@ -310,7 +306,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="appreciation_of_rust_things">Appreciation of Rust things 🦀  </h3>
+<h3 id="appreciation_of_rust_things">Appreciation of Rust things 🦀</h3>
 <p>These are things the Rust people have nailed down.</p>
 <ol>
 <li><p>Ferris the crab is too cute.</p>
@@ -331,7 +327,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="what_rust_can_bring_to_julia">What Rust can bring to Julia ⚒ </h3>
+<h3 id="what_rust_can_bring_to_julia">What Rust can bring to Julia ⚒</h3>
 <ol>
 <li><p>A model of governance. The Rust community is at least 10x the size of Julia, and it&#39;s unclear that adding more hats to the same <code>TruckFactorCritical</code> people would help. That said, it&#39;d be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don&#39;t think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don&#39;t see what is lost from learning from them.</p>
 </li>
@@ -343,9 +339,9 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="acknowledgments">Acknowledgments 🙌🏻 </h3>
+<h3 id="acknowledgments">Acknowledgments 🙌🏻</h3>
 <ul>
-<li><p>Thanks to <code>Jubilee</code> for feedback on this post and the following corrections: </p>
+<li><p>Thanks to <code>Jubilee</code> for feedback on this post and the following corrections:</p>
 <ul>
 <li><p>Rust does not necessarily have an RC GC but a <a href="https://en.wikipedia.org/wiki/Region-based_memory_management">region based GC</a>. You can opt into the RC GC with <code>Arc</code> and <code>Rc</code> types.</p>
 </li>

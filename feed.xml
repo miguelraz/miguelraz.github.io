@@ -78,7 +78,7 @@
 </ul>
 <h3 id="scripting">Scripting</h3>
 <p>online REPL or download BQN repo and open with browser <code>BQN/docs/try.html</code> from their github repo.</p>
-<p>Everything in green is a function Everything in yellow is a 1 modifier Everything in purple/pink is a 2 modifer</p>
+<p>Everything in green is a function Everything in yellow is a 1 modifier Everything in purple/pink is a 2 modifier</p>
 <p>Defining <code>Hi</code> function</p>
 <h3 id="repl_duel">REPL Duel</h3>
 <ul>
@@ -163,7 +163,7 @@ julia&gt; sol&#40;x&#41;;</code></pre>
 </li>
 </ol>
 <h3 id="notes_and_words_of_caution">Notes and words of caution</h3>
-<p>The syntax and symbols of BQN is a big &quot;love it or hate it&quot; part of the deal. I won&#39;t try to convince you to <em>like it</em>, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does:     * <code>≡&quot;abc&quot;</code> will give you the &quot;depth&quot; of something, because it looks like a little ladder that you descend     * <code>⌈</code> is taking the &quot;highest&quot; value &#40;and is thus the max&#41;, <code>⌊</code> is taking the &quot;lowest&quot;     * <code>&#43;´</code> will be dragging all the stuff to the right of the tick towards the <code>&#43;</code>, so it&#39;s a reduction     * <code>&#43;&#96;</code> If you use the tick the other way, you will be dragging the <code>&#43;</code><em>towards</em> the stuff on the right, so it&#39;s a <code>scan</code>, from left to right.    These are just the examples that come to mind, but I&#39;ve found &#40;completely subjectively&#41; for BQN&#39;s symbology to be a bit friendlier/more consistent than APL&#39;s. Be mindful that the <code>‿</code> character to denote lists is not the same as that of arrays. The <a href="https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets">docs say that</a> newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:</p>
+<p>The syntax and symbols of BQN is a big &quot;love it or hate it&quot; part of the deal. I won&#39;t try to convince you to <em>like it</em>, but I have found it much easier to take a silly, mnemonic based approach to what each symbol does:     * <code>≡&quot;abc&quot;</code> will give you the &quot;depth&quot; of something, because it looks like a little ladder that you descend     * <code>⌈</code> is taking the &quot;highest&quot; value &#40;and is thus the max&#41;, <code>⌊</code> is taking the &quot;lowest&quot;     * <code>&#43;´</code> will be dragging all the stuff to the right of the tick towards the <code>&#43;</code>, so it&#39;s a reduction     * <code>&#43;&#96;</code> If you use the tick the other way, you will be dragging the <code>&#43;</code><em>towards</em> the stuff on the right, so it&#39;s a <code>scan</code>, from left to right.   These are just the examples that come to mind, but I&#39;ve found &#40;completely subjectively&#41; for BQN&#39;s symbology to be a bit friendlier/more consistent than APL&#39;s. Be mindful that the <code>‿</code> character to denote lists is not the same as that of arrays. The <a href="https://mlochbaum.github.io/BQN/doc/arrayrepr.html#brackets">docs say that</a> newbies usually start out with these for easy manipulation examples and gradually move on to explicit array notation with the fancy brackets:</p>
 <pre><code class="language-bqn">3 1⊸&#43;⊸× 5
 20
     3‿1⊸&#43;⊸× 5
@@ -250,7 +250,7 @@ nums ← •BQN¨ lines</code></pre>
 <p>
 <div style="clear: both"></div>]]></content:encoded>
         
-    <pubDate>Thu, 29 Aug 2024 00:00:00 +0000</pubDate>    
+    <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>    
     
                 
 </item>
@@ -268,23 +268,23 @@ nums ← •BQN¨ lines</code></pre>
 <hr />
 <h2 id="23022024">23/02/2024</h2>
 <p>Only added stubs for where <code>ISD::&#91;US&#93;CMP</code> will go in the <code>LegalizerDAG.cpp</code>. Some code is better than no code&#33;</p>
-<h2 id="22022024">22/02/2024 </h2>
+<h2 id="22022024">22/02/2024</h2>
 <p>Back from exams. I let my mentors know I wouldn&#39;t be around for a few and would come back later.</p>
 <p>Omg Nori taught me how to use vim marks &#40;even within VSCode&#41;. <code>ma</code> will set a mark <code>a</code> and <code>&#39;a</code> lets you jump back to it. If you set an uppercase one, it&#39;s GLOBAL and you can jump between files&#33;</p>
 <h2 id="19022024">19/02/2024</h2>
 <p>Got feedback for the proposal. Seems people like not reading ChatGPT scripts, whodathunkit. Aggregated suggestions and sent it off. Should update if I get more updates.</p>
 <p>Also, rebased the next step of the PR, which is merging into the <a href="https://github.com/llvm/llvm-project/pull/85822">SelectionDAG</a></p>
 <p>Alright, pushed some code that probably fails on everything but can&#39;t get more brainpower on learning the casting RTTI APIs today.</p>
-<h2 id="18022024">18/02/2024 </h2>
+<h2 id="18022024">18/02/2024</h2>
 <p>IT GOT MERGED&#33;</p>
 <p>I wrote up the draft proposal, and sent it for feedback from the mentors.</p>
 <p>Tomorrow I&#39;ll try to get started on the next steps of the proposal and send a dummy PR to get to the good stuff.</p>
-<h2 id="17022024">17/02/2024 </h2>
+<h2 id="17022024">17/02/2024</h2>
 <p>Actually just rested yesterday. &#39;Twas good. Today I&#39;ll do some  light reading.</p>
 <ul>
 <li><p><code>isa&lt;&gt;, cast&lt;&gt;, dyn_cast&lt;&gt;</code> templates</p>
 <ul>
-<li><p><code>isa&lt;&gt;</code> returns <code>true/false</code> if it&#39;s an instance of the specified class </p>
+<li><p><code>isa&lt;&gt;</code> returns <code>true/false</code> if it&#39;s an instance of the specified class</p>
 </li>
 <li><p><code>cast&lt;&gt;</code> is a &quot;checked cast&quot;</p>
 </li>
@@ -292,7 +292,7 @@ nums ← •BQN¨ lines</code></pre>
 </li>
 </ul>
 </li>
-<li><p><code>STringRef</code> and <code>Twine</code> - <code>Value</code> class and <code>StringMap</code> must be generic over null chars, can&#39;t take a <code>const char*</code></p>
+<li><p><code>StringRef</code> and <code>Twine</code> - <code>Value</code> class and <code>StringMap</code> must be generic over null chars, can&#39;t take a <code>const char*</code></p>
 </li>
 <li><p>Error handling: abort early, use <code>assert&#40;cond &amp;&amp; &quot;you done goofed&quot;&#41;;</code></p>
 </li>
@@ -308,7 +308,7 @@ nums ← •BQN¨ lines</code></pre>
 </li>
 </ul>
 <pre><code class="language-julia">LLVM_DEBUG&#40;dbgs&#40;&#41; &lt;&lt; &quot;I am here&#33;\n&quot;&#41;;</code></pre>
-<p>and then </p>
+<p>and then</p>
 <pre><code class="language-julia">&#36; opt &lt; a.bc &gt; /dev/null -mypass
 &lt;no output&gt;
 &#36; opt &lt; a.bc &gt; /dev/null -mypass -debug
@@ -319,20 +319,20 @@ I am here&#33;</code></pre>
 <li><p>stopped at picking the right data structure.</p>
 </li>
 </ul>
-<h2 id="16022024">16/02/2024 </h2>
+<h2 id="16022024">16/02/2024</h2>
 <p>Start: read LLVM Programmer&#39;s Manual, then start with some local changes to the SelectionDAG.</p>
 <h2 id="15022024">15/02/2024</h2>
-<p>Derp, I kept getting &quot;undefined intrinsics&quot; errors when running FileCheck like </p>
+<p>Derp, I kept getting &quot;undefined intrinsics&quot; errors when running FileCheck like</p>
 <pre><code class="language-julia">&gt; ../../../build/bin/opt -S -passes&#61;verify 2&gt;&amp;1 intrinsic-cmp.ll | FileCheck intrinsic-cmp.ll</code></pre>
 <p>... because I had to rebuild LLVM and have the new <code>opt</code> pick it up. Once that happened, even the new <code>llvm-lit</code> passed :D</p>
 <p>I also had to remove the <code>CHECK-LABEL</code>, still not sure why. Lemme read that for a bit.</p>
 <p>Also, I should update <code>mold</code> - it failed with an unknown <code>--long-plt</code> option.</p>
-<p>Here&#39;s my LLVM build instruction: </p>
+<p>Here&#39;s my LLVM build instruction:</p>
 <pre><code class="language-julia">&gt; cmake -S . -B build -G Ninja -DLLVM_TARGETS_TO_BUILD&#61;X86 -DBUILD_SHARED_LIBS&#61;ON -DCMAKE_BUILD_TYPE&#61;Debug -DLLVM_OPTIMIZED_TABLEGEN&#61;ON -DLLVM_USE_NEWPM&#61;ON -DLLVM_USE_SPLIT_DWARF&#61;ON -DLLVM_PARALLEL_LINKER_JOBS&#61;10 -DLLVM_PARALLEL_COMPILE_JOBS&#61;10
 &gt; mold -run ninja -C .</code></pre>
 <p>Windows builders take freakin&#39; forever to run.</p>
 <ul>
-<li><p>Coding Standards </p>
+<li><p>Coding Standards</p>
 <ul>
 <li><p>prefer <code>llvm::DenseMap</code> over <code>std::unordered_map</code> and similar. No std IO plz.</p>
 </li>
@@ -354,7 +354,7 @@ for &#40;auto Val : Container&#41; &#123; Val.change&#40;&#41;; saveSomewhere&#4
 for &#40;const auto *Ptr : Container&#41; observe&#40;*Ptr&#41;;
 for &#40;auto *Ptr : Container&#41; Ptr-&gt;change&#40;&#41;;</code></pre>
 <p>* use early returns, specially in loops:</p>
-<pre><code class="language-julia">// not this 
+<pre><code class="language-julia">// not this
 for &#40;Instruction &amp;I : BB&#41; &#123;
   if &#40;auto *BO &#61; dyn_cast&lt;BinaryOperator&gt;&#40;&amp;I&#41;&#41; &#123;
     Value *LHS &#61; BO-&gt;getOperand&#40;0&#41;;
@@ -364,15 +364,15 @@ for &#40;Instruction &amp;I : BB&#41; &#123;
     &#125;
   &#125;
 &#125;
-// prefer this 
+// prefer this
 for &#40;Instruction &amp;I : BB&#41; &#123;
   auto *BO &#61; dyn_cast&lt;BinaryOperator&gt;&#40;&amp;I&#41;;
   if &#40;&#33;BO&#41; continue;  Value *LHS &#61; BO-&gt;getOperand&#40;0&#41;;
   Value *RHS &#61; BO-&gt;getOperand&#40;1&#41;;
   if &#40;LHS &#61;&#61; RHS&#41; continue;  ...
 &#125;</code></pre>
-<p>* other good tips for no *else* after a *return* 
-* turn predicate loops into functions 
+<p>* other good tips for no *else* after a *return*
+* turn predicate loops into functions
 * assert liberally&#33; you may find other people&#39;s bugs&#33; <code>assert&#40;Ty-&gt;isPointerType&#40;&#41; &amp;&amp; &quot;Can&#39;t allocate a non-pointer type&#33;&quot;&#41;;</code>
 * consider <code>llvm::unreachable&#40;&quot;invalid radix for integer literal&quot;&#41;</code>
 * never <code>using namespace std</code>
@@ -380,7 +380,7 @@ for &#40;Instruction &amp;I : BB&#41; &#123;
 <pre><code class="language-julia">// not this
 BasicBlock *BB &#61; ...
 for &#40;auto I &#61; BB-&gt;begin&#40;&#41;; I &#33;&#61; BB-&gt;end&#40;&#41;; &#43;&#43;I&#41;
-  ... use I ...// prefer this 
+  ... use I ...// prefer this
 BasicBlock *BB &#61; ...
 for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#33;&#61; E; &#43;&#43;I&#41;
   ... use I ...</code></pre>
@@ -392,13 +392,13 @@ for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#
 <p>BIG ALERT&#33; We&#39;re passing all tests and Nikita says &quot;LGTM&#33;&quot; Huzzahhh&#33;</p>
 <p>I finished reading the Coding Standards and will now read the LLVM Programmer&#39;s Manual.</p>
 <p>Afternoon: only 1 reviewer missing approval&#33;</p>
-<h2 id="14022024">14/02/2024 </h2>
+<h2 id="14022024">14/02/2024</h2>
 <p>It&#39;s close to finishingggggggggg</p>
-<p>Nikita mentioned the <a href="https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly">CodingStandars</a>, I&#39;ll give that a read in a bit.</p>
+<p>Nikita mentioned the <a href="https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly">CodingStandards</a>, I&#39;ll give that a read in a bit.</p>
 <p>In <code>FileCheck</code> unit tests, it&#39;s just 2 spaces, not tabs or 4 spaces.</p>
 <p>Dhruv recommends using <code>git clang-format</code> or <code>Format Modified Lines</code> in VSCode.</p>
 <p>I only have to make <code>FileCheck</code> pass now and Nikita says it should be good&#33;</p>
-<h2 id="13022024">13/02/2024 </h2>
+<h2 id="13022024">13/02/2024</h2>
 <p>OK, I just saw that both Nikita Popov and Dhruv Chawla are listed as mentors for the project. Should try and reach out before the application period begins.</p>
 <p>Nikita commented that there&#39;s two good places to look into &#40;which I should do meanwhile&#41;:</p>
 <ul>
@@ -407,7 +407,7 @@ for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#
 <li><p>The good first issues on the github tracker, which probably are good to look into.</p>
 </li>
 </ul>
-<h3 id="notes_on_the_selectiondag">Notes on the SelectionDAG </h3>
+<h3 id="notes_on_the_selectiondag">Notes on the SelectionDAG</h3>
 <ul>
 <li><p>GlobalISel and SelectionDAG both translated LLVM code to target specific machine instructions.</p>
 </li>
@@ -415,11 +415,11 @@ for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#
 </li>
 <li><p>SDAGs represent Machine Value Types and DataFlow types. Dataflow types provide ordering.</p>
 </li>
-<li><p>Legal vs illegal DAG: only use supported ops on supported types </p>
+<li><p>Legal vs illegal DAG: only use supported ops on supported types</p>
 </li>
 <li><p>SDAG phases: build, optimize, legalizeTypes, optimize, legalize, select instructions, scheduling       * common to use <code>-debug-only&#61;isel/-dump</code> and <code>-filter-print-funcs&#61;&lt;function-name&gt;</code></p>
 <ul>
-<li><p>several flags can print SDAG after each pass </p>
+<li><p>several flags can print SDAG after each pass</p>
 </li>
 </ul>
 </li>
@@ -431,16 +431,16 @@ for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#
 <p>After a few hours of noodling with PR reviews, it&#39;s clear I gotta jump on a next one/help PR review some other people. Maybe it&#39;s not great to go full mercenary on every <code>good-first-issue</code> and try and help others along the way.</p>
 <p><code>ParticleSwarmOptimization</code> was kind enough in the <code>LLVM/beginners</code> Discord chat to point out that I should have a full build of LLVM and then run <code>llvm-lit</code> from there on a unit test. Sure enough, that let me do <code>gh pr checkout 84903</code> and then <code>LIT llvm/test/CodeGen/AArch64/hadd-combine.ll</code> to check that a unit test properly ran. Now I can help verify my own and other people&#39;s PRs&#33; yay&#33;</p>
 <p>That seems like enough for today, I&#39;ll hunt for some good issues tomorrow.</p>
-<h2 id="12022024">12/02/2024 </h2>
+<h2 id="12022024">12/02/2024</h2>
 <p>Did a bunch of very quick fixes and got some neat feedback.</p>
-<h2 id="11022024">11/02/2024 </h2>
-<p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR.  Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the  invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p>
+<h2 id="11022024">11/02/2024</h2>
+<p>Ohhhhhh neat&#33; Got some really fast feedback this time around on stray newlines and a couple fixes on the PR. Things are moving faster and faster&#33; I <em>think</em> I&#39;m only missing adding some <code>FileCheck</code> tests for the invariants under the <code>Verifier.cpp</code> stuff that isn&#39;t handled by <code>Intrinsics.td</code> but that sounds about it&#33;</p>
 <p><a href="https://llvm.org/docs/CommandGuide/FileCheck.html">FileCheck</a> reading I&#39;ll do for a bit.</p>
 <p>Note: If you are going to check multiple things in a single file, use a <code>CHECK-LABEL</code> to avoid spurious matches.</p>
-<p>Sometimes, a <code>CHECK-NEXT</code> is useful as the last unit test. </p>
+<p>Sometimes, a <code>CHECK-NEXT</code> is useful as the last unit test.</p>
 <p>Learned the LLVMIR verbose call syntax goes &#40;gotta include types in call site&#41;.</p>
 <p>That should do it for today, see y&#39;all tomorrow.</p>
-<h2 id="10022024">10/02/2024 </h2>
+<h2 id="10022024">10/02/2024</h2>
 <p>Plan for today: Read the IR Verifier, add code to it if needed, then work on adding to SDAG node.</p>
 <p>IR Verifier code: It&#39;s under <code>llvm/IR/Verifier.h</code> and <code>llvm/IR/Verifier.cpp</code>.</p>
 <p>Ok, read the code for a bit. What I&#39;m interested in in <code>Verifier.cpp</code> is the huge switch statement towards the end of the file where the verification of intrinsics happens.</p>
@@ -458,13 +458,13 @@ for &#40;auto I &#61; BB-&gt;begin&#40;&#41;, E &#61; BB-&gt;end&#40;&#41;; I &#
 class TargetLowering : public TargetLoweringBase &#123;</code></pre>
 <p>Updated the PR to not include a dirty file from the <code>ValueTracking.cpp</code> unit tests.</p>
 <p>Sweet, rebased the <code>spaceship-intrinsic</code> branch changes into a new one.</p>
-<p>Now I can go for </p>
+<p>Now I can go for</p>
 <pre><code class="language-julia">lib/CodeGen/SelectionDAG/SelectionDAG.cpp:Add code to print the node to getOperationName. If your new node can be
 evaluated at compile time when given constant arguments &#40;such as an add of a constant with another constant&#41;, find the getNode method that takes the appropriate number of arguments, and add a case for your node to the switch statement that performs constant folding for nodes that take the same number of arguments as your new node.</code></pre>
 <p>Which gives on Line 6629 of <code>SelectionDAG.cpp</code></p>
 <pre><code class="language-julia">SDValue SelectionDAG::getNode&#40;unsigned Opcode, const SDLoc &amp;DL, EVT VT,
                               SDValue N1, SDValue N2, const SDNodeFlags Flags&#41; &#123;</code></pre>
-<p>where I can add an <code>case ISD::UCMP</code>/<code>case ISD::SCMP</code>. </p>
+<p>where I can add an <code>case ISD::UCMP</code>/<code>case ISD::SCMP</code>.</p>
 <p>Oh wow, having VSCode let me just hover over a type and give me info is amazing.</p>
 <p>Alright, did some good work today I think.</p>
 <hr />
@@ -472,18 +472,18 @@ evaluated at compile time when given constant arguments &#40;such as an add of a
 <pre><code class="language-julia">def int_scmp : DefaultAttrsIntrinsic&lt;
     &#91;llvm_anyint_ty&#93;, &#91;llvm_anyint_ty, LLVMMatchType&lt;1&gt;&#93;,
     &#91;IntrNoMem, IntrSpeculatable, IntrWillReturn&#93;&gt;;</code></pre>
-<p>for the <code>Intrinsics.td</code> so that we can have a &quot;result type overload over a fixed type&quot; and then </p>
+<p>for the <code>Intrinsics.td</code> so that we can have a &quot;result type overload over a fixed type&quot; and then</p>
 <blockquote>
 <p>and then add a check in Verifier.cpp that a&#41; the return type and the first argument type have the same number of elements &#40;if they are vectors&#41; and b&#41; the return scalar type has width at least 2.</p>
 </blockquote>
-<p>So I&#39;ve pushed a commit already to have the <code>Intrinsics.td</code> that way and I will now add a case to the <code>Verifier.cpp</code> in the <code>void Verifier::visitIntrinsicCall&#40;Intrinsic::ID ID, CallBase &amp;Call&#41; &#123;</code> to add </p>
+<p>So I&#39;ve pushed a commit already to have the <code>Intrinsics.td</code> that way and I will now add a case to the <code>Verifier.cpp</code> in the <code>void Verifier::visitIntrinsicCall&#40;Intrinsic::ID ID, CallBase &amp;Call&#41; &#123;</code> to add</p>
 <p>&#40;Many hours later&#41; Put in a good first effort into the <code>Verifier.cpp</code> cases for <code>Intrinsic::scmp/ucmp</code>. It&#39;s probably a bit boneheaded but I&#39;ve been getting really good and fast feedback on the PRs, so I feel encouraged to keep the hot streak going.</p>
 <h2 id="09022024">09/02/2024</h2>
 <p>Lost the renaming battle to standard practices. Can&#39;t complain. Updated the PR to reflect that.</p>
 <p>Now, reading the <a href="https://github.com/llvm/llvm-project/blob/release/17.x/llvm/lib/Transforms/Scalar/DCE.cpp">DCE</a> pass code.</p>
 <p>Ok, Andrzej Warzyński did <a href="https://www.youtube.com/watch?v&#61;ar7cJl2aBuU">an incredibly useful tutorial</a> for <code>llvm-tutor</code>.</p>
 <p>I&#39;ll try writing the Transformation pass, since it&#39;s closes to what I need.</p>
-<p>Notes:     * <code>LLVM_DEBUG</code> is super useful. </p>
+<p>Notes:     * <code>LLVM_DEBUG</code> is super useful.</p>
 <pre><code class="language-julia">#include &quot;llvm/ADT/Statistic.h&quot;
 #include &quot;llvm/Support/Debug.h&quot;#define DEBUG_TYPE &quot;mba-add&quot;
 STATISIC&#40;SubstCount, &quot;The # of substituted instructions&quot;</code></pre>
@@ -508,19 +508,19 @@ STATISIC&#40;SubstCount, &quot;The # of substituted instructions&quot;</code></p
 </li>
 <li><p>Rely on CMake&#39;s <code>find_package</code> and add sanity-checks to your scripts&#33;</p>
 </li>
-<li><p>LLDB is your friend </p>
+<li><p>LLDB is your friend</p>
 </li>
 </ul>
 <pre><code class="language-julia">lldb -- &#36;LLVM_DIR/bin/opt -load-pass-plugin lib/libMyPass.so -passes&#61;my-pass -S dummy.ll
-&#40;lldb&#41; b MyPass::run 
+&#40;lldb&#41; b MyPass::run
 &#40;lldb&#41; r</code></pre>
 <p>Finally: started a branch called <code>scmp-and-ucmp</code> and I&#39;ll start trying out changes there whilst people make up their minds.</p>
-<h2 id="8022024">8/02/2024 </h2>
+<h2 id="8022024">8/02/2024</h2>
 <p>Jyn strikes again and sometimes you can just do <code>make</code> after <code>cmake</code> because some stuff is optional.</p>
 <p>Otherwise, install:</p>
 <pre><code class="language-julia">sudo apt install libzstd-dev libcurl4-openssl-dev libedit-dev</code></pre>
 <p>to get rolling.</p>
-<p>Once you do </p>
+<p>Once you do</p>
 <pre><code class="language-julia"># Run the pass
 &#36;LLVM_DIR/bin/opt -load-pass-plugin ./libHelloWorld.&#123;so|dylib&#125; -passes&#61;hello-world -disable-output input_for_hello.ll
 # Expected output
@@ -534,17 +534,17 @@ STATISIC&#40;SubstCount, &quot;The # of substituted instructions&quot;</code></p
 &#40;llvm-tutor&#41;   number of arguments: 2</code></pre>
 <p>using <code>-disable-output</code> means no bitcode gets produced.</p>
 <p>Passes come in 3 flavors, mostly: Analysis, Transformations and CFG manipulations.</p>
-<p>Note that <code>clang</code> adds the <code>optnone</code> function attribute if 1&#41; no opt level is specified or <code>-O0</code> is specified. </p>
+<p>Note that <code>clang</code> adds the <code>optnone</code> function attribute if 1&#41; no opt level is specified or <code>-O0</code> is specified.</p>
 <p>Ah, forgot to run the <code>cmake .. -&gt; mold -run make -j</code> and had some passes missing. Derp.</p>
 <p>Minutes lost to cmake bullshit: 60.</p>
 <p>Oh sweet&#33; I just learned that I can write an injection pass that will give me a new binary and it will print out cool analysis info.</p>
 <p>Also, if I get an instrumented binary I can just use <code>lli</code> to interpret the <code>.ll</code> file directly.</p>
-<p>You can also build a static binary that will run that analysis for you&#33; </p>
+<p>You can also build a static binary that will run that analysis for you&#33;</p>
 <p>Ran a bunch of passes with <code>opt</code> and friends. Transformation passes will normally inherit from <code>PassInfoMixin</code>.</p>
 <p>Analysis Passes will inherit from <code>AnalysisInfoMixin</code>.</p>
 <p>Ok, cool I an outdated example in llvm-tutor <a href="https://github.com/banach-space/llvm-tutor/pull/111">in the examples</a> and sent a PR for it.</p>
 <p>Tomorrow I shall dive into those optimization passes at the end and hopefully run some good <code>lit</code> tests.</p>
-<h2 id="7022024">7/02/2024 </h2>
+<h2 id="7022024">7/02/2024</h2>
 <p>Alright, did some good catchup on the semester and pushed the <a href="https://discourse.llvm.org/t/rfc-add-3-way-comparison-intrinsics/76685/7?u&#61;miguelraz">PR forward a bit</a>.</p>
 <p>I also had an awesome &quot;uniwtting tourist&quot; genius moment by pointing out the return type could be different than what Nikita had thought of.</p>
 <p>Today I setup my environment with</p>
@@ -553,24 +553,24 @@ sudo apt-add-repository &quot;deb http://apt.llvm.org/jammy/ llvm-toolchain-jamm
 sudo apt-get update
 sudo apt-get install -y llvm-17 llvm-17-dev llvm-17-tools clang-17</code></pre>
 <p>so now I can run <code>opt</code> shenanigans without awkward path invocations.</p>
-<h2 id="2022024">2/02/2024 </h2>
+<h2 id="2022024">2/02/2024</h2>
 <p>I&#39;m waiting for others to chime in on my latest fix so I will be reading on how to add <a href="https://llvm.org/docs/TestingGuide.html">unit tests</a>.</p>
 <p>Cool, that took like 25 minutes and I pushed a commit into the unit test generation framework.</p>
 <p>Took me a bit but tried adding using <code>llvm-lit</code> and couldn&#39;t get the <code>Examples</code> folder to run, so I posted a question in the #beginners channel about it.</p>
-<h2 id="1022024">1/02/2024 </h2>
+<h2 id="1022024">1/02/2024</h2>
 <p>Sweet&#33; I was able to address Nikita&#39;s refactoring comments without too much hassle.</p>
 <p>I guess the next task is to add it to the Verifier.</p>
-<p>-&gt; I read the <code>llvm/lib/IR/Verifier.cpp</code> header and grep&#39;d for <code>smin</code>. Seems I can add a </p>
+<p>-&gt; I read the <code>llvm/lib/IR/Verifier.cpp</code> header and grep&#39;d for <code>smin</code>. Seems I can add a</p>
 <pre><code class="language-julia">Intrinsics::vector_reduce_sthreecmp:
 Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <p>on line 5378 and get away with this. I don&#39;t see other places where it&#39;s defined.</p>
 <p>I think I&#39;ve hit my potential here. I will go do some tutorials.</p>
-<h2 id="29022024">29/02/2024 </h2>
+<h2 id="29022024">29/02/2024</h2>
 <h3 id="hazlo_cobarde">&quot;hazlo cobarde&quot;</h3>
-<p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM. </p>
+<p>Add the <a href="https://discourse.llvm.org/t/llvm-add-3-way-comparison-intrinsics/76807/10">3 way comparison instruction</a> <code>&lt;&#61;&gt;</code> to LLVM.</p>
 <p>I like this GSoC in particular because</p>
 <ul>
-<li><p>I will learn a wide swath of LLVM </p>
+<li><p>I will learn a wide swath of LLVM</p>
 </li>
 <li><p>I&#39;ll be working with a lot of optimization passes</p>
 </li>
@@ -609,9 +609,9 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
     <description><![CDATA[GitHub sponsors - a useful lifeboat]]></description>    
     
     <content:encoded><![CDATA[<h2></h2>
-<h3 id="saludos">Saludos 👋 </h3>
+<h3 id="saludos">Saludos 👋</h3>
 <p>Hola&#33; Me llamo Raz y este es mi granito de arena para quienes quieren empezar con el software libre &#40;o encontrar fuentes de ingreso en este mundo&#41;. Puedes <a href="https://github.com/sponsors/miguelraz/">ser mi sponsor en GitHub</a> para que escriba más cosas como esta y contribuya al software libre de Julia/Rust y sus traducciones en español.</p>
-<h1 id="github_sponsors">GitHub Sponsors </h1>
+<h1 id="github_sponsors">GitHub Sponsors</h1>
 <p>with apologies to Holge and Randy and David and Logan and Hector and...</p>
 <h4 id="summary">Summary:</h4>
 <p>You can get money via donations and your GitHub profile. This can take a few hours to setup and be a good side revenue, or an emergency lifeboat. Depending on where you live, your marketing skills, larger community environment and a slew of other factors, this may or may not work for you. This post is an exercise in Your Mileage May Vary from someone who spawned the game of life in Easy Mode &#40;white cis english speaking STEM focused able male&#41;, so take what you can and dismiss what doesn&#39;t apply.</p>
@@ -619,11 +619,11 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <p>If you live in the Global South and this program can apply for you, please consider getting started NOW. If you live in the Global North, consider sponsoring devs in the Global South with monthly payments - foreign exchange rate makes them <em>life changing</em>. If you are giddy for how to get started, my recommendations for a setup are farther down in this post.</p>
 <h3 id="who_what_when_where_why">Who what when where why</h3>
 <p>GitHub sponsors is a program you can sign up for &#40;free&#41; on github.com and receive donations from other people for &#40;mostly&#41; working on open source stuff. If you were already doing open source stuff, you can setup a profile and people can choose to give you one-time or monthly donations &#40;more on that later&#41; at tiers you are free to specify - from 1USD a month to full 666USD Bezos level patronage.</p>
-<p>Github sponsors is attractive in comparison to other platforms because, at time of writing, <a href="https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors">they do not charge a percentage on your sponsorships</a>. </p>
-<p>Patreon charges &#40;at time of writing&#41;, <a href="https://support.patreon.com/hc/en-us/articles/204606125-My-earnings-fees-founding-creator-">5&#37;&#43;</a>, and other &#40;main stream&#41; platforms are not far off. </p>
+<p>Github sponsors is attractive in comparison to other platforms because, at time of writing, <a href="https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors">they do not charge a percentage on your sponsorships</a>.</p>
+<p>Patreon charges &#40;at time of writing&#41;, <a href="https://support.patreon.com/hc/en-us/articles/204606125-My-earnings-fees-founding-creator-">5&#37;&#43;</a>, and other &#40;main stream&#41; platforms are not far off.</p>
 <p>This is an attractive proposition, but you should investigate before you launch yourself into the &quot;content creator&quot; lifestyle.</p>
 <ol>
-<li><p>GitHub has yet, to my knowledge, bound itself legally into always respecting this financial agreement. It could start changing it&#39;s terms tomorrow, lest you obey some orders from corporate, as was the case recently with <a href="https://techcrunch.com/2022/09/21/twitch-subcription-revenue-share-changes/">Twitch streamer&#39;s revenue sharing overnight change with ...Amazon</a>. That news was the most recent one off the top of my head, but every subscription/donation based platform can, has, and will unilaterally change your ~~wage split~~donations how they see fit. </p>
+<li><p>GitHub has yet, to my knowledge, bound itself legally into always respecting this financial agreement. It could start changing it&#39;s terms tomorrow, lest you obey some orders from corporate, as was the case recently with <a href="https://techcrunch.com/2022/09/21/twitch-subcription-revenue-share-changes/">Twitch streamer&#39;s revenue sharing overnight change with ...Amazon</a>. That news was the most recent one off the top of my head, but every subscription/donation based platform can, has, and will unilaterally change your ~~wage split~~donations how they see fit.</p>
 </li>
 <li><p>This doesn&#39;t apply to every country. At time of writing, <a href="https://github.com/sponsors#countries">68 regions can qualify for sponsorships</a> of which, sadly, I only count 4 African countries, for a &quot;global&quot; program that has been running for almost 3 years now. Mexico initially wasn&#39;t on the beta list &#40;for which there was promo where GitHub would match donations, to my chagrin&#41;, but I joined the waitlist and received my email after a while. Note that Iran, Venezuela, Russia and CubaN</p>
 </li>
@@ -633,7 +633,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <ul>
 <li><p>how i got started, my presence</p>
 </li>
-<li><p>marketing  </p>
+<li><p>marketing</p>
 </li>
 </ul>
 </li>
@@ -644,7 +644,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 </ul>
 </li>
 </ul>
-<p>So. I think I&#39;ve had what I would call a &quot;moderately&quot; succesful run with my GitHub sponsors. A lot of people have asked me about tips and tricks, and I&#39;m not the one for </p>
+<p>So. I think I&#39;ve had what I would call a &quot;moderately&quot; successful run with my GitHub sponsors. A lot of people have asked me about tips and tricks, and I&#39;m not the one for</p>
 <ul>
 <li><p>what sponsors is</p>
 </li>
@@ -661,13 +661,13 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 </li>
 <li><p>taxes</p>
 </li>
-<li><p>Dos </p>
+<li><p>Dos</p>
 </li>
-<li><p>public presence: famous code, repos, books, talks, online presence &#40;pandemic podcasts, community building&#41;*  </p>
+<li><p>public presence: famous code, repos, books, talks, online presence &#40;pandemic podcasts, community building&#41;*</p>
 </li>
 <li><p>big disclaimers, aka the don&#39;ts:</p>
 </li>
-<li><p>don&#39;t assume you won&#39;t pay taxes. </p>
+<li><p>don&#39;t assume you won&#39;t pay taxes.</p>
 </li>
 <li><p>uni might clash - grad students/scholarships may not work. dont knmow if amazon wish lists or payments in kind can be setup</p>
 </li>
@@ -760,7 +760,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
     <guid>5</guid>
     <description><![CDATA[An intuitive explanation of nothing, missing, and NaN]]></description>    
     
-    <content:encoded><![CDATA[<p>A quick note for my Julia peeps to grok the difference between <code>NaN</code>, <code>missing</code> and <code>nothing</code> in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to <a href="https://twitter.com/Jas_Hughes/status/1494020182171275266?s&#61;20&amp;t&#61;X6bd-uWW4b2CMW5xFzctUw">Jasmine Hughes</a> for inspiring this post and also <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub so I can continue my open source campaing</a>.</p>
+    <content:encoded><![CDATA[<p>A quick note for my Julia peeps to grok the difference between <code>NaN</code>, <code>missing</code> and <code>nothing</code> in JuliaLang. I have a few friends on twitter that remind me that the distinction between these concepts is not trivial, but I think I have a good mental model of how to address it and I might as well write it up. Hat tip to <a href="https://twitter.com/Jas_Hughes/status/1494020182171275266?s&#61;20&amp;t&#61;X6bd-uWW4b2CMW5xFzctUw">Jasmine Hughes</a> for inspiring this post and also <a href="https://github.com/sponsors/miguelraz/">sponsoring me on GitHub so I can continue my open source campaign</a>.</p>
 <h3 id="a_rainy_setup">A rainy setup</h3>
 <p>You are running a science experiment where you must measure the amount of rainwater that falls in a given day. The scientific-est thing your advisor has recommend is to setup a RainWater-O-Tron 9000 that collects data every day on how much water fell into a tube that sticks on top of it and reports it back the total at the end of the day. Once the thing is plugged, your machine graciously spits into your data pipeline tool a table that looks something like this:</p>
 <table><tr><th align="right">Days</th><th align="center">Rain &#91;cm&#93;</th><th align="right">Status</th></tr><tr><td align="right">1</td><td align="center">15</td><td align="right">OK</td></tr><tr><td align="right">2</td><td align="center">20</td><td align="right">OK</td></tr><tr><td align="right">3</td><td align="center">10</td><td align="right">OK</td></tr></table>
@@ -768,7 +768,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <p>You reset the machine and leave for Easter break and leave the robot running for a week, ready to come back and do some proper Science TM once you get the data back.</p>
 <p>Ominously, you find the report to say this:</p>
 <table><tr><th align="right">Days</th><th align="center">Rain &#91;cm&#93;</th><th align="right">Status</th></tr><tr><td align="right">1</td><td align="center">12</td><td align="right">OK</td></tr><tr><td align="right">2</td><td align="center">22</td><td align="right">OK</td></tr><tr><td align="right">3</td><td align="center">13</td><td align="right">OK</td></tr><tr><td align="right">4</td><td align="center"></td><td align="right">OK</td></tr><tr><td align="right">5</td><td align="center"></td><td align="right">NO</td></tr><tr><td align="right">6</td><td align="center">💩</td><td align="right">OK</td></tr><tr><td align="right">7</td><td align="center">18</td><td align="right">OK</td></tr></table>
-<p>Clearly something has gone wrong, on days 4-6, but if you think about it carefuly for a second, the <code>Status</code> of each data point gives you some insight into <em>where</em> your data collection <em>could</em> have gone wrong.</p>
+<p>Clearly something has gone wrong, on days 4-6, but if you think about it carefully for a second, the <code>Status</code> of each data point gives you some insight into <em>where</em> your data collection <em>could</em> have gone wrong.</p>
 <ul>
 <li><p>Days 1-3 went &#40;likely&#41; as expected</p>
 </li>
@@ -834,7 +834,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
     <guid>2</guid>
     <description><![CDATA[From Julia to Rust - learnings and reflections]]></description>    
     
-    <content:encoded><![CDATA[<h3 id="from_julia_to_rust">From Julia to Rust 🗺 </h3>
+    <content:encoded><![CDATA[<h3 id="from_julia_to_rust">From Julia to Rust 🗺</h3>
 <p>I&#39;ve been more serious about learning Rust recently, after dragging on with passive learning for a while. My first real programming language was Julia, and I know other Julians interested in Rust. I&#39;ve written this article for those people in mind, because Rust and Julia are good performance sparring partners, but Rust has a different mindset and tradeoffs that are worth considering.</p>
 <p>I hope you enjoy it.</p>
 <p><a href="https://www.youtube.com/watch?v&#61;drvAftwsTlU">TLDR:</a></p>
@@ -843,22 +843,22 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 <p>–Uncle Iroh</p>
 </blockquote>
 <hr />
-<h3 id="why_rust">Why Rust? 🤷 </h3>
-<p>There are 3 talks that sold me on Rust being worth learning, the first is <a href="https://www.youtube.com/watch?v&#61;A3AdN7U24iU">by Carol Nichols</a> and the <a href="https://www.youtube.com/watch?v&#61;cUrggIAPJEs">second is a lecture by Ryan Eberhardt and Armin Nanavari</a>. The first talks about how about ~70&#37; of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how sytems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.</p>
-<p>That&#39;s the point of technology&#33; To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine. </p>
+<h3 id="why_rust">Why Rust? 🤷</h3>
+<p>There are 3 talks that sold me on Rust being worth learning, the first is <a href="https://www.youtube.com/watch?v&#61;A3AdN7U24iU">by Carol Nichols</a> and the <a href="https://www.youtube.com/watch?v&#61;cUrggIAPJEs">second is a lecture by Ryan Eberhardt and Armin Nanavari</a>. The first talks about how about ~70&#37; of all bugs from the big tech corporations are from memory safety and that trains used to not have emergency brakes. The second explains how systems programming codebases already impose the invariants of resource ownership on the coders - but that reasoning can be horribly error prone, tedious, and automated.</p>
+<p>That&#39;s the point of technology&#33; To not have to worry about the previous generations problems because we figured out a way to offload that thinking to a machine.</p>
 <p>The third talk that really sold me on Rust was <a href="https://www.usenix.org/conference/enigma2021/presentation/gaynor">Alex Gaynor&#39;s</a>. It&#39;s bad enough that a bank or a school web site could crash because of memory bugs, but once you take into account the fact that not even the best programmers in the world &#40;sorted by salaries, roughly&#41; can ship safe code, you start to despair a little. Then you hear about the incredibly battle-tested libraries like <a href="https://www.helpnetsecurity.com/2021/01/27/cve-2021-3156/">sudo </a> and, as the moral argument goes, you are likely going to put vulnerable people in harm&#39;s way if you keep shipping a broken tool. I buy the urgency of that argument more and more when journalists or human rights advocates get targeted by state actors due to a trivial &#40;but buried&#41; C mistake.</p>
 <p>So that&#39;s the spiel for jumping on the Rust train when I argue with myself in the shower. What&#39;s the Rust&#39;s philosophy?</p>
 <hr />
-<h3 id="informal_introductions_-_tales_of_two_languages">Informal introductions - tales of two languages 📚 </h3>
+<h3 id="informal_introductions_-_tales_of_two_languages">Informal introductions - tales of two languages 📚</h3>
 <p>I will now give 2 hand-wavy historical rehashings of the origins of both languages.</p>
-<p>You might know Julia&#39;s origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man&#39;s version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilites, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of <a href="https://youtu.be/lZb2JKhf-mk?t&#61;208">algorithms</a>.</p>
+<p>You might know Julia&#39;s origin story - there were a gajillion DSLs for scientific computing, BLAS is a mess but implements polymorphism through namespacing for performance needs, and other libraries re-implemented a poor man&#39;s version of multiple dispatch because of the performance constraints. If you add a clever JIT to multiple dispatch capabilities, you can get ~C performance with ease if types can be inferred, and fortunately you can build a general programming language around that paradigm and those trade offs. Eventually, they baptized the language to honor the one true queen of <a href="https://youtu.be/lZb2JKhf-mk?t&#61;208">algorithms</a>.</p>
 <p>Rust comes from a different place: Some years ago in Mozilla, Graydon Hoare and the team got fed up with systems programming and the C/C&#43;&#43; tool chain. They were working on a language that allowed for programmers to be productive in low-level systems, harness concurrency performance without the foot-bazookas, and avoid errors during run time. At first they had different systems for handling the previous problems, until the team pieced together that an ownership system, with a borrow checker at compile time, could kill 2 birds with one stone. Eventually, they named the language after the <a href="https://en.wikipedia.org/wiki/Rust_&#40;fungus&#41;">fungus</a>.</p>
 <p>Recap: Julians were sick of unreusable code, niche DSLs and hacky polymorphism. With multiple dispatch as the central design feature they solved those problems. Rustaceans were sick of the C/C&#43;&#43; minefields and trying to keep all the invariants of large, error-prone codebases in their head. The idea of ownership and a borrow checker to know those errors <em>at compile time</em> and be data-race free is what&#39;s got them to where they are now.</p>
 <p>There&#39;s obviously important details missing on both stories - you can get it from proper historians if you like, this is a brief and informal introduction. I will however, mention the other big Rustian idea of affine types when I talk about how they get a version of generic code we&#39;ve come to know and love in Julia land. Spoiler alert: you can get generic code if you pay the price of a Julia runtime, and that&#39;s not something Rustaceans want. If you want generics at compile time, you have to &quot;prove&quot; to the compiler that your types are constrained to some extent, and you relay that information by tacking on affine types to your code.</p>
 <p>That&#39;s enough of an intro, here&#39;s the table of contents.</p>
-<div class="franklin-toc"><ol><li>From Julia to Rust 🗺 </li><li>Why Rust? 🤷 </li><li>Informal introductions - tales of two languages 📚 </li><li>Handy learning materials 🍎🐛 </li><li>What does generic Rustian code look like? 🔍 </li><li>Rustian projects of interest 🥇 </li><li>Optimization walkthroughs 🏃 </li><li>Papercuts and sharp edges ✂ </li><li>Things I wish I&#39;d known earlier 👓 </li><li>Appreciation of Rust things 🦀  </li><li>What Rust can bring to Julia ⚒ </li><li>Acknowledgments 🙌🏻 </li></ol></div>
+<div class="franklin-toc"><ol><li>From Julia to Rust 🗺</li><li>Why Rust? 🤷</li><li>Informal introductions - tales of two languages 📚</li><li>Handy learning materials 🍎🐛</li><li>What does generic Rustian code look like? 🔍</li><li>Rustian projects of interest 🥇</li><li>Optimization walkthroughs 🏃</li><li>Papercuts and sharp edges ✂</li><li>Things I wish I&#39;d known earlier 👓</li><li>Appreciation of Rust things 🦀</li><li>What Rust can bring to Julia ⚒</li><li>Acknowledgments 🙌🏻</li></ol></div>
 <hr />
-<h3 id="handy_learning_materials">Handy learning materials 🍎🐛 </h3>
+<h3 id="handy_learning_materials">Handy learning materials 🍎🐛</h3>
 <p>If for some reason you&#39;ve already decided that learning Rust is a worthy endeavour, here&#39;s my list of resources to learn. I think they are a good resource to follow in approximate order, but use whatever works, and if it doesn&#39;t, skip it.</p>
 <ul>
 <li><p><a href="https://www.rust-lang.org/">The Rust book</a>: Click the link to get started with installation and IDE setup. It pays to read it at least once cover to cover and not fret about coming back to the thorny bits.</p>
@@ -900,7 +900,7 @@ Intrinsics::vector_reduce_uthreecmp:</code></pre>
 </ul>
 <hr />
 <p>Alright, so you&#39;re set up to go on a learning journey. What&#39;s Rust look like anyway when compared to Julia?</p>
-<h3 id="what_does_generic_rustian_code_look_like">What does generic Rustian code look like? 🔍 </h3>
+<h3 id="what_does_generic_rustian_code_look_like">What does generic Rustian code look like? 🔍</h3>
 <p>We love composability and multiple dispatch, so let&#39;s look at a short example of how to get the good ol&#39; Julia bang-for-buck, with a 1D point:</p>
 <pre><code class="language-julia">import Base: &#43;
 struct Point&#123;T&lt;:Real&#125;
@@ -912,7 +912,7 @@ a &#43; b # works
 c &#61; Point&#123;Float32&#125;&#40;1.0&#41;
 d &#61; Point&#123;Float32&#125;&#40;2.0&#41;
 c &#43; d # Also works&#33;</code></pre>
-<p>So, in Julia land, how do I get generic code? </p>
+<p>So, in Julia land, how do I get generic code?</p>
 <p>I make sure to not use any explicit types and let the dispatch system do the rest. You use functions like <code>zero&#40;...&#41;</code>, <code>eltype&#40;...&#41;</code>. With the dispatches, I add them to the appropriate subtype with <code>where T&lt;:Foo</code>. If I define the appropriate methods, the others get composed atop of them , so I don&#39;t need to define <code>&#43;&#61;</code> once I&#39;ve defined <code>&#43;</code>. Duck type all the way - when something errors at runtime because I forgot a case &#40;like the fact there&#39;s no type promotion rules above&#41; I just write a function per call I missed and keep hacking on.</p>
 <p>Setup a simple type hierarchy, define some functions on your types without using them explicitly, profit from not rewriting all the code, plug and chug as you run into errors or perf hits, look at docstrings in the REPL to help you out. Happy life.</p>
 <p>Let&#39;s look at the rust example:</p>
@@ -920,22 +920,18 @@ c &#43; d # Also works&#33;</code></pre>
 struct Point&lt;T&gt; &#123;
     val: T
 &#125;impl&lt;T: Add&lt;Output &#61; T&gt;&gt; Add for Point&lt;T&gt; &#123;
-    type Output &#61; Self;
-    
-    fn add&#40;self, b: Self&#41; -&gt; Self::Output &#123;
+    type Output &#61; Self;    fn add&#40;self, b: Self&#41; -&gt; Self::Output &#123;
         Self &#123; val: self.val &#43; b.val &#125;
     &#125;
 &#125;fn main&#40;&#41; &#123;
     let a &#61; Point::&lt;i32&gt;&#123;val: 1&#125;;
-    let b &#61; Point::&lt;i32&gt;&#123;val: 2&#125;;
-    
-    let c &#61; Point::&lt;f32&gt;&#123;val: 1.0&#125;;    println&#33;&#40;&quot;&#123;:?&#125;&quot;, a &#43; b&#41;;
+    let b &#61; Point::&lt;i32&gt;&#123;val: 2&#125;;    let c &#61; Point::&lt;f32&gt;&#123;val: 1.0&#125;;    println&#33;&#40;&quot;&#123;:?&#125;&quot;, a &#43; b&#41;;
     println&#33;&#40;&quot;&#123;:?&#125;&quot;, c &#61;&#61; c&#41;;
 &#125;</code></pre>
 <p>In Rust Land, how do I get a similar generic code?</p>
-<p>I worked on like half of this code and then had to <a href="https://doc.rust-lang.org/std/ops/trait.Add.html">look it up</a>. You can run it in the <a href="https://play.rust-lang.org/?version&#61;stable&amp;mode&#61;debug&amp;edition&#61;2018&amp;gist&#61;e3dd98c60fa0cdebb5f1a582599d3b0d">Rust Playground here</a>. Avid readers will notice the following: </p>
+<p>I worked on like half of this code and then had to <a href="https://doc.rust-lang.org/std/ops/trait.Add.html">look it up</a>. You can run it in the <a href="https://play.rust-lang.org/?version&#61;stable&amp;mode&#61;debug&amp;edition&#61;2018&amp;gist&#61;e3dd98c60fa0cdebb5f1a582599d3b0d">Rust Playground here</a>. Avid readers will notice the following:</p>
 <ol>
-<li><p>Damn, that&#39;s a lot of boilerplate. 😣 </p>
+<li><p>Damn, that&#39;s a lot of boilerplate. 😣</p>
 </li>
 <li><p>To get generics, you need a <code>struct</code> for your type, an <code>impl&lt;T&gt; &#36;TRAIT for Point&lt;T&gt;</code> block where the <code>add</code> function is defined, and type annotations like <code>Self::Output</code>, <code>Add&lt;Output &#61; T&gt;</code>.</p>
 </li>
@@ -946,20 +942,20 @@ struct Point&lt;T&gt; &#123;
 <li><p>Oh, those <code>#&#91;things&#40;above_the_struct&#41;&#93;</code> are also macros. I still don&#39;t know how they&#39;re different, but they seem to affect how the compiler interacts with the crate too. Since some traits &#40;like the ones for copying or printing&#41; are so boilerplate heavy and predictable, you can get some behaviour for &quot;free&quot; if you add the right <code>#&#91;derive&#40;...&#41;&#93;</code> stuff in the declaration. That&#39;s how the <code>c &#61;&#61; c</code> works actually, it&#39;s due to the <code>PartialEq</code>.</p>
 </li>
 </ol>
-<p>The main workflow feels like this: </p>
+<p>The main workflow feels like this:</p>
 <p>Slap a <code>&lt;T&gt;</code> in front of your struct and the fields you want it to be generic over. Look up the functions needed for each trait in the documentation. Setup a brief test case. Doesn&#39;t compile? See what <code>rustc</code> says and try and tack it on some traits; maybe you missed an affine type with <code>impl&lt;T: Foo&gt;</code> or the <code>Self::Output</code> - the compiler guides you through patching up your code. If you&#39;re asking for some generic behaviour, the compiler will complain and you&#39;ll have to add another trait implementation so that <em>it is damn sure</em> you&#39;re allowed to continue.</p>
 <p>I also chose a particularly easy example: there&#39;s no associated data &#40;like a string&#41; in my <code>Point&lt;T&gt;</code>, so I don&#39;t need to prove to the compiler that my data doesn&#39;t outlive its uses - those are <code>lifetimes</code>, and they can get hairy, fast, but you&#39;ll run into them eventually. I also don&#39;t know how easily you could handle multiple generic types and the compile time penalties associated with them.</p>
 <p>There&#39;s more syntax up front compared to Julia, and not just because we&#39;re writing library code here. Pythonistas can pick up Julia within a few hours and be productive. Rust has a lot more surface area to cover in learning the language: references, traits, impls, enums, lifetimes, pattern matching with <code>match</code>, macros, cargo flags for configuration, ownership and borrowing, Send and Sync...</p>
 <p>Whodathunkit, Garbage Collectors let you worry about other things for a small runtime price. They might not be right for every use case but they&#39;re a solid investment.</p>
 <hr />
-<h3 id="rustian_projects_of_interest">Rustian projects of interest 🥇 </h3>
+<h3 id="rustian_projects_of_interest">Rustian projects of interest 🥇</h3>
 <p>There&#39;s a steep wall to climb when starting out with Rust - however, they&#39;ve nailed the user experience for learning tough stuff. I think it was Esteban Kuber who said something along the lines of &quot;We weren&#39;t missing a sufficiently smart compiler, but a more empathetic one&quot;.</p>
-<p>Alright, so what&#39;s the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it&#39;s weight against the established candidates? </p>
+<p>Alright, so what&#39;s the view from the top look like? Like Julia, Rust is an incumbent in a crowded space, so how has it punched above it&#39;s weight against the established candidates?</p>
 <p>Here&#39;s a list of all the projects that I&#39;ve found particularly of note to Julians.</p>
 <ul>
-<li><p><a href="https://github.com/rayon-rs/rayon">rayon</a> is the original reason I got interested in Rust. Check their <a href="https://github.com/rayon-rs/rayon#parallel-iterators-and-more">hello world</a> - the promise is that if you are using iterators, you can swap &#40;mostly&#41; <code>iter&#40;&#41;</code> for <code>par_iter&#40;&#41;</code> and at compile time you can know if your code will run in parallel. That&#39;s just about the friendliest user interface to parallelism besides <code>Threads.@threads</code>, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the <a href="https://youtu.be/gof_OEv71Aw?t&#61;1184">same idea for work stealing thread scheduler</a> that Julia&#39;s parallel task run time system uses &#40;inspired by Cilk, get it? &#39;Cuz Rayon is a fake silk? Ha...&#41;. </p>
+<li><p><a href="https://github.com/rayon-rs/rayon">rayon</a> is the original reason I got interested in Rust. Check their <a href="https://github.com/rayon-rs/rayon#parallel-iterators-and-more">hello world</a> - the promise is that if you are using iterators, you can swap &#40;mostly&#41; <code>iter&#40;&#41;</code> for <code>par_iter&#40;&#41;</code> and at compile time you can know if your code will run in parallel. That&#39;s just about the friendliest user interface to parallelism besides <code>Threads.@threads</code>, and with some additional guarantees - a small update loop is easy to keep the invariants in your head, but it really pays when the Rust compiler catches a concurrency bug that spanned multiple files, modules and data structures. Cool tech note: Rayon uses the <a href="https://youtu.be/gof_OEv71Aw?t&#61;1184">same idea for work stealing thread scheduler</a> that Julia&#39;s parallel task run time system uses &#40;inspired by Cilk, get it? &#39;Cuz Rayon is a fake silk? Ha...&#41;.</p>
 </li>
-<li><p><a href="https://github.com/tokio-rs/tokio">tokio</a> deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though&#33; </p>
+<li><p><a href="https://github.com/tokio-rs/tokio">tokio</a> deserves a mention as well for its capabilities for asynchronous programming, but I am not familiar enough with it to comment on it. Rust people get excited about it though&#33;</p>
 </li>
 </ul>
 <p><em>NB</em>: It is non-trivial to compose <code>rayon</code> and <code>tokio</code> codes.</p>
@@ -970,7 +966,7 @@ struct Point&lt;T&gt; &#123;
 </li>
 <li><p><a href="https://zaiste.net/posts/shell-commands-rust/">Rust CLI</a>: Rust people feel comfortable working in the terminal, and they&#39;ve taken that user experience Very Seriously and have a top notch performance and user experience for their command line CLIs. Here&#39;s a few of my favorites - you only need to <code>cargo install foo</code> and they should be properly installed on your system.</p>
 <ul>
-<li><p><a href="https://github.com/BurntSushi/ripgrep">rg</a>: SIMDified grep replacemnt tool &#40;for some use cases&#41;. Includes colors&#33;</p>
+<li><p><a href="https://github.com/BurntSushi/ripgrep">rg</a>: SIMDified grep replacement tool &#40;for some use cases&#41;. Includes colors&#33;</p>
 </li>
 <li><p><a href="https://github.com/sharkdp/bat">bat</a>: cat clone with tons more built-in syntax highlighting.</p>
 </li>
@@ -1014,7 +1010,7 @@ struct Point&lt;T&gt; &#123;
 <p>There&#39;s oodles more. Check out <a href="https://www.crates.io">crates.io</a> or <a href="https://lib.rs">lib.rs</a> if you want to explore more &#40;this is their community based JuliaHub equivalent&#41;.</p>
 <p>I&#39;ll make a special note of <a href="https://github.com/google/evcxr">evcxr</a>, a Rust REPL. For now, I don&#39;t think it&#39;s profitable to use Rust with a REPL-like workflow. I&#39;m too used to that in Julia, and that works well there, but I think there&#39;s a risk of digging yourself into a &quot;Everything must be a REPL&quot; mentality and cutting yourself off from learning opportunities. In Rust land, I don&#39;t mind doing as the Rustaceans do and learning to do things around a command line, navigating compiler errors and configuring flags and features for certain behaviours or deployment options. Since that&#39;s the package that I wanted to learn when I bought into Rust, I don&#39;t mind adapting into that mindset. I still wish them all the best and hope they can make the best possible Rust REPL - I&#39;d love to be wrong on this down the road.</p>
 <hr />
-<h3 id="optimization_walkthroughs">Optimization walkthroughs 🏃 </h3>
+<h3 id="optimization_walkthroughs">Optimization walkthroughs 🏃</h3>
 <p>If you want to dive deep into nitty gritty performance fundamentals, these are the best guides I found for explaining the tradeoffs, gotchas, mental model, and engineering for those tasty, tasty flops.</p>
 <ol>
 <li><p><a href="http://www.frankmcsherry.org/assets/COST.pdf">COST paper</a>: Maybe doesn&#39;t fit here but this is one of my favorite papers and everyone should read it.</p>
@@ -1031,7 +1027,7 @@ struct Point&lt;T&gt; &#123;
 </li>
 </ol>
 <hr />
-<h3 id="papercuts_and_sharp_edges">Papercuts and sharp edges ✂ </h3>
+<h3 id="papercuts_and_sharp_edges">Papercuts and sharp edges ✂</h3>
 <p>So Rust is &quot;worth learning&quot;, but these are roadblocks that I faced and would warn others about to save them some grief.</p>
 <ul>
 <li><p>You can learn another hobby waiting for Rust projects to compile. The price for compile-time guarantees/being the designated driver in the codebase is offloading more work to the compiler. They&#39;re working on leveraging concurrency for speeding up the pipeline, and it&#39;s gotten better. Let&#39;s just say they also suffer from TTFP 😉 .</p>
@@ -1089,7 +1085,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ul>
 <hr />
-<h3 id="things_i_wish_id_known_earlier">Things I wish I&#39;d known earlier 👓 </h3>
+<h3 id="things_i_wish_id_known_earlier">Things I wish I&#39;d known earlier 👓</h3>
 <p>These could have helped me settle down into a more productive workflow sooner. Get a buddy that knows Rust to see you code to figure most of these out.</p>
 <ol>
 <li><p>If you can, avoid the examples with Strings and &amp;str. Yes, they&#39;re a great motivation for systems people for all the gnarly use-after free and double-free and memory-leak examples - stick with numerical algorithms first, to get the gist of ownership, try and do some exercisms with iterators and Strings will be much easier to get after that. I don&#39;t think it&#39;s worth worrying about at first unless your target is systems.</p>
@@ -1120,7 +1116,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="appreciation_of_rust_things">Appreciation of Rust things 🦀  </h3>
+<h3 id="appreciation_of_rust_things">Appreciation of Rust things 🦀</h3>
 <p>These are things the Rust people have nailed down.</p>
 <ol>
 <li><p>Ferris the crab is too cute.</p>
@@ -1141,7 +1137,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="what_rust_can_bring_to_julia">What Rust can bring to Julia ⚒ </h3>
+<h3 id="what_rust_can_bring_to_julia">What Rust can bring to Julia ⚒</h3>
 <ol>
 <li><p>A model of governance. The Rust community is at least 10x the size of Julia, and it&#39;s unclear that adding more hats to the same <code>TruckFactorCritical</code> people would help. That said, it&#39;d be better to have those conversations sooner rather than later, and building bridges with Rust people seems wise in the long term. I don&#39;t think that Rust is the closest model to look up to given the other projects under the NumFocus umbrella that we can learn from, but I don&#39;t see what is lost from learning from them.</p>
 </li>
@@ -1153,9 +1149,9 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 </li>
 </ol>
 <hr />
-<h3 id="acknowledgments">Acknowledgments 🙌🏻 </h3>
+<h3 id="acknowledgments">Acknowledgments 🙌🏻</h3>
 <ul>
-<li><p>Thanks to <code>Jubilee</code> for feedback on this post and the following corrections: </p>
+<li><p>Thanks to <code>Jubilee</code> for feedback on this post and the following corrections:</p>
 <ul>
 <li><p>Rust does not necessarily have an RC GC but a <a href="https://en.wikipedia.org/wiki/Region-based_memory_management">region based GC</a>. You can opt into the RC GC with <code>Arc</code> and <code>Rc</code> types.</p>
 </li>
@@ -1207,7 +1203,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 <li><p>the only language to use multiple dispatch &#40;Dylan does use it, also available as a lib in Python and others&#41;</p>
 </li>
 </ul>
-<p>but it definitely feels like the first to stick the landing.  My <strong>claim</strong> is this: Julia is unique in implementing multiple dispatch as a fundamental design feature <em>and</em> building a language around it. Don&#39;t take it too seriously; it&#39;s more an invitation to learn than anything else. If you like this topic, check out <a href="https://www.youtube.com/watch?v&#61;kc9HwsxE1OY&amp;t&#61;346s">&quot;The Unreasonable effectiveness of Multiple Dispatch&quot; JuliaCon</a> by Stefan Karpinski, and <a href="https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/">this article on &quot;The Expression problem&quot;</a> which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-fied version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.</p>
+<p>but it definitely feels like the first to stick the landing. My <strong>claim</strong> is this: Julia is unique in implementing multiple dispatch as a fundamental design feature <em>and</em> building a language around it. Don&#39;t take it too seriously; it&#39;s more an invitation to learn than anything else. If you like this topic, check out <a href="https://www.youtube.com/watch?v&#61;kc9HwsxE1OY&amp;t&#61;346s">&quot;The Unreasonable effectiveness of Multiple Dispatch&quot; JuliaCon</a> by Stefan Karpinski, and <a href="https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions/">this article on &quot;The Expression problem&quot;</a> which inspired that talk. If I was being uncharitable, this post is the watered-down, kawaii-ified version of that talk with some Lisp memorabilia sprinkled on top. Your mileage may vary.</p>
 <p>The <strong>audience</strong> of this post are programmers who like Python/C&#43;&#43;/80s MIT Lisp courses who have heard of Julia but don&#39;t get what new things it brings to the table. If you want to dive deeper into emergent Julia features, check out <a href="https://invenia.github.io/blog/2019/10/30/julialang-features-part-1/">Frame&#39;s</a> 2 part posts.</p>
 <p>Sure, there&#39;s a fancy subtyping algorithm that Jeff Bezanson &#40;Julia co-creator&#41; pulled out of Turing-knows-where and that Swift re-adapted with some unholy <a href="https://fullstackfeed.com/formalizing-swift-generics-as-a-term-rewriting-system/">term rewriting</a> shenanigans, but that&#39;s not the &quot;new contribution&quot; I mean - careful design iteration around multiple dispatch with measured trade-offs is.</p>
 <p>The rest of this post are code snippets in different programming languages and how they look like next to a Julian re-implementation.</p>
@@ -1223,7 +1219,7 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 <p>
 <div style="clear: both"></div><p>Off we go&#33; 🚀</p>
 <h2 id="what_is_dispatch">What is dispatch?</h2>
-<p>To begin our journey, we sould define some terms. Per <a href="https://www.merriam-webster.com/dictionary/dispatch">Merriam-Webster</a>, <code>to dispatch</code> means:</p>
+<p>To begin our journey, we should define some terms. Per <a href="https://www.merriam-webster.com/dictionary/dispatch">Merriam-Webster</a>, <code>to dispatch</code> means:</p>
 <blockquote>
 <p>to send off or away with promptness or speed</p>
 </blockquote>
@@ -1242,16 +1238,14 @@ thread_rng&#40;&#41;.sample_iter&#40;&amp;Standard&#41;.take&#40;n&#41;.collect&
 <p>Ok, call what you nee– Aaaaaah, now I get why you&#39;re a walkie-talkie. Clever&#33; <a href="https://fasterthanli.me/series/advent-of-code-2020/part-3">I&#39;ll have to tell my friend Cool Bear</a> about this one...</p>
 <p>At any rate - dispatch sounds simple I guess... but all these programmers from the Object Oriented Land keep asking me about where I stand in <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">inheritance vs composition</a>, and my takeaway was that there&#39;s a lot of terms I <em>thought</em> knew what they meant, but I have to re-learn for all this programming stuff. I guess I&#39;m just not that into Rectangle vs Square debates...</p></div></div></div></p>
 <p>
-<div style="clear: both"></div><p><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
 <p><strong>Dispatch:</strong></p>
-<p>Yup, there&#39;s a lot of fancy words. It can be hard to describe where you are standing to other people because <a href="https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf">the Kingdoms of Nouns</a> monopolized the programming language map-making business decades ago. </p>
+<p>Yup, there&#39;s a lot of fancy words. It can be hard to describe where you are standing to other people because <a href="https://www.eecis.udel.edu/~decker/courses/280f07/paper/KingJava.pdf">the Kingdoms of Nouns</a> monopolized the programming language map-making business decades ago.</p>
 <p>Now it sucks to get directions anywhere.</p>
-<p>But it&#39;s cool - just take a deep breath, and, like a well oiled StepMaster, we&#39;ll do this one step at a time. </p>
+<p>But it&#39;s cool - just take a deep breath, and, like a well oiled StepMaster, we&#39;ll do this one step at a time.</p>
 <p>On namespaces as well, those debates are just not going to be as big a problem in Julia Land - we&#39;re not too far from them in the theory, but the language doesn&#39;t actively prevent you from doing what you already know. In fact, if you know addition, you already have a natural notion of what multiple dispatch is about.</p></div></div></div></p>
 <p>
-<div style="clear: both"></div>
- </p>
-<div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
+<div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
 <p><strong>miguelito:</strong></p>
 <p>What? No way.</p></div></div></div></p>
 <p>
@@ -1425,7 +1419,7 @@ Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;licen
 <pre><code class="language-julia-repl">julia&gt; sizeof&#40;1&#41; # This is in bytes, so an Int on my system is 64 bits
 8</code></pre>
 <ol start="3">
-<li><p>Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn&#39;t have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the beaurocratic overhead of the dispatching system, and it&#39;s not at all trivial to see those two things and put them together. But don&#39;t take my word for it, hear <strong>them</strong> say why it wasn&#39;t practical then:</p>
+<li><p>Speaking of LLVM - JIT compilers are a recent invention, and if LLVM didn&#39;t have an open source implementation, who knows if Julia would have picked up. Caching the computation really helps to overcome the bureaucratic overhead of the dispatching system, and it&#39;s not at all trivial to see those two things and put them together. But don&#39;t take my word for it, hear <strong>them</strong> say why it wasn&#39;t practical then:</p>
 </li>
 </ol>
 <p><a href="https://youtu.be/OscT4N2qq7o?t&#61;1598"><img src="https://imgur.com/zA72zGB.png" alt="Lisp hackers preaching the Julia gospel" /></a></p>
@@ -1443,7 +1437,7 @@ f&#40;t&#41;</code></pre></div></div></div></p>
 <p>
 <div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-red"><div class="right"><img src="https://miguelraz.github.io/assets/astrofavicon/favicon.ico" alt="" /></div>
 <p><strong>miguelito:</strong></p>
-<p>Alright so what I&#39;m really getting here is </p>
+<p>Alright so what I&#39;m really getting here is</p>
 <ol>
 <li><p>I should really, really <a href="https://youtu.be/kc9HwsxE1OY?t&#61;1564">just go watch Stefan&#39;s talk</a>.</p>
 </li>
@@ -1454,14 +1448,14 @@ f&#40;t&#41;</code></pre></div></div></div></p>
 <p>
 <div style="clear: both"></div><div class="row"><div class="container"><div class="colbox-blue"><div class="left"><img src="https://miguelraz.github.io/assets/favicon.ico" alt="" /></div>
 <p><strong>Dispatch:</strong></p>
-<p>Yeesh. </p>
+<p>Yeesh.</p>
 <p>Remember the starting claim for this discussion? It felt so long ago... but the gist was that for all the bells and whistles that Julia has, they needed time and effort to figure out some hard problems that other people had come up against &#40;and whose expertise they drew from&#33;&#41;. Julia is the place to park a decision until it gets done right, with oodles of discussions from experts back and forth. That&#39;s not a linear process, but I can&#39;t complain, we&#39;re still increasing the <code>SmileFactor</code> of all the things that feel like they should work, and do. Like <a href="https://www.youtube.com/watch?v&#61;EkgCENBFrAY">the REPL</a>.</p></div></div></div></p>
 <p>
 <div style="clear: both"></div><p>Until next time. Toodles. 👋</p>
 <hr />
 <p>If you want to see more posts like this, consider chucking a buck or two on my <a href="https://github.com/miguelraz">GitHub sponsors</a>, or, you know, hire me as a grad student.</p>
 <h2><em>Note</em>:</h2>
-<p>I created <strong>Dispatch</strong> by copy/pasting the icon from <a href="https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id&#61;1362009&amp;origin&#61;search&amp;k&#61;1618671790997">flaticon.com</a> under the terms of their Flaticon License. It is free for personal and commercial purpse with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commerical purposes, please donate a non-trivial part of your profits from the <strong>Dispatch</strong> merch to <a href="https://donate.doctorswithoutborders.org/onetime.cfm">Doctors without Borders</a>.</p>
+<p>I created <strong>Dispatch</strong> by copy/pasting the icon from <a href="https://www.flaticon.com/free-icon/walkie-talkie_1362060?related_id&#61;1362009&amp;origin&#61;search&amp;k&#61;1618671790997">flaticon.com</a> under the terms of their Flaticon License. It is free for personal and commercial purpose with attribution. I changed the colors to match the Julia dot logo colors. If you plan to use it for commercial purposes, please donate a non-trivial part of your profits from the <strong>Dispatch</strong> merch to <a href="https://donate.doctorswithoutborders.org/onetime.cfm">Doctors without Borders</a>.</p>
 <p>Thanks a lot to the Julia community for helping with this post, but especially to Thiebaut Lienart and the Franklin.jl team, Stefan Karpinski for his talk and Frames for her blog posts diving into these similar materials.</p>
 ]]></content:encoded>
         

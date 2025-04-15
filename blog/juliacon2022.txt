@@ -36,7 +36,7 @@ Linter + JET.jl integration is awesome
 Clickable and re-runnable test items are awesome, specially for only *modified tests*.
 
 Do Syntax considered harmless:
-I liked the `flatmap` examples. I could definitely try and use more `do`s in my code, where effective, and I relate to the `don't use loops` mantra on some level. Also really nice to have heard aobu tthe perfomrance of functional combinators with issue `#45000`.
+I liked the `flatmap` examples. I could definitely try and use more `do`s in my code, where effective, and I relate to the `don't use loops` mantra on some level. Also really nice to have heard aobu the performance of functional combinators with issue `#45000`.
 
 How to be an effective Julia advocate
 Good strategy for how to reach out to people. I don't know how Logan can handle so  many commitments and connections; He's very much worth a listen.
@@ -54,11 +54,11 @@ I'm a sucker for special functions - this was great stuff.
 ... that table at the end should have been a plot ;)
 
 DTables.jl
-vs Dask/Spark: really enjoyed the timeline of past efforts 
+vs Dask/Spark: really enjoyed the timeline of past efforts
 Out of the box compatibility with DataFrames.jl is just amazing. This is fantastic work.
 
 Building an inclusive and fun Julia community
-    
+
 `methods(which)`
 I love basically all Jameson talks. Big sucker for deep dive talks of internals here.
 ... OK I should read the dev docs and base tests.
@@ -67,4 +67,4 @@ Based on Makie -> translate questions about data into relevant visualizations `d
 Oh, very nice use of multiple dispatch with the composing layers with `*` and adding data with `+`
 the GUI demo'd at the end is a killer!
 A\b isn't the best!
-use LinearSolve.jl 
+use LinearSolve.jl
