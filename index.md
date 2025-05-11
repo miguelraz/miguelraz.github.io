@@ -3,7 +3,7 @@
 
 # ¡Hola! ¡Bienvenidos todos, todas y todes! :wave:
 
-My name is Miguel Raz Guzmán Macedo, and I am an undergraduate physics student at UNAM, México.
+My name is Miguel Raz Guzmán Macedo, and I do physics at UNAM, México.
 
 If something has to do with **Julia** 🐱‍💻, **numerical relativity** 🌌, **HPC** 🤖 or **open source science** 🦾, I'm interested.
 
